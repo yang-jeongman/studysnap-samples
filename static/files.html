@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap - 파일 브라우저</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .logo span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .toolbar {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .folder-tabs {
+            display: flex;
+            gap: 5px;
+        }
+
+        .folder-tab {
+            padding: 10px 20px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .folder-tab:hover {
+            background: #e0e0e0;
+        }
+
+        .folder-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .folder-tab .count {
+            background: rgba(0,0,0,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .folder-tab.active .count {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 250px;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd6;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-danger {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff3344;
+        }
+
+        .file-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .file-header {
+            display: grid;
+            grid-template-columns: 50px 1fr 120px 180px 150px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .file-item {
+            display: grid;
+            grid-template-columns: 50px 1fr 120px 180px 150px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .file-item:hover {
+            background: #f8f9fa;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-icon {
+            font-size: 24px;
+        }
+
+        .file-name {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .file-name a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .file-name a:hover {
+            color: #667eea;
+        }
+
+        .file-name .file-path {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .file-size {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .file-date {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .file-actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-view {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-view:hover {
+            background: #bbdefb;
+        }
+
+        .btn-edit {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .btn-edit:hover {
+            background: #c8e6c9;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .btn-delete:hover {
+            background: #ffcdd2;
+        }
+
+        .btn-download {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .btn-download:hover {
+            background: #ffe0b2;
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .status-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .storage-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .storage-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-content p {
+            margin-bottom: 25px;
+            color: #666;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Preview Modal */
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        .preview-modal.show {
+            display: block;
+        }
+
+        .preview-header {
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-header h4 {
+            font-weight: 500;
+        }
+
+        .preview-close {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .preview-frame {
+            width: 100%;
+            height: calc(100vh - 50px);
+            border: none;
+            background: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .file-header,
+            .file-item {
+                grid-template-columns: 40px 1fr 100px;
+            }
+
+            .file-date,
+            .file-actions {
+                display: none;
+            }
+
+            .file-item .file-actions {
+                display: flex;
+                grid-column: 1 / -1;
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid #f0f0f0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .folder-tabs {
+                width: 100%;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">📁</span>
+                <div>
+                    <h1>파일 브라우저</h1>
+                    <span>StudySnap Backend Server</span>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="/">🏠 홈</a>
+                <a href="/static/editor.html">✏️ 에디터</a>
+                <a href="/docs">📚 API 문서</a>
+            </nav>
+        </header>
+
+        <div class="toolbar">
+            <div class="folder-tabs">
+                <button class="folder-tab active" data-folder="outputs" onclick="switchFolder('outputs')">
+                    📄 Outputs <span class="count" id="outputs-count">0</span>
+                </button>
+                <button class="folder-tab" data-folder="uploads" onclick="switchFolder('uploads')">
+                    📤 Uploads <span class="count" id="uploads-count">0</span>
+                </button>
+                <button class="folder-tab" data-folder="static" onclick="switchFolder('static')">
+                    🌐 Static <span class="count" id="static-count">0</span>
+                </button>
+                <button class="folder-tab" data-folder="templates" onclick="switchFolder('templates')">
+                    📋 Templates <span class="count" id="templates-count">0</span>
+                </button>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="파일 검색..." oninput="filterFiles()">
+                <button class="btn btn-primary" onclick="refreshFiles()">
+                    🔄 새로고침
+                </button>
+            </div>
+        </div>
+
+        <div class="file-list">
+            <div class="file-header">
+                <div></div>
+                <div>파일명</div>
+                <div>크기</div>
+                <div>수정일</div>
+                <div>작업</div>
+            </div>
+            <div id="fileListBody">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="storage-info">
+                <div class="storage-item">
+                    📁 <span id="totalFiles">0</span>개 파일
+                </div>
+                <div class="storage-item">
+                    💾 <span id="totalSize">0 MB</span>
+                </div>
+            </div>
+            <div id="lastUpdate">마지막 업데이트: -</div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3>⚠️ 파일 삭제</h3>
+            <p id="deleteMessage">이 파일을 삭제하시겠습니까?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">취소</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="preview-modal" id="previewModal">
+        <div class="preview-header">
+            <h4 id="previewTitle">미리보기</h4>
+            <button class="preview-close" onclick="closePreview()">✕ 닫기</button>
+        </div>
+        <iframe class="preview-frame" id="previewFrame"></iframe>
+    </div>
+
+    <script>
+        let currentFolder = 'outputs';
+        let allFiles = [];
+        let fileToDelete = null;
+
+        // 파일 목록 로드
+        async function loadFiles(folder) {
+            const fileListBody = document.getElementById('fileListBody');
+            fileListBody.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+            try {
+                const response = await fetch(`/api/files/${folder}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allFiles = data.files;
+                    renderFiles(allFiles);
+                    updateCounts(folder, data.files.length);
+                    updateStorageInfo(data.total_size || 0, data.files.length);
+                } else {
+                    fileListBody.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">❌</div>
+                            <h3>오류가 발생했습니다</h3>
+                            <p>${data.error || '파일 목록을 불러올 수 없습니다'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading files:', error);
+                fileListBody.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">❌</div>
+                        <h3>서버 연결 실패</h3>
+                        <p>서버에 연결할 수 없습니다</p>
+                    </div>
+                `;
+            }
+
+            document.getElementById('lastUpdate').textContent =
+                `마지막 업데이트: ${new Date().toLocaleString('ko-KR')}`;
+        }
+
+        // 파일 목록 렌더링
+        function renderFiles(files) {
+            const fileListBody = document.getElementById('fileListBody');
+
+            if (files.length === 0) {
+                fileListBody.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <h3>파일이 없습니다</h3>
+                        <p>이 폴더에 파일이 없습니다</p>
+                    </div>
+                `;
+                return;
+            }
+
+            fileListBody.innerHTML = files.map(file => `
+                <div class="file-item">
+                    <div class="file-icon">${getFileIcon(file.name)}</div>
+                    <div class="file-name">
+                        <a href="${file.url}" target="_blank">${file.name}</a>
+                    </div>
+                    <div class="file-size">${formatSize(file.size)}</div>
+                    <div class="file-date">${formatDate(file.modified)}</div>
+                    <div class="file-actions">
+                        <button class="btn-view" onclick="previewFile('${file.url}', '${file.name}')">👁️ 보기</button>
+                        ${file.name.endsWith('.html') ? `<button class="btn-edit" onclick="editFile('${file.name}')">✏️ 편집</button>` : ''}
+                        <button class="btn-download" onclick="downloadFile('${file.url}', '${file.name}')">⬇️</button>
+                        <button class="btn-delete" onclick="showDeleteModal('${file.name}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 파일 아이콘 결정
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'html': '🌐',
+                'htm': '🌐',
+                'pdf': '📕',
+                'doc': '📘',
+                'docx': '📘',
+                'xls': '📗',
+                'xlsx': '📗',
+                'ppt': '📙',
+                'pptx': '📙',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'png': '🖼️',
+                'gif': '🖼️',
+                'svg': '🖼️',
+                'css': '🎨',
+                'js': '📜',
+                'json': '📋',
+                'txt': '📄',
+                'md': '📝',
+                'py': '🐍',
+                'zip': '📦',
+                'rar': '📦'
+            };
+            return icons[ext] || '📄';
+        }
+
+        // 파일 크기 포맷
+        function formatSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        // 날짜 포맷
+        function formatDate(isoDate) {
+            if (!isoDate) return '-';
+            const date = new Date(isoDate);
+            return date.toLocaleString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // 폴더 전환
+        function switchFolder(folder) {
+            currentFolder = folder;
+
+            // 탭 활성화 상태 변경
+            document.querySelectorAll('.folder-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.folder === folder) {
+                    tab.classList.add('active');
+                }
+            });
+
+            loadFiles(folder);
+        }
+
+        // 파일 검색
+        function filterFiles() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allFiles.filter(file =>
+                file.name.toLowerCase().includes(query)
+            );
+            renderFiles(filtered);
+        }
+
+        // 새로고침
+        function refreshFiles() {
+            loadFiles(currentFolder);
+        }
+
+        // 카운트 업데이트
+        function updateCounts(folder, count) {
+            const countEl = document.getElementById(`${folder}-count`);
+            if (countEl) {
+                countEl.textContent = count;
+            }
+        }
+
+        // 저장소 정보 업데이트
+        function updateStorageInfo(totalSize, fileCount) {
+            document.getElementById('totalFiles').textContent = fileCount;
+            document.getElementById('totalSize').textContent = formatSize(totalSize);
+        }
+
+        // 파일 미리보기
+        function previewFile(url, name) {
+            document.getElementById('previewTitle').textContent = name;
+            document.getElementById('previewFrame').src = url;
+            document.getElementById('previewModal').classList.add('show');
+        }
+
+        // 미리보기 닫기
+        function closePreview() {
+            document.getElementById('previewModal').classList.remove('show');
+            document.getElementById('previewFrame').src = '';
+        }
+
+        // 파일 편집 (에디터로 이동)
+        function editFile(filename) {
+            window.location.href = `/static/editor.html?file=${encodeURIComponent(filename)}`;
+        }
+
+        // 파일 다운로드
+        function downloadFile(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // 삭제 모달 표시
+        function showDeleteModal(filename) {
+            fileToDelete = filename;
+            document.getElementById('deleteMessage').textContent =
+                `"${filename}" 파일을 삭제하시겠습니까?`;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        // 삭제 모달 닫기
+        function closeDeleteModal() {
+            fileToDelete = null;
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+
+        // 삭제 확인
+        async function confirmDelete() {
+            if (!fileToDelete) return;
+
+            try {
+                const response = await fetch(`/api/files/${currentFolder}/${fileToDelete}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    closeDeleteModal();
+                    refreshFiles();
+                } else {
+                    alert('삭제 실패: ' + (data.error || '알 수 없는 오류'));
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                alert('삭제 중 오류가 발생했습니다');
+            }
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDeleteModal();
+                closePreview();
+            }
+        });
+
+        // 초기 로드
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFiles('outputs');
+
+            // 다른 폴더 카운트도 로드
+            ['uploads', 'static', 'templates'].forEach(async (folder) => {
+                try {
+                    const response = await fetch(`/api/files/${folder}`);
+                    const data = await response.json();
+                    if (data.success) {
+                        updateCounts(folder, data.files.length);
+                    }
+                } catch (e) {
+                    console.error(`Failed to load ${folder} count`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1115,6 +1115,122 @@ async def storage_status():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ============================================
+# 파일 브라우저 API
+# ============================================
+
+@app.get("/api/files/{folder}")
+async def list_folder_files(folder: str):
+    """
+    폴더별 파일 목록 반환 (파일 브라우저용)
+
+    - folder: outputs, uploads, static, templates
+    """
+    try:
+        # 허용된 폴더만 접근 가능
+        allowed_folders = {
+            'outputs': OUTPUT_DIR,
+            'uploads': UPLOAD_DIR,
+            'static': STATIC_DIR,
+            'templates': TEMPLATES_DIR
+        }
+
+        if folder not in allowed_folders:
+            raise HTTPException(status_code=400, detail=f"허용되지 않은 폴더: {folder}")
+
+        folder_path = allowed_folders[folder]
+
+        if not folder_path.exists():
+            return JSONResponse({
+                "success": True,
+                "files": [],
+                "count": 0,
+                "folder": folder,
+                "total_size": 0
+            })
+
+        files = []
+        total_size = 0
+
+        for file_path in folder_path.iterdir():
+            if file_path.is_file():
+                try:
+                    stat = file_path.stat()
+                    total_size += stat.st_size
+                    files.append({
+                        "name": file_path.name,
+                        "size": stat.st_size,
+                        "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                        "url": f"/{folder}/{file_path.name}"
+                    })
+                except Exception as e:
+                    logger.warning(f"파일 정보 조회 실패: {file_path.name} - {str(e)}")
+
+        # 최신 파일 우선 정렬
+        files.sort(key=lambda x: x["modified"], reverse=True)
+
+        return JSONResponse({
+            "success": True,
+            "files": files,
+            "count": len(files),
+            "folder": folder,
+            "total_size": total_size
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"폴더 파일 목록 조회 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"파일 목록 조회 실패: {str(e)}")
+
+
+@app.delete("/api/files/{folder}/{filename}")
+async def delete_folder_file(folder: str, filename: str):
+    """
+    폴더에서 파일 삭제
+    """
+    try:
+        # 허용된 폴더만 접근 가능
+        allowed_folders = {
+            'outputs': OUTPUT_DIR,
+            'uploads': UPLOAD_DIR,
+            'static': STATIC_DIR,
+            'templates': TEMPLATES_DIR
+        }
+
+        if folder not in allowed_folders:
+            raise HTTPException(status_code=400, detail=f"허용되지 않은 폴더: {folder}")
+
+        # 보안: 파일명 검증 (경로 조작 방지)
+        if ".." in filename or "/" in filename or "\\" in filename:
+            raise HTTPException(status_code=400, detail="잘못된 파일명입니다")
+
+        folder_path = allowed_folders[folder]
+        file_path = folder_path / filename
+
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="파일을 찾을 수 없습니다")
+
+        if not file_path.is_file():
+            raise HTTPException(status_code=400, detail="파일만 삭제할 수 있습니다")
+
+        file_path.unlink()
+        logger.info(f"파일 삭제 완료: {folder}/{filename}")
+
+        return JSONResponse({
+            "success": True,
+            "message": "파일이 삭제되었습니다",
+            "folder": folder,
+            "filename": filename
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"파일 삭제 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"파일 삭제 실패: {str(e)}")
+
+
 @app.get("/api/editor/files")
 async def list_html_files():
     """
