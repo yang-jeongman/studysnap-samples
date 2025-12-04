@@ -597,10 +597,22 @@
 </div>
 <div class="page-content">
 <h4>📄 페이지 3</h4>
-<p>통합과 상생의</p>
-<p>정치로</p>
-<p>새로운 동작</p>
-<p>새로운 대한민국</p>
+<!-- 서명 섹션 -->
+<div style="margin: 20px 0; padding: 25px; background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%); border-radius: 12px; border-left: 4px solid var(--party-color);">
+<p style="font-size: 1.1em; color: #333; line-height: 1.8; margin-bottom: 15px;">
+<strong style="color: var(--party-color);">일 잘하는 나경원, 확실한 나경원</strong><br>
+반드시 보답하겠습니다. 반드시 보여드리겠습니다.
+</p>
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px; margin-top: 15px;">
+<span style="font-family: 'Brush Script MT', cursive; font-size: 2em; color: var(--party-color); font-style: italic;">나경원</span>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+<p style="font-size: 1.3em; color: var(--party-color); font-weight: bold;">새로운 대한민국</p>
+</div>
+<button onclick="openOriginalModal(3)" style="display: block; margin: 20px auto 0; padding: 12px 24px; background: var(--party-color); color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);">
+📄 원문 보기
+</button>
+</div>
 <p>“이혼한 전 남편이 아이들 양육비를 안 줘요. 너무 화가 나고 힘드네요.”</p>
 <p>“동네 신호등이 꺼져있어서 우리 아이가 큰 사고가 날뻔했어요.”</p>
 <p>“주차장이 너무 머니까 손님이 뜸하죠. 발걸음 돌릴 때마다 속이 상합니다.”</p>
@@ -629,8 +641,6 @@
 <p>동작에는 더 유능하고, 더 책임감 있는 대표자가 필요합니다.</p>
 <p>큰 정치를 복원하겠습니다. 대화와 타협의 질서를 바로 세우겠습니다.</p>
 <p>상대를 존중하고, 소통하며 해답을 찾는 지혜의 정치를 실천하겠습니다.</p>
-<p>일 잘하는 나경원, 확실한 나경원</p>
-<p>반드시 보답하겠습니다. 반드시 보여드리겠습니다.</p>
 </div>
 <div class="page-content">
 <h4>📄 페이지 4</h4>
@@ -1207,6 +1217,33 @@
 
             modal.classList.add('active');
             document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        // Open original page modal
+        function openOriginalModal(pageNum) {
+            const modal = document.getElementById('pledgeModal');
+            const modalContent = modal.querySelector('.modal-content');
+            const modalClose = modal.querySelector('.modal-close');
+
+            // Clear previous content
+            modalContent.innerHTML = '';
+            modalContent.appendChild(modalClose);
+
+            // Page image mapping
+            const pageImageMap = {
+                3: '/static/images/page3_original.png'
+            };
+
+            if (pageImageMap[pageNum]) {
+                const img = document.createElement('img');
+                img.className = 'modal-image';
+                img.src = pageImageMap[pageNum];
+                img.alt = '원문 ' + pageNum + '쪽';
+                modalContent.appendChild(img);
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
