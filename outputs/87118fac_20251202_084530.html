@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="나경원 - 국회의원 후보">
+    <title>나경원 - 국회의원 후보</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --party-color: #E11D48;
+            --party-color-light: #E11D4820;
+            --party-color-dark: #E11D48dd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Fixed Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar .candidate-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .nav-bar .party-badge {
+            background: var(--party-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 60px;
+            background: linear-gradient(135deg, var(--party-color) 0%, var(--party-color-dark) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-number {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 1.5em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-slogan {
+            font-size: 1.8em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-name {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin: 15px 0;
+        }
+
+        .hero-position {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* Quick Highlights */
+        .quick-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 25px 20px;
+            background: white;
+        }
+
+        .highlight-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: var(--party-color-light);
+            border: 2px solid var(--party-color);
+            gap: 15px;
+        }
+
+        .highlight-card .icon {
+            font-size: 2em;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .highlight-card .content {
+            flex: 1;
+        }
+
+        .highlight-card .number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .highlight-card .label {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .highlight-card .description {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        /* Section Container */
+        .section {
+            background: white;
+            margin: 15px 0;
+            padding: 25px 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--party-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--party-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+
+        /* Promise Cards */
+        .promise-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .promise-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .promise-card.expanded {
+            border-color: var(--party-color);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .promise-header {
+            padding: 20px;
+            background: var(--party-color-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .promise-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--party-color);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .promise-header-text {
+            flex: 1;
+        }
+
+        .promise-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .promise-summary {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .promise-details {
+            padding: 20px;
+            display: none;
+            background: #f8f9fa;
+        }
+
+        .promise-card.expanded .promise-details {
+            display: block;
+        }
+
+        .promise-details ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .promise-details li {
+            padding: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .promise-details li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--party-color);
+            font-weight: bold;
+        }
+
+        .promise-details li:last-child {
+            border-bottom: none;
+        }
+
+        .expand-btn {
+            text-align: center;
+            color: var(--party-color);
+            font-weight: 600;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .expand-btn::after {
+            content: ' ▼';
+        }
+
+        .promise-card.expanded .expand-btn::after {
+            content: ' ▲';
+        }
+
+        /* Profile Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--party-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background: var(--party-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--party-color);
+        }
+
+        .timeline-year {
+            font-size: 0.85em;
+            color: var(--party-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Page Content Section */
+        .page-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--party-color);
+        }
+
+        .page-content h4 {
+            color: var(--party-color);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .page-content p {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.75em;
+            padding: 5px 15px;
+            transition: all 0.3s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--party-color);
+        }
+
+        .bottom-nav .nav-icon {
+            font-size: 1.5em;
+            margin-bottom: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .footer a {
+            color: var(--party-color);
+            text-decoration: none;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--party-color);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Top Navigation -->
+    <nav class="nav-bar">
+        <span class="candidate-name">나경원</span>
+        <span class="party-badge">국민의회</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <div class="hero-number">기호 2</div>
+            <h1 class="hero-name">나경원</h1>
+            <p class="hero-slogan">진심이 이깁니다!</p>
+            <p class="hero-position">국회의원 후보</p>
+        </div>
+    </section>
+
+    <!-- Quick Highlights -->
+    <div class="quick-highlights">
+        
+        <div class="highlight-card">
+            <span class="icon">🎯</span>
+            <div class="content">
+                <span class="number">7개</span>
+                <div>
+                    <div class="label">핵심 공약</div>
+                </div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">📋</span>
+            <div class="content">
+                <span class="number">25건</span>
+                <div>
+                    <div class="label">주요 실적</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pledges Section -->
+    <section class="section" id="pledges">
+        <h2 class="section-title"><span class="icon">📋</span> 핵심 공약</h2>
+        <div class="promise-list">
+            
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">1</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">동작을 8학군 수준으로</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p style="color:#333; line-height:1.7; margin:0;">• 명문학교 넘치는 동작, 대학입시 걱정 없는 동작<br>• 과학 중점 고등학교, 과학 중점 자율 중점교 도입, 과학실험 교육강화<br>• 국제브리또드류 4차 산업시대인재 양성 대학/과학 교육 발달 수 있도록<br>• 시달동에 과학 중점 선도 자율종합고 유치(과학 진로기 교강으로 초청)<br>• 전문과학관, 수학 과학 체험관 등 체험형 과학 교육 인프라 확충</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">2</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">학원가 우치, 교육 지급도시 동작 걱정없이 보내는 안전, 안심 학교</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p style="color:#333; line-height:1.7; margin:0;">• 학원가 우치로 자녀의 교육여건 조성<br>• 취학전 어린이 초등학생에 대한 지역사회 Edu+Care 시설, 프로그램 확대<br>• 어린이집, 키움센터 등 예술, 영어, 수학, 과학 체험프로그램 도입 (전문강사 순회교육 / 놀팩센터, 키움센터 확대)<br>• AI 기반 지능형 CCTV 설치 학대로 안전학교 구현<br>• 학폭 징후 조기 포착에서 대응</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">3</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">뻥 뚫리는 동작! 뻥 뚫리는 출퇴근!</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p style="color:#333; line-height:1.7; margin:0;">• 서울 내부순환 급행전용 질도망<br>• 더 깨끗운 동작<br>• 이수~흑석에서 서울 어디든 20분 이내, 사대부~노량진 어디든 1시간 이내<br>• 이수역, 흑석역 신설, 이수~광화문, 흑석~노량진 동작, 이수~당배~서초 총24구간<br>• 서울시 국무부, 기재부 검토, 신축추진 계획<br>• 상도에서 강남보도, 서울에서 올림픽대로<br>• 관악~용산(상도) 관악~등촌(+미사) 응용<br>• 상도에서 강남보도, 서울에서 올림픽대로</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">4</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">삼전역해 등국</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p style="color:#333; line-height:1.7; margin:0;">삼전역해 등국</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">5</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">컴에서 15분 내에 공원, 문화, 체육시설 출출히 (걸어서 15분 내에 공원, 문화, 체육시설 촘촘히)</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p style="color:#333; line-height:1.7; margin:0;">• 한강수변공원 조성으로 한강을 주민 품으로<br>• 여의도형 동작 특성에 중미 통양성형공원으로 조성<br>• 대규모 개발 부지(구)현진건각 자고지, 태령백화점 부지 등), 공공기여 통한 문화시설 확충<br>• 주민을 위한 학교 운동장 개방 및 신촌천데등공원 등 생활체육 인프라 개선<br>• 복지관 등을 통한 강예에 특화 운영 프로그램 보다</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">6</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">든든한 삶 든든한 미래 (든든복지 동작)</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p style="color:#333; line-height:1.7; margin:0;">• 1인 가구 추가 특별공제 신설 등 소독, 취업 지원 강화<br>• 독거 가족 확등보조 수당 등 돌봄가족 지원 강화<br>• 신노년을 위한 인생2모작 일자리 등 계충별 일자리 확대<br>• 군 제대 특목생 원서지원 비 추가지원 등 수수인정차지원 강화<br>• 정년 전영 비구매(현업비 낸각 10일완) 등 건강 지원</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">7</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">컴정없이 행복한, 더 안전한 동작 (걱정없이 행복한, 더 안전한 동작)</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p style="color:#333; line-height:1.7; margin:0;">• 첨단 자능형 CCTV로 교체 (신설, 교체별 AI 기반 CCTV로)<br>• 재빠르죽, 범죄예방 디지털플(CPTED) 시멘으로 안심 돌릴 공간으로 조성<br>• 공공하강심 등 물가 반치 실리로 법치 예방 및 이음저 돌입 해소<br>• 1인 가구 방범 경보기, 적석십 욱임 감지기 등 실치 지원, 112 및 저녁 민간 번열물 연계<br>• 열악한 지멘보지비, 아식비 조에으로 지구대 등 현장 경찰 저유 개선</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    
+    <section class="section" id="contact">
+        <h2 class="section-title"><span class="icon">📞</span> 선거사무소 연락처</h2>
+        <div style="background:#f8f9fa; padding:25px; border-radius:10px; line-height:2.0;">
+            서울시 동작구 사당로 276, 성남빌딩 6층 | TEL <a href="tel:" style="color:var(--party-color); font-weight:500; text-decoration:underline;"></a><br>SNS 정보:<br>- <a href="https://facebook.com/" target="_blank" style="color:#1877f2; font-weight:500;">🔗 facebook.com/</a><br>- <a href="https://instagram.com/" target="_blank" style="color:#e4405f; font-weight:500;">📷 @</a><br>- <a href="https://blog.naver.com/" target="_blank" style="color:#03c75a; font-weight:500;">📝 blog.naver.com/</a><br>- <a href="https://youtube.com/" target="_blank" style="color:#ff0000; font-weight:500;">▶️ youtube.com/</a> (공식채널)<br>- <a href="https://youtube.com/" target="_blank" style="color:#ff0000; font-weight:500;">▶️ youtube.com/</a> (소통채널)<br>연락: (위기창법좌석시스 X 서울시 동작 한하족차기) tel 810048 / 전화 : <a href="tel:" style="color:var(--party-color); font-weight:500; text-decoration:underline;"></a>
+        </div>
+        <div style="margin-top:15px; padding:15px; background:#fff3cd; border-radius:8px; border-left:4px solid #ffc107;">
+            <p style="margin:0; font-size:0.9em; color:#856404;">
+                💡 링크를 클릭하면 해당 SNS 페이지로 바로 이동합니다
+            </p>
+        </div>
+    </section>
+
+    <!-- Full Text Section -->
+    <section class="section" id="fulltext">
+        <h2 class="section-title"><span class="icon">📄</span> 전문보기</h2>
+        
+        <div class="page-content">
+            <h4>📄 페이지 1</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 메인</p>
+            <p>[후보자 기본 정보]</p>
+            <p>이름: 나경원</p>
+            <p>기호: 2</p>
+            <p>정당: 국민의회</p>
+            <p>슬로건: 진심이 이깁니다!</p>
+            <p>부제: 동작에서 태어난 동작시장 / 나 하나 떨어져도 새로운 동작!</p>
+            <p>**추가 텍스트:**</p>
+            <p>- 제22대 국회의원선거 동작구을 선거구 (상단 좌측)</p>
+            <p>- 책임질 선거정보 (상단 우측)</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 2</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 출사표</p>
+            <p>[출사표]</p>
+            <p>제목: 통합과 상생의 정치로 새로운 동작</p>
+            <p>내용:</p>
+            <p>"이혼한 친 남편이 아이를 양육비를 안 줘요. 너무 화가 나고 힘드네요."</p>
+            <p>"동네 신호등이 깨져있어서 우리 아이가 큰 사고가 날뻔했어요."</p>
+            <p>"주차장이 너무 머니까 족히어 줄까요. 발걸음 둘린 떄따 속이 상합니다."</p>
+            <p>무심코 지나치지 않습니다. 작은 것도 놓치지 않습니다.</p>
+            <p>국회를 설득했고 양육비 이행관련법이 통과했습니다.</p>
+            <p>동네 신호등엔 불이 켜졌습니다. 횡적 안전이 더 밝아졌습니다.</p>
+            <p>구청과 함께 주차장 공간을 찾고 있습니다. 곧 해결할 것입니다.</p>
+            <p>"정말 감사합니다." 양육비를 받을 수 있는 길이 생겼다며 제게 말씀하셨습니다.</p>
+            <p>아닙니다. 제가 감사드려야 할게 배우고. 도움 수 있었기 때문입니다.</p>
+            <p>그리고 이런 제가 해야 할 일이 더 많다는 믿습니다.</p>
+            <p>손님이 더 나긴 존재어 있어 보이는 적막한 가게.</p>
+            <p>몸과리미 거리를 옮시하는 토스트 가게 부부.</p>
+            <p>제 마음은 무너져 내릴 뻔 아픕니다. 곧 힘이 되어드리고 싶습니다.</p>
+            <p>그런데 오히려 그분들이 저를 위로합니다.</p>
+            <p>"위원이 좋든들 때 문기 있게 나사랑선 고마워요"</p>
+            <p>"국회의원 할 때 속이 다 상했어어. 부지런한 걸 일어차야 한다니깐"</p>
+            <p>밥 잘 먹고 다녀라. 건강 챙겨라. 제게는 국민이 선생님이고 등불입니다.</p>
+            <p>그래서 더더욱 감화하게 다짐합니다.</p>
+            <p>동작 주민을 위한 올바른 정치, 동작을 살리는 책임 정치를 보여드릴 것입니다.</p>
+            <p>전혀 동작을 모르는 사람은 해낼 수 없는 일입니다.</p>
+            <p>개인 욕심에 공익의 스명을 외면한 사람,</p>
+            <p>선거에 나오기 위해 동작을 고른 사람은 진실할 수 없습니다.</p>
+            <p>나경원은 진심입니다. 동작을 위해 정치하는 사람입니다.</p>
+            <p>아이를 키우는 엄마이기 사랑으로 동작을 돌봅습니다.</p>
+            <p>부모를 모시는 감사함으로 동작을 섬깁습니다.</p>
+            <p>동작에는 더 뜻깊고, 더 책임감 있는 대표자가 필요합니다.</p>
+            <p>큰 정치를 목말하셨습니다. 대화와 타협의 진서를 바로 세우겠습니다.</p>
+            <p>생각을 중충하고, 소통하며 해답을 찾는 지혜의 정치를 실천하겠습니다.</p>
+            <p>일 잘하는 나경원, 확신한 나경원</p>
+            <p>반드시 보답하겠습니다. 반드시 보여드리겠습니다.</p>
+            <p>마무리: 나경원</p>
+            <p>새로운 대한민국</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 3</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 성과</p>
+            <p>[성과]</p>
+            <p>대제목: 나경원이 바꾼 동작</p>
+            <p>소제목1: 교육동작 - 아이 키우기 좋은 동네, 교육특구 기반 만들기</p>
+            <p>- 30년 만의 숙원 해결! 숙석동 공립고 신설 확정</p>
+            <p>- 사당3동 압소코타운에 2호선 개통, 홍신초 구립까치어린이집 등 보육시설 신설</p>
+            <p>- 2014~2020 교육 환경개선 및 동작발전 예산 총 744억원</p>
+            <p>- 2022~2024 학교 시설환경개선사업 247건 확정</p>
+            <p>소제목2: 교통동작 - 서울 주요 도심을 잇는 상생, 거점 동작</p>
+            <p>- 서리풀터널 개통</p>
+            <p>- 이수에서 강남까지 8분, 김이 통렸습니다. 30년간 1890억원의 편이 발생 추정</p>
+            <p>(서울시 사후곡 국정부지 공조 추진)</p>
+            <p>- 서울 외곽순환 고속도로 추진, 사당로 방향 비롯닥 전용차로 이용</p>
+            <p>소제목3: 문화동작 - 삶의 질이 오르는, 즐거운 동작</p>
+            <p>- 더 좋아진 도서관, 체육관, 놀이터</p>
+            <p>- 숙석복합도서관 건립, 물새체육센터 증축 및 개보수 완료</p>
+            <p>- 사당근린공원 리모델링, 현충근린공원 정비, 까치어린이공원 안전놀이터 조성</p>
+            <p>[주요 특징]</p>
+            <p>- 상단에는 나경원 후보자가 연단에서 발언하는 모습과 "서리풀터널 개통식" 배너가 보임</p>
+            <p>- 중앙에 다양한 현장 활동 사진들이 격자 형태로 배치되어 있음</p>
+            <p>- "동작 주민들과 함께한 10년의 시간 주민들이 들려준 1,000여개의 이야기로 동작의 오늘을 보고 내일을 그려갑니다" 라는 설명 문구가 포함됨</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 4</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 성과</p>
+            <p>[성과]</p>
+            <p>대제목: 나경원이 바꾼 대한민국</p>
+            <p>상단 성과:</p>
+            <p>• 사업2동: 한강 남부지서 부지개발 확정, 남성사계장을 현대화 및 고객지원센터 조성</p>
+            <p>까지어린이공원 안전놀이터 조성완료, 사업4구역 이전신축 위한 국비 확보</p>
+            <p>• 사업3,4동: 사업중학부중앙 개관 설명회 및 유축⋅양식장 간이 시범사업 실시</p>
+            <p>가축전시형 공원 5개소 조성 및 정비 위한 국비 투입, 남성대광복시장 바다포장</p>
+            <p>및 시장조정물 설치 (문화관광형 사업 지정)</p>
+            <p>• 상도1동: 상도1동 용수구 가족센터 건립 위한 시집비 확보, 상도안곡마을네</p>
+            <p>형스컴퍼니 아파트브랜드 변경 외부 레벌아 3차아파트 가축이 행복한</p>
+            <p>작은도시관 개관, 중강대 동로 외2곳 청년연구시설센터 건립</p>
+            <p>• 흑석동: 흑석정 문화공원 조성, 국립헌정한 물박길 물문개방 등</p>
+            <p>노을나루공원 시민센터 내 6.25 한강방어전투 전시자 명비 제작</p>
+            <p>중앙 슬로건: 나경원이 바꾼 대한민국</p>
+            <p>하단 내용:</p>
+            <p>지속가능한 대한민국, 더 좋은 내일을 위해</p>
+            <p>통합의 정치를 바로 세우고, 국민의 삶을 지켜하겠습니다.</p>
+            <p>진심: 흔들림 없이 지켜온 원칙과 가치</p>
+            <p>• 보수정당 최초 여성 원내대표, 한국 최초 여성 외교통일위원장</p>
+            <p>• 공수처 신설법, 중간현안 정당 강행에 맞서 지켜온 원칙</p>
+            <p>• 중국 후쿠 의원 지락 동료 국회 통과로 지켜낸 자유의 가치</p>
+            <p>동행: 변함없는 여러분의 동행</p>
+            <p>• 국회 정례인력위 최초 구성</p>
+            <p>• 정예인 지원 교육⋅교통 추가 5대 법안 대표발의 및 예산확보</p>
+            <p>(정예인 자넘 절제, 전례 문화⋅예술인 지원, 발달장애인 체육 진흥 등)</p>
+            <p>• 2013 평창 등계 스케셀올림픽 세계대회 조직위원장, IPC 직접위원</p>
+            <p>• 「누가가지산법」 개정으로 서민⋅소상공인 비과세 한도 상향</p>
+            <p>• 「조세특례제한법」 개정으로 세이블즈고 에코아서 비과세 혜택 부여</p>
+            <p>변화: 시대 흐름을 읽고 미래를 준비한다</p>
+            <p>• 국회 저출산고령화대책특위 위원장, 대통령직속 저출산고령사회 추진위원장</p>
+            <p>• 외교부 기후환경대사, 선그랜드 인구정책우호그린피원(PACT) 이사장</p>
+            <p>• 세계경제포럼(WEF, 다보스포럼) 대통령 특사</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 5</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 핵심공약 (5/7페이지)</p>
+            <p>[핵심공약]</p>
+            <p>공약1: 동작을 8학군 수준으로</p>
+            <p>- 명문학교 넘치는 동작, 대학입시 걱정 없는 동작</p>
+            <p>- 과학 중점 고등학교, 과학 중점 자율 중점교 도입, 과학실험 교육강화</p>
+            <p>- 국제브리또드류 4차 산업시대인재 양성 대학/과학 교육 발달 수 있도록</p>
+            <p>- 시달동에 과학 중점 선도 자율종합고 유치(과학 진로기 교강으로 초청)</p>
+            <p>- 전문과학관, 수학 과학 체험관 등 체험형 과학 교육 인프라 확충</p>
+            <p>- 동작구, 강북구, 신설 특성교에 IB(국제바칼로레아) 신력역 도입 시험으로 교육경쟁력 강화</p>
+            <p>- 다차년 텀합, 창의적 사고와 문제 해결력을 기우는 교육</p>
+            <p>- 수시 입시 준비하는 학생들에게 경쟁력 갖출 지 원 기능</p>
+            <p>- 공정한 평가, 신뢰성 있는, 교육, 창의적인제 양성</p>
+            <p>- 집 앞에 있는 학교, 가고 싶은 고등학교 추민이 직접 고를 수 있게!</p>
+            <p>- 수도권 중심 학교제한 이루어지도록 학군제도 개선</p>
+            <p>- 동작구, 관악구 학교 불균형으로 동작 학생들이 관악구로 배정되는 경우 완전 (동작 배기고 787명당 관악 11개교 787명당)</p>
+            <p>- 배정 특례관 배정율을 현행 20%에서 50%로 다배 상향 추진 (서초구 배정닙률 2.5배 확대)</p>
+            <p>공약2: 학원가 우치, 교육 지급도시 동작 걱정없이 보내는 안전, 안심 학교</p>
+            <p>- 학원가 우치로 자녀의 교육여건 조성</p>
+            <p>- 취학전 어린이 초등학생에 대한 지역사회 Edu+Care 시설, 프로그램 확대</p>
+            <p>- 어린이집, 키움센터 등 예술, 영어, 수학, 과학 체험프로그램 도입 (전문강사 순회교육 / 놀팩센터, 키움센터 확대)</p>
+            <p>- AI 기반 지능형 CCTV 설치 학대로 안전학교 구현</p>
+            <p>- 학폭 징후 조기 포착에서 대응</p>
+            <p>공약3: 뻥 뚫리는 동작! 뻥 뚫리는 출퇴근!</p>
+            <p>- 서울 내부순환 급행전용 질도망</p>
+            <p>- 더 깨끗운 동작</p>
+            <p>- 이수~흑석에서 서울 어디든 20분 이내, 사대부~노량진 어디든 1시간 이내</p>
+            <p>- 이수역, 흑석역 신설, 이수~광화문, 흑석~노량진 동작, 이수~당배~서초 총24구간</p>
+            <p>- 서울시 국무부, 기재부 검토, 신축추진 계획</p>
+            <p>- 상도에서 강남보도, 서울에서 올림픽대로</p>
+            <p>- 관악~용산(상도) 관악~등촌(+미사) 응용</p>
+            <p>- 상도에서 강남보도, 서울에서 올림픽대로</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 6</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 핵심공약</p>
+            <p>[핵심공약]</p>
+            <p>공약3: 삼전역해 등국</p>
+            <p>업무지역 용천률 대폭 상향으로</p>
+            <p>도시세력 발전 기틀 마련</p>
+            <p>- 이수역세권 일대 업무복합 중심지 형성</p>
+            <p>- 남성사계시장, 먹거골목 등 시장 활성화 사업 추진</p>
+            <p>- 중앙대, 숭실대, 충신대 등차 발전 캠퍼스 파트너십 강화</p>
+            <p>- 숭실대 데이터센터 유치 지원</p>
+            <p>- 흑석동과 한강이 창조적 결합, 미디어파크</p>
+            <p>(미디어 콘텐츠 LAB, 전당타, 선창장 등)</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 7</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 핵심공약</p>
+            <p>[핵심공약]</p>
+            <p>공약4: 컴에서 15분 내에 공원, 문화, 체육시설 출출히 (걸어서 15분 내에 공원, 문화, 체육시설 촘촘히)</p>
+            <p>- 한강수변공원 조성으로 한강을 주민 품으로</p>
+            <p>- 여의도형 동작 특성에 중미 통양성형공원으로 조성</p>
+            <p>- 대규모 개발 부지(구)현진건각 자고지, 태령백화점 부지 등), 공공기여 통한 문화시설 확충</p>
+            <p>- 주민을 위한 학교 운동장 개방 및 신촌천데등공원 등 생활체육 인프라 개선</p>
+            <p>- 복지관 등을 통한 강예에 특화 운영 프로그램 보다</p>
+            <p>공약5: 든든한 삶 든든한 미래 (든든복지 동작)</p>
+            <p>- 1인 가구 추가 특별공제 신설 등 소독, 취업 지원 강화</p>
+            <p>- 독거 가족 확등보조 수당 등 돌봄가족 지원 강화</p>
+            <p>- 신노년을 위한 인생2모작 일자리 등 계충별 일자리 확대</p>
+            <p>- 군 제대 특목생 원서지원 비 추가지원 등 수수인정차지원 강화</p>
+            <p>- 정년 전영 비구매(현업비 낸각 10일완) 등 건강 지원</p>
+            <p>동작 소재 대학 및 울 특지 (송실대, 중앙대, 총신대)</p>
+            <p>- 정부 건강 바구제(효과 혹속 등) 등 간강 지원</p>
+            <p>- 전원의 이형백 신설 및 확대</p>
+            <p>- 원세저위 기준 한정 및 지원의 상황 조성</p>
+            <p>- 무의 민원 받부기 고네 설치</p>
+            <p>- 9기 HPV백신(자궁암 등) 전종 지원</p>
+            <p>공약6: 컴정없이 행복한, 더 안전한 동작 (걱정없이 행복한, 더 안전한 동작)</p>
+            <p>- 첨단 자능형 CCTV로 교체 (신설, 교체별 AI 기반 CCTV로)</p>
+            <p>- 재빠르죽, 범죄예방 디지털플(CPTED) 시멘으로 안심 돌릴 공간으로 조성</p>
+            <p>- 공공하강심 등 물가 반치 실리로 법치 예방 및 이음저 돌입 해소</p>
+            <p>- 1인 가구 방범 경보기, 적석십 욱임 감지기 등 실치 지원, 112 및 저녁 민간 번열물 연계</p>
+            <p>- 열악한 지멘보지비, 아식비 조에으로 지구대 등 현장 경찰 저유 개선</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 8</h4>
+            <p>[주민밀착공약]</p>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 주민밀착공약</p>
+            <p>[주민밀착공약]</p>
+            <p>**욕석동**</p>
+            <p>- 2026년 3월 육사고등학교 자살한능개교</p>
+            <p>- 영산빌라삼거리에서 미나골방향 삼거리 구간 2차로 확장</p>
+            <p>- 방배 수변문화공원 조성(노량대교 하부 가교형 문화전체 공원 조성, 한강변 청춘 등)</p>
+            <p>- 유명한원 분원 유치 등 학원가 조성</p>
+            <p>- 빗물펌프장 이전 및 문화공원 조성</p>
+            <p>- 부곡1(CAPT-드르혼, 욕석4아이차-줄대-부죠 안전 통합근 조기 확보</p>
+            <p>- 온로호-록식아리이치 지중화 사업 조속 추진</p>
+            <p>- 욕식북간선 실행(해문대 포함)</p>
+            <p>- 서달문 도로 확장 및 직결</p>
+            <p>- 시내버스 노선 증설(서울 성장기능 시차대비시)</p>
+            <p>- 방배역 학원가(지하차질 광업대역신거리 배치 추진</p>
+            <p>- 욕석끊-시설등 통합 기능관 복합센터스 신설</p>
+            <p>- 텀마시 진입로, 서달산 청춘길 등 안중공원 세정비</p>
+            <p>**사당1동**</p>
+            <p>- 도서관, 문화, 체육 시설 충성(관악소속 편지시차개발 시 확보)</p>
+            <p>- 안전한 등하굣길 개선(지반 하세 및 개선 여건 조성)</p>
+            <p>- 기용샘터 설치(초등학생 놀이/심의 골간, 아이들통보프로그램 운영)</p>
+            <p>- 아호식-시당역 지하 연결통로 수축(무방향근 설시)</p>
+            <p>- 4호선 이수역-사당역-총신대업구역 신설 (1000여 아상, 북한청송센터 연계)</p>
+            <p>- 아수연 역세구 예수공데이터 정착용 및 사당역 안전송쏘 개발 조속 설치</p>
+            <p>- 서울시 청년 센터 유치 추진</p>
+            <p>- 까치산터널공원 환경설 설치 / 경로별 재개발 조기추진</p>
+            <p>**사당2동**</p>
+            <p>- 학습관리 돌봄부주치료등 후 문화, 관리 복합시설로 개발</p>
+            <p>- 도서관, 문화, 체육 시설 충성(큼)패턴방석보건 편지시차개발 시 확보)</p>
+            <p>- 대곡천기술연센터를 모두배전터(미주 기술센터, 도서관, 공영강)로 조성</p>
+            <p>- 드르지송정 삼설(나트프식아버논 극용라마등 사아 등)</p>
+            <p>- 노호 아파트 조기 재정비 사업 (우성, 극동, 신동아)</p>
+            <p>- 동작아 사회복지관 자차대 하세 이전 및 회취 주민반민/시설아기술센터, 주시관 실내채센터보광현지 환경설 조치</p>
+            <p>- 아수위원교프젠조소 잉 지하셩 4호선 자치주간 단계 설치로 소급점시 및 점관 개선</p>
+            <p>- 바사점류시 이팀 벅질, 병용 줄기 충신(애빌송니아수화젠배임조)</p>
+            <p>- 개미용실 업저 등 신흡체게 개선</p>
+            <p>- 남성대개시설 공영주차장 확대</p>
+            <p>**사당3동**</p>
+            <p>- 놀미 백맘등 수척/과학 도서관, 체험관 설치, 운영(지역주택조합 부지)</p>
+            <p>- 삼원공설 명설 청춘길 조성(색충정관 신별장 등 반아사설 집게 설시)</p>
+            <p>- 미국비소 개발 충정 위시잠, 주민 공간 개개발 시민여 충진</p>
+            <p>- 서달산 환경 조광 해볼이 엇스 조성</p>
+            <p>- 구범도차련 간럽 추진</p>
+            <p>- 데일 아파트 재건축 적극 지원</p>
+            <p>- 충진터 사당3 재개발 구역 조기안정</p>
+            <p>**사당4동**</p>
+            <p>- 주택센터를 공영주차장, 문화/복지 복합센터로 조성</p>
+            <p>- 기성 도서관, 체육시설, 전시공연장 건물 충실(큼)팀진아개발지)</p>
+            <p>- 지역 상성어 답성 여시원 사업 월업텀 지원</p>
+            <p>- 허록 기뎜 운영 및 활성화 지원</p>
+            <p>- 역서혼하국(씨외경 마맘), 역시존하경결 및 사회경정비는경진 조성</p>
+            <p>- 아양시 북업등 충력 전화 어식 좋색 상챔, 저업란윤 등)</p>
+            <p>- 가차신 단정예 충심 조성</p>
+            <p>- 남색어 골등시장 공영주차장 신설</p>
+            <p>**사당5동**</p>
+            <p>- 주택센터를 공영주차장, 문화, 복지 복합센터로 조성 추진</p>
+            <p>- 사당문 학첨(종묘든 타구 - 송심대미구역 교차로)</p>
+            <p>- 녹전어 개념등 환경설</p>
+            <p>- 롤데제송 아바트에서 사당문 진업 우감인 산설</p>
+            <p>- 솔만도차련 활징 인드광황</p>
+            <p>- 가차신 구헌 활충길 조성</p>
+            <p>- 사남성-솔말로 지중화 지원</p>
+            <p>- 별식 예열 시기간 지농경 CCTV 촉충</p>
+            <p>**삼도1동**</p>
+            <p>- 삼도에서 강변북로까지 점해어이 롤 놓니다</p>
+            <p>- 삼도 수영정, 서우니, 성질로, 주민공용공간 등 주민복합관의서 조기 건설</p>
+            <p>- 기능센터 조기 한원</p>
+            <p>- 기을 센터 설치 지원-키검센터 건립</p>
+            <p>- 서달문 도로 증정 및 직결</p>
+            <p>- 종정대데이터센터 건립 충소 지원으로 데어터시인 클러버 조성</p>
+            <p>- 시내버스 노선 충실 (송정대-삼성마 직결 노선)</p>
+            <p>- 삼도문 재촉곰 신설 추진</p>
+            <p>- 삼도역 잉 재개발시지 조기 입정 지원</p>
+            <p>- 삼도려 별 축구 송정대미구역 2별 충구 에스컬레이터 신설</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 9</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 주민밀착공약</p>
+            <p>[주민밀착공약]</p>
+            <p>대제목: 동장을 살릴 시장, 대한민국을 살릴 시장</p>
+            <p>부제: 일 잘하는 나경원 내일을 준비합니다.</p>
+            <p>**주요 메시지:**</p>
+            <p>- "동장을 살릴 시장"</p>
+            <p>- "대한민국을 살릴 시장"</p>
+            <p>- "일 잘하는 나경원 내일을 준비합니다."</p>
+            <p>**이미지 구성:**</p>
+            <p>- 메인 인물 사진: 빨간색 자켓을 입고 미소를 짓는 모습</p>
+            <p>- 하단 작은 사진들: 시민들과의 소통 장면들</p>
+            <p>- 전체적으로 빨간색을 주요 색상으로 사용한 디자인</p>
+            <p>**정당 표시:**</p>
+            <p>- 국민의힘 로고 및 표기</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 10</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 주민밀착공약</p>
+            <p>[주민밀착공약]</p>
+            <p>**국민밀착공약**</p>
+            <p>**피격적 저출산 대책 추진**</p>
+            <p>- 출산 보급처리 대출 절반 시 2억원, 20년 장기, 년1% 금리 (1자녀일시 월기리 모면)</p>
+            <p>- 자녀 1인 출산시 마라 기쁨생활 맞춤 (3명 충실 전업 맞춤)</p>
+            <p>**든든복지, 함께하는 장애인 가정**</p>
+            <p>- 가족들을 부담 경감을 위한 24시간 긴급돌봄 지원 확대</p>
+            <p>- 장년층에이 편리하지 관련할 수 있는 환경 강화</p>
+            <p>- 장단기숙, 해이터를 준흥 등 경찰한 장애인 집단보조기구 지원</p>
+            <p>**돌봄 양육안경 최적화**</p>
+            <p>- 아이 돌봄 정부 지원, 가족 안전 돌봄으로 확대 (만간기험 없어 확대)</p>
+            <p>- 돌봄 학교 통한 육기, 학역, 등에 없는 돌봄 체공</p>
+            <p>- 배우자 출산 휴가 범위 (중년 5일 → 10일) / 육아 휴직 급여 210만원으로 상향</p>
+            <p>- 소아 천문음금의로센터 확대 및 야간 휴업 진료 어린이 병원 확대 등</p>
+            <p>**안전 대한민국**</p>
+            <p>- 음악법의 가치명 없는 무기형 등 법칙로부터 안내명호 / 1인 가구 등 안전 중참대책</p>
+            <p>**어르신 든든 지원**</p>
+            <p>- 요양 병원 간병비 급여화 등 간병 부담 획기적 감면 (국가 책임 강화)</p>
+            <p>- 경로당, 복지관 등한 매일 접식 제공</p>
+            <p>- 주택 연금 연계 실버타운 교군 및 실버타운 확대 특별법 제정 추진</p>
+            <p>**청년 모두 행복한 대한민국**</p>
+            <p>- 청년, 신혼, 출생가구 주택마련 등 지원강화</p>
+            <p>- 대학생 청년 학자금 초기납 등 경제적 부담 경감</p>
+            <p>- 청년 문화 예술 패스 지원 대상 확대 (만 19세 ~ 24세)</p>
+            <p>※ HPV(인유두종바이러스) 국가예방접종 지원 확대 (남성 12세 이상, 4가 → 9가)</p>
+            <p>**서민, 소상공인 재래시장 등 지원강화**</p>
+            <p>- 근로자 재정지출 제도의 / 예금자 보호 1억원으로 2배 상향</p>
+            <p>- 온누리 상품권 10조원으로 2배 확대 / 전통시장 주차환경 획조 지원</p>
+            <p>- 온누리 상품권 사용 골목상권 확대</p>
+            <p>**기본복지 대응, 적응, 녹색생활**</p>
+            <p>- 그린 마일리지 지원, 그린 생활 전장 지원</p>
+            <p>- 그린 캠퍼스 확대, 그린 테크 육성 등 신성장 산업화</p>
+            <p>- 국한 호우 등 기후 변화정 재난에 대한 안전제계 강화</p>
+            <p>- 전천경 미래버스 확대 도입</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 11</h4>
+            <p>[페이지 정보]</p>
+            <p>페이지 유형: 경력 및 연락처</p>
+            <p>[후보자 기본 정보]</p>
+            <p>이름: 나경원</p>
+            <p>기호: 2</p>
+            <p>정당: 국민의힘</p>
+            <p>[경력]</p>
+            <p>- 송의여중/서울여고 졸업</p>
+            <p>- 서울대 법학과 졸업/서울대 대학원 법학 석사/서울대 대학원 박사과정 수료</p>
+            <p>- 전) 서울시고시시험위원회 부위원장, 기후환경대사</p>
+            <p>- 전) 서유럽국 원대사로, 제17-20대 국회의원(4선)</p>
+            <p>- 전) 국회 외교통일위원회 위원장/(전) 국회 저출산고령화대책특별위원회 위원장</p>
+            <p>- 전) 국제장애인올림픽위원회 집행위원/(전) 부산, 인천, 서울장애인 판사</p>
+            <p>[마무리 문구]</p>
+            <p>소신과 뚝심의 나경원,</p>
+            <p>언제나 동작 주민 편에 섭니다!</p>
+            <p>• 거짓과 불의 앞에 물러서지 않겠습니다. 힘든 길을 마다하지 않겠습니다.</p>
+            <p>• 다름을 인정하고 상대를 존중해하겠습니다. 대화와 타협의 정신 잊지 않겠습니다.</p>
+            <p>• 언제나 동작 주민 편에 서서 살기 좋은 동작, 공정과 통합의 큰 정치 다시 세우겠습니다!</p>
+            <p>[선거사무소]</p>
+            <p>사전투표 안내: 4월 5일(금)~4월 6일(토) 오전 6시~오후 6시</p>
+            <p>동작구 거주지 신고읍 선거인은 동작구나 타선거구를 하실 수 있습니다</p>
+            <p>투표소 정보:</p>
+            <p>- 상도제1동: 상도동주민센터(3층, 문화강좌실) / 상도 532.9</p>
+            <p>- 동작동: 동작동주민센터(3층, 문화강좌실) / 흑석한강로 11</p>
+            <p>- 사당 제1동: 사당제1동주민센터(3층, 문화의방) / 동작대로 172길 28</p>
+            <p>- 사당 제2동: 사당제2동주민센터(1층, 다목적의실) / 동작대로 292길 52</p>
+            <p>- 사당 제3동: 사당제3동주민센터(1층, 강당) / 사당로 313길 57-7</p>
+            <p>- 사당 제4동: 사당제4동주민센터(2층, 다목적의실) / 사당로 160길 6</p>
+            <p>- 사당 제5동: 사당제5동주민센터(1층, 다목적실) / 사당로 271길 219</p>
+            <p>• 국군장병 여러분! 여러분의 지지와 성원에 보답하기 위해 온 힘을 다하겠습니다.</p>
+            <p>• 첫 투표하는 18세 유권자 여러분! 공명과 입법을 점포히 비교해 보고, 소신 있게 투표해 주세요. 더 좋은 동네를 만들 수 있도록 더 열심히 뛰겠습니다.</p>
+            <p>나경원2</p>
+            <p>선거사무소: 서울시 동작구 사당로 276, 성남빌딩 6층 | TEL 02-537-7117</p>
+            <p>SNS 정보:</p>
+            <p>- facebook.com/nakw1963</p>
+            <p>- @kyungwon.na</p>
+            <p>- blog.naver.com/nakw63</p>
+            <p>- youtube.com/나경원유튜브 (공식채널)</p>
+            <p>- youtube.com/@Lrkyungwon (소통채널)</p>
+            <p>연락: (위기창법좌석시스 X 서울시 동작 한하족차기) tel 810048 / 전화: 02-2266-2350</p>
+        </div>
+    </section>
+
+    <!-- Career Section (마지막에 위치) -->
+    <section class="section" id="career">
+        <h2 class="section-title"><span class="icon">📜</span> 주요 실적</h2>
+        <div class="timeline">
+            
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">송의여중/서울여고 졸업</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">서울대 법학과 졸업/서울대 대학원 법학 석사/서울대 대학원 박사과정 수료</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">
+                    <div style="font-weight:600; font-size:1.05em; color:#222; margin-bottom:5px;">전) 서울시고시시험위원회</div>
+                    <div style="color:#555; font-size:0.95em; line-height:1.6;">부위원장, 기후환경대사</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">
+                    <div style="font-weight:600; font-size:1.05em; color:#222; margin-bottom:5px;">전) 서유럽국</div>
+                    <div style="color:#555; font-size:0.95em; line-height:1.6;">원대사로, 제17-20대 국회의원(4선)</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">
+                    <div style="font-weight:600; font-size:1.05em; color:#222; margin-bottom:5px;">전) 국회</div>
+                    <div style="color:#555; font-size:0.95em; line-height:1.6;">외교통일위원회 위원장/(전) 국회 저출산고령화대책특별위원회 위원장</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">
+                    <div style="font-weight:600; font-size:1.05em; color:#222; margin-bottom:5px;">전) 국제장애인올림픽위원회</div>
+                    <div style="color:#555; font-size:0.95em; line-height:1.6;">집행위원/(전) 부산, 인천, 서울장애인 판사</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">[마무리 문구]</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">소신과 뚝심의 나경원,</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">언제나 동작 주민 편에 섭니다!</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">거짓과 불의 앞에 물러서지 않겠습니다. 힘든 길을 마다하지 않겠습니다.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">다름을 인정하고 상대를 존중해하겠습니다. 대화와 타협의 정신 잊지 않겠습니다.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">언제나 동작 주민 편에 서서 살기 좋은 동작, 공정과 통합의 큰 정치 다시 세우겠습니다!</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">[선거사무소]</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">사전투표 안내: 4월 5일(금)~4월 6일(토) 오전 6시~오후 6시</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">동작구 거주지 신고읍 선거인은 동작구나 타선거구를 하실 수 있습니다</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>본 페이지는 PDF 선거공보물에서 자동 생성되었습니다.</p>
+        <p style="margin-top: 10px;"><a href="https://studysnap.kr" target="_blank">StudySnap</a> | PDF를 모바일 콘텐츠로</p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#home" class="active">
+            <span class="nav-icon">🏠</span>
+            홈
+        </a>
+        <a href="#pledges">
+            <span class="nav-icon">📋</span>
+            공약
+        </a>
+        <a href="#career">
+            <span class="nav-icon">📜</span>
+            실적
+        </a>
+        <a href="#fulltext">
+            <span class="nav-icon">📄</span>
+            전문
+        </a>
+    </nav>
+
+    <script>
+        // Promise card toggle
+        document.querySelectorAll('.promise-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+        });
+
+        // Bottom navigation scroll spy
+        const sections = ['home', 'pledges', 'career', 'fulltext'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {
+                    current = id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

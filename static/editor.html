@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap HTML Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+        }
+
+        .editor-header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .editor-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .editor-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #E11D48;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #BE123C;
+        }
+
+        .btn-secondary {
+            background: #6B7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4B5563;
+        }
+
+        .btn-success {
+            background: #10B981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .editor-container {
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+
+        .file-list {
+            width: 200px;
+            min-width: 150px;
+            background: white;
+            border-right: 1px solid #ddd;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .file-item:hover {
+            background: #f9fafb;
+        }
+
+        .file-item.active {
+            background: #E11D4820;
+            border-left: 3px solid #E11D48;
+        }
+
+        .file-name {
+            font-size: 0.85em;
+            color: #333;
+            margin-bottom: 3px;
+            word-break: break-all;
+        }
+
+        .file-time {
+            font-size: 0.7em;
+            color: #888;
+        }
+
+        /* 좌우 분할 레이아웃 */
+        .split-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-right: 1px solid #ddd;
+            min-width: 300px;
+        }
+
+        .preview-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f9fafb;
+            min-width: 300px;
+        }
+
+        .panel-header {
+            padding: 10px 15px;
+            background: #f3f4f6;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 리사이저 */
+        .resizer {
+            width: 6px;
+            background: #e5e7eb;
+            cursor: col-resize;
+            transition: background 0.2s;
+        }
+
+        .resizer:hover {
+            background: #E11D48;
+        }
+
+        .toolbar {
+            padding: 8px 10px;
+            background: #f9fafb;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .toolbar-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .editor-content {
+            flex: 1;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        #htmlEditor {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ddd;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            resize: none;
+            background: #fefefe;
+        }
+
+        .preview-content {
+            flex: 1;
+            overflow: hidden;
+            background: white;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        .status-bar {
+            padding: 6px 15px;
+            background: #f9fafb;
+            border-top: 1px solid #ddd;
+            font-size: 0.8em;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 12px 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 2000;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s;
+        }
+
+        .notification.success {
+            border-left: 4px solid #10B981;
+        }
+
+        .notification.error {
+            border-left: 4px solid #EF4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 동기화 표시 */
+        .sync-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75em;
+            color: #10B981;
+        }
+
+        .sync-indicator.syncing {
+            color: #F59E0B;
+        }
+
+        /* 모바일 프리뷰 옵션 */
+        .preview-size-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.75em;
+        }
+
+        .preview-size-btn.active {
+            background: #E11D48;
+            color: white;
+            border-color: #E11D48;
+        }
+
+        .preview-sizes {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* 미리보기 크기 조절 */
+        .preview-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: auto;
+            padding: 10px;
+            background: #e5e7eb;
+        }
+
+        .preview-device {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .preview-device.desktop {
+            width: 100%;
+            height: 100%;
+        }
+
+        .preview-device.tablet {
+            width: 768px;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .preview-device.mobile {
+            width: 375px;
+            height: 100%;
+            border-radius: 20px;
+            border: 8px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-header">
+        <div class="editor-title">📝 StudySnap HTML Editor</div>
+        <div class="editor-controls">
+            <button class="btn btn-secondary" onclick="swapPanels()" title="편집/미리보기 위치 바꾸기">↔️ 좌우전환</button>
+            <button class="btn btn-secondary" onclick="loadFiles()">새로고침</button>
+            <button class="btn btn-success" onclick="saveFile()">💾 저장</button>
+            <button class="btn btn-primary" onclick="downloadFile()">⬇️ 다운로드</button>
+        </div>
+    </div>
+
+    <div class="editor-container">
+        <div class="file-list" id="fileList">
+            <div style="padding: 15px; text-align: center; color: #888;">
+                파일을 불러오는 중...
+            </div>
+        </div>
+
+        <!-- 좌우 분할 컨테이너 -->
+        <div class="split-container" id="splitContainer">
+            <!-- 편집 패널 (왼쪽) -->
+            <div class="editor-panel" id="editorPanel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        ✏️ 편집
+                    </div>
+                    <span class="sync-indicator" id="syncIndicator">● 동기화됨</span>
+                </div>
+                <div class="toolbar">
+                    <button class="toolbar-btn" onclick="formatText('bold')"><b>B</b></button>
+                    <button class="toolbar-btn" onclick="formatText('italic')"><i>I</i></button>
+                    <button class="toolbar-btn" onclick="formatText('underline')"><u>U</u></button>
+                    <span style="border-left: 1px solid #ddd; margin: 0 5px;"></span>
+                    <button class="toolbar-btn" onclick="insertElement('h1')">제목1</button>
+                    <button class="toolbar-btn" onclick="insertElement('h2')">제목2</button>
+                    <button class="toolbar-btn" onclick="insertElement('p')">본문</button>
+                    <span style="border-left: 1px solid #ddd; margin: 0 5px;"></span>
+                    <button class="toolbar-btn" onclick="beautifyHTML()">코드 정리</button>
+                    <button class="toolbar-btn" onclick="findReplace()">찾기/바꾸기</button>
+                </div>
+                <div class="editor-content">
+                    <textarea id="htmlEditor" placeholder="HTML 파일을 선택하세요..."></textarea>
+                </div>
+                <div class="status-bar">
+                    <span id="statusText">파일을 선택하세요</span>
+                    <span id="charCount">0 자</span>
+                </div>
+            </div>
+
+            <!-- 리사이저 (드래그로 크기 조절) -->
+            <div class="resizer" id="resizer"></div>
+
+            <!-- 미리보기 패널 (오른쪽) -->
+            <div class="preview-panel" id="previewPanel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        👁️ 미리보기
+                    </div>
+                    <div class="preview-sizes">
+                        <button class="preview-size-btn active" onclick="setPreviewSize('desktop')">데스크톱</button>
+                        <button class="preview-size-btn" onclick="setPreviewSize('tablet')">태블릿</button>
+                        <button class="preview-size-btn" onclick="setPreviewSize('mobile')">모바일</button>
+                    </div>
+                </div>
+                <div class="preview-wrapper">
+                    <div class="preview-device desktop" id="previewDevice">
+                        <iframe id="previewFrame" class="preview-frame"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let currentFile = null;
+        let originalContent = '';
+        let isEditorOnLeft = true;  // 편집기가 왼쪽에 있는지
+        let previewUpdateTimer = null;
+
+        // 파일 목록 로드
+        async function loadFiles() {
+            try {
+                const response = await fetch('/api/editor/files');
+                const data = await response.json();
+
+                if (data.success && data.files) {
+                    const files = data.files.map(file => ({
+                        name: file.name,
+                        time: new Date(file.modified).toLocaleString(),
+                        size: file.size
+                    }));
+                    displayFileList(files);
+                } else {
+                    displayFileList([]);
+                }
+            } catch (error) {
+                console.error('파일 목록 로드 실패:', error);
+                showNotification('파일 목록을 불러올 수 없습니다', 'error');
+                displayFileList([]);
+            }
+        }
+
+        // 파일 목록 표시
+        function displayFileList(files) {
+            const fileList = document.getElementById('fileList');
+
+            if (files.length === 0) {
+                fileList.innerHTML = '<div style="padding: 15px; text-align: center; color: #888;">파일이 없습니다</div>';
+                return;
+            }
+
+            fileList.innerHTML = files.map(file => `
+                <div class="file-item" onclick="loadFile('${file.name}')">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-time">${file.time}</div>
+                </div>
+            `).join('');
+        }
+
+        // 파일 로드
+        async function loadFile(filename) {
+            try {
+                const timestamp = new Date().getTime();
+                const response = await fetch(`/outputs/${filename}?t=${timestamp}`, {
+                    cache: 'no-cache',
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                const content = await response.text();
+
+                document.getElementById('htmlEditor').value = content;
+                originalContent = content;
+                currentFile = filename;
+
+                document.querySelectorAll('.file-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.querySelector('.file-name').textContent === filename) {
+                        item.classList.add('active');
+                    }
+                });
+
+                updateStatus(`${filename} 로드됨`);
+                updateCharCount();
+                updatePreview();  // 즉시 미리보기 업데이트
+            } catch (error) {
+                console.error('파일 로드 실패:', error);
+                showNotification('파일을 불러올 수 없습니다', 'error');
+            }
+        }
+
+        // 파일 저장
+        async function saveFile() {
+            if (!currentFile) {
+                showNotification('저장할 파일을 선택하세요', 'error');
+                return;
+            }
+
+            const content = document.getElementById('htmlEditor').value;
+
+            try {
+                const response = await fetch(`/api/editor/save`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        filename: currentFile,
+                        content: content
+                    })
+                });
+
+                if (response.ok) {
+                    originalContent = content;
+                    showNotification('저장되었습니다', 'success');
+                    updateStatus(`${currentFile} 저장됨`);
+                } else {
+                    throw new Error('저장 실패');
+                }
+            } catch (error) {
+                console.error('저장 실패:', error);
+                showNotification('저장에 실패했습니다', 'error');
+            }
+        }
+
+        // 파일 다운로드
+        function downloadFile() {
+            if (!currentFile) {
+                showNotification('다운로드할 파일을 선택하세요', 'error');
+                return;
+            }
+
+            const content = document.getElementById('htmlEditor').value;
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showNotification('다운로드되었습니다', 'success');
+        }
+
+        // 좌우 패널 전환 (왼손잡이/오른손잡이 지원)
+        function swapPanels() {
+            const container = document.getElementById('splitContainer');
+            const editorPanel = document.getElementById('editorPanel');
+            const previewPanel = document.getElementById('previewPanel');
+            const resizer = document.getElementById('resizer');
+
+            if (isEditorOnLeft) {
+                // 미리보기를 왼쪽으로
+                container.insertBefore(previewPanel, editorPanel);
+                container.insertBefore(resizer, editorPanel);
+                showNotification('미리보기가 왼쪽으로 이동했습니다', 'success');
+            } else {
+                // 편집기를 왼쪽으로
+                container.insertBefore(editorPanel, previewPanel);
+                container.insertBefore(resizer, previewPanel);
+                showNotification('편집기가 왼쪽으로 이동했습니다', 'success');
+            }
+            isEditorOnLeft = !isEditorOnLeft;
+
+            // 설정 저장
+            localStorage.setItem('editorOnLeft', isEditorOnLeft);
+        }
+
+        // 미리보기 크기 설정 (데스크톱/태블릿/모바일)
+        function setPreviewSize(size) {
+            const device = document.getElementById('previewDevice');
+            device.className = 'preview-device ' + size;
+
+            document.querySelectorAll('.preview-size-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // 미리보기 업데이트 (실시간 동기화)
+        function updatePreview() {
+            const content = document.getElementById('htmlEditor').value;
+            const iframe = document.getElementById('previewFrame');
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(content);
+            iframeDoc.close();
+
+            // 동기화 표시 업데이트
+            const syncIndicator = document.getElementById('syncIndicator');
+            syncIndicator.textContent = '● 동기화됨';
+            syncIndicator.classList.remove('syncing');
+        }
+
+        // 디바운스된 미리보기 업데이트 (타이핑 중 성능 최적화)
+        function schedulePreviewUpdate() {
+            const syncIndicator = document.getElementById('syncIndicator');
+            syncIndicator.textContent = '◌ 동기화 중...';
+            syncIndicator.classList.add('syncing');
+
+            if (previewUpdateTimer) {
+                clearTimeout(previewUpdateTimer);
+            }
+            previewUpdateTimer = setTimeout(() => {
+                updatePreview();
+            }, 300);  // 300ms 디바운스
+        }
+
+        // HTML 정리
+        function beautifyHTML() {
+            const content = document.getElementById('htmlEditor').value;
+            let beautified = content
+                .replace(/>\s+</g, '>\n<')
+                .replace(/\n\s*\n/g, '\n');
+
+            document.getElementById('htmlEditor').value = beautified;
+            showNotification('HTML이 정리되었습니다', 'success');
+            updatePreview();
+        }
+
+        // 찾기/바꾸기
+        function findReplace() {
+            const find = prompt('찾을 텍스트:');
+            if (!find) return;
+
+            const replace = prompt('바꿀 텍스트:');
+            if (replace === null) return;
+
+            const content = document.getElementById('htmlEditor').value;
+            const newContent = content.replaceAll(find, replace);
+            document.getElementById('htmlEditor').value = newContent;
+
+            const count = (content.match(new RegExp(find, 'g')) || []).length;
+            showNotification(`${count}개 항목이 변경되었습니다`, 'success');
+            updatePreview();
+        }
+
+        // 알림 표시
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 상태 업데이트
+        function updateStatus(text) {
+            document.getElementById('statusText').textContent = text;
+        }
+
+        // 글자 수 업데이트
+        function updateCharCount() {
+            const content = document.getElementById('htmlEditor').value;
+            document.getElementById('charCount').textContent = `${content.length.toLocaleString()} 자`;
+        }
+
+        // 리사이저 드래그 기능
+        function initResizer() {
+            const resizer = document.getElementById('resizer');
+            const editorPanel = document.getElementById('editorPanel');
+            const previewPanel = document.getElementById('previewPanel');
+            const container = document.getElementById('splitContainer');
+
+            let isResizing = false;
+
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+
+                const containerRect = container.getBoundingClientRect();
+                const fileListWidth = document.getElementById('fileList').offsetWidth;
+                const mouseX = e.clientX - containerRect.left;
+                const containerWidth = containerRect.width;
+
+                // 최소/최대 크기 제한
+                const minWidth = 300;
+                const maxWidth = containerWidth - minWidth - 6;
+
+                let leftPanelWidth = Math.max(minWidth, Math.min(mouseX, maxWidth));
+
+                if (isEditorOnLeft) {
+                    editorPanel.style.flex = 'none';
+                    editorPanel.style.width = leftPanelWidth + 'px';
+                    previewPanel.style.flex = '1';
+                    previewPanel.style.width = 'auto';
+                } else {
+                    previewPanel.style.flex = 'none';
+                    previewPanel.style.width = leftPanelWidth + 'px';
+                    editorPanel.style.flex = '1';
+                    editorPanel.style.width = 'auto';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isResizing = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            });
+        }
+
+        // 저장된 설정 불러오기
+        function loadSettings() {
+            const savedPosition = localStorage.getItem('editorOnLeft');
+            if (savedPosition !== null && savedPosition === 'false') {
+                swapPanels();
+            }
+        }
+
+        // 이벤트 리스너
+        document.getElementById('htmlEditor').addEventListener('input', () => {
+            updateCharCount();
+            schedulePreviewUpdate();  // 실시간 미리보기 동기화
+        });
+
+        // 페이지 로드 시 초기화
+        window.addEventListener('load', () => {
+            loadFiles();
+            initResizer();
+            loadSettings();
+        });
+
+        // 단축키
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveFile();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+*.env
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Database
+*.db
+*.sqlite3
+
+# Uploads (large files)
+uploads/*
+!uploads/.gitkeep
+
+# Outputs (generated HTML files - optional, can remove if you want to track)
+# outputs/*
+# !outputs/.gitkeep
+
+# Learning data (can be large)
+learning_data/*
+!learning_data/.gitkeep
+
+# Cache
+.cache/
+*.cache
+
+# Windows reserved names
+nul
+NUL
+con
+CON
