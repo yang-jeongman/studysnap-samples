@@ -1262,6 +1262,121 @@ async def list_html_files():
         raise HTTPException(status_code=500, detail=f"파일 목록 조회 실패: {str(e)}")
 
 
+@app.post("/api/upload-image")
+async def upload_image(file: UploadFile = File(...)):
+    """
+    이미지 파일 업로드 API (에디터용)
+
+    - file: 업로드할 이미지 파일 (jpg, jpeg, png, gif, webp, svg)
+
+    Returns:
+    - success: 성공 여부
+    - url: 업로드된 이미지 URL
+    - filename: 저장된 파일명
+    """
+    try:
+        # 지원하는 이미지 확장자
+        allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp', '.ico'}
+
+        original_filename = file.filename
+        file_extension = Path(original_filename).suffix.lower()
+
+        if file_extension not in allowed_extensions:
+            raise HTTPException(
+                status_code=400,
+                detail=f"지원하지 않는 이미지 형식입니다. 지원 형식: {', '.join(allowed_extensions)}"
+            )
+
+        # 파일 크기 제한 (10MB)
+        MAX_IMAGE_SIZE = 10 * 1024 * 1024
+        content = await file.read()
+
+        if len(content) > MAX_IMAGE_SIZE:
+            raise HTTPException(status_code=400, detail="이미지 크기는 10MB를 초과할 수 없습니다")
+
+        # 고유 파일명 생성 (원본 이름 유지 + 타임스탬프)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        safe_name = Path(original_filename).stem
+        # 파일명에서 안전하지 않은 문자 제거
+        safe_name = "".join(c for c in safe_name if c.isalnum() or c in ('_', '-', ' ')).strip()
+        if not safe_name:
+            safe_name = "image"
+
+        new_filename = f"{safe_name}_{timestamp}{file_extension}"
+
+        # static/images 디렉토리 확인 및 생성
+        images_dir = STATIC_DIR / "images"
+        images_dir.mkdir(exist_ok=True)
+
+        # 파일 저장
+        file_path = images_dir / new_filename
+
+        with open(file_path, "wb") as f:
+            f.write(content)
+
+        logger.info(f"이미지 업로드 완료: {new_filename} ({len(content)} bytes)")
+
+        return JSONResponse({
+            "success": True,
+            "message": "이미지가 업로드되었습니다",
+            "url": f"/static/images/{new_filename}",
+            "filename": new_filename,
+            "original_filename": original_filename,
+            "size": len(content)
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"이미지 업로드 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"이미지 업로드 실패: {str(e)}")
+
+
+@app.get("/api/images")
+async def list_images():
+    """
+    서버에 저장된 이미지 목록 반환 (에디터 갤러리용)
+    """
+    try:
+        images_dir = STATIC_DIR / "images"
+
+        if not images_dir.exists():
+            return JSONResponse({
+                "success": True,
+                "images": [],
+                "count": 0
+            })
+
+        images = []
+        allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp', '.ico'}
+
+        for file_path in images_dir.iterdir():
+            if file_path.is_file() and file_path.suffix.lower() in allowed_extensions:
+                try:
+                    stat = file_path.stat()
+                    images.append({
+                        "name": file_path.name,
+                        "url": f"/static/images/{file_path.name}",
+                        "size": stat.st_size,
+                        "modified": datetime.fromtimestamp(stat.st_mtime).isoformat()
+                    })
+                except Exception as e:
+                    logger.warning(f"이미지 정보 조회 실패: {file_path.name} - {str(e)}")
+
+        # 최신 파일 우선 정렬
+        images.sort(key=lambda x: x["modified"], reverse=True)
+
+        return JSONResponse({
+            "success": True,
+            "images": images,
+            "count": len(images)
+        })
+
+    except Exception as e:
+        logger.error(f"이미지 목록 조회 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"이미지 목록 조회 실패: {str(e)}")
+
+
 @app.post("/api/editor/save")
 async def save_html_file(request: Request):
     """
