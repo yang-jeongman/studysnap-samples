@@ -344,6 +344,67 @@
             border-radius: 20px;
             border: 8px solid #333;
         }
+
+        /* 에디터-미리보기 연동 하이라이트 */
+        .editor-highlight {
+            background: linear-gradient(90deg, #FBBF24 0%, #FDE68A 100%);
+            border-radius: 2px;
+        }
+
+        #htmlEditor.line-highlight {
+            background-image: linear-gradient(
+                transparent 0,
+                transparent calc(var(--highlight-line) * 1.5em - 0.75em),
+                rgba(251, 191, 36, 0.3) calc(var(--highlight-line) * 1.5em - 0.75em),
+                rgba(251, 191, 36, 0.3) calc(var(--highlight-line) * 1.5em + 0.75em),
+                transparent calc(var(--highlight-line) * 1.5em + 0.75em)
+            );
+        }
+
+        /* 연동 모드 표시 */
+        .sync-mode-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            background: #FEF3C7;
+            border: 1px solid #F59E0B;
+            border-radius: 4px;
+            font-size: 0.7em;
+            color: #92400E;
+            margin-left: 10px;
+        }
+
+        .sync-mode-indicator.active {
+            background: #D1FAE5;
+            border-color: #10B981;
+            color: #065F46;
+        }
+
+        /* 하이라이트 툴팁 */
+        .highlight-tooltip {
+            position: fixed;
+            background: #1F2937;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 9999;
+            pointer-events: none;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .highlight-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1F2937 transparent transparent transparent;
+        }
     </style>
 </head>
 <body>
@@ -351,6 +412,7 @@
         <div class="editor-title">📝 StudySnap HTML Editor</div>
         <div class="editor-controls">
             <button class="btn btn-secondary" onclick="swapPanels()" title="편집/미리보기 위치 바꾸기">↔️ 좌우전환</button>
+            <button class="btn btn-secondary" onclick="toggleSyncMode()" id="syncModeBtn" title="마우스 위치에 따라 편집기↔미리보기 연동 하이라이트">🔗 연동모드</button>
             <button class="btn btn-secondary" onclick="loadFiles()">새로고침</button>
             <button class="btn btn-success" onclick="saveFile()">💾 저장</button>
             <button class="btn btn-primary" onclick="downloadFile()">⬇️ 다운로드</button>
@@ -420,12 +482,15 @@
     </div>
 
     <div id="notification" class="notification"></div>
+    <div id="highlightTooltip" class="highlight-tooltip" style="display: none;"></div>
 
     <script>
         let currentFile = null;
         let originalContent = '';
         let isEditorOnLeft = true;  // 편집기가 왼쪽에 있는지
         let previewUpdateTimer = null;
+        let isSyncModeActive = false;  // 연동 모드 상태
+        let lastHighlightedElement = null;  // 마지막 하이라이트된 요소
 
         // 파일 목록 로드
         async function loadFiles() {
@@ -744,6 +809,321 @@
                 saveFile();
             }
         });
+
+        // ==========================================
+        // 연동 모드 (에디터 ↔ 미리보기 하이라이트)
+        // ==========================================
+
+        // 연동 모드 토글
+        function toggleSyncMode() {
+            isSyncModeActive = !isSyncModeActive;
+            const btn = document.getElementById('syncModeBtn');
+
+            if (isSyncModeActive) {
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-success');
+                btn.textContent = '🔗 연동모드 ON';
+                showNotification('연동 모드가 활성화되었습니다. 마우스를 올리면 연관 위치가 하이라이트됩니다.', 'success');
+                initSyncMode();
+            } else {
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-secondary');
+                btn.textContent = '🔗 연동모드';
+                showNotification('연동 모드가 비활성화되었습니다.', 'success');
+                cleanupSyncMode();
+            }
+        }
+
+        // 연동 모드 초기화
+        function initSyncMode() {
+            const editor = document.getElementById('htmlEditor');
+            const iframe = document.getElementById('previewFrame');
+
+            // 에디터에서 마우스 이동 감지
+            editor.addEventListener('mousemove', onEditorMouseMove);
+            editor.addEventListener('mouseleave', onEditorMouseLeave);
+
+            // 미리보기에서 마우스 이동 감지
+            iframe.addEventListener('load', () => {
+                if (isSyncModeActive) {
+                    setupPreviewListeners();
+                }
+            });
+
+            // 현재 로드된 미리보기에도 적용
+            setupPreviewListeners();
+        }
+
+        // 연동 모드 정리
+        function cleanupSyncMode() {
+            const editor = document.getElementById('htmlEditor');
+            editor.removeEventListener('mousemove', onEditorMouseMove);
+            editor.removeEventListener('mouseleave', onEditorMouseLeave);
+
+            // 하이라이트 제거
+            clearAllHighlights();
+            hideTooltip();
+        }
+
+        // 미리보기 iframe에 리스너 설정
+        function setupPreviewListeners() {
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                // 미리보기 내 요소에 마우스 이벤트 추가
+                iframeDoc.body.addEventListener('mouseover', onPreviewMouseOver);
+                iframeDoc.body.addEventListener('mouseout', onPreviewMouseOut);
+
+                // 하이라이트 스타일 주입
+                injectHighlightStyles(iframeDoc);
+            } catch (e) {
+                console.log('미리보기 리스너 설정 실패:', e);
+            }
+        }
+
+        // 미리보기에 하이라이트 스타일 주입
+        function injectHighlightStyles(doc) {
+            if (doc.getElementById('syncHighlightStyles')) return;
+
+            const style = doc.createElement('style');
+            style.id = 'syncHighlightStyles';
+            style.textContent = `
+                .sync-highlight {
+                    outline: 3px solid #FBBF24 !important;
+                    outline-offset: 2px !important;
+                    background-color: rgba(251, 191, 36, 0.2) !important;
+                    transition: all 0.15s ease !important;
+                }
+                .sync-highlight * {
+                    background-color: rgba(251, 191, 36, 0.1) !important;
+                }
+            `;
+            doc.head.appendChild(style);
+        }
+
+        // 에디터에서 마우스 이동 시
+        function onEditorMouseMove(e) {
+            if (!isSyncModeActive) return;
+
+            const editor = e.target;
+            const content = editor.value;
+
+            // 커서 위치 계산
+            const cursorPos = editor.selectionStart;
+
+            // 현재 줄 찾기
+            const textBeforeCursor = content.substring(0, cursorPos);
+            const currentLine = textBeforeCursor.split('\n').length;
+
+            // 현재 줄의 내용 가져오기
+            const lines = content.split('\n');
+            const lineContent = lines[currentLine - 1] || '';
+
+            // HTML 태그 찾기
+            const tagMatch = lineContent.match(/<(\w+)[^>]*(?:class="([^"]*)")?[^>]*>/);
+
+            if (tagMatch) {
+                const tagName = tagMatch[1];
+                const className = tagMatch[2];
+
+                // 미리보기에서 해당 요소 찾아서 하이라이트
+                highlightInPreview(tagName, className, lineContent, currentLine);
+
+                // 툴팁 표시
+                showTooltip(e.clientX, e.clientY - 30, `${tagName}${className ? '.' + className.split(' ')[0] : ''} (줄 ${currentLine})`);
+            } else {
+                clearPreviewHighlight();
+                hideTooltip();
+            }
+        }
+
+        // 에디터에서 마우스가 나갈 때
+        function onEditorMouseLeave() {
+            clearPreviewHighlight();
+            hideTooltip();
+        }
+
+        // 미리보기에서 마우스 오버 시
+        function onPreviewMouseOver(e) {
+            if (!isSyncModeActive) return;
+
+            const element = e.target;
+            if (element.tagName === 'HTML' || element.tagName === 'BODY') return;
+
+            // 요소 하이라이트
+            element.classList.add('sync-highlight');
+            lastHighlightedElement = element;
+
+            // 에디터에서 해당 요소 찾기
+            highlightInEditor(element);
+
+            // 툴팁 표시 (iframe 내 좌표를 페이지 좌표로 변환)
+            const iframe = document.getElementById('previewFrame');
+            const iframeRect = iframe.getBoundingClientRect();
+            const tagInfo = getElementInfo(element);
+            showTooltip(e.clientX + iframeRect.left, e.clientY + iframeRect.top - 30, tagInfo);
+        }
+
+        // 미리보기에서 마우스 아웃 시
+        function onPreviewMouseOut(e) {
+            if (!isSyncModeActive) return;
+
+            const element = e.target;
+            element.classList.remove('sync-highlight');
+
+            clearEditorHighlight();
+            hideTooltip();
+        }
+
+        // 미리보기에서 요소 하이라이트
+        function highlightInPreview(tagName, className, lineContent, lineNum) {
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                // 이전 하이라이트 제거
+                clearPreviewHighlight();
+
+                // 요소 찾기
+                let elements;
+                if (className) {
+                    elements = iframeDoc.querySelectorAll(`${tagName}.${className.split(' ')[0]}`);
+                } else {
+                    elements = iframeDoc.querySelectorAll(tagName);
+                }
+
+                // 텍스트 내용으로 더 정확하게 찾기
+                const textMatch = lineContent.match(/>([^<]+)</);
+                const searchText = textMatch ? textMatch[1].trim() : '';
+
+                if (elements.length > 0) {
+                    let targetElement = elements[0];
+
+                    // 텍스트로 더 정확한 요소 찾기
+                    if (searchText) {
+                        for (let el of elements) {
+                            if (el.textContent.includes(searchText)) {
+                                targetElement = el;
+                                break;
+                            }
+                        }
+                    }
+
+                    targetElement.classList.add('sync-highlight');
+                    lastHighlightedElement = targetElement;
+
+                    // 스크롤해서 보이게
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } catch (e) {
+                console.log('미리보기 하이라이트 실패:', e);
+            }
+        }
+
+        // 에디터에서 해당 요소 위치 하이라이트
+        function highlightInEditor(element) {
+            const editor = document.getElementById('htmlEditor');
+            const content = editor.value;
+
+            // 요소의 태그명과 클래스로 검색
+            const tagName = element.tagName.toLowerCase();
+            const className = element.className.replace('sync-highlight', '').trim().split(' ')[0];
+            const textContent = element.textContent.trim().substring(0, 30);
+
+            // 정규식으로 해당 태그 찾기
+            let searchPattern;
+            if (className) {
+                searchPattern = new RegExp(`<${tagName}[^>]*class="[^"]*${className}[^"]*"[^>]*>`, 'gi');
+            } else if (textContent) {
+                // 텍스트로 찾기
+                const escapedText = textContent.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                searchPattern = new RegExp(`<${tagName}[^>]*>[^<]*${escapedText}`, 'gi');
+            } else {
+                searchPattern = new RegExp(`<${tagName}[^>]*>`, 'gi');
+            }
+
+            const match = searchPattern.exec(content);
+            if (match) {
+                const startPos = match.index;
+                const endPos = startPos + match[0].length;
+
+                // 해당 줄 번호 계산
+                const textBefore = content.substring(0, startPos);
+                const lineNum = textBefore.split('\n').length;
+
+                // 에디터 스크롤
+                const lineHeight = 18; // 대략적인 줄 높이
+                editor.scrollTop = (lineNum - 5) * lineHeight;
+
+                // 선택 표시 (시각적 하이라이트)
+                editor.setSelectionRange(startPos, endPos);
+                editor.focus();
+            }
+        }
+
+        // 미리보기 하이라이트 제거
+        function clearPreviewHighlight() {
+            if (lastHighlightedElement) {
+                lastHighlightedElement.classList.remove('sync-highlight');
+                lastHighlightedElement = null;
+            }
+
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                iframeDoc.querySelectorAll('.sync-highlight').forEach(el => {
+                    el.classList.remove('sync-highlight');
+                });
+            } catch (e) {}
+        }
+
+        // 에디터 하이라이트 제거
+        function clearEditorHighlight() {
+            // 선택 해제
+            const editor = document.getElementById('htmlEditor');
+            const pos = editor.selectionStart;
+            editor.setSelectionRange(pos, pos);
+        }
+
+        // 모든 하이라이트 제거
+        function clearAllHighlights() {
+            clearPreviewHighlight();
+            clearEditorHighlight();
+        }
+
+        // 요소 정보 가져오기
+        function getElementInfo(element) {
+            const tag = element.tagName.toLowerCase();
+            const id = element.id ? `#${element.id}` : '';
+            const className = element.className.replace('sync-highlight', '').trim();
+            const classStr = className ? `.${className.split(' ')[0]}` : '';
+            return `<${tag}${id}${classStr}>`;
+        }
+
+        // 툴팁 표시
+        function showTooltip(x, y, text) {
+            const tooltip = document.getElementById('highlightTooltip');
+            tooltip.textContent = text;
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+            tooltip.style.display = 'block';
+        }
+
+        // 툴팁 숨기기
+        function hideTooltip() {
+            const tooltip = document.getElementById('highlightTooltip');
+            tooltip.style.display = 'none';
+        }
+
+        // 미리보기 업데이트 후 연동 모드 리스너 재설정
+        const originalUpdatePreview = updatePreview;
+        updatePreview = function() {
+            originalUpdatePreview();
+            if (isSyncModeActive) {
+                setTimeout(setupPreviewListeners, 100);
+            }
+        };
     </script>
 </body>
 </html>
