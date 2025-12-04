@@ -450,6 +450,8 @@
                     <span style="border-left: 1px solid #ddd; margin: 0 5px;"></span>
                     <button class="toolbar-btn" onclick="openImageUpload()" style="background: #10B981; color: white;">🖼️ 이미지</button>
                     <button class="toolbar-btn" onclick="insertLink()">🔗 링크</button>
+                    <span style="border-left: 1px solid #ddd; margin: 0 5px;"></span>
+                    <button class="toolbar-btn" onclick="openValidation()" style="background: #8B5CF6; color: white;">🔍 텍스트 검증</button>
                 </div>
                 <div class="editor-content">
                     <textarea id="htmlEditor" placeholder="HTML 파일을 선택하세요..."></textarea>
@@ -546,6 +548,42 @@
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button onclick="closeImageModal()" style="flex: 1; padding: 12px; background: #f3f4f6; color: #666; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">취소</button>
                 <button onclick="insertImage()" style="flex: 1; padding: 12px; background: #10B981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 텍스트 검증 모달 -->
+    <div id="validationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 12px; padding: 25px; max-width: 800px; width: 95%; max-height: 90vh; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #333;">🔍 텍스트 검증</h3>
+                <button onclick="closeValidationModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-bottom: 15px; flex: 1; overflow: hidden;">
+                <!-- 원본 텍스트 -->
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <label style="font-weight: 600; margin-bottom: 8px; color: #333;">📄 원본 텍스트 (PDF 원본)</label>
+                    <textarea id="originalText" placeholder="원본 PDF의 텍스트를 붙여넣으세요..." style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; resize: none; font-family: inherit; font-size: 14px; line-height: 1.6;"></textarea>
+                </div>
+
+                <!-- 변환된 텍스트 -->
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <label style="font-weight: 600; margin-bottom: 8px; color: #333;">📝 변환된 텍스트 (현재 HTML)</label>
+                    <textarea id="convertedText" placeholder="변환된 HTML의 텍스트..." style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; resize: none; font-family: inherit; font-size: 14px; line-height: 1.6;" readonly></textarea>
+                    <button onclick="extractHtmlText()" style="margin-top: 8px; padding: 8px; background: #6B7280; color: white; border: none; border-radius: 5px; cursor: pointer;">현재 HTML에서 텍스트 추출</button>
+                </div>
+            </div>
+
+            <!-- 검증 버튼 -->
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button onclick="runValidation()" style="padding: 12px 40px; background: #8B5CF6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;">🔍 검증 실행</button>
+            </div>
+
+            <!-- 검증 결과 -->
+            <div id="validationResult" style="max-height: 300px; overflow-y: auto; border: 2px solid #ddd; border-radius: 8px; padding: 15px; background: #f9fafb; display: none;">
+                <div id="validationSummary" style="margin-bottom: 15px;"></div>
+                <div id="validationErrors"></div>
             </div>
         </div>
     </div>
@@ -1395,6 +1433,184 @@
             if (bytes < 1024) return bytes + ' B';
             if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
             return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        // ============================================
+        // 텍스트 검증 기능
+        // ============================================
+
+        // 검증 모달 열기
+        function openValidation() {
+            document.getElementById('validationModal').style.display = 'flex';
+            document.getElementById('validationResult').style.display = 'none';
+
+            // 현재 HTML에서 텍스트 자동 추출
+            extractHtmlText();
+        }
+
+        // 검증 모달 닫기
+        function closeValidationModal() {
+            document.getElementById('validationModal').style.display = 'none';
+        }
+
+        // HTML에서 텍스트 추출
+        function extractHtmlText() {
+            const htmlContent = document.getElementById('htmlEditor').value;
+
+            // HTML 태그 제거하고 텍스트만 추출
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlContent;
+
+            // 스크립트, 스타일 태그 제거
+            const scripts = tempDiv.querySelectorAll('script, style');
+            scripts.forEach(s => s.remove());
+
+            // 텍스트 추출
+            let text = tempDiv.textContent || tempDiv.innerText;
+
+            // 연속 공백 정리
+            text = text.replace(/\s+/g, ' ').trim();
+
+            document.getElementById('convertedText').value = text;
+        }
+
+        // 검증 실행
+        async function runValidation() {
+            const original = document.getElementById('originalText').value.trim();
+            const converted = document.getElementById('convertedText').value.trim();
+
+            if (!original) {
+                showNotification('원본 텍스트를 입력하세요', 'error');
+                return;
+            }
+
+            if (!converted) {
+                showNotification('변환된 텍스트가 없습니다', 'error');
+                return;
+            }
+
+            try {
+                showNotification('검증 중...', 'success');
+
+                const response = await fetch('/api/learning/validate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ original, converted })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayValidationResult(result.validation);
+                } else {
+                    showNotification('검증 실패: ' + result.detail, 'error');
+                }
+            } catch (error) {
+                console.error('검증 오류:', error);
+                showNotification('검증 중 오류가 발생했습니다', 'error');
+            }
+        }
+
+        // 검증 결과 표시
+        function displayValidationResult(validation) {
+            const resultDiv = document.getElementById('validationResult');
+            const summaryDiv = document.getElementById('validationSummary');
+            const errorsDiv = document.getElementById('validationErrors');
+
+            resultDiv.style.display = 'block';
+
+            // 정확도 색상 결정
+            let accuracyColor = '#10B981';  // 녹색
+            if (validation.accuracy < 0.9) accuracyColor = '#F59E0B';  // 노란색
+            if (validation.accuracy < 0.7) accuracyColor = '#EF4444';  // 빨간색
+
+            // 요약 표시
+            summaryDiv.innerHTML = `
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <div style="text-align: center; padding: 15px 25px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2em; font-weight: bold; color: ${accuracyColor};">${validation.accuracy_percent}</div>
+                        <div style="color: #666; font-size: 0.9em;">정확도</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px 25px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2em; font-weight: bold; color: #333;">${validation.total_chars}</div>
+                        <div style="color: #666; font-size: 0.9em;">총 문자</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px 25px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2em; font-weight: bold; color: ${validation.total_errors > 0 ? '#EF4444' : '#10B981'};">${validation.total_errors}</div>
+                        <div style="color: #666; font-size: 0.9em;">오류 수</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    ${validation.summary.typo > 0 ? `<span style="padding: 4px 10px; background: #FEE2E2; color: #B91C1C; border-radius: 4px; font-size: 0.85em;">오자 ${validation.summary.typo}</span>` : ''}
+                    ${validation.summary.missing > 0 ? `<span style="padding: 4px 10px; background: #FEF3C7; color: #92400E; border-radius: 4px; font-size: 0.85em;">탈자 ${validation.summary.missing}</span>` : ''}
+                    ${validation.summary.extra > 0 ? `<span style="padding: 4px 10px; background: #DBEAFE; color: #1E40AF; border-radius: 4px; font-size: 0.85em;">첨자 ${validation.summary.extra}</span>` : ''}
+                    ${validation.summary.ocr > 0 ? `<span style="padding: 4px 10px; background: #F3E8FF; color: #6B21A8; border-radius: 4px; font-size: 0.85em;">OCR오류 ${validation.summary.ocr}</span>` : ''}
+                    ${validation.summary.context > 0 ? `<span style="padding: 4px 10px; background: #FCE7F3; color: #9D174D; border-radius: 4px; font-size: 0.85em;">문맥오류 ${validation.summary.context}</span>` : ''}
+                </div>
+            `;
+
+            // 오류 상세 표시
+            if (validation.errors.length > 0) {
+                errorsDiv.innerHTML = `
+                    <h4 style="margin: 15px 0 10px; color: #333;">🔍 발견된 오류 (상위 20개)</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${validation.errors.slice(0, 20).map(error => `
+                            <div style="padding: 10px; background: white; border-radius: 6px; border-left: 4px solid ${getErrorColor(error.type)};">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <span style="font-weight: 600; color: ${getErrorColor(error.type)};">${getErrorTypeName(error.type)}</span>
+                                    <span style="font-size: 0.8em; color: #999;">신뢰도 ${Math.round(error.confidence * 100)}%</span>
+                                </div>
+                                <div style="font-size: 0.9em; color: #333;">
+                                    ${error.original ? `<span style="background: #FEE2E2; padding: 2px 4px; border-radius: 3px; text-decoration: line-through;">${escapeHtml(error.original)}</span>` : ''}
+                                    ${error.converted ? `<span style="background: #DBEAFE; padding: 2px 4px; border-radius: 3px;">${escapeHtml(error.converted)}</span>` : ''}
+                                </div>
+                                <div style="font-size: 0.85em; color: #666; margin-top: 5px;">💡 ${escapeHtml(error.suggestion)}</div>
+                                ${error.context ? `<div style="font-size: 0.8em; color: #999; margin-top: 3px; font-family: monospace;">...${escapeHtml(error.context)}...</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                errorsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #10B981;">✅ 오류가 발견되지 않았습니다!</div>';
+            }
+
+            showNotification(`검증 완료: 정확도 ${validation.accuracy_percent}`, validation.accuracy >= 0.9 ? 'success' : 'error');
+        }
+
+        // 오류 유형별 색상
+        function getErrorColor(type) {
+            const colors = {
+                'typo': '#EF4444',
+                'missing': '#F59E0B',
+                'extra': '#3B82F6',
+                'split': '#8B5CF6',
+                'merge': '#EC4899',
+                'context': '#F97316',
+                'ocr': '#6366F1'
+            };
+            return colors[type] || '#6B7280';
+        }
+
+        // 오류 유형 이름
+        function getErrorTypeName(type) {
+            const names = {
+                'typo': '오자',
+                'missing': '탈자',
+                'extra': '첨자',
+                'split': '분리오류',
+                'merge': '병합오류',
+                'context': '문맥오류',
+                'ocr': 'OCR오류'
+            };
+            return names[type] || type;
+        }
+
+        // HTML 이스케이프
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
     </script>
 </body>

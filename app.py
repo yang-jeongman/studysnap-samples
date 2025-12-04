@@ -1377,6 +1377,189 @@ async def list_images():
         raise HTTPException(status_code=500, detail=f"이미지 목록 조회 실패: {str(e)}")
 
 
+# ============================================
+# 학습 시스템 API
+# ============================================
+
+@app.post("/api/learning/classify")
+async def classify_text(request: Request):
+    """
+    텍스트 객체 분류 API
+
+    텍스트와 스타일 정보를 받아 PDF 객체 유형을 분류합니다.
+    """
+    try:
+        from learning_data import ObjectClassifier, TextStyle, FontStyle, BoundingBox
+
+        data = await request.json()
+        text = data.get("text", "")
+        style_data = data.get("style", {})
+        bbox_data = data.get("bbox", {})
+
+        classifier = ObjectClassifier()
+
+        # 스타일 객체 생성
+        style = None
+        if style_data:
+            style = TextStyle(
+                font_name=style_data.get("font_name", "Unknown"),
+                font_size=float(style_data.get("font_size", 12.0)),
+                font_style=FontStyle(style_data.get("font_style", "regular")),
+                color=style_data.get("color", "#000000")
+            )
+
+        # 바운딩 박스 생성
+        bbox = None
+        if bbox_data:
+            bbox = BoundingBox(
+                x=float(bbox_data.get("x", 0)),
+                y=float(bbox_data.get("y", 0)),
+                width=float(bbox_data.get("width", 0)),
+                height=float(bbox_data.get("height", 0)),
+                page=int(bbox_data.get("page", 1))
+            )
+
+        # 분류 실행
+        obj_type, confidence = classifier.classify(text, style, bbox)
+
+        return JSONResponse({
+            "success": True,
+            "text": text[:100],
+            "classification": {
+                "type": obj_type.value,
+                "type_name": obj_type.name,
+                "confidence": round(confidence, 4)
+            },
+            "html_mapping": classifier._get_html_mapping(obj_type)
+        })
+
+    except Exception as e:
+        logger.error(f"텍스트 분류 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"텍스트 분류 실패: {str(e)}")
+
+
+@app.post("/api/learning/validate")
+async def validate_text(request: Request):
+    """
+    텍스트 검증 API
+
+    원본 텍스트와 변환된 텍스트를 비교하여 오류를 검출합니다.
+    """
+    try:
+        from learning_data import TextValidator
+
+        data = await request.json()
+        original = data.get("original", "")
+        converted = data.get("converted", "")
+
+        if not original or not converted:
+            raise HTTPException(status_code=400, detail="original과 converted 텍스트가 필요합니다")
+
+        validator = TextValidator()
+        report = validator.validate(original, converted)
+
+        return JSONResponse({
+            "success": True,
+            "validation": report.to_dict()
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"텍스트 검증 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"텍스트 검증 실패: {str(e)}")
+
+
+@app.post("/api/learning/validate-document")
+async def validate_document(request: Request):
+    """
+    문서 전체 검증 API
+
+    여러 페이지의 원본과 변환 텍스트를 비교합니다.
+    """
+    try:
+        from learning_data import BatchValidator
+
+        data = await request.json()
+        original_pages = data.get("original_pages", [])
+        converted_pages = data.get("converted_pages", [])
+
+        if not original_pages or not converted_pages:
+            raise HTTPException(status_code=400, detail="original_pages와 converted_pages가 필요합니다")
+
+        validator = BatchValidator()
+        result = validator.validate_document(original_pages, converted_pages)
+
+        # 중요 오류만 별도 추출
+        critical_errors = validator.get_critical_errors(min_confidence=0.8)
+
+        return JSONResponse({
+            "success": True,
+            "document_validation": result,
+            "critical_errors": critical_errors[:20]  # 상위 20개만
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"문서 검증 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"문서 검증 실패: {str(e)}")
+
+
+@app.get("/api/learning/object-types")
+async def get_object_types():
+    """
+    지원하는 객체 유형 목록 반환
+    """
+    try:
+        from learning_data import ObjectType, ELECTION_MAPPINGS
+
+        types = []
+        for obj_type in ObjectType:
+            mapping = ELECTION_MAPPINGS.get(obj_type)
+            types.append({
+                "code": obj_type.value,
+                "name": obj_type.name,
+                "has_template": mapping is not None,
+                "css_class": mapping.css_class if mapping else None
+            })
+
+        return JSONResponse({
+            "success": True,
+            "object_types": types,
+            "total": len(types)
+        })
+
+    except Exception as e:
+        logger.error(f"객체 유형 조회 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/learning/diff")
+async def get_text_diff(request: Request):
+    """
+    원본과 변환 텍스트의 차이를 HTML로 반환
+    """
+    try:
+        from learning_data import TextValidator
+
+        data = await request.json()
+        original = data.get("original", "")
+        converted = data.get("converted", "")
+
+        validator = TextValidator()
+        diff_html = validator.get_diff_html(original, converted)
+
+        return JSONResponse({
+            "success": True,
+            "diff_html": diff_html
+        })
+
+    except Exception as e:
+        logger.error(f"차이 비교 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/api/editor/save")
 async def save_html_file(request: Request):
     """

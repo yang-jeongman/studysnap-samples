@@ -51,9 +51,15 @@ uploads/*
 # outputs/*
 # !outputs/.gitkeep
 
-# Learning data (can be large)
-learning_data/*
-!learning_data/.gitkeep
+# Learning data - keep Python files, ignore data files
+learning_data/*.json
+learning_data/*.jsonl
+learning_data/*.pkl
+learning_data/*.db
+!learning_data/__init__.py
+!learning_data/schema.py
+!learning_data/classifier.py
+!learning_data/validator.py
 
 # Cache
 .cache/
