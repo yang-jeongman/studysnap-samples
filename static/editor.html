@@ -1056,7 +1056,21 @@
 
         // 미리보기 업데이트 (실시간 동기화)
         function updatePreview() {
-            const content = document.getElementById('htmlEditor').value;
+            let content = document.getElementById('htmlEditor').value;
+
+            // 현재 파일 경로에서 기본 경로 추출 (예: outputs/Minjoo/RYU.html -> /outputs/Minjoo/)
+            if (currentFile) {
+                const pathParts = currentFile.split('/');
+                pathParts.pop(); // 파일명 제거
+                const basePath = '/' + pathParts.join('/') + '/';
+
+                // 상대 경로 이미지를 절대 경로로 변환
+                // ./images/xxx.png -> /outputs/Minjoo/images/xxx.png
+                content = content.replace(/src=["']\.\/([^"']+)["']/g, `src="${basePath}$1"`);
+                // ./xxx.png -> /outputs/Minjoo/xxx.png
+                content = content.replace(/src=["'](?!http|\/|data:)([^"']+)["']/g, `src="${basePath}$1"`);
+            }
+
             const iframe = document.getElementById('previewFrame');
             const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
             iframeDoc.open();
