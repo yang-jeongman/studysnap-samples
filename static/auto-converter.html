@@ -699,7 +699,8 @@
             </div>
             <div class="result-actions">
                 <a href="#" class="btn-preview" id="previewBtn" target="_blank">미리보기</a>
-                <a href="#" class="btn-download" id="downloadBtn" download>다운로드</a>
+                <a href="#" class="btn-download" id="downloadBtn" download>HTML 다운로드</a>
+                <a href="#" class="btn-download" id="downloadFolderBtn" style="background: #28a745; display: none;">폴더 ZIP 다운로드</a>
                 <button class="btn-reset" id="resetBtn">새로 변환</button>
             </div>
         </div>
@@ -1124,6 +1125,7 @@
             const resultInfo = document.getElementById('resultInfo');
             const previewBtn = document.getElementById('previewBtn');
             const downloadBtn = document.getElementById('downloadBtn');
+            const downloadFolderBtn = document.getElementById('downloadFolderBtn');
 
             if (data.result) {
                 // 단일 파일 결과
@@ -1150,6 +1152,14 @@
                 previewBtn.href = result.url;
                 downloadBtn.href = result.url;
                 downloadBtn.download = result.filename;
+
+                // 폴더 ZIP 다운로드 버튼 설정
+                if (selectedSaveFolder) {
+                    downloadFolderBtn.href = `/api/download/folder/${encodeURIComponent(selectedSaveFolder)}`;
+                    downloadFolderBtn.style.display = 'inline-block';
+                } else {
+                    downloadFolderBtn.style.display = 'none';
+                }
             } else if (data.results) {
                 // 일괄 변환 결과
                 const successCount = data.statistics.success;
@@ -1183,6 +1193,7 @@
                     previewBtn.style.display = 'none';
                 }
                 downloadBtn.style.display = 'none';
+                downloadFolderBtn.style.display = 'none';
             }
 
             convertBtn.innerHTML = '<span>✅ 변환 완료</span>';

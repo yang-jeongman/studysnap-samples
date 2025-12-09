@@ -7,13 +7,15 @@ import os
 import uuid
 import shutil
 import logging
+import zipfile
+import io
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, List
 
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from urllib.parse import unquote, quote
@@ -1929,6 +1931,70 @@ async def list_images():
     except Exception as e:
         logger.error(f"이미지 목록 조회 실패: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"이미지 목록 조회 실패: {str(e)}")
+
+
+# ============================================
+# 폴더 ZIP 다운로드 API
+# ============================================
+
+@app.get("/api/download/folder/{folder_path:path}")
+async def download_folder_as_zip(folder_path: str):
+    """
+    outputs 폴더 내 특정 폴더를 ZIP 파일로 다운로드
+
+    예: /api/download/folder/Minjoo/류삼영 -> Minjoo/류삼영 폴더를 ZIP으로 다운로드
+    """
+    try:
+        # 폴더 경로 검증
+        folder_path = unquote(folder_path)
+        target_path = OUTPUT_DIR / folder_path
+
+        # 경로 순회 공격 방지
+        try:
+            target_path = target_path.resolve()
+            if not str(target_path).startswith(str(OUTPUT_DIR.resolve())):
+                raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+        except Exception:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        if not target_path.exists():
+            raise HTTPException(status_code=404, detail=f"폴더를 찾을 수 없습니다: {folder_path}")
+
+        if not target_path.is_dir():
+            raise HTTPException(status_code=400, detail="폴더가 아닙니다")
+
+        # ZIP 파일 생성 (메모리에)
+        zip_buffer = io.BytesIO()
+
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            # 폴더 내 모든 파일 추가
+            for file_path in target_path.rglob('*'):
+                if file_path.is_file():
+                    # ZIP 내 상대 경로 계산
+                    arcname = file_path.relative_to(target_path.parent)
+                    zip_file.write(file_path, arcname)
+
+        zip_buffer.seek(0)
+
+        # 파일명 설정 (마지막 폴더명 사용)
+        zip_filename = f"{target_path.name}.zip"
+
+        # 한글 파일명 인코딩
+        encoded_filename = quote(zip_filename)
+
+        return StreamingResponse(
+            zip_buffer,
+            media_type="application/zip",
+            headers={
+                "Content-Disposition": f"attachment; filename*=UTF-8''{encoded_filename}"
+            }
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"폴더 ZIP 다운로드 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"ZIP 다운로드 실패: {str(e)}")
 
 
 # ============================================
