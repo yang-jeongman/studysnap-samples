@@ -370,6 +370,75 @@
             to { transform: rotate(360deg); }
         }
 
+        /* 폴더 아이템 스타일 */
+        .folder-item {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 160px 200px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            transition: background 0.2s;
+            cursor: pointer;
+            background: #fffef5;
+        }
+
+        .folder-item:hover {
+            background: #fff9e6;
+        }
+
+        .folder-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .folder-info .folder-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .folder-info .folder-meta {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 브레드크럼 (경로 표시) */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .breadcrumb-item {
+            color: #667eea;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .breadcrumb-item:hover {
+            background: #e8efff;
+        }
+
+        .breadcrumb-item.current {
+            color: #333;
+            font-weight: 600;
+            cursor: default;
+        }
+
+        .breadcrumb-item.current:hover {
+            background: transparent;
+        }
+
+        .breadcrumb-separator {
+            color: #ccc;
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -411,6 +480,36 @@
             display: flex;
             gap: 10px;
             justify-content: center;
+        }
+
+        /* Folder Option */
+        .folder-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .folder-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .folder-option.selected {
+            border-color: #667eea;
+            background: #e8efff;
+        }
+        .folder-option span {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .folder-option small {
+            font-size: 11px;
+            color: #888;
         }
 
         /* Preview Modal */
@@ -531,16 +630,26 @@
                 <button class="folder-tab" data-folder="templates" onclick="switchFolder('templates')">
                     📋 Templates <span class="count" id="templates-count">0</span>
                 </button>
+                <button class="folder-tab" data-folder="root" onclick="switchFolder('root')">
+                    🐍 Root <span class="count" id="root-count">0</span>
+                </button>
             </div>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="파일 검색..." oninput="filterFiles()">
-                <button class="btn btn-primary" onclick="refreshFiles()">
+                <button class="btn btn-primary" onclick="showUploadModal()">
+                    📤 업로드
+                </button>
+                <button class="btn btn-secondary" onclick="refreshFiles()">
                     🔄 새로고침
                 </button>
             </div>
         </div>
 
         <div class="file-list">
+            <!-- 브레드크럼 (경로 표시) -->
+            <div class="breadcrumb" id="breadcrumb" style="display: none;">
+                <span class="breadcrumb-item" onclick="navigateTo('')">🏠 홈</span>
+            </div>
             <div class="file-header">
                 <div></div>
                 <div>파일명</div>
@@ -580,6 +689,63 @@
         </div>
     </div>
 
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3>📤 파일 업로드</h3>
+            <p>로컬에서 작업한 파일을 서버에 업로드합니다</p>
+
+            <div style="margin: 15px 0;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">저장 위치:</label>
+                <div id="folderOptions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <label class="folder-option selected" data-folder="outputs">
+                        <input type="radio" name="uploadFolder" value="outputs" checked style="display: none;">
+                        <span>📄 Outputs</span>
+                        <small>HTML 결과물</small>
+                    </label>
+                    <label class="folder-option" data-folder="static">
+                        <input type="radio" name="uploadFolder" value="static" style="display: none;">
+                        <span>🌐 Static</span>
+                        <small>웹 페이지</small>
+                    </label>
+                    <label class="folder-option" data-folder="uploads">
+                        <input type="radio" name="uploadFolder" value="uploads" style="display: none;">
+                        <span>📤 Uploads</span>
+                        <small>업로드 파일</small>
+                    </label>
+                    <label class="folder-option" data-folder="root">
+                        <input type="radio" name="uploadFolder" value="root" style="display: none;">
+                        <span>🐍 Root</span>
+                        <small>Python 파일</small>
+                    </label>
+                </div>
+            </div>
+
+            <div id="dropZone" style="border: 3px dashed #ddd; border-radius: 12px; padding: 40px 20px; margin: 20px 0; cursor: pointer; transition: all 0.3s;">
+                <div style="text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📁</div>
+                    <p style="color: #666; margin-bottom: 10px;">파일을 여기에 드래그하거나 클릭하여 선택</p>
+                    <p style="color: #999; font-size: 12px;">HTML, Python 파일 업로드 가능</p>
+                </div>
+                <input type="file" id="fileInput" accept=".html,.htm,.py" style="display: none;" multiple>
+            </div>
+
+            <div id="uploadList" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;"></div>
+
+            <div id="uploadProgress" style="display: none; margin-bottom: 20px;">
+                <div style="background: #f0f0f0; border-radius: 8px; height: 8px; overflow: hidden;">
+                    <div id="progressBar" style="background: #667eea; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                </div>
+                <p id="progressText" style="text-align: center; margin-top: 10px; color: #666; font-size: 14px;"></p>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeUploadModal()">취소</button>
+                <button class="btn btn-primary" id="uploadBtn" onclick="uploadFiles()" disabled>업로드</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Preview Modal -->
     <div class="preview-modal" id="previewModal">
         <div class="preview-header">
@@ -591,23 +757,42 @@
 
     <script>
         let currentFolder = 'outputs';
+        let currentPath = '';  // 현재 하위 경로
         let allFiles = [];
+        let allFolders = [];
         let fileToDelete = null;
 
         // 파일 목록 로드
-        async function loadFiles(folder) {
+        async function loadFiles(folder, subPath = '') {
             const fileListBody = document.getElementById('fileListBody');
             fileListBody.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
 
+            // API 경로 구성
+            let apiPath = folder;
+            if (subPath) {
+                apiPath = `${folder}/${subPath}`;
+            }
+
             try {
-                const response = await fetch(`/api/files/${folder}`);
+                const response = await fetch(`/api/files/${apiPath}`);
                 const data = await response.json();
 
                 if (data.success) {
-                    allFiles = data.files;
-                    renderFiles(allFiles);
-                    updateCounts(folder, data.files.length);
-                    updateStorageInfo(data.total_size || 0, data.files.length);
+                    allFiles = data.files || [];
+                    allFolders = data.folders || [];
+                    currentPath = data.current_path || '';
+
+                    // 브레드크럼 업데이트
+                    updateBreadcrumb(folder, currentPath);
+
+                    // 폴더와 파일 함께 렌더링
+                    renderFoldersAndFiles(allFolders, allFiles);
+
+                    // 카운트 업데이트 (파일만)
+                    if (!subPath) {
+                        updateCounts(folder, data.count);
+                    }
+                    updateStorageInfo(data.total_size || 0, data.count);
                 } else {
                     fileListBody.innerHTML = `
                         <div class="empty-state">
@@ -632,11 +817,59 @@
                 `마지막 업데이트: ${new Date().toLocaleString('ko-KR')}`;
         }
 
-        // 파일 목록 렌더링
-        function renderFiles(files) {
+        // 브레드크럼 업데이트
+        function updateBreadcrumb(folder, path) {
+            const breadcrumb = document.getElementById('breadcrumb');
+
+            if (!path) {
+                // 최상위 폴더면 브레드크럼 숨김
+                breadcrumb.style.display = 'none';
+                return;
+            }
+
+            breadcrumb.style.display = 'flex';
+
+            // 폴더명 아이콘 매핑
+            const folderIcons = {
+                'outputs': '📄',
+                'uploads': '📤',
+                'static': '🌐',
+                'templates': '📋',
+                'root': '🐍'
+            };
+
+            let html = `<span class="breadcrumb-item" onclick="navigateTo('${folder}', '')">${folderIcons[folder] || '📁'} ${folder}</span>`;
+
+            // 하위 경로가 있으면 추가
+            if (path) {
+                const parts = path.split('/');
+                let accumulated = '';
+                for (let i = 0; i < parts.length; i++) {
+                    accumulated += (i > 0 ? '/' : '') + parts[i];
+                    const isLast = i === parts.length - 1;
+                    html += `<span class="breadcrumb-separator">›</span>`;
+                    if (isLast) {
+                        html += `<span class="breadcrumb-item current">📁 ${parts[i]}</span>`;
+                    } else {
+                        html += `<span class="breadcrumb-item" onclick="navigateTo('${folder}', '${accumulated}')">📁 ${parts[i]}</span>`;
+                    }
+                }
+            }
+
+            breadcrumb.innerHTML = html;
+        }
+
+        // 폴더로 이동
+        function navigateTo(folder, path) {
+            currentPath = path;
+            loadFiles(folder, path);
+        }
+
+        // 폴더와 파일 함께 렌더링
+        function renderFoldersAndFiles(folders, files) {
             const fileListBody = document.getElementById('fileListBody');
 
-            if (files.length === 0) {
+            if (folders.length === 0 && files.length === 0) {
                 fileListBody.innerHTML = `
                     <div class="empty-state">
                         <div class="icon">📭</div>
@@ -647,22 +880,50 @@
                 return;
             }
 
-            fileListBody.innerHTML = files.map(file => `
+            // 폴더 먼저, 그 다음 파일
+            let html = '';
+
+            // 폴더 렌더링
+            html += folders.map(folder => `
+                <div class="folder-item" onclick="navigateTo('${currentFolder}', '${folder.path.replace(currentFolder + '/', '')}')">
+                    <div class="file-icon">📁</div>
+                    <div class="folder-info">
+                        <span class="folder-name">${folder.name}</span>
+                        <span class="folder-meta">${folder.file_count}개 파일</span>
+                    </div>
+                    <div class="file-size">-</div>
+                    <div class="file-date">-</div>
+                    <div class="file-actions">
+                        <button class="btn-view" onclick="event.stopPropagation(); navigateTo('${currentFolder}', '${folder.path.replace(currentFolder + '/', '')}')">📂 열기</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // 파일 렌더링
+            html += files.map(file => `
                 <div class="file-item">
                     <div class="file-icon">${getFileIcon(file.name)}</div>
                     <div class="file-name">
                         <a href="${file.url}" target="_blank">${file.name}</a>
+                        ${file.folder_path ? `<span class="file-path">📁 ${file.folder_path}</span>` : ''}
                     </div>
                     <div class="file-size">${formatSize(file.size)}</div>
                     <div class="file-date">${formatDate(file.modified)}</div>
                     <div class="file-actions">
                         <button class="btn-view" onclick="previewFile('${file.url}', '${file.name}')">👁️ 보기</button>
-                        ${file.name.endsWith('.html') ? `<button class="btn-edit" onclick="editFile('${file.name}')">✏️ 편집</button>` : ''}
+                        ${file.name.endsWith('.html') ? `<button class="btn-edit" onclick="editFile('${file.url}', '${file.name}')">✏️ 편집</button>` : ''}
                         <button class="btn-download" onclick="downloadFile('${file.url}', '${file.name}')">⬇️</button>
-                        <button class="btn-delete" onclick="showDeleteModal('${file.name}')">🗑️</button>
+                        <button class="btn-delete" onclick="showDeleteModal('${file.url}')">🗑️</button>
                     </div>
                 </div>
             `).join('');
+
+            fileListBody.innerHTML = html;
+        }
+
+        // 파일 목록 렌더링 (하위 호환용)
+        function renderFiles(files) {
+            renderFoldersAndFiles([], files);
         }
 
         // 파일 아이콘 결정
@@ -720,6 +981,7 @@
         // 폴더 전환
         function switchFolder(folder) {
             currentFolder = folder;
+            currentPath = '';  // 하위 경로 초기화
 
             // 탭 활성화 상태 변경
             document.querySelectorAll('.folder-tab').forEach(tab => {
@@ -760,10 +1022,12 @@
             document.getElementById('totalSize').textContent = formatSize(totalSize);
         }
 
-        // 파일 미리보기
+        // 파일 미리보기 (캐시 무효화 추가)
         function previewFile(url, name) {
             document.getElementById('previewTitle').textContent = name;
-            document.getElementById('previewFrame').src = url;
+            // 캐시 무효화를 위해 타임스탬프 쿼리 파라미터 추가
+            const cacheBuster = `?t=${Date.now()}`;
+            document.getElementById('previewFrame').src = url + cacheBuster;
             document.getElementById('previewModal').classList.add('show');
         }
 
@@ -774,8 +1038,11 @@
         }
 
         // 파일 편집 (에디터로 이동)
-        function editFile(filename) {
-            window.location.href = `/static/editor.html?file=${encodeURIComponent(filename)}`;
+        function editFile(url, filename) {
+            // URL에서 폴더 경로 추출
+            // 예: /outputs/국민-나경원/NA_xxx.html -> outputs/국민-나경원/NA_xxx.html
+            const filePath = url.startsWith('/') ? url.substring(1) : url;
+            window.location.href = `/static/editor.html?file=${encodeURIComponent(filePath)}`;
         }
 
         // 파일 다운로드
@@ -832,12 +1099,211 @@
             }
         });
 
+        // ========================================
+        // 파일 업로드 기능
+        // ========================================
+        let filesToUpload = [];
+
+        // 폴더 옵션 클릭 이벤트 설정
+        function setupFolderOptions() {
+            document.querySelectorAll('.folder-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 모든 옵션에서 selected 클래스 제거
+                    document.querySelectorAll('.folder-option').forEach(o => o.classList.remove('selected'));
+                    // 클릭한 옵션에 selected 클래스 추가
+                    this.classList.add('selected');
+                    // 라디오 버튼 체크
+                    this.querySelector('input[type="radio"]').checked = true;
+                });
+            });
+        }
+
+        // 업로드 모달 표시
+        function showUploadModal() {
+            filesToUpload = [];
+            document.getElementById('uploadList').innerHTML = '';
+            document.getElementById('uploadProgress').style.display = 'none';
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('fileInput').value = '';
+            // 폴더 선택 초기화 (outputs 기본 선택)
+            document.querySelectorAll('.folder-option').forEach(o => o.classList.remove('selected'));
+            document.querySelector('.folder-option[data-folder="outputs"]').classList.add('selected');
+            document.querySelector('input[name="uploadFolder"][value="outputs"]').checked = true;
+            document.getElementById('uploadModal').classList.add('show');
+        }
+
+        // 업로드 모달 닫기
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('show');
+            filesToUpload = [];
+        }
+
+        // 드래그앤드롭 이벤트 설정
+        function setupDragDrop() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+
+            // 클릭으로 파일 선택
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            // 파일 선택 시
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+
+            // 드래그 이벤트
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.style.borderColor = '#667eea';
+                dropZone.style.background = '#f8f9ff';
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.style.borderColor = '#ddd';
+                dropZone.style.background = 'transparent';
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.style.borderColor = '#ddd';
+                dropZone.style.background = 'transparent';
+                handleFiles(e.dataTransfer.files);
+            });
+        }
+
+        // 파일 처리
+        function handleFiles(files) {
+            const uploadList = document.getElementById('uploadList');
+            const allowedExtensions = ['.html', '.htm', '.py'];
+
+            for (const file of files) {
+                // 허용된 파일 형식 체크
+                const ext = '.' + file.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(ext)) {
+                    alert(`"${file.name}"은(는) 허용되지 않는 파일 형식입니다.\n허용: HTML, Python`);
+                    continue;
+                }
+
+                // 중복 체크
+                if (filesToUpload.find(f => f.name === file.name)) {
+                    continue;
+                }
+
+                filesToUpload.push(file);
+
+                // 파일 아이콘 결정
+                const fileIcon = file.name.endsWith('.py') ? '🐍' : '🌐';
+
+                // 목록에 추가
+                const item = document.createElement('div');
+                item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 8px;';
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>${fileIcon}</span>
+                        <div>
+                            <div style="font-weight: 500;">${file.name}</div>
+                            <div style="font-size: 12px; color: #999;">${formatSize(file.size)}</div>
+                        </div>
+                    </div>
+                    <button onclick="removeFile('${file.name}', this)" style="background: #ffebee; color: #d32f2f; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">✕</button>
+                `;
+                uploadList.appendChild(item);
+            }
+
+            // 업로드 버튼 활성화
+            document.getElementById('uploadBtn').disabled = filesToUpload.length === 0;
+        }
+
+        // 파일 제거
+        function removeFile(filename, btn) {
+            filesToUpload = filesToUpload.filter(f => f.name !== filename);
+            btn.parentElement.remove();
+            document.getElementById('uploadBtn').disabled = filesToUpload.length === 0;
+        }
+
+        // 파일 업로드 실행
+        async function uploadFiles() {
+            if (filesToUpload.length === 0) return;
+
+            // 선택된 폴더 가져오기
+            const selectedFolder = document.querySelector('input[name="uploadFolder"]:checked').value;
+
+            const progressDiv = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const uploadBtn = document.getElementById('uploadBtn');
+
+            progressDiv.style.display = 'block';
+            uploadBtn.disabled = true;
+
+            let uploaded = 0;
+            let failed = 0;
+
+            for (let i = 0; i < filesToUpload.length; i++) {
+                const file = filesToUpload[i];
+                progressText.textContent = `업로드 중... ${i + 1}/${filesToUpload.length} - ${file.name} → ${selectedFolder}`;
+                progressBar.style.width = `${((i) / filesToUpload.length) * 100}%`;
+
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('folder', selectedFolder);
+
+                    const response = await fetch('/api/editor/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        uploaded++;
+                    } else {
+                        failed++;
+                        console.error(`Upload failed for ${file.name}:`, data);
+                    }
+                } catch (error) {
+                    failed++;
+                    console.error(`Upload error for ${file.name}:`, error);
+                }
+
+                progressBar.style.width = `${((i + 1) / filesToUpload.length) * 100}%`;
+            }
+
+            // 완료 메시지
+            if (failed === 0) {
+                progressText.textContent = `✅ ${uploaded}개 파일 → ${selectedFolder} 업로드 완료!`;
+                progressText.style.color = '#388e3c';
+            } else {
+                progressText.textContent = `⚠️ ${uploaded}개 성공, ${failed}개 실패`;
+                progressText.style.color = '#f57c00';
+            }
+
+            // 2초 후 모달 닫고 해당 폴더로 이동 (root 폴더는 목록 API가 없으므로 outputs로 이동)
+            setTimeout(() => {
+                closeUploadModal();
+                if (selectedFolder === 'root') {
+                    // root 폴더는 파일 목록 API가 없으므로 현재 폴더 유지
+                    refreshFiles();
+                } else {
+                    switchFolder(selectedFolder);
+                }
+            }, 1500);
+        }
+
         // 초기 로드
         document.addEventListener('DOMContentLoaded', () => {
             loadFiles('outputs');
 
+            // 드래그앤드롭 설정
+            setupDragDrop();
+
+            // 폴더 옵션 클릭 이벤트 설정
+            setupFolderOptions();
+
             // 다른 폴더 카운트도 로드
-            ['uploads', 'static', 'templates'].forEach(async (folder) => {
+            ['uploads', 'static', 'templates', 'root'].forEach(async (folder) => {
                 try {
                     const response = await fetch(`/api/files/${folder}`);
                     const data = await response.json();

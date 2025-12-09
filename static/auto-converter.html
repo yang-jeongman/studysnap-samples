@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>완전 자동화 선거공보물 변환기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .auto-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10B981, #059669);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #fafafa;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .upload-area.has-file {
+            border-color: #10B981;
+            background: #ecfdf5;
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .upload-area h3 {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-info .icon {
+            font-size: 2em;
+        }
+
+        .file-info .details {
+            flex: 1;
+            text-align: left;
+        }
+
+        .file-info .name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .file-info .size {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .file-info .remove {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Convert Button */
+        .convert-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .convert-btn.ready {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .convert-btn.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .convert-btn.disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .convert-btn.loading {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        /* Progress */
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-container.show {
+            display: block;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Result */
+        .result-container {
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+        }
+
+        .result-success {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .result-success h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .result-item .label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .result-item .value {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .result-actions a, .result-actions button {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+
+        .btn-preview {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-preview:hover {
+            background: #5a67d8;
+        }
+
+        .btn-download {
+            background: #10B981;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #059669;
+        }
+
+        .btn-reset {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #4b5563;
+        }
+
+        /* Features List */
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .feature-item .icon {
+            font-size: 1.5em;
+        }
+
+        .feature-item .text {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Party Colors */
+        .party-colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .party-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .party-chip .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Status */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #f0f9ff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        .status-dot.ready {
+            background: #10B981;
+        }
+
+        .status-dot.error {
+            background: #EF4444;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Error */
+        .error-container {
+            display: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .error-container.show {
+            display: block;
+        }
+
+        /* Batch Mode */
+        .batch-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .batch-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 저장 경로 선택 */
+        .save-path-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .save-path-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .folder-select-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .folder-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .folder-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .folder-option.selected {
+            border-color: #667eea;
+            background: #e8efff;
+        }
+
+        .folder-option input[type="radio"] {
+            display: none;
+        }
+
+        .folder-option .folder-icon {
+            font-size: 1.5em;
+        }
+
+        .folder-option .folder-info {
+            flex: 1;
+        }
+
+        .folder-option .folder-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .folder-option .folder-desc {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .custom-folder-input {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .custom-folder-input.show {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .custom-folder-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .custom-folder-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .existing-folders {
+            margin-top: 15px;
+        }
+
+        .existing-folders-title {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .existing-folders-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .existing-folder-chip {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .existing-folder-chip:hover {
+            background: #e8efff;
+            border-color: #667eea;
+        }
+
+        .existing-folder-chip.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>
+                <span class="auto-badge">AUTO</span>
+                선거공보물 완전 자동 변환기
+            </h1>
+            <p>PDF 업로드만 하면 자동으로 모바일 최적화 페이지 생성</p>
+        </header>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-indicator">
+                <span class="status-dot ready" id="statusDot"></span>
+                <span id="statusText">시스템 준비됨</span>
+            </div>
+            <span id="visionStatus">Vision OCR: 확인 중...</span>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="card">
+            <h2 class="card-title">📤 PDF 업로드</h2>
+
+            <div class="batch-toggle">
+                <input type="checkbox" id="batchMode">
+                <label for="batchMode">다중 파일 일괄 변환 모드</label>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📄</div>
+                <h3>선거공보물 PDF를 여기에 드래그하세요</h3>
+                <p>또는 클릭하여 파일 선택</p>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf" multiple>
+            </div>
+
+            <div id="fileList"></div>
+
+            <!-- 저장 경로 선택 -->
+            <div class="save-path-section">
+                <div class="save-path-title">📁 저장 경로 선택</div>
+                <div class="folder-select-grid">
+                    <label class="folder-option selected" data-folder="">
+                        <input type="radio" name="saveFolder" value="" checked>
+                        <span class="folder-icon">📄</span>
+                        <div class="folder-info">
+                            <div class="folder-name">기본 (outputs)</div>
+                            <div class="folder-desc">outputs 폴더에 저장</div>
+                        </div>
+                    </label>
+                    <label class="folder-option" data-folder="custom">
+                        <input type="radio" name="saveFolder" value="custom">
+                        <span class="folder-icon">✏️</span>
+                        <div class="folder-info">
+                            <div class="folder-name">새 폴더 생성</div>
+                            <div class="folder-desc">하위 폴더 직접 입력</div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- 새 폴더 입력 -->
+                <div class="custom-folder-input" id="customFolderInput">
+                    <span>outputs/</span>
+                    <input type="text" id="customFolderName" placeholder="예: 국민-홍길동">
+                </div>
+
+                <!-- 기존 폴더 목록 -->
+                <div class="existing-folders" id="existingFolders">
+                    <div class="existing-folders-title">📂 기존 폴더 선택:</div>
+                    <div class="existing-folders-list" id="existingFoldersList">
+                        <span style="color: #999; font-size: 0.9em;">로딩 중...</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="convert-btn disabled" id="convertBtn" disabled>
+                <span>📄 PDF를 선택해주세요</span>
+            </button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">변환 중...</div>
+            </div>
+
+            <div class="error-container" id="errorContainer"></div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card result-container" id="resultContainer">
+            <div class="result-success">
+                <h3>변환 완료!</h3>
+                <div class="result-info" id="resultInfo"></div>
+            </div>
+            <div class="result-actions">
+                <a href="#" class="btn-preview" id="previewBtn" target="_blank">미리보기</a>
+                <a href="#" class="btn-download" id="downloadBtn" download>다운로드</a>
+                <button class="btn-reset" id="resetBtn">새로 변환</button>
+            </div>
+        </div>
+
+        <!-- Features Card -->
+        <div class="card">
+            <h2 class="card-title">자동화 기능</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="icon">🎨</span>
+                    <span class="text">정당별 테마 자동 적용</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">👤</span>
+                    <span class="text">후보자 정보 자동 추출</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📋</span>
+                    <span class="text">공약 자동 구조화</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📱</span>
+                    <span class="text">모바일 최적화</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🔗</span>
+                    <span class="text">SNS 링크 자동 연결</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📞</span>
+                    <span class="text">전화번호 클릭 통화</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 25px; margin-bottom: 10px; color: #666;">지원 정당</h3>
+            <div class="party-colors" id="partyColors"></div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const convertBtn = document.getElementById('convertBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const resultContainer = document.getElementById('resultContainer');
+        const errorContainer = document.getElementById('errorContainer');
+        const batchMode = document.getElementById('batchMode');
+
+        let selectedFiles = [];
+        let selectedSaveFolder = '';  // 저장할 하위 폴더
+
+        // 폴더 선택 이벤트
+        document.querySelectorAll('.folder-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.folder-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+
+                const folderValue = this.dataset.folder;
+                const customInput = document.getElementById('customFolderInput');
+
+                if (folderValue === 'custom') {
+                    customInput.classList.add('show');
+                    selectedSaveFolder = document.getElementById('customFolderName').value.trim();
+                } else {
+                    customInput.classList.remove('show');
+                    selectedSaveFolder = folderValue;
+                }
+
+                // 기존 폴더 선택 해제
+                document.querySelectorAll('.existing-folder-chip').forEach(c => c.classList.remove('selected'));
+            });
+        });
+
+        // 커스텀 폴더 입력
+        document.getElementById('customFolderName').addEventListener('input', function() {
+            selectedSaveFolder = this.value.trim();
+            // 기존 폴더 선택 해제
+            document.querySelectorAll('.existing-folder-chip').forEach(c => c.classList.remove('selected'));
+        });
+
+        // 기존 폴더 목록 로드
+        async function loadExistingFolders() {
+            try {
+                const response = await fetch('/api/files/outputs');
+                const data = await response.json();
+
+                if (data.success && data.folders && data.folders.length > 0) {
+                    const list = document.getElementById('existingFoldersList');
+                    list.innerHTML = data.folders.map(folder => `
+                        <span class="existing-folder-chip" data-folder="${folder.name}" onclick="selectExistingFolder('${folder.name}')">
+                            📁 ${folder.name}
+                            <small>(${folder.file_count}개)</small>
+                        </span>
+                    `).join('');
+                } else {
+                    document.getElementById('existingFolders').style.display = 'none';
+                }
+            } catch (e) {
+                console.error('폴더 목록 로드 실패:', e);
+                document.getElementById('existingFolders').style.display = 'none';
+            }
+        }
+
+        // 기존 폴더 선택
+        function selectExistingFolder(folderName) {
+            // 기존 선택 해제
+            document.querySelectorAll('.existing-folder-chip').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.folder-option').forEach(o => o.classList.remove('selected'));
+
+            // 선택 표시
+            event.target.closest('.existing-folder-chip').classList.add('selected');
+            selectedSaveFolder = folderName;
+
+            // 커스텀 입력 숨김
+            document.getElementById('customFolderInput').classList.remove('show');
+        }
+
+        // 시스템 상태 확인
+        async function checkStatus() {
+            try {
+                const response = await fetch('/api/auto-convert/status');
+                const data = await response.json();
+
+                if (data.auto_converter_ready) {
+                    document.getElementById('statusDot').className = 'status-dot ready';
+                    document.getElementById('statusText').textContent = '시스템 준비됨';
+                } else {
+                    document.getElementById('statusDot').className = 'status-dot error';
+                    document.getElementById('statusText').textContent = '시스템 오류';
+                }
+
+                document.getElementById('visionStatus').textContent =
+                    `Vision OCR: ${data.vision_ocr_ready ? '활성화' : '비활성화'}`;
+
+                // 정당 색상 표시
+                const partyColors = document.getElementById('partyColors');
+                partyColors.innerHTML = data.supported_parties.map(party => `
+                    <div class="party-chip" style="background: ${party.color}20; color: ${party.color};">
+                        <span class="dot" style="background: ${party.color};"></span>
+                        ${party.name}
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('상태 확인 실패:', e);
+            }
+        }
+
+        checkStatus();
+        loadExistingFolders();
+
+        // 드래그 앤 드롭
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            handleFiles(fileInput.files);
+        });
+
+        function handleFiles(files) {
+            const pdfFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf'));
+
+            if (pdfFiles.length === 0) {
+                showError('PDF 파일만 업로드 가능합니다.');
+                return;
+            }
+
+            if (!batchMode.checked && pdfFiles.length > 1) {
+                showError('단일 파일 모드입니다. 다중 파일은 일괄 변환 모드를 활성화해주세요.');
+                return;
+            }
+
+            selectedFiles = pdfFiles;
+            renderFileList();
+            updateConvertButton();
+        }
+
+        function renderFileList() {
+            if (selectedFiles.length === 0) {
+                fileList.innerHTML = '';
+                uploadArea.classList.remove('has-file');
+                return;
+            }
+
+            uploadArea.classList.add('has-file');
+
+            fileList.innerHTML = selectedFiles.map((file, index) => `
+                <div class="file-info">
+                    <span class="icon">📄</span>
+                    <div class="details">
+                        <div class="name">${file.name}</div>
+                        <div class="size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <button class="remove" onclick="removeFile(${index})">삭제</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFileList();
+            updateConvertButton();
+        }
+
+        function updateConvertButton() {
+            if (selectedFiles.length > 0) {
+                convertBtn.disabled = false;
+                convertBtn.className = 'convert-btn ready';
+                convertBtn.innerHTML = `<span>🚀 ${selectedFiles.length}개 파일 자동 변환 시작</span>`;
+            } else {
+                convertBtn.disabled = true;
+                convertBtn.className = 'convert-btn disabled';
+                convertBtn.innerHTML = '<span>📄 PDF를 선택해주세요</span>';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function showError(message) {
+            errorContainer.textContent = '❌ ' + message;
+            errorContainer.classList.add('show');
+            setTimeout(() => {
+                errorContainer.classList.remove('show');
+            }, 5000);
+        }
+
+        // 변환 실행
+        convertBtn.addEventListener('click', async () => {
+            if (selectedFiles.length === 0) return;
+
+            errorContainer.classList.remove('show');
+            resultContainer.classList.remove('show');
+
+            convertBtn.disabled = true;
+            convertBtn.className = 'convert-btn loading';
+            convertBtn.innerHTML = '<span>변환 중...</span>';
+
+            progressContainer.classList.add('show');
+            progressFill.style.width = '10%';
+            progressText.textContent = 'PDF 분석 중...';
+
+            try {
+                let result;
+
+                if (selectedFiles.length === 1) {
+                    // 단일 파일 변환
+                    result = await convertSingle(selectedFiles[0]);
+                } else {
+                    // 일괄 변환
+                    result = await convertBatch(selectedFiles);
+                }
+
+                progressFill.style.width = '100%';
+                progressText.textContent = '완료!';
+
+                setTimeout(() => {
+                    progressContainer.classList.remove('show');
+                    showResult(result);
+                }, 500);
+
+            } catch (error) {
+                progressContainer.classList.remove('show');
+                showError(error.message);
+                updateConvertButton();
+            }
+        });
+
+        async function convertSingle(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // 저장 폴더 추가
+            if (selectedSaveFolder) {
+                formData.append('save_folder', selectedSaveFolder);
+            }
+
+            progressFill.style.width = '30%';
+            progressText.textContent = '정당 감지 중...';
+
+            await new Promise(r => setTimeout(r, 500));
+            progressFill.style.width = '50%';
+            progressText.textContent = '공약 추출 중...';
+
+            const response = await fetch('/api/auto-convert', {
+                method: 'POST',
+                body: formData
+            });
+
+            progressFill.style.width = '80%';
+            progressText.textContent = 'HTML 생성 중...';
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || '변환 실패');
+            }
+
+            return await response.json();
+        }
+
+        async function convertBatch(files) {
+            const formData = new FormData();
+            files.forEach(file => {
+                formData.append('files', file);
+            });
+
+            progressFill.style.width = '30%';
+            progressText.textContent = `${files.length}개 파일 일괄 변환 중...`;
+
+            const response = await fetch('/api/batch-convert', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || '일괄 변환 실패');
+            }
+
+            return await response.json();
+        }
+
+        function showResult(data) {
+            resultContainer.classList.add('show');
+
+            const resultInfo = document.getElementById('resultInfo');
+            const previewBtn = document.getElementById('previewBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            if (data.result) {
+                // 단일 파일 결과
+                const result = data.result;
+                resultInfo.innerHTML = `
+                    <div class="result-item">
+                        <div class="label">후보자</div>
+                        <div class="value">${result.candidate?.name || '추출됨'}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">정당</div>
+                        <div class="value">${result.candidate?.party || '감지됨'}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">공약 수</div>
+                        <div class="value">${result.statistics?.pledge_count || 0}개</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">페이지</div>
+                        <div class="value">${result.statistics?.page_count || 0}페이지</div>
+                    </div>
+                `;
+
+                previewBtn.href = result.url;
+                downloadBtn.href = result.url;
+                downloadBtn.download = result.filename;
+            } else if (data.results) {
+                // 일괄 변환 결과
+                const successCount = data.statistics.success;
+                const failCount = data.statistics.failed;
+
+                resultInfo.innerHTML = `
+                    <div class="result-item">
+                        <div class="label">총 파일</div>
+                        <div class="value">${data.statistics.total}개</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">성공</div>
+                        <div class="value" style="color: #10B981;">${successCount}개</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">실패</div>
+                        <div class="value" style="color: ${failCount > 0 ? '#EF4444' : 'inherit'};">${failCount}개</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">상태</div>
+                        <div class="value">${successCount === data.statistics.total ? '모두 성공' : '일부 실패'}</div>
+                    </div>
+                `;
+
+                // 첫 번째 성공한 파일로 미리보기 설정
+                const firstSuccess = data.results.find(r => r.success);
+                if (firstSuccess) {
+                    previewBtn.href = firstSuccess.output_url;
+                    previewBtn.textContent = '첫 번째 결과 미리보기';
+                } else {
+                    previewBtn.style.display = 'none';
+                }
+                downloadBtn.style.display = 'none';
+            }
+
+            convertBtn.innerHTML = '<span>✅ 변환 완료</span>';
+            convertBtn.className = 'convert-btn ready';
+        }
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            selectedFiles = [];
+            renderFileList();
+            updateConvertButton();
+            resultContainer.classList.remove('show');
+            fileInput.value = '';
+        });
+    </script>
+</body>
+</html>
