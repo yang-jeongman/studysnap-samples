@@ -641,17 +641,29 @@
                     </label>
                 </div>
 
-                <!-- 새 폴더 입력 -->
+                <!-- 새 폴더 입력 (정당/후보자명 구조) -->
                 <div class="custom-folder-input" id="customFolderInput">
-                    <span>outputs/</span>
-                    <input type="text" id="customFolderName" placeholder="예: 민주-이광재">
-                    <button type="button" onclick="validateNewFolder()" style="padding: 12px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">확인</button>
+                    <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                        <span>outputs/</span>
+                        <select id="partyFolderSelect" style="padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px;">
+                            <option value="">정당 선택</option>
+                            <option value="Minjoo">민주당 (Minjoo)</option>
+                            <option value="PPP">국민의힘 (PPP)</option>
+                            <option value="Other">기타</option>
+                        </select>
+                        <span>/</span>
+                        <input type="text" id="candidateFolderName" placeholder="후보자명 (예: 이광재)" style="flex: 1; min-width: 100px;">
+                    </div>
+                    <div id="customPartyInput" style="display: none; margin-top: 10px;">
+                        <input type="text" id="customPartyName" placeholder="정당 폴더명 직접 입력" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+                    <button type="button" onclick="validateNewFolder()" style="margin-top: 10px; padding: 12px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; width: 100%;">확인</button>
                 </div>
                 <div id="newFolderPreview" style="display: none; margin-top: 10px; padding: 12px 15px; background: #e8f5e9; border-radius: 8px; font-size: 0.9em;">
                     <div style="color: #2e7d32; font-weight: 500;">✅ 생성될 폴더 구조:</div>
                     <div style="margin-top: 5px; font-family: monospace; color: #333;">
-                        📁 outputs/<span id="previewFolderName">폴더명</span>/<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;├─ 📄 [후보자명]_변환결과.html<br>
+                        📁 outputs/<span id="previewPartyName">정당</span>/<span id="previewCandidateName">후보자명</span>/<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;├─ 📄 [후보자명].html<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;└─ 📁 images/ (이미지 업로드용)
                     </div>
                 </div>
@@ -765,31 +777,63 @@
             });
         });
 
-        // 커스텀 폴더 입력
-        document.getElementById('customFolderName').addEventListener('input', function() {
-            selectedSaveFolder = this.value.trim();
+        // 정당 선택 변경 시
+        document.getElementById('partyFolderSelect').addEventListener('change', function() {
+            const customPartyInput = document.getElementById('customPartyInput');
+            if (this.value === 'Other') {
+                customPartyInput.style.display = 'block';
+            } else {
+                customPartyInput.style.display = 'none';
+            }
+            // 미리보기 숨김 (재확인 필요)
+            document.getElementById('newFolderPreview').style.display = 'none';
+        });
+
+        // 후보자명 입력 시
+        document.getElementById('candidateFolderName').addEventListener('input', function() {
             // 기존 폴더 선택 해제
             document.querySelectorAll('.existing-folder-chip').forEach(c => c.classList.remove('selected'));
             // 미리보기 숨김 (재확인 필요)
             document.getElementById('newFolderPreview').style.display = 'none';
         });
 
-        // 새 폴더 검증 및 미리보기
+        // 새 폴더 검증 및 미리보기 (정당/후보자명 구조)
         function validateNewFolder() {
-            const folderName = document.getElementById('customFolderName').value.trim();
-            if (!folderName) {
-                alert('폴더명을 입력해주세요');
+            const partySelect = document.getElementById('partyFolderSelect').value;
+            const customParty = document.getElementById('customPartyName').value.trim();
+            const candidateName = document.getElementById('candidateFolderName').value.trim();
+
+            // 정당 결정
+            let partyFolder = partySelect;
+            if (partySelect === 'Other') {
+                partyFolder = customParty;
+            }
+
+            if (!partyFolder) {
+                alert('정당을 선택하거나 입력해주세요');
+                return;
+            }
+            if (!candidateName) {
+                alert('후보자명을 입력해주세요');
                 return;
             }
             // 특수문자 검사 (한글, 영문, 숫자, -, _ 허용)
-            if (!/^[가-힣a-zA-Z0-9\-_]+$/.test(folderName)) {
-                alert('폴더명에는 한글, 영문, 숫자, -, _ 만 사용할 수 있습니다');
+            if (!/^[가-힣a-zA-Z0-9\-_]+$/.test(partyFolder)) {
+                alert('정당 폴더명에는 한글, 영문, 숫자, -, _ 만 사용할 수 있습니다');
                 return;
             }
+            if (!/^[가-힣a-zA-Z0-9\-_]+$/.test(candidateName)) {
+                alert('후보자명에는 한글, 영문, 숫자, -, _ 만 사용할 수 있습니다');
+                return;
+            }
+
             // 미리보기 표시
-            document.getElementById('previewFolderName').textContent = folderName;
+            document.getElementById('previewPartyName').textContent = partyFolder;
+            document.getElementById('previewCandidateName').textContent = candidateName;
             document.getElementById('newFolderPreview').style.display = 'block';
-            selectedSaveFolder = folderName;
+
+            // 폴더 경로 설정: 정당/후보자명
+            selectedSaveFolder = partyFolder + '/' + candidateName;
             createImagesFolder = true;  // images 폴더도 생성
         }
 
