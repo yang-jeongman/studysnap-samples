@@ -9,12 +9,14 @@ import shutil
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
+from urllib.parse import unquote, quote
 from dotenv import load_dotenv
 
 from pdf_converter import PDFConverter
@@ -51,6 +53,51 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# ============================================
+# 한글 URL 인코딩 미들웨어
+# ============================================
+class KoreanURLMiddleware(BaseHTTPMiddleware):
+    """
+    한글 URL을 올바르게 처리하는 미들웨어
+    Windows에서 외부 접속 시 한글 깨짐 문제 해결
+    """
+    async def dispatch(self, request: Request, call_next):
+        # 원본 경로 가져오기
+        original_path = request.scope.get('path', '')
+
+        # URL 디코딩 시도 (이미 디코딩된 경우 그대로 유지)
+        try:
+            # UTF-8로 URL 디코딩
+            decoded_path = unquote(original_path, encoding='utf-8')
+
+            # CP949로 잘못 인코딩된 경우 복구 시도
+            if decoded_path != original_path:
+                try:
+                    # CP949로 인코딩된 바이트를 UTF-8로 재해석
+                    test_bytes = decoded_path.encode('latin-1')
+                    try:
+                        # CP949로 디코딩 시도
+                        cp949_decoded = test_bytes.decode('cp949')
+                        # UTF-8로 다시 인코딩하여 올바른 경로 생성
+                        decoded_path = cp949_decoded
+                        logger.debug(f"CP949 복구: {original_path} -> {decoded_path}")
+                    except (UnicodeDecodeError, UnicodeEncodeError):
+                        pass
+                except (UnicodeDecodeError, UnicodeEncodeError):
+                    pass
+
+            # 경로 업데이트
+            request.scope['path'] = decoded_path
+
+        except Exception as e:
+            logger.warning(f"URL 디코딩 실패: {original_path} - {e}")
+
+        response = await call_next(request)
+        return response
+
+# 미들웨어 등록 (순서 중요: 가장 먼저 실행되어야 함)
+app.add_middleware(KoreanURLMiddleware)
+
 # CORS 설정 (프론트엔드에서 접근 허용)
 app.add_middleware(
     CORSMiddleware,
@@ -81,8 +128,11 @@ TEMPLATES_DIR.mkdir(exist_ok=True)
 STATIC_DIR = BASE_DIR / "static"
 STATIC_DIR.mkdir(exist_ok=True)
 
-app.mount("/outputs", StaticFiles(directory=str(OUTPUT_DIR)), name="outputs")
+# static 폴더는 StaticFiles로 서빙 (영문 파일명만 있음)
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")
+
+# outputs 폴더는 한글 지원을 위해 커스텀 라우터로 처리 (아래 serve_outputs_file 참조)
+# app.mount("/outputs", StaticFiles(directory=str(OUTPUT_DIR)), name="outputs")  # 비활성화
 
 # PDF 변환기 및 HTML 생성기 초기화
 pdf_converter = PDFConverter()
@@ -207,6 +257,75 @@ async def root():
 async def health_check():
     """헬스체크 엔드포인트"""
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+
+
+# ============================================
+# 한글 파일명 지원 outputs 라우터
+# ============================================
+@app.get("/outputs/{file_path:path}")
+async def serve_outputs_file(file_path: str, request: Request):
+    """
+    outputs 폴더의 파일을 한글 파일명 지원하여 서빙
+    StaticFiles의 한글 인코딩 문제를 우회
+
+    예: /outputs/민주-류삼영/류삼영_with_images.html
+    """
+    import mimetypes
+
+    try:
+        # URL 디코딩 (미들웨어에서 이미 처리되었을 수 있음)
+        decoded_path = unquote(file_path, encoding='utf-8')
+
+        # 경로 보안 검증
+        full_path = OUTPUT_DIR / decoded_path
+
+        try:
+            resolved_path = full_path.resolve()
+            base_resolved = OUTPUT_DIR.resolve()
+
+            # 경로 순회 공격 방지
+            if not str(resolved_path).startswith(str(base_resolved)):
+                raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+        except Exception:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        # 파일 존재 확인
+        if not full_path.exists():
+            # CP949 인코딩으로 재시도
+            try:
+                cp949_path = decoded_path.encode('utf-8').decode('cp949', errors='ignore')
+                alt_path = OUTPUT_DIR / cp949_path
+                if alt_path.exists():
+                    full_path = alt_path
+                else:
+                    raise HTTPException(status_code=404, detail=f"파일을 찾을 수 없습니다: {decoded_path}")
+            except:
+                raise HTTPException(status_code=404, detail=f"파일을 찾을 수 없습니다: {decoded_path}")
+
+        if full_path.is_dir():
+            raise HTTPException(status_code=400, detail="디렉토리는 직접 접근할 수 없습니다")
+
+        # MIME 타입 결정
+        mime_type, _ = mimetypes.guess_type(str(full_path))
+        if mime_type is None:
+            mime_type = "application/octet-stream"
+
+        # 파일 반환
+        return FileResponse(
+            path=str(full_path),
+            media_type=mime_type,
+            filename=full_path.name,
+            headers={
+                "Cache-Control": "public, max-age=3600",
+                "Content-Disposition": f"inline; filename*=UTF-8''{quote(full_path.name)}"
+            }
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"파일 서빙 실패: {file_path} - {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"파일 서빙 실패: {str(e)}")
 
 
 @app.post("/api/convert")
@@ -590,6 +709,113 @@ async def export_learning_data():
     except Exception as e:
         logger.error(f"학습 데이터 내보내기 실패: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"내보내기 실패: {str(e)}")
+
+
+# ============================================
+# 능동형 AI 학습 API (v2.0)
+# ============================================
+
+# 능동형 학습 엔진 초기화
+try:
+    from learning_data.active_learning import get_learning_engine
+    active_learning_engine = get_learning_engine()
+    logger.info("능동형 AI 학습 엔진 로드됨")
+except ImportError as e:
+    active_learning_engine = None
+    logger.warning(f"능동형 학습 엔진 로드 실패: {e}")
+
+
+@app.get("/api/learning/stats")
+async def get_active_learning_stats():
+    """능동형 AI 학습 통계 조회"""
+    try:
+        if active_learning_engine is None:
+            return JSONResponse({"error": "학습 엔진이 초기화되지 않았습니다"}, status_code=500)
+
+        stats = active_learning_engine.get_learning_stats()
+        return JSONResponse(stats)
+    except Exception as e:
+        logger.error(f"학습 통계 조회 실패: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/learning/feedback")
+async def submit_learning_feedback(request: Request):
+    """사용자 피드백 수집 및 학습"""
+    try:
+        if active_learning_engine is None:
+            return JSONResponse({"error": "학습 엔진이 초기화되지 않았습니다"}, status_code=500)
+
+        data = await request.json()
+
+        feedback = active_learning_engine.add_feedback(
+            job_id=data.get("job_id", "unknown"),
+            rating=data.get("rating", 3),
+            feedback_type=data.get("feedback_type", "rating"),
+            category=data.get("category", "overall"),
+            original_value=data.get("original_value", ""),
+            corrected_value=data.get("corrected_value", ""),
+            comment=data.get("comment", "")
+        )
+
+        logger.info(f"피드백 수신: job={data.get('job_id')}, rating={data.get('rating')}")
+
+        return JSONResponse({
+            "success": True,
+            "message": "피드백이 저장되고 학습에 반영되었습니다",
+            "feedback_id": feedback.job_id
+        })
+    except Exception as e:
+        logger.error(f"피드백 저장 실패: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/learning/html-diff")
+async def save_html_diff(request: Request):
+    """HTML 변경 비교 저장 및 패턴 학습"""
+    try:
+        if active_learning_engine is None:
+            return JSONResponse({"error": "학습 엔진이 초기화되지 않았습니다"}, status_code=500)
+
+        data = await request.json()
+
+        diff = active_learning_engine.save_html_diff(
+            job_id=data.get("job_id", "unknown"),
+            original_html=data.get("original_html", ""),
+            modified_html=data.get("modified_html", "")
+        )
+
+        logger.info(f"HTML 변경 저장: job={data.get('job_id')}, changes={len(diff.changes)}")
+
+        return JSONResponse({
+            "success": True,
+            "message": f"{len(diff.changes)}개 변경점 분석, {len(diff.extracted_patterns)}개 패턴 추출됨",
+            "changes_count": len(diff.changes),
+            "patterns_count": len(diff.extracted_patterns)
+        })
+    except Exception as e:
+        logger.error(f"HTML diff 저장 실패: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/learning/report")
+async def get_learning_report():
+    """AI 학습 개선 리포트"""
+    try:
+        if active_learning_engine is None:
+            return JSONResponse({"error": "학습 엔진이 초기화되지 않았습니다"}, status_code=500)
+
+        report = active_learning_engine.get_improvement_report()
+        stats = active_learning_engine.get_learning_stats()
+
+        return JSONResponse({
+            "success": True,
+            "report": report,
+            "stats": stats
+        })
+    except Exception as e:
+        logger.error(f"리포트 생성 실패: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
 
 
 # ============================================
@@ -1119,69 +1345,212 @@ async def storage_status():
 # 파일 브라우저 API
 # ============================================
 
-@app.get("/api/files/{folder}")
-async def list_folder_files(folder: str):
+def fix_korean_filename(name: str) -> str:
     """
-    폴더별 파일 목록 반환 (파일 브라우저용)
-
-    - folder: outputs, uploads, static, templates
+    Windows에서 한글 파일명의 surrogate escape 문제 해결
+    Python pathlib이 반환하는 surrogate-escaped 문자열을 정상 한글로 변환
     """
     try:
-        # 허용된 폴더만 접근 가능
-        allowed_folders = {
+        # 이미 정상적인 문자열인 경우 그대로 반환
+        name.encode('utf-8')
+        return name
+    except UnicodeEncodeError:
+        # surrogate escape가 있는 경우
+        try:
+            # surrogateescape로 바이트로 변환 후 cp949로 디코드 시도
+            raw_bytes = name.encode('utf-8', errors='surrogateescape')
+            return raw_bytes.decode('cp949', errors='replace')
+        except Exception:
+            try:
+                # euc-kr 시도
+                raw_bytes = name.encode('utf-8', errors='surrogateescape')
+                return raw_bytes.decode('euc-kr', errors='replace')
+            except Exception:
+                # 최후의 수단: replace 에러 핸들러 사용
+                return name.encode('utf-8', errors='replace').decode('utf-8')
+
+@app.get("/api/files/{folder:path}")
+async def list_folder_files(folder: str, subpath: str = ""):
+    """
+    폴더별 파일 목록 반환 (파일 브라우저용)
+    하위 폴더 탐색 지원
+
+    - folder: outputs, uploads, static, templates, root 또는 outputs/하위폴더
+    - subpath: 하위 경로 (쿼리 파라미터)
+    """
+    try:
+        # 기본 폴더 매핑
+        base_folders = {
             'outputs': OUTPUT_DIR,
             'uploads': UPLOAD_DIR,
             'static': STATIC_DIR,
-            'templates': TEMPLATES_DIR
+            'templates': TEMPLATES_DIR,
+            'root': BASE_DIR
         }
 
-        if folder not in allowed_folders:
-            raise HTTPException(status_code=400, detail=f"허용되지 않은 폴더: {folder}")
+        # folder가 "outputs/국민-나경원" 형태인 경우 파싱
+        parts = folder.split('/')
+        base_folder = parts[0]
+        sub_path = '/'.join(parts[1:]) if len(parts) > 1 else ""
 
-        folder_path = allowed_folders[folder]
+        if base_folder not in base_folders:
+            raise HTTPException(status_code=400, detail=f"허용되지 않은 폴더: {base_folder}")
+
+        folder_path = base_folders[base_folder]
+
+        # 하위 경로가 있으면 적용
+        if sub_path:
+            folder_path = folder_path / sub_path
+
+        # 경로 순회 공격 방지
+        try:
+            folder_path = folder_path.resolve()
+            base_path = base_folders[base_folder].resolve()
+            if not str(folder_path).startswith(str(base_path)):
+                raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+        except Exception:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
 
         if not folder_path.exists():
             return JSONResponse({
                 "success": True,
                 "files": [],
+                "folders": [],
                 "count": 0,
                 "folder": folder,
+                "current_path": sub_path,
                 "total_size": 0
             })
 
         files = []
+        folders = []
         total_size = 0
 
-        for file_path in folder_path.iterdir():
-            if file_path.is_file():
-                try:
-                    stat = file_path.stat()
+        for item_path in folder_path.iterdir():
+            try:
+                # 한글 파일명 인코딩 문제 해결
+                fixed_name = fix_korean_filename(item_path.name)
+
+                if item_path.is_dir():
+                    # 하위 폴더
+                    folder_files = list(item_path.glob('*'))
+                    folders.append({
+                        "name": fixed_name,
+                        "type": "folder",
+                        "file_count": len([f for f in folder_files if f.is_file()]),
+                        "path": f"{base_folder}/{sub_path}/{fixed_name}".replace('//', '/')
+                    })
+                elif item_path.is_file():
+                    # 파일
+                    stat = item_path.stat()
                     total_size += stat.st_size
+
+                    # URL 경로 구성
+                    if sub_path:
+                        url = f"/{base_folder}/{sub_path}/{fixed_name}"
+                    else:
+                        url = f"/{base_folder}/{fixed_name}"
+
                     files.append({
-                        "name": file_path.name,
+                        "name": fixed_name,
+                        "type": "file",
                         "size": stat.st_size,
                         "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
-                        "url": f"/{folder}/{file_path.name}"
+                        "url": url,
+                        "folder_path": sub_path
                     })
-                except Exception as e:
-                    logger.warning(f"파일 정보 조회 실패: {file_path.name} - {str(e)}")
+            except Exception as e:
+                logger.warning(f"항목 정보 조회 실패: {item_path} - {str(e)}")
 
-        # 최신 파일 우선 정렬
+        # 폴더는 이름순, 파일은 최신순 정렬
+        folders.sort(key=lambda x: x["name"])
         files.sort(key=lambda x: x["modified"], reverse=True)
 
-        return JSONResponse({
-            "success": True,
-            "files": files,
-            "count": len(files),
-            "folder": folder,
-            "total_size": total_size
-        })
+        import json
+        return JSONResponse(
+            content={
+                "success": True,
+                "files": files,
+                "folders": folders,
+                "count": len(files),
+                "folder_count": len(folders),
+                "folder": base_folder,
+                "current_path": sub_path,
+                "total_size": total_size
+            },
+            media_type="application/json; charset=utf-8"
+        )
 
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"폴더 파일 목록 조회 실패: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"파일 목록 조회 실패: {str(e)}")
+
+
+@app.get("/api/serve/{file_path:path}")
+async def serve_file(file_path: str):
+    """
+    한글 경로를 지원하는 파일 서빙 API
+    StaticFiles의 한글 인코딩 문제를 우회
+
+    사용법: /api/serve/outputs/민주-류삼영/류삼영_with_images.html
+    """
+    try:
+        from urllib.parse import unquote
+
+        # URL 디코딩 (한글 처리)
+        decoded_path = unquote(file_path)
+
+        # outputs, uploads, static 폴더만 허용
+        allowed_prefixes = {
+            'outputs': OUTPUT_DIR,
+            'uploads': UPLOAD_DIR,
+            'static': STATIC_DIR,
+        }
+
+        # 경로 파싱
+        parts = decoded_path.split('/')
+        if len(parts) < 2:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        base_folder = parts[0]
+        if base_folder not in allowed_prefixes:
+            raise HTTPException(status_code=400, detail=f"허용되지 않은 폴더: {base_folder}")
+
+        # 실제 파일 경로 구성
+        relative_path = '/'.join(parts[1:])
+        full_path = allowed_prefixes[base_folder] / relative_path
+
+        # 경로 순회 공격 방지
+        full_path = full_path.resolve()
+        base_path = allowed_prefixes[base_folder].resolve()
+        if not str(full_path).startswith(str(base_path)):
+            raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+
+        if not full_path.exists():
+            raise HTTPException(status_code=404, detail=f"파일을 찾을 수 없습니다: {decoded_path}")
+
+        if not full_path.is_file():
+            raise HTTPException(status_code=400, detail="디렉토리는 서빙할 수 없습니다")
+
+        # MIME 타입 결정
+        import mimetypes
+        mime_type, _ = mimetypes.guess_type(str(full_path))
+        if mime_type is None:
+            mime_type = "application/octet-stream"
+
+        return FileResponse(
+            path=str(full_path),
+            media_type=mime_type,
+            filename=full_path.name
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"파일 서빙 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"파일 서빙 실패: {str(e)}")
 
 
 @app.delete("/api/files/{folder}/{filename}")
@@ -1195,7 +1564,8 @@ async def delete_folder_file(folder: str, filename: str):
             'outputs': OUTPUT_DIR,
             'uploads': UPLOAD_DIR,
             'static': STATIC_DIR,
-            'templates': TEMPLATES_DIR
+            'templates': TEMPLATES_DIR,
+            'root': BASE_DIR  # 루트 폴더 (Python 파일용)
         }
 
         if folder not in allowed_folders:
@@ -1260,6 +1630,125 @@ async def list_html_files():
     except Exception as e:
         logger.error(f"파일 목록 조회 실패: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"파일 목록 조회 실패: {str(e)}")
+
+
+
+
+@app.post("/api/convert-pdf")
+async def convert_pdf_for_editor(
+    file: UploadFile = File(...),
+    output_name: Optional[str] = Form(default=None)
+):
+    """
+    에디터용 간소화된 PDF 변환 API
+    
+    - file: PDF 파일
+    - output_name: 출력 파일명 (선택사항)
+    
+    Returns:
+    - success: 성공 여부
+    - filename: 생성된 HTML 파일명
+    - url: 파일 URL
+    """
+    
+    # 파일 검증
+    if not file.filename.lower().endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="PDF 파일만 업로드 가능합니다")
+    
+    # 파일 크기 제한 (50MB)
+    MAX_FILE_SIZE = 50 * 1024 * 1024
+    pdf_content = await file.read()
+    if len(pdf_content) > MAX_FILE_SIZE:
+        raise HTTPException(status_code=400, detail="파일 크기는 50MB를 초과할 수 없습니다")
+    
+    # 고유 ID 생성
+    job_id = str(uuid.uuid4())[:8]
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # 파일 저장
+    original_filename = file.filename
+    safe_filename = f"{job_id}_{timestamp}.pdf"
+    upload_path = UPLOAD_DIR / safe_filename
+    
+    try:
+        with open(upload_path, "wb") as f:
+            f.write(pdf_content)
+        
+        logger.info(f"[{job_id}] 에디터 PDF 변환 시작: {original_filename}")
+        
+        # 1. PDF에서 텍스트와 이미지 추출
+        try:
+            extracted_data = pdf_converter.extract_from_pdf(
+                str(upload_path),
+                content_type="general",
+                exclude_pages=[]
+            )
+        except Exception as e:
+            logger.error(f"[{job_id}] PDF 추출 실패: {str(e)}", exc_info=True)
+            raise HTTPException(status_code=500, detail=f"PDF 파일 처리 중 오류가 발생했습니다: {str(e)}")
+        
+        if not extracted_data:
+            logger.error(f"[{job_id}] PDF 추출 결과가 없음")
+            raise HTTPException(status_code=500, detail="PDF 처리 중 오류가 발생했습니다")
+        
+        logger.info(f"[{job_id}] PDF 추출 완료: {extracted_data.get('page_count', 0)}페이지")
+        
+        # 2. HTML 생성
+        result_title = output_name if output_name else Path(original_filename).stem
+        
+        # 출력 파일명 생성 - output_name이 있으면 사용, 없으면 자동 생성
+        if output_name:
+            # 사용자 지정 파일명 (확장자 처리)
+            if not output_name.lower().endswith('.html'):
+                output_name += '.html'
+            output_filename = output_name
+        else:
+            # 원본 PDF 파일명 기반 자동 생성
+            safe_pdf_name = Path(original_filename).stem
+            safe_pdf_name = "".join(c for c in safe_pdf_name if c.isalnum() or c in ('_', '-', ' ', '가', '나', '다') or ord(c) > 127).strip()
+            if not safe_pdf_name:
+                safe_pdf_name = "document"
+            output_filename = f"{safe_pdf_name}_{timestamp}.html"
+        
+        output_path = OUTPUT_DIR / output_filename
+        
+        try:
+            html_content = html_generator.generate_html(
+                extracted_data=extracted_data,
+                title=result_title,
+                content_type="general",
+                job_id=job_id
+            )
+        except Exception as e:
+            logger.error(f"[{job_id}] HTML 생성 실패: {str(e)}", exc_info=True)
+            raise HTTPException(status_code=500, detail=f"HTML 생성 중 오류가 발생했습니다: {str(e)}")
+        
+        # HTML 파일 저장
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        
+        logger.info(f"[{job_id}] HTML 변환 완료: {output_filename}")
+        
+        # 임시 파일 정리
+        cleanup_temp_files(job_id=job_id, keep_outputs=True)
+        
+        result_url = f"/outputs/{output_filename}"
+        
+        return JSONResponse({
+            "success": True,
+            "filename": output_filename,
+            "url": result_url,
+            "title": result_title,
+            "page_count": extracted_data.get('page_count', 0)
+        })
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[{job_id}] PDF 변환 실패: {str(e)}", exc_info=True)
+        # 임시 파일 정리
+        cleanup_temp_files(job_id=job_id, keep_outputs=False)
+        raise HTTPException(status_code=500, detail=f"PDF 변환 중 오류가 발생했습니다: {str(e)}")
 
 
 @app.post("/api/upload-image")
@@ -1563,9 +2052,9 @@ async def get_text_diff(request: Request):
 @app.post("/api/editor/save")
 async def save_html_file(request: Request):
     """
-    HTML 에디터에서 파일 저장
+    HTML 에디터에서 파일 저장 (하위 폴더 지원)
 
-    - filename: 저장할 파일명
+    - filename: 저장할 파일명 또는 경로 (예: 국민-나경원/NA_xxx.html, outputs/국민-나경원/NA_xxx.html)
     - content: HTML 내용
     """
     try:
@@ -1580,15 +2069,33 @@ async def save_html_file(request: Request):
         if not filename or not content:
             raise HTTPException(status_code=400, detail="filename과 content가 필요합니다")
 
-        # 보안: 파일명 검증 (경로 조작 방지)
-        if ".." in filename or "/" in filename or "\\" in filename:
+        # 보안: 상위 디렉토리 접근 방지
+        if ".." in filename:
             raise HTTPException(status_code=400, detail="잘못된 파일명입니다")
+
+        # 파일 경로 정규화
+        # outputs/하위폴더/파일명 또는 하위폴더/파일명 형태 지원
+        filename = filename.replace("\\", "/")  # 윈도우 경로 정규화
+
+        if filename.startswith("outputs/"):
+            filename = filename[8:]  # "outputs/" 제거
 
         if not filename.endswith(".html"):
             raise HTTPException(status_code=400, detail="HTML 파일만 저장할 수 있습니다")
 
-        # 파일 저장
+        # 파일 저장 경로
         file_path = OUTPUT_DIR / filename
+
+        # 경로 순회 공격 방지
+        try:
+            file_path = file_path.resolve()
+            if not str(file_path).startswith(str(OUTPUT_DIR.resolve())):
+                raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+        except Exception:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        # 하위 폴더가 있으면 생성
+        file_path.parent.mkdir(parents=True, exist_ok=True)
 
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
@@ -1607,6 +2114,365 @@ async def save_html_file(request: Request):
     except Exception as e:
         logger.error(f"파일 저장 실패: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"파일 저장 실패: {str(e)}")
+
+
+@app.post("/api/editor/upload")
+async def upload_file(
+    file: UploadFile = File(...),
+    folder: str = Form(default="outputs")
+):
+    """
+    파일 업로드 (HTML, Python)
+
+    - 로컬에서 작업한 파일을 서버에 업로드
+    - folder 파라미터로 저장 위치 선택 가능 (outputs, static, uploads)
+    - 허용 파일: .html, .htm, .py
+    """
+    try:
+        # 허용된 폴더만 사용 가능
+        allowed_folders = {
+            "outputs": OUTPUT_DIR,
+            "static": STATIC_DIR,
+            "uploads": UPLOAD_DIR,
+            "root": BASE_DIR  # 루트 폴더 (Python 파일용)
+        }
+
+        if folder not in allowed_folders:
+            raise HTTPException(status_code=400, detail=f"허용되지 않은 폴더입니다. 사용 가능: {list(allowed_folders.keys())}")
+
+        target_dir = allowed_folders[folder]
+
+        # 파일 확장자 검증
+        allowed_extensions = ['.html', '.htm', '.py']
+        file_ext = '.' + file.filename.split('.')[-1].lower() if '.' in file.filename else ''
+        if file_ext not in allowed_extensions:
+            raise HTTPException(status_code=400, detail=f"허용되지 않는 파일 형식입니다. 허용: {', '.join(allowed_extensions)}")
+
+        # 보안: 파일명 검증 (경로 조작 방지)
+        filename = file.filename
+        if ".." in filename or "/" in filename or "\\" in filename:
+            raise HTTPException(status_code=400, detail="잘못된 파일명입니다")
+
+        # 파일 내용 읽기
+        content = await file.read()
+
+        # UTF-8로 디코딩 시도
+        try:
+            content_str = content.decode('utf-8')
+        except UnicodeDecodeError:
+            content_str = content.decode('cp949')  # 한글 Windows 인코딩
+
+        # 파일 저장
+        file_path = target_dir / filename
+
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content_str)
+
+        logger.info(f"파일 업로드 완료: {folder}/{filename} ({len(content_str)} bytes)")
+
+        return JSONResponse({
+            "success": True,
+            "message": f"파일이 {folder} 폴더에 업로드되었습니다",
+            "filename": filename,
+            "folder": folder,
+            "size": len(content_str),
+            "url": f"/{folder}/{filename}"
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"파일 업로드 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"파일 업로드 실패: {str(e)}")
+
+
+# ============================================
+# 완전 자동화 변환 API
+# ============================================
+
+# 자동화 변환기 초기화
+try:
+    from auto_election_converter import AutoElectionConverter
+    auto_converter = AutoElectionConverter()
+    logger.info("완전 자동화 변환기 초기화 완료")
+except Exception as e:
+    auto_converter = None
+    logger.warning(f"완전 자동화 변환기 초기화 실패: {e}")
+
+
+@app.post("/api/auto-convert")
+async def auto_convert_election(
+    file: UploadFile = File(...),
+    title: Optional[str] = Form(default=None),
+    save_folder: Optional[str] = Form(default=None)
+):
+    """
+    완전 자동화 선거공보물 변환 API
+
+    - PDF 업로드 시 자동으로:
+      1. 정당 감지 및 테마 적용
+      2. 후보자 정보 추출
+      3. 공약/경력 구조화
+      4. 모바일 최적화 HTML 생성
+
+    Parameters:
+    - file: PDF 파일
+    - title: 출력 파일 제목 (선택사항)
+    - save_folder: 저장할 하위 폴더명 (선택사항, 예: 국민-나경원)
+
+    Returns:
+    - success: 성공 여부
+    - result: 변환 결과 (URL, 파일명, 추출된 정보)
+    """
+    if auto_converter is None:
+        raise HTTPException(
+            status_code=500,
+            detail="자동화 변환기가 초기화되지 않았습니다"
+        )
+
+    # 파일 검증
+    if not file.filename.lower().endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="PDF 파일만 업로드 가능합니다")
+
+    # 파일 크기 제한 (50MB)
+    MAX_FILE_SIZE = 50 * 1024 * 1024
+    content = await file.read()
+    if len(content) > MAX_FILE_SIZE:
+        raise HTTPException(status_code=400, detail="파일 크기는 50MB를 초과할 수 없습니다")
+
+    # 고유 ID 생성
+    job_id = str(uuid.uuid4())[:8]
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # 파일 저장
+    original_filename = file.filename
+    safe_filename = f"{job_id}_{timestamp}.pdf"
+    upload_path = UPLOAD_DIR / safe_filename
+
+    try:
+        with open(upload_path, "wb") as f:
+            f.write(content)
+
+        logger.info(f"[{job_id}] 완전 자동화 변환 시작: {original_filename}")
+
+        # 자동 변환 실행 (원본 파일명 전달)
+        brochure = auto_converter.convert(str(upload_path), original_filename=original_filename)
+
+        # 출력 파일명 생성
+        if title:
+            safe_title = "".join(c for c in title if c.isalnum() or c in ('_', '-', ' ') or ord(c) > 127).strip()
+            output_filename = f"{safe_title}_{timestamp}.html"
+        elif brochure.candidate.name:
+            output_filename = f"{brochure.candidate.name}_{timestamp}.html"
+        else:
+            output_filename = f"AUTO_{job_id}_{timestamp}.html"
+
+        # 저장 경로 설정 (하위 폴더 지원)
+        if save_folder:
+            # 보안: 상위 디렉토리 접근 방지
+            if ".." in save_folder:
+                raise HTTPException(status_code=400, detail="잘못된 폴더명입니다")
+            # 하위 폴더 생성
+            output_dir = OUTPUT_DIR / save_folder
+            output_dir.mkdir(parents=True, exist_ok=True)
+            output_path = output_dir / output_filename
+            output_url_path = f"/outputs/{save_folder}/{output_filename}"
+        else:
+            output_dir = OUTPUT_DIR
+            output_path = OUTPUT_DIR / output_filename
+            output_url_path = f"/outputs/{output_filename}"
+
+        # HTML 생성 (이미지 폴더 경로 전달)
+        html_content = auto_converter.generate_html(brochure, output_folder=str(output_dir))
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+
+        logger.info(f"[{job_id}] 완전 자동화 변환 완료: {output_filename}")
+
+        # 임시 파일 정리
+        cleanup_temp_files(job_id=job_id, keep_outputs=True)
+
+        # 학습 시스템에 기록
+        try:
+            learning_system.log_conversion(job_id, {
+                "filename": original_filename,
+                "content_type": "election",
+                "page_count": len(brochure.raw_pages),
+                "is_image_based": any(p.get("ocr_used") for p in brochure.raw_pages),
+                "ocr_used": any(p.get("ocr_used") for p in brochure.raw_pages),
+                "auto_converted": True,
+                "party_detected": brochure.candidate.party,
+                "candidate_name": brochure.candidate.name
+            })
+        except Exception as e:
+            logger.error(f"학습 데이터 기록 실패: {str(e)}")
+
+        return JSONResponse({
+            "success": True,
+            "job_id": job_id,
+            "message": "완전 자동화 변환이 완료되었습니다",
+            "result": {
+                "url": output_url_path,
+                "filename": output_filename,
+                "save_folder": save_folder or "",
+                "original_filename": original_filename,
+                "candidate": {
+                    "name": brochure.candidate.name,
+                    "party": brochure.candidate.party,
+                    "symbol": brochure.candidate.symbol,
+                    "position": brochure.candidate.position,
+                    "district": brochure.candidate.district
+                },
+                "statistics": {
+                    "page_count": len(brochure.raw_pages),
+                    "pledge_count": len(brochure.core_pledges),
+                    "career_count": len(brochure.careers),
+                    "ocr_pages": sum(1 for p in brochure.raw_pages if p.get("ocr_used"))
+                },
+                "theme": {
+                    "party_color": brochure.theme.primary_color if brochure.theme else "#6366F1"
+                },
+                "created_at": datetime.now().isoformat()
+            }
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[{job_id}] 완전 자동화 변환 실패: {str(e)}", exc_info=True)
+        cleanup_temp_files(job_id=job_id, keep_outputs=False)
+        raise HTTPException(status_code=500, detail=f"변환 실패: {str(e)}")
+
+
+@app.get("/api/auto-convert/status")
+async def get_auto_convert_status():
+    """
+    완전 자동화 변환 시스템 상태 확인
+    """
+    return JSONResponse({
+        "success": True,
+        "auto_converter_ready": auto_converter is not None,
+        "vision_ocr_ready": auto_converter.vision_ocr is not None if auto_converter else False,
+        "supported_parties": [
+            {"id": "ppp", "name": "국민의힘", "color": "#E11D48"},
+            {"id": "dpk", "name": "더불어민주당", "color": "#004EA2"},
+            {"id": "jp", "name": "정의당", "color": "#FFCC00"},
+            {"id": "pp", "name": "국민의당", "color": "#EA5504"},
+            {"id": "rp", "name": "개혁신당", "color": "#FF6B35"},
+            {"id": "nrp", "name": "새로운미래", "color": "#10B981"},
+            {"id": "independent", "name": "무소속", "color": "#6B7280"}
+        ],
+        "features": [
+            "정당 자동 감지",
+            "테마 색상 자동 적용",
+            "후보자 정보 자동 추출",
+            "공약/경력 구조화",
+            "모바일 최적화 HTML",
+            "SNS 링크 자동 연결",
+            "전화번호 클릭 통화"
+        ]
+    })
+
+
+@app.post("/api/batch-convert")
+async def batch_convert_elections(
+    files: List[UploadFile] = File(...)
+):
+    """
+    다중 파일 일괄 자동 변환 API
+
+    여러 PDF를 한번에 업로드하여 일괄 변환합니다.
+
+    Parameters:
+    - files: PDF 파일 목록 (최대 20개)
+
+    Returns:
+    - success: 성공 여부
+    - results: 각 파일별 변환 결과
+    """
+    if auto_converter is None:
+        raise HTTPException(
+            status_code=500,
+            detail="자동화 변환기가 초기화되지 않았습니다"
+        )
+
+    if len(files) > 20:
+        raise HTTPException(status_code=400, detail="한번에 최대 20개 파일만 처리 가능합니다")
+
+    results = []
+    success_count = 0
+    fail_count = 0
+
+    for file in files:
+        job_id = str(uuid.uuid4())[:8]
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        try:
+            if not file.filename.lower().endswith('.pdf'):
+                results.append({
+                    "filename": file.filename,
+                    "success": False,
+                    "error": "PDF 파일만 지원됩니다"
+                })
+                fail_count += 1
+                continue
+
+            content = await file.read()
+
+            # 파일 저장
+            safe_filename = f"{job_id}_{timestamp}.pdf"
+            upload_path = UPLOAD_DIR / safe_filename
+
+            with open(upload_path, "wb") as f:
+                f.write(content)
+
+            # 자동 변환
+            brochure = auto_converter.convert(str(upload_path))
+            html_content = auto_converter.generate_html(brochure)
+
+            # 출력 저장
+            if brochure.candidate.name:
+                output_filename = f"{brochure.candidate.name}_{timestamp}.html"
+            else:
+                output_filename = f"AUTO_{job_id}_{timestamp}.html"
+
+            output_path = OUTPUT_DIR / output_filename
+
+            with open(output_path, "w", encoding="utf-8") as f:
+                f.write(html_content)
+
+            # 임시 파일 정리
+            cleanup_temp_files(job_id=job_id, keep_outputs=True)
+
+            results.append({
+                "filename": file.filename,
+                "success": True,
+                "output_url": f"/outputs/{output_filename}",
+                "candidate_name": brochure.candidate.name,
+                "party": brochure.candidate.party
+            })
+            success_count += 1
+
+        except Exception as e:
+            logger.error(f"일괄 변환 오류 ({file.filename}): {str(e)}")
+            results.append({
+                "filename": file.filename,
+                "success": False,
+                "error": str(e)
+            })
+            fail_count += 1
+
+    return JSONResponse({
+        "success": True,
+        "message": f"일괄 변환 완료: 성공 {success_count}개, 실패 {fail_count}개",
+        "statistics": {
+            "total": len(files),
+            "success": success_count,
+            "failed": fail_count
+        },
+        "results": results
+    })
 
 
 # 서버 실행 (개발용)
