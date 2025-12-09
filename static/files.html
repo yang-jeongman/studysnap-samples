@@ -1294,7 +1294,14 @@
 
         // 초기 로드
         document.addEventListener('DOMContentLoaded', () => {
-            loadFiles('outputs');
+            console.log('페이지 로드됨, 파일 목록 초기화...');
+
+            // 현재 폴더 초기화
+            currentFolder = 'outputs';
+            currentPath = '';
+
+            // 파일 및 폴더 목록 로드
+            loadFiles(currentFolder, '');
 
             // 드래그앤드롭 설정
             setupDragDrop();
@@ -1308,7 +1315,9 @@
                     const response = await fetch(`/api/files/${folder}`);
                     const data = await response.json();
                     if (data.success) {
-                        updateCounts(folder, data.files.length);
+                        // 폴더 + 파일 총 개수
+                        const totalCount = (data.files?.length || 0) + (data.folders?.length || 0);
+                        updateCounts(folder, totalCount);
                     }
                 } catch (e) {
                     console.error(`Failed to load ${folder} count`);
