@@ -818,6 +818,71 @@ async def get_learning_report():
         return JSONResponse({"error": str(e)}, status_code=500)
 
 
+@app.get("/api/learning/status")
+async def get_learning_status():
+    """
+    통합 학습 시스템 상태 확인 API
+
+    - 변환 기록 수
+    - 피드백 수
+    - 학습된 규칙 수
+    - 정당별/후보유형별 통계
+    """
+    try:
+        result = {
+            "success": True,
+            "timestamp": datetime.now().isoformat(),
+            "engines": {
+                "active_learning": active_learning_engine is not None,
+                "learning_system": learning_system is not None
+            },
+            "stats": {}
+        }
+
+        # 능동형 학습 엔진 통계
+        if active_learning_engine is not None:
+            stats = active_learning_engine.get_learning_stats()
+            result["stats"]["active_learning"] = {
+                "total_feedbacks": stats.get("total_feedbacks", 0),
+                "corrections_count": stats.get("corrections_count", 0),
+                "rules_generated": stats.get("rules_generated", 0),
+                "rules_improved": stats.get("rules_improved", 0),
+                "active_rules": stats.get("active_rules", 0),
+                "high_confidence_rules": stats.get("high_confidence_rules", 0),
+                "conversion_count": stats.get("conversion_count", 0),
+                "party_stats": stats.get("party_stats", {}),
+                "candidate_type_stats": stats.get("candidate_type_stats", {})
+            }
+
+        # 기존 학습 시스템 통계
+        if learning_system is not None:
+            try:
+                ls_stats = learning_system.get_stats()
+                result["stats"]["learning_system"] = ls_stats
+            except Exception:
+                result["stats"]["learning_system"] = {"status": "error"}
+
+        # 학습 데이터 파일 확인
+        learning_data_dir = BASE_DIR / "learning_data"
+        if learning_data_dir.exists():
+            files_info = {}
+            for file in learning_data_dir.glob("*.json*"):
+                try:
+                    files_info[file.name] = {
+                        "size_kb": round(file.stat().st_size / 1024, 2),
+                        "modified": datetime.fromtimestamp(file.stat().st_mtime).isoformat()
+                    }
+                except Exception:
+                    pass
+            result["learning_files"] = files_info
+
+        return JSONResponse(result)
+
+    except Exception as e:
+        logger.error(f"학습 상태 조회 실패: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
 # ============================================
 # 범용 변환 시스템 API
 # ============================================
@@ -2052,10 +2117,12 @@ async def get_text_diff(request: Request):
 @app.post("/api/editor/save")
 async def save_html_file(request: Request):
     """
-    HTML 에디터에서 파일 저장 (하위 폴더 지원)
+    HTML 에디터에서 파일 저장 (하위 폴더 지원) + 자동 학습
 
     - filename: 저장할 파일명 또는 경로 (예: 국민-나경원/NA_xxx.html, outputs/국민-나경원/NA_xxx.html)
     - content: HTML 내용
+
+    저장 시 원본과 비교하여 자동으로 학습 데이터 수집
     """
     try:
         # UTF-8 인코딩으로 명시적으로 body 읽기
@@ -2097,17 +2164,67 @@ async def save_html_file(request: Request):
         # 하위 폴더가 있으면 생성
         file_path.parent.mkdir(parents=True, exist_ok=True)
 
+        # ========================================
+        # 자동 학습: 원본과 비교하여 변경점 학습
+        # ========================================
+        learning_result = None
+        original_html = ""
+
+        if file_path.exists() and active_learning_engine is not None:
+            try:
+                # 원본 HTML 읽기
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    original_html = f.read()
+
+                # 내용이 변경된 경우에만 학습
+                if original_html.strip() != content.strip():
+                    # job_id 생성 (파일명 기반)
+                    import hashlib
+                    job_id = hashlib.md5(filename.encode()).hexdigest()[:8]
+
+                    # HTML diff 분석 및 패턴 학습
+                    diff = active_learning_engine.save_html_diff(
+                        job_id=job_id,
+                        original_html=original_html,
+                        modified_html=content
+                    )
+
+                    # 후보자 정보 추출 (학습 메타데이터)
+                    import re
+                    candidate_match = re.search(r'<h1[^>]*class="[^"]*hero-name[^"]*"[^>]*>([^<]+)</h1>', content)
+                    party_match = re.search(r'<span[^>]*class="[^"]*party-badge[^"]*"[^>]*>([^<]+)</span>', content)
+
+                    learning_result = {
+                        "changes_count": len(diff.changes),
+                        "patterns_count": len(diff.extracted_patterns),
+                        "candidate": candidate_match.group(1) if candidate_match else None,
+                        "party": party_match.group(1) if party_match else None
+                    }
+
+                    logger.info(f"[자동학습] {filename}: {len(diff.changes)}개 변경, {len(diff.extracted_patterns)}개 패턴 추출")
+
+            except Exception as e:
+                logger.warning(f"자동 학습 실패 (계속 진행): {e}")
+
+        # 파일 저장
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
         logger.info(f"HTML 파일 저장 완료: {filename} ({len(content)} bytes)")
 
-        return JSONResponse({
+        response_data = {
             "success": True,
             "message": "파일이 저장되었습니다",
             "filename": filename,
             "size": len(content)
-        })
+        }
+
+        # 학습 결과 포함
+        if learning_result:
+            response_data["learning"] = learning_result
+            response_data["message"] = f"파일 저장 + {learning_result['changes_count']}개 변경점 학습됨"
+
+        return JSONResponse(response_data)
 
     except HTTPException:
         raise
@@ -2119,14 +2236,16 @@ async def save_html_file(request: Request):
 @app.post("/api/editor/upload")
 async def upload_file(
     file: UploadFile = File(...),
-    folder: str = Form(default="outputs")
+    folder: str = Form(default="outputs"),
+    subfolder: str = Form(default="")
 ):
     """
-    파일 업로드 (HTML, Python)
+    파일 업로드 (HTML, Python, 이미지)
 
     - 로컬에서 작업한 파일을 서버에 업로드
     - folder 파라미터로 저장 위치 선택 가능 (outputs, static, uploads)
-    - 허용 파일: .html, .htm, .py
+    - subfolder 파라미터로 하위 폴더 경로 지정 가능 (예: Minjoo/images)
+    - 허용 파일: .html, .htm, .py, .png, .jpg, .jpeg, .gif, .svg, .webp
     """
     try:
         # 허용된 폴더만 사용 가능
@@ -2143,40 +2262,65 @@ async def upload_file(
         target_dir = allowed_folders[folder]
 
         # 파일 확장자 검증
-        allowed_extensions = ['.html', '.htm', '.py']
+        allowed_extensions = ['.html', '.htm', '.py', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp']
         file_ext = '.' + file.filename.split('.')[-1].lower() if '.' in file.filename else ''
         if file_ext not in allowed_extensions:
             raise HTTPException(status_code=400, detail=f"허용되지 않는 파일 형식입니다. 허용: {', '.join(allowed_extensions)}")
 
+        # 이미지 파일 여부 확인
+        is_image = file_ext in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp']
+
         # 보안: 파일명 검증 (경로 조작 방지)
         filename = file.filename
-        if ".." in filename or "/" in filename or "\\" in filename:
+        if ".." in filename:
             raise HTTPException(status_code=400, detail="잘못된 파일명입니다")
+
+        # subfolder 경로 검증 및 처리
+        if subfolder:
+            # 경로 구분자 정규화 및 보안 검사
+            subfolder = subfolder.replace("\\", "/").strip("/")
+            if ".." in subfolder:
+                raise HTTPException(status_code=400, detail="잘못된 하위 폴더 경로입니다")
+            # 하위 폴더 경로를 target_dir에 추가
+            target_dir = target_dir / subfolder
+
+        # 타겟 디렉토리가 없으면 생성
+        target_dir.mkdir(parents=True, exist_ok=True)
 
         # 파일 내용 읽기
         content = await file.read()
 
-        # UTF-8로 디코딩 시도
-        try:
-            content_str = content.decode('utf-8')
-        except UnicodeDecodeError:
-            content_str = content.decode('cp949')  # 한글 Windows 인코딩
-
-        # 파일 저장
+        # 파일 저장 경로
         file_path = target_dir / filename
 
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(content_str)
+        if is_image:
+            # 이미지 파일은 바이너리로 저장
+            with open(file_path, 'wb') as f:
+                f.write(content)
+            file_size = len(content)
+        else:
+            # 텍스트 파일은 UTF-8로 저장
+            try:
+                content_str = content.decode('utf-8')
+            except UnicodeDecodeError:
+                content_str = content.decode('cp949')  # 한글 Windows 인코딩
 
-        logger.info(f"파일 업로드 완료: {folder}/{filename} ({len(content_str)} bytes)")
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(content_str)
+            file_size = len(content_str)
+
+        # 전체 저장 경로 계산
+        full_path = f"{folder}/{subfolder}/{filename}" if subfolder else f"{folder}/{filename}"
+        logger.info(f"파일 업로드 완료: {full_path} ({file_size} bytes)")
 
         return JSONResponse({
             "success": True,
-            "message": f"파일이 {folder} 폴더에 업로드되었습니다",
+            "message": f"파일이 {full_path}에 업로드되었습니다",
             "filename": filename,
             "folder": folder,
-            "size": len(content_str),
-            "url": f"/{folder}/{filename}"
+            "subfolder": subfolder,
+            "size": file_size,
+            "url": f"/{full_path}"
         })
 
     except HTTPException:
@@ -2184,6 +2328,231 @@ async def upload_file(
     except Exception as e:
         logger.error(f"파일 업로드 실패: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"파일 업로드 실패: {str(e)}")
+
+
+# ============================================
+# 범용 폴더 탐색 API (윈도우 탐색기 스타일)
+# ============================================
+
+@app.get("/api/browse")
+async def browse_folder(path: str = ""):
+    """
+    범용 폴더 탐색 API - 윈도우 탐색기처럼 임의 경로 탐색
+
+    - path가 비어있으면 프로젝트 루트(BASE_DIR)의 내용 반환
+    - path가 있으면 해당 경로의 폴더/파일 목록 반환
+    - 보안: BASE_DIR 하위만 접근 가능
+    """
+    try:
+        # 경로 정규화
+        path = path.replace("\\", "/").strip("/")
+
+        # 보안 검사
+        if ".." in path:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        # 전체 경로 계산
+        if path:
+            target_path = BASE_DIR / path
+        else:
+            target_path = BASE_DIR
+
+        # 경로가 BASE_DIR 하위인지 확인
+        try:
+            target_path.resolve().relative_to(BASE_DIR.resolve())
+        except ValueError:
+            raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+
+        # 경로 존재 확인
+        if not target_path.exists():
+            raise HTTPException(status_code=404, detail=f"경로를 찾을 수 없습니다: {path}")
+
+        # 파일인 경우
+        if target_path.is_file():
+            stat = target_path.stat()
+            return JSONResponse({
+                "success": True,
+                "type": "file",
+                "path": path,
+                "name": target_path.name,
+                "size": stat.st_size,
+                "modified": stat.st_mtime
+            })
+
+        # 폴더인 경우 - 내용 목록 반환
+        items = []
+        folders = []
+        files = []
+
+        for item in target_path.iterdir():
+            try:
+                stat = item.stat()
+                item_info = {
+                    "name": item.name,
+                    "path": f"{path}/{item.name}" if path else item.name,
+                    "size": stat.st_size,
+                    "modified": stat.st_mtime,
+                    "is_dir": item.is_dir()
+                }
+
+                if item.is_dir():
+                    # 폴더 내 항목 수 계산
+                    try:
+                        item_info["children_count"] = len(list(item.iterdir()))
+                    except:
+                        item_info["children_count"] = 0
+                    folders.append(item_info)
+                else:
+                    # 파일 확장자
+                    item_info["extension"] = item.suffix.lower()
+                    files.append(item_info)
+            except Exception as e:
+                # 접근 권한 없는 파일 스킵
+                continue
+
+        # 정렬: 폴더 먼저, 이름순
+        folders.sort(key=lambda x: x["name"].lower())
+        files.sort(key=lambda x: x["name"].lower())
+        items = folders + files
+
+        # 상위 경로 계산
+        parent_path = "/".join(path.split("/")[:-1]) if path else None
+
+        return JSONResponse({
+            "success": True,
+            "type": "directory",
+            "path": path,
+            "name": target_path.name if path else "root",
+            "parent": parent_path,
+            "items": items,
+            "folders_count": len(folders),
+            "files_count": len(files)
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"폴더 탐색 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"폴더 탐색 실패: {str(e)}")
+
+
+@app.post("/api/browse/upload")
+async def browse_upload(
+    file: UploadFile = File(...),
+    path: str = Form(default="")
+):
+    """
+    범용 파일 업로드 - 지정된 경로에 파일 업로드
+
+    - path: 업로드할 폴더 경로 (BASE_DIR 기준 상대 경로)
+    - 보안: BASE_DIR 하위만 접근 가능
+    """
+    try:
+        # 경로 정규화
+        path = path.replace("\\", "/").strip("/")
+
+        # 보안 검사
+        if ".." in path:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        # 전체 경로 계산
+        if path:
+            target_dir = BASE_DIR / path
+        else:
+            target_dir = BASE_DIR
+
+        # 경로가 BASE_DIR 하위인지 확인
+        try:
+            target_dir.resolve().relative_to(BASE_DIR.resolve())
+        except ValueError:
+            raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+
+        # 타겟 디렉토리 생성
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        # 파일명 검증
+        filename = file.filename
+        if ".." in filename or "/" in filename or "\\" in filename:
+            raise HTTPException(status_code=400, detail="잘못된 파일명입니다")
+
+        # 파일 저장 경로
+        file_path = target_dir / filename
+
+        # 파일 내용 읽기
+        content = await file.read()
+
+        # 이미지 파일 여부 확인
+        file_ext = '.' + filename.split('.')[-1].lower() if '.' in filename else ''
+        is_binary = file_ext in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.ico', '.pdf', '.zip']
+
+        if is_binary:
+            with open(file_path, 'wb') as f:
+                f.write(content)
+        else:
+            try:
+                content_str = content.decode('utf-8')
+            except UnicodeDecodeError:
+                content_str = content.decode('cp949', errors='replace')
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(content_str)
+
+        full_path = f"{path}/{filename}" if path else filename
+        logger.info(f"범용 업로드 완료: {full_path} ({len(content)} bytes)")
+
+        return JSONResponse({
+            "success": True,
+            "message": f"파일이 업로드되었습니다",
+            "filename": filename,
+            "path": path,
+            "full_path": full_path,
+            "size": len(content)
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"범용 업로드 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"업로드 실패: {str(e)}")
+
+
+@app.post("/api/browse/create-folder")
+async def create_folder(path: str = Form(...)):
+    """
+    새 폴더 생성
+
+    - path: 생성할 폴더의 전체 경로 (BASE_DIR 기준)
+    """
+    try:
+        path = path.replace("\\", "/").strip("/")
+
+        if ".." in path:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        target_path = BASE_DIR / path
+
+        try:
+            target_path.resolve().relative_to(BASE_DIR.resolve())
+        except ValueError:
+            raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+
+        if target_path.exists():
+            raise HTTPException(status_code=400, detail="이미 존재하는 폴더입니다")
+
+        target_path.mkdir(parents=True, exist_ok=True)
+
+        logger.info(f"폴더 생성: {path}")
+
+        return JSONResponse({
+            "success": True,
+            "message": "폴더가 생성되었습니다",
+            "path": path
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"폴더 생성 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"폴더 생성 실패: {str(e)}")
 
 
 # ============================================
@@ -2293,8 +2662,9 @@ async def auto_convert_election(
         # 임시 파일 정리
         cleanup_temp_files(job_id=job_id, keep_outputs=True)
 
-        # 학습 시스템에 기록
+        # 학습 시스템에 기록 (기존 + 능동형 학습)
         try:
+            # 기존 학습 시스템
             learning_system.log_conversion(job_id, {
                 "filename": original_filename,
                 "content_type": "election",
@@ -2305,6 +2675,24 @@ async def auto_convert_election(
                 "party_detected": brochure.candidate.party,
                 "candidate_name": brochure.candidate.name
             })
+
+            # 능동형 학습 엔진에도 기록
+            if active_learning_engine is not None:
+                active_learning_engine.record_conversion({
+                    "candidate_name": brochure.candidate.name,
+                    "party": brochure.candidate.party,
+                    "candidate_type": brochure.candidate_type,
+                    "region": f"{brochure.region_metro}/{brochure.region_district}",
+                    "pledge_count": len(brochure.core_pledges),
+                    "career_count": len(brochure.careers),
+                    "page_count": len(brochure.raw_pages),
+                    "filename": original_filename,
+                    "job_id": job_id,
+                    "output_path": str(output_path),
+                    "theme_color": brochure.theme.primary_color if brochure.theme else "#6366F1"
+                })
+                logger.info(f"[{job_id}] 능동형 학습 엔진에 변환 기록 완료")
+
         except Exception as e:
             logger.error(f"학습 데이터 기록 실패: {str(e)}")
 

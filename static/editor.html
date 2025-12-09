@@ -580,7 +580,14 @@
 </head>
 <body>
     <div class="editor-header">
-        <div class="editor-title">📝 StudySnap HTML Editor</div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div class="editor-title">📝 StudySnap HTML Editor</div>
+            <nav style="display: flex; gap: 8px;">
+                <a href="/static/explorer.html" style="padding: 6px 12px; background: #1e3c72; color: white; text-decoration: none; border-radius: 5px; font-size: 0.85em;">🗂️ 탐색기</a>
+                <a href="/static/files.html" style="padding: 6px 12px; background: #6B7280; color: white; text-decoration: none; border-radius: 5px; font-size: 0.85em;">📁 파일</a>
+                <a href="/static/auto-converter.html" style="padding: 6px 12px; background: #10B981; color: white; text-decoration: none; border-radius: 5px; font-size: 0.85em;">🤖 변환</a>
+            </nav>
+        </div>
         <div class="editor-controls">
             <button class="btn btn-primary" onclick="openPdfUpload()" style="background: #8B5CF6;" title="로컬 PDF 파일을 업로드하여 HTML로 변환">📄 PDF 변환</button>
             <button class="btn btn-primary" onclick="openHtmlUpload()" style="background: #F59E0B;" title="로컬 HTML 파일을 서버에 업로드">📤 HTML 업로드</button>

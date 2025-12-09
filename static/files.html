@@ -610,6 +610,7 @@
                 </div>
             </div>
             <nav class="nav-links">
+                <a href="/static/explorer.html">🗂️ 탐색기</a>
                 <a href="/">🏠 홈</a>
                 <a href="/static/editor.html">✏️ 에디터</a>
                 <a href="/docs">📚 API 문서</a>
@@ -721,13 +722,35 @@
                 </div>
             </div>
 
+            <div style="margin: 15px 0;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">
+                    하위 폴더 경로 (선택사항):
+                </label>
+                <input type="text" id="subfolderPath" placeholder="예: Minjoo/images"
+                    style="width: 100%; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                <small style="color: #666; display: block; margin-top: 5px;">
+                    📁 outputs/<strong id="subfolderPreview">파일명</strong> 형태로 저장됩니다
+                </small>
+            </div>
+
+            <!-- 업로드 타입 선택 -->
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button id="fileUploadTab" class="btn btn-primary" onclick="setUploadMode('file')" style="flex: 1;">
+                    📄 파일 업로드
+                </button>
+                <button id="folderUploadTab" class="btn btn-secondary" onclick="setUploadMode('folder')" style="flex: 1;">
+                    📁 폴더 업로드
+                </button>
+            </div>
+
             <div id="dropZone" style="border: 3px dashed #ddd; border-radius: 12px; padding: 40px 20px; margin: 20px 0; cursor: pointer; transition: all 0.3s;">
                 <div style="text-align: center;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">📁</div>
-                    <p style="color: #666; margin-bottom: 10px;">파일을 여기에 드래그하거나 클릭하여 선택</p>
-                    <p style="color: #999; font-size: 12px;">HTML, Python 파일 업로드 가능</p>
+                    <div style="font-size: 48px; margin-bottom: 15px;" id="dropZoneIcon">📄</div>
+                    <p style="color: #666; margin-bottom: 10px;" id="dropZoneText">파일을 여기에 드래그하거나 클릭하여 선택</p>
+                    <p style="color: #999; font-size: 12px;" id="dropZoneHint">HTML, Python, 이미지 파일 업로드 가능</p>
                 </div>
-                <input type="file" id="fileInput" accept=".html,.htm,.py" style="display: none;" multiple>
+                <input type="file" id="fileInput" accept=".html,.htm,.py,.png,.jpg,.jpeg,.gif,.svg,.webp" style="display: none;" multiple>
+                <input type="file" id="folderInput" webkitdirectory style="display: none;">
             </div>
 
             <div id="uploadList" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;"></div>
@@ -1103,6 +1126,36 @@
         // 파일 업로드 기능
         // ========================================
         let filesToUpload = [];
+        let uploadMode = 'file';  // 'file' or 'folder'
+
+        // 업로드 모드 변경
+        function setUploadMode(mode) {
+            uploadMode = mode;
+            const fileTab = document.getElementById('fileUploadTab');
+            const folderTab = document.getElementById('folderUploadTab');
+            const dropZoneIcon = document.getElementById('dropZoneIcon');
+            const dropZoneText = document.getElementById('dropZoneText');
+            const dropZoneHint = document.getElementById('dropZoneHint');
+
+            if (mode === 'file') {
+                fileTab.className = 'btn btn-primary';
+                folderTab.className = 'btn btn-secondary';
+                dropZoneIcon.textContent = '📄';
+                dropZoneText.textContent = '파일을 여기에 드래그하거나 클릭하여 선택';
+                dropZoneHint.textContent = 'HTML, Python, 이미지 파일 업로드 가능';
+            } else {
+                fileTab.className = 'btn btn-secondary';
+                folderTab.className = 'btn btn-primary';
+                dropZoneIcon.textContent = '📁';
+                dropZoneText.textContent = '클릭하여 폴더 선택';
+                dropZoneHint.textContent = '폴더 전체를 업로드합니다 (하위 폴더 포함)';
+            }
+
+            // 파일 목록 초기화
+            filesToUpload = [];
+            document.getElementById('uploadList').innerHTML = '';
+            document.getElementById('uploadBtn').disabled = true;
+        }
 
         // 폴더 옵션 클릭 이벤트 설정
         function setupFolderOptions() {
@@ -1114,22 +1167,63 @@
                     this.classList.add('selected');
                     // 라디오 버튼 체크
                     this.querySelector('input[type="radio"]').checked = true;
+                    // 미리보기 업데이트
+                    updateSubfolderPreview();
                 });
             });
+
+            // 하위 폴더 입력 시 미리보기 업데이트
+            const subfolderInput = document.getElementById('subfolderPath');
+            if (subfolderInput) {
+                subfolderInput.addEventListener('input', updateSubfolderPreview);
+            }
         }
 
         // 업로드 모달 표시
         function showUploadModal() {
             filesToUpload = [];
+            uploadMode = 'file';
             document.getElementById('uploadList').innerHTML = '';
             document.getElementById('uploadProgress').style.display = 'none';
             document.getElementById('uploadBtn').disabled = true;
             document.getElementById('fileInput').value = '';
-            // 폴더 선택 초기화 (outputs 기본 선택)
+            document.getElementById('folderInput').value = '';
+
+            // 현재 폴더 선택 - currentFolder를 기준으로 선택
             document.querySelectorAll('.folder-option').forEach(o => o.classList.remove('selected'));
-            document.querySelector('.folder-option[data-folder="outputs"]').classList.add('selected');
-            document.querySelector('input[name="uploadFolder"][value="outputs"]').checked = true;
+            const currentFolderOption = document.querySelector(`.folder-option[data-folder="${currentFolder}"]`);
+            if (currentFolderOption) {
+                currentFolderOption.classList.add('selected');
+                const radio = document.querySelector(`input[name="uploadFolder"][value="${currentFolder}"]`);
+                if (radio) radio.checked = true;
+            } else {
+                // 기본값 outputs
+                document.querySelector('.folder-option[data-folder="outputs"]').classList.add('selected');
+                document.querySelector('input[name="uploadFolder"][value="outputs"]').checked = true;
+            }
+
+            // 현재 경로를 하위 폴더 경로에 자동 입력
+            document.getElementById('subfolderPath').value = currentPath || '';
+
+            // 업로드 모드 초기화
+            setUploadMode('file');
+            // 미리보기 업데이트
+            updateSubfolderPreview();
             document.getElementById('uploadModal').classList.add('show');
+        }
+
+        // 하위 폴더 경로 미리보기 업데이트
+        function updateSubfolderPreview() {
+            const selectedFolder = document.querySelector('input[name="uploadFolder"]:checked').value;
+            const subfolder = document.getElementById('subfolderPath').value.trim();
+            const preview = document.getElementById('subfolderPreview');
+            const previewLabel = document.querySelector('#subfolderPath').parentElement.querySelector('small');
+
+            if (subfolder) {
+                previewLabel.innerHTML = `📁 ${selectedFolder}/<strong>${subfolder}</strong>/파일명 형태로 저장됩니다`;
+            } else {
+                previewLabel.innerHTML = `📁 ${selectedFolder}/<strong>파일명</strong> 형태로 저장됩니다`;
+            }
         }
 
         // 업로드 모달 닫기
@@ -1142,13 +1236,25 @@
         function setupDragDrop() {
             const dropZone = document.getElementById('dropZone');
             const fileInput = document.getElementById('fileInput');
+            const folderInput = document.getElementById('folderInput');
 
-            // 클릭으로 파일 선택
-            dropZone.addEventListener('click', () => fileInput.click());
+            // 클릭으로 파일/폴더 선택
+            dropZone.addEventListener('click', () => {
+                if (uploadMode === 'folder') {
+                    folderInput.click();
+                } else {
+                    fileInput.click();
+                }
+            });
 
             // 파일 선택 시
             fileInput.addEventListener('change', (e) => {
                 handleFiles(e.target.files);
+            });
+
+            // 폴더 선택 시
+            folderInput.addEventListener('change', (e) => {
+                handleFolderFiles(e.target.files);
             });
 
             // 드래그 이벤트
@@ -1168,32 +1274,172 @@
                 e.preventDefault();
                 dropZone.style.borderColor = '#ddd';
                 dropZone.style.background = 'transparent';
+
+                // 드래그 앤 드롭으로 폴더 처리
+                const items = e.dataTransfer.items;
+                if (items && items.length > 0) {
+                    const item = items[0];
+                    if (item.webkitGetAsEntry) {
+                        const entry = item.webkitGetAsEntry();
+                        if (entry && entry.isDirectory) {
+                            // 폴더를 드롭한 경우
+                            setUploadMode('folder');
+                            handleDroppedFolder(entry);
+                            return;
+                        }
+                    }
+                }
+                // 파일을 드롭한 경우
                 handleFiles(e.dataTransfer.files);
             });
+        }
+
+        // 드롭된 폴더 처리
+        async function handleDroppedFolder(folderEntry) {
+            const files = [];
+
+            async function readDirectory(entry, path = '') {
+                return new Promise((resolve) => {
+                    const reader = entry.createReader();
+                    reader.readEntries(async (entries) => {
+                        for (const e of entries) {
+                            if (e.isFile) {
+                                const file = await new Promise((res) => e.file(res));
+                                file.relativePath = path + file.name;
+                                files.push(file);
+                            } else if (e.isDirectory) {
+                                await readDirectory(e, path + e.name + '/');
+                            }
+                        }
+                        resolve();
+                    });
+                });
+            }
+
+            await readDirectory(folderEntry, folderEntry.name + '/');
+
+            // 파일 처리
+            const uploadList = document.getElementById('uploadList');
+            const allowedExtensions = ['.html', '.htm', '.py', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp'];
+
+            // 폴더 이름 표시
+            const folderName = folderEntry.name;
+            uploadList.innerHTML = `
+                <div style="padding: 10px 15px; background: #e3f2fd; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 24px;">📁</span>
+                    <div>
+                        <div style="font-weight: 600;">${folderName}</div>
+                        <div style="font-size: 12px; color: #666;">${files.length}개 파일</div>
+                    </div>
+                </div>
+            `;
+
+            for (const file of files) {
+                const ext = '.' + file.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(ext)) continue;
+
+                filesToUpload.push({
+                    file: file,
+                    relativePath: file.relativePath
+                });
+
+                const fileIcon = getFileIcon(file.name);
+                const item = document.createElement('div');
+                item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 4px; font-size: 13px;';
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+                        <span>${fileIcon}</span>
+                        <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${file.relativePath}">${file.relativePath}</div>
+                    </div>
+                    <div style="color: #999; flex-shrink: 0;">${formatSize(file.size)}</div>
+                `;
+                uploadList.appendChild(item);
+            }
+
+            document.getElementById('uploadBtn').disabled = filesToUpload.length === 0;
+        }
+
+        // 폴더 선택 파일 처리 (webkitdirectory 사용)
+        function handleFolderFiles(files) {
+            const uploadList = document.getElementById('uploadList');
+            const allowedExtensions = ['.html', '.htm', '.py', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp'];
+
+            filesToUpload = [];
+
+            // 폴더 이름 추출 (첫 번째 파일의 경로에서)
+            let folderName = '';
+            if (files.length > 0 && files[0].webkitRelativePath) {
+                folderName = files[0].webkitRelativePath.split('/')[0];
+            }
+
+            // 폴더 정보 표시
+            uploadList.innerHTML = `
+                <div style="padding: 10px 15px; background: #e3f2fd; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 24px;">📁</span>
+                    <div>
+                        <div style="font-weight: 600;">${folderName}</div>
+                        <div style="font-size: 12px; color: #666;">검색 중...</div>
+                    </div>
+                </div>
+            `;
+
+            let validFileCount = 0;
+
+            for (const file of files) {
+                const ext = '.' + file.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(ext)) continue;
+
+                filesToUpload.push({
+                    file: file,
+                    relativePath: file.webkitRelativePath
+                });
+                validFileCount++;
+
+                const fileIcon = getFileIcon(file.name);
+                const item = document.createElement('div');
+                item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 4px; font-size: 13px;';
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+                        <span>${fileIcon}</span>
+                        <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${file.webkitRelativePath}">${file.webkitRelativePath}</div>
+                    </div>
+                    <div style="color: #999; flex-shrink: 0;">${formatSize(file.size)}</div>
+                `;
+                uploadList.appendChild(item);
+            }
+
+            // 폴더 정보 업데이트
+            uploadList.querySelector('.folder-info, div > div:first-child > div:last-child').textContent = `${validFileCount}개 파일 (허용된 형식만)`;
+
+            document.getElementById('uploadBtn').disabled = filesToUpload.length === 0;
         }
 
         // 파일 처리
         function handleFiles(files) {
             const uploadList = document.getElementById('uploadList');
-            const allowedExtensions = ['.html', '.htm', '.py'];
+            const allowedExtensions = ['.html', '.htm', '.py', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp'];
 
             for (const file of files) {
                 // 허용된 파일 형식 체크
                 const ext = '.' + file.name.split('.').pop().toLowerCase();
                 if (!allowedExtensions.includes(ext)) {
-                    alert(`"${file.name}"은(는) 허용되지 않는 파일 형식입니다.\n허용: HTML, Python`);
+                    alert(`"${file.name}"은(는) 허용되지 않는 파일 형식입니다.\n허용: HTML, Python, 이미지 (PNG, JPG, GIF, SVG, WEBP)`);
                     continue;
                 }
 
                 // 중복 체크
-                if (filesToUpload.find(f => f.name === file.name)) {
+                const existingFile = filesToUpload.find(f => {
+                    const name = f.file ? f.file.name : f.name;
+                    return name === file.name;
+                });
+                if (existingFile) {
                     continue;
                 }
 
-                filesToUpload.push(file);
+                filesToUpload.push({ file: file, relativePath: file.name });
 
                 // 파일 아이콘 결정
-                const fileIcon = file.name.endsWith('.py') ? '🐍' : '🌐';
+                const fileIcon = getFileIcon(file.name);
 
                 // 목록에 추가
                 const item = document.createElement('div');
@@ -1217,7 +1463,10 @@
 
         // 파일 제거
         function removeFile(filename, btn) {
-            filesToUpload = filesToUpload.filter(f => f.name !== filename);
+            filesToUpload = filesToUpload.filter(f => {
+                const name = f.file ? f.file.name : f.name;
+                return name !== filename;
+            });
             btn.parentElement.remove();
             document.getElementById('uploadBtn').disabled = filesToUpload.length === 0;
         }
@@ -1228,6 +1477,7 @@
 
             // 선택된 폴더 가져오기
             const selectedFolder = document.querySelector('input[name="uploadFolder"]:checked').value;
+            const subfolderPath = document.getElementById('subfolderPath').value.trim();
 
             const progressDiv = document.getElementById('uploadProgress');
             const progressBar = document.getElementById('progressBar');
@@ -1240,15 +1490,37 @@
             let uploaded = 0;
             let failed = 0;
 
+            // 전체 경로 계산
+            let fullPath = selectedFolder;
+            if (subfolderPath) {
+                fullPath = `${selectedFolder}/${subfolderPath}`;
+            }
+
             for (let i = 0; i < filesToUpload.length; i++) {
-                const file = filesToUpload[i];
-                progressText.textContent = `업로드 중... ${i + 1}/${filesToUpload.length} - ${file.name} → ${selectedFolder}`;
+                const fileData = filesToUpload[i];
+                const file = fileData.file || fileData;
+                const relativePath = fileData.relativePath || file.name;
+                const fileName = file.name;
+
+                progressText.textContent = `업로드 중... ${i + 1}/${filesToUpload.length} - ${relativePath} → ${fullPath}`;
                 progressBar.style.width = `${((i) / filesToUpload.length) * 100}%`;
 
                 try {
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('folder', selectedFolder);
+
+                    // 하위 폴더 경로 결합
+                    let finalSubfolder = subfolderPath;
+                    if (relativePath.includes('/')) {
+                        // 폴더 업로드인 경우 상대 경로에서 폴더 부분 추출
+                        const relativeDir = relativePath.substring(0, relativePath.lastIndexOf('/'));
+                        finalSubfolder = subfolderPath ? `${subfolderPath}/${relativeDir}` : relativeDir;
+                    }
+
+                    if (finalSubfolder) {
+                        formData.append('subfolder', finalSubfolder);
+                    }
 
                     const response = await fetch('/api/editor/upload', {
                         method: 'POST',
@@ -1261,11 +1533,11 @@
                         uploaded++;
                     } else {
                         failed++;
-                        console.error(`Upload failed for ${file.name}:`, data);
+                        console.error(`Upload failed for ${fileName}:`, data);
                     }
                 } catch (error) {
                     failed++;
-                    console.error(`Upload error for ${file.name}:`, error);
+                    console.error(`Upload error for ${fileName}:`, error);
                 }
 
                 progressBar.style.width = `${((i + 1) / filesToUpload.length) * 100}%`;
@@ -1273,7 +1545,7 @@
 
             // 완료 메시지
             if (failed === 0) {
-                progressText.textContent = `✅ ${uploaded}개 파일 → ${selectedFolder} 업로드 완료!`;
+                progressText.textContent = `✅ ${uploaded}개 파일 → ${fullPath} 업로드 완료!`;
                 progressText.style.color = '#388e3c';
             } else {
                 progressText.textContent = `⚠️ ${uploaded}개 성공, ${failed}개 실패`;
@@ -1287,7 +1559,13 @@
                     // root 폴더는 파일 목록 API가 없으므로 현재 폴더 유지
                     refreshFiles();
                 } else {
-                    switchFolder(selectedFolder);
+                    // 하위 폴더가 있으면 해당 경로로 이동
+                    currentFolder = selectedFolder;
+                    if (subfolderPath) {
+                        loadFiles(selectedFolder, subfolderPath.split('/')[0]);
+                    } else {
+                        switchFolder(selectedFolder);
+                    }
                 }
             }, 1500);
         }

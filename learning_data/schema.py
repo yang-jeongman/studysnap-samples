@@ -56,6 +56,8 @@ class ObjectType(Enum):
     PLEDGE = "PLEDGE"           # 공약
     ACHIEVEMENT = "ACHV"        # 실적/성과
     PROMISE_NUMBER = "PNUM"     # 공약 번호
+    PROMISE_TITLE = "PTITLE"    # 공약 제목 (교육, 교통 등 카테고리)
+    DISTRICT_INFO = "DIST"      # 지역/동 정보
 
 
 class FontStyle(Enum):

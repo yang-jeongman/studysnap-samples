@@ -1,0 +1,12 @@
+=== outputs 폴더 API 응답 ===
+success: True
+폴더 수: 3
+파일 수: 0
+
+폴더 목록:
+  minjoo-ryusamyoung (3개 파일)
+    path: outputs/minjoo-ryusamyoung
+  국민-나경원 (21개 파일)
+    path: outputs/국민-나경원
+  민주-류삼영 (7개 파일)
+    path: outputs/민주-류삼영
