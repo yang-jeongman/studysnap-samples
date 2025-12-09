@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudySnap HTML Editor</title>
+    <!-- JSZip for ZIP download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -105,6 +107,65 @@
         .file-item.active {
             background: #E11D4820;
             border-left: 3px solid #E11D48;
+        }
+
+        /* 폴더 아이템 스타일 */
+        .folder-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fefce8;
+        }
+
+        .folder-item:hover {
+            background: #fef3c7;
+        }
+
+        .folder-item .folder-icon {
+            font-size: 1.1em;
+        }
+
+        .folder-item .folder-name {
+            font-size: 0.85em;
+            color: #92400e;
+            font-weight: 500;
+        }
+
+        /* 브레드크럼 네비게이션 */
+        .breadcrumb {
+            padding: 10px 12px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            color: #3B82F6;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .breadcrumb-item:hover {
+            background: #dbeafe;
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: #9ca3af;
+        }
+
+        .breadcrumb-current {
+            color: #374151;
+            font-weight: 600;
         }
 
         .file-name {
@@ -411,18 +472,30 @@
     <div class="editor-header">
         <div class="editor-title">📝 StudySnap HTML Editor</div>
         <div class="editor-controls">
+            <button class="btn btn-primary" onclick="openPdfUpload()" style="background: #8B5CF6;" title="로컬 PDF 파일을 업로드하여 HTML로 변환">📄 PDF 변환</button>
+            <button class="btn btn-primary" onclick="openHtmlUpload()" style="background: #F59E0B;" title="로컬 HTML 파일을 서버에 업로드">📤 HTML 업로드</button>
             <button class="btn btn-secondary" onclick="swapPanels()" title="편집/미리보기 위치 바꾸기">↔️ 좌우전환</button>
             <button class="btn btn-secondary" onclick="toggleSyncMode()" id="syncModeBtn" title="마우스 위치에 따라 편집기↔미리보기 연동 하이라이트">🔗 연동모드</button>
             <button class="btn btn-secondary" onclick="loadFiles()">새로고침</button>
             <button class="btn btn-success" onclick="saveFile()">💾 저장</button>
             <button class="btn btn-primary" onclick="downloadFile()">⬇️ 다운로드</button>
+            <button class="btn btn-success" onclick="downloadWithImages()" style="background: #059669;">📦 ZIP 다운로드</button>
+            <button class="btn btn-secondary" onclick="openFeedbackModal()" style="background: #8B5CF6;">🧠 AI 피드백</button>
         </div>
+
+        <!-- 숨겨진 HTML 파일 업로드 input -->
+        <input type="file" id="htmlFileInput" accept=".html" style="display: none;" onchange="uploadHtmlFile(this.files[0])" />
     </div>
 
     <div class="editor-container">
-        <div class="file-list" id="fileList">
-            <div style="padding: 15px; text-align: center; color: #888;">
-                파일을 불러오는 중...
+        <div class="file-list">
+            <div id="breadcrumb" class="breadcrumb">
+                <span class="breadcrumb-current">📁 outputs</span>
+            </div>
+            <div id="fileListContent">
+                <div style="padding: 15px; text-align: center; color: #888;">
+                    📂 파일 목록 로딩 중...
+                </div>
             </div>
         </div>
 
@@ -589,58 +662,211 @@
     </div>
 
     <script>
+        // 전역 에러 핸들러 (디버깅용)
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('JavaScript 오류:', msg, 'at', url, lineNo);
+            const fileList = document.getElementById('fileList');
+            if (fileList) {
+                fileList.innerHTML = `<div style="padding: 15px; text-align: center; color: #E11D48;">
+                    ❌ JS 오류 발생<br>
+                    <small>${msg}</small><br>
+                    <small>Line: ${lineNo}</small>
+                </div>`;
+            }
+            return false;
+        };
+
+        // 버전 표시 (디버깅용)
+        console.log('Editor version: 2024-12-05-v2');
+
         let currentFile = null;
         let originalContent = '';
         let isEditorOnLeft = true;  // 편집기가 왼쪽에 있는지
         let previewUpdateTimer = null;
         let isSyncModeActive = false;  // 연동 모드 상태
         let lastHighlightedElement = null;  // 마지막 하이라이트된 요소
+        let currentPath = '';  // 현재 탐색 중인 하위 경로
 
-        // 파일 목록 로드
+        // 브레드크럼 업데이트
+        function updateBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (!currentPath) {
+                breadcrumb.innerHTML = '<span class="breadcrumb-current">📁 outputs</span>';
+                return;
+            }
+
+            const parts = currentPath.split('/').filter(p => p);
+            let html = '<span class="breadcrumb-item" onclick="navigateTo(\'\')">📁 outputs</span>';
+
+            let accumulated = '';
+            parts.forEach((part, idx) => {
+                html += '<span class="breadcrumb-separator">/</span>';
+                accumulated += (accumulated ? '/' : '') + part;
+                if (idx === parts.length - 1) {
+                    html += `<span class="breadcrumb-current">${part}</span>`;
+                } else {
+                    const pathToGo = accumulated;
+                    html += `<span class="breadcrumb-item" onclick="navigateTo('${pathToGo}')">${part}</span>`;
+                }
+            });
+
+            breadcrumb.innerHTML = html;
+        }
+
+        // 특정 경로로 이동
+        function navigateTo(path) {
+            currentPath = path;
+            loadFiles();
+        }
+
+        // 파일 목록 로드 (폴더 지원)
         async function loadFiles() {
-            try {
-                const response = await fetch('/api/editor/files');
-                const data = await response.json();
+            const fileListContent = document.getElementById('fileListContent');
 
-                if (data.success && data.files) {
-                    const files = data.files.map(file => ({
+            // 로딩 상태 표시
+            fileListContent.innerHTML = '<div style="padding: 15px; text-align: center; color: #888;">📂 파일 목록 로딩 중...</div>';
+            updateBreadcrumb();
+
+            try {
+                console.log('파일 목록 로드 시작... currentPath:', currentPath);
+                // 새로운 API 사용 (폴더 지원)
+                let apiUrl = '/api/files/outputs';
+                if (currentPath) {
+                    apiUrl += '/' + currentPath;
+                }
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('파일 목록 응답:', data);
+
+                if (data.success) {
+                    const folders = data.folders || [];
+                    const files = (data.files || []).map(file => ({
                         name: file.name,
                         time: new Date(file.modified).toLocaleString(),
                         size: file.size
                     }));
-                    displayFileList(files);
+                    displayFoldersAndFiles(folders, files);
+                    console.log(`${folders.length}개 폴더, ${files.length}개 파일 로드 완료`);
                 } else {
-                    displayFileList([]);
+                    fileListContent.innerHTML = '<div style="padding: 15px; text-align: center; color: #888;">📁 파일이 없습니다<br><small>PDF를 업로드하거나 outputs 폴더에 HTML 파일을 추가하세요</small></div>';
                 }
             } catch (error) {
                 console.error('파일 목록 로드 실패:', error);
-                showNotification('파일 목록을 불러올 수 없습니다', 'error');
-                displayFileList([]);
+                fileListContent.innerHTML = `<div style="padding: 15px; text-align: center; color: #E11D48;">
+                    ❌ 로드 실패<br>
+                    <small>${error.message}</small><br>
+                    <button onclick="loadFiles()" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">다시 시도</button>
+                </div>`;
             }
         }
 
-        // 파일 목록 표시
-        function displayFileList(files) {
-            const fileList = document.getElementById('fileList');
+        // 폴더 및 파일 목록 표시
+        function displayFoldersAndFiles(folders, files) {
+            const fileListContent = document.getElementById('fileListContent');
 
-            if (files.length === 0) {
-                fileList.innerHTML = '<div style="padding: 15px; text-align: center; color: #888;">파일이 없습니다</div>';
+            if (folders.length === 0 && files.length === 0) {
+                fileListContent.innerHTML = '<div style="padding: 15px; text-align: center; color: #888;">📁 파일이 없습니다</div>';
                 return;
             }
 
-            fileList.innerHTML = files.map(file => `
-                <div class="file-item" onclick="loadFile('${file.name}')">
-                    <div class="file-name">${file.name}</div>
-                    <div class="file-time">${file.time}</div>
-                </div>
-            `).join('');
+            let html = '';
+
+            // 폴더 먼저 표시 (API는 {name, type, file_count, path} 객체 반환)
+            folders.forEach(folder => {
+                const folderName = typeof folder === 'string' ? folder : folder.name;
+                const folderPath = currentPath ? currentPath + '/' + folderName : folderName;
+                const fileCount = folder.file_count || 0;
+                html += `
+                    <div class="folder-item" onclick="navigateTo('${folderPath}')">
+                        <span class="folder-icon">📁</span>
+                        <span class="folder-name">${folderName}${fileCount > 0 ? ' (' + fileCount + ')' : ''}</span>
+                    </div>
+                `;
+            });
+
+            // 파일 표시
+            files.forEach(file => {
+                // 파일 경로 생성 (outputs/하위폴더/파일명 형태)
+                const filePath = currentPath ? 'outputs/' + currentPath + '/' + file.name : file.name;
+                html += `
+                    <div class="file-item" onclick="loadFile('${filePath}')">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-time">${file.time}</div>
+                    </div>
+                `;
+            });
+
+            fileListContent.innerHTML = html;
         }
 
-        // 파일 로드
-        async function loadFile(filename) {
+        // 파일 목록 표시 (하위 호환용)
+        function displayFileList(files) {
+            displayFoldersAndFiles([], files);
+        }
+
+        // HTML 파일 업로드 다이얼로그 열기
+        function openHtmlUpload() {
+            document.getElementById('htmlFileInput').click();
+        }
+
+        // HTML 파일 업로드 처리
+        async function uploadHtmlFile(file) {
+            if (!file) return;
+
+            if (!file.name.endsWith('.html')) {
+                showNotification('HTML 파일만 업로드할 수 있습니다', 'error');
+                return;
+            }
+
+            try {
+                showNotification('파일 업로드 중...', 'info');
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('/api/editor/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification(`업로드 완료: ${result.filename}`, 'success');
+                    // 파일 목록 새로고침
+                    await loadFiles();
+                    // 업로드한 파일 자동으로 열기
+                    await loadFile(result.filename);
+                } else {
+                    showNotification(`업로드 실패: ${result.detail || '알 수 없는 오류'}`, 'error');
+                }
+            } catch (error) {
+                console.error('업로드 오류:', error);
+                showNotification(`업로드 실패: ${error.message}`, 'error');
+            }
+
+            // input 초기화 (같은 파일 다시 선택 가능하도록)
+            document.getElementById('htmlFileInput').value = '';
+        }
+
+        // 파일 로드 (하위 폴더 경로 지원)
+        async function loadFile(filePath) {
             try {
                 const timestamp = new Date().getTime();
-                const response = await fetch(`/outputs/${filename}?t=${timestamp}`, {
+                // filePath가 outputs/하위폴더/파일명 형태면 그대로 사용, 아니면 /outputs/ 붙임
+                let fetchUrl;
+                if (filePath.startsWith('outputs/') || filePath.startsWith('/outputs/')) {
+                    fetchUrl = `/${filePath.replace(/^\//, '')}?t=${timestamp}`;
+                } else {
+                    fetchUrl = `/outputs/${filePath}?t=${timestamp}`;
+                }
+
+                const response = await fetch(fetchUrl, {
                     cache: 'no-cache',
                     headers: {
                         'Cache-Control': 'no-cache'
@@ -650,7 +876,10 @@
 
                 document.getElementById('htmlEditor').value = content;
                 originalContent = content;
-                currentFile = filename;
+                currentFile = filePath;  // 전체 경로 저장
+
+                // 파일명만 추출해서 표시
+                const filename = filePath.split('/').pop();
 
                 document.querySelectorAll('.file-item').forEach(item => {
                     item.classList.remove('active');
@@ -709,7 +938,14 @@
                 return;
             }
 
-            const content = document.getElementById('htmlEditor').value;
+            let content = document.getElementById('htmlEditor').value;
+
+            // 이미지 경로를 상대 경로로 변환 (로컬에서 작동하도록)
+            // /outputs/xxx.png → ./xxx.png
+            content = content.replace(/(['"])\/?outputs\//g, '$1./');
+            // /static/xxx → ./xxx
+            content = content.replace(/(['"])\/?static\//g, '$1./');
+
             const blob = new Blob([content], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -718,7 +954,69 @@
             a.click();
             URL.revokeObjectURL(url);
 
-            showNotification('다운로드되었습니다', 'success');
+            showNotification('다운로드되었습니다 (이미지는 같은 폴더에 저장하세요)', 'success');
+        }
+
+        // ZIP 다운로드 (HTML + 이미지 함께)
+        async function downloadWithImages() {
+            if (!currentFile) {
+                showNotification('다운로드할 파일을 선택하세요', 'error');
+                return;
+            }
+
+            showNotification('ZIP 파일 생성 중...', 'success');
+
+            try {
+                const zip = new JSZip();
+                let content = document.getElementById('htmlEditor').value;
+
+                // HTML에서 이미지 경로 추출
+                const imageRegex = /(['"])\/?(outputs|static)\/([^'"]+\.(?:png|jpg|jpeg|gif|webp))\1/gi;
+                const matches = [...content.matchAll(imageRegex)];
+                const imagePaths = new Set();
+
+                for (const match of matches) {
+                    const folder = match[2];
+                    const filename = match[3];
+                    imagePaths.add({ folder, filename, fullPath: `/${folder}/${filename}` });
+                }
+
+                // 이미지 다운로드 및 ZIP에 추가
+                for (const img of imagePaths) {
+                    try {
+                        const response = await fetch(img.fullPath);
+                        if (response.ok) {
+                            const blob = await response.blob();
+                            zip.file(img.filename, blob);
+                            // HTML에서 경로를 상대 경로로 변경
+                            content = content.split(img.fullPath).join('./' + img.filename);
+                        }
+                    } catch (e) {
+                        console.warn(`이미지 다운로드 실패: ${img.fullPath}`);
+                    }
+                }
+
+                // 추가로 /outputs/ 또는 /static/ 경로 변환
+                content = content.replace(/(['"])\/?outputs\//g, '$1./');
+                content = content.replace(/(['"])\/?static\//g, '$1./');
+
+                // HTML 파일 추가
+                zip.file(currentFile, content);
+
+                // ZIP 생성 및 다운로드
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentFile.replace('.html', '_package.zip');
+                a.click();
+                URL.revokeObjectURL(url);
+
+                showNotification(`ZIP 다운로드 완료 (이미지 ${imagePaths.size}개 포함)`, 'success');
+            } catch (e) {
+                console.error(e);
+                showNotification('ZIP 생성 실패: ' + e.message, 'error');
+            }
         }
 
         // 좌우 패널 전환 (왼손잡이/오른손잡이 지원)
@@ -783,6 +1081,83 @@
             previewUpdateTimer = setTimeout(() => {
                 updatePreview();
             }, 300);  // 300ms 디바운스
+        }
+
+
+        // 텍스트 서식 적용 (굵게, 기울임, 밑줄)
+        function formatText(format) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const selectedText = editor.value.substring(start, end);
+            
+            if (!selectedText) {
+                showNotification('텍스트를 선택해주세요', 'error');
+                return;
+            }
+            
+            let formattedText = '';
+            switch(format) {
+                case 'bold':
+                    formattedText = '<strong>' + selectedText + '</strong>';
+                    break;
+                case 'italic':
+                    formattedText = '<em>' + selectedText + '</em>';
+                    break;
+                case 'underline':
+                    formattedText = '<u>' + selectedText + '</u>';
+                    break;
+                default:
+                    formattedText = selectedText;
+            }
+            
+            editor.value = editor.value.substring(0, start) + formattedText + editor.value.substring(end);
+            editor.selectionStart = start;
+            editor.selectionEnd = start + formattedText.length;
+            editor.focus();
+            
+            updatePreview();
+            markAsModified();
+            showNotification(format + ' 서식이 적용되었습니다', 'success');
+        }
+        
+        // HTML 요소 삽입 (제목1, 제목2, 본문)
+        function insertElement(element) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const selectedText = editor.value.substring(start, end) || '텍스트를 입력하세요';
+            
+            let html = '';
+            switch(element) {
+                case 'h1':
+                    html = '<h1>' + selectedText + '</h1>';
+                    break;
+                case 'h2':
+                    html = '<h2>' + selectedText + '</h2>';
+                    break;
+                case 'p':
+                    html = '<p>' + selectedText + '</p>';
+                    break;
+                default:
+                    html = selectedText;
+            }
+            
+            editor.value = editor.value.substring(0, start) + html + editor.value.substring(end);
+            editor.selectionStart = start;
+            editor.selectionEnd = start + html.length;
+            editor.focus();
+            
+            updatePreview();
+            markAsModified();
+            showNotification(element + ' 요소가 삽입되었습니다', 'success');
+        }
+        
+        // 수정됨 표시
+        function markAsModified() {
+            if (currentFile && !document.title.startsWith('* ')) {
+                updateStatus(currentFile + ' (수정됨)');
+            }
         }
 
         // HTML 정리
@@ -904,6 +1279,15 @@
             loadFiles();
             initResizer();
             loadSettings();
+
+            // URL 파라미터에서 파일 경로 확인
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileParam = urlParams.get('file');
+            if (fileParam) {
+                // 파일 경로가 전달되면 자동으로 로드
+                console.log('URL 파라미터로 파일 로드:', fileParam);
+                loadFile(fileParam);
+            }
         });
 
         // 단축키
@@ -911,6 +1295,14 @@
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
                 saveFile();
+            }
+            if (e.key === 'F3') {
+                e.preventDefault();
+                findNext();
+            }
+            if (e.ctrlKey && e.key === 'f') {
+                e.preventDefault();
+                findReplace();
             }
         });
 
@@ -1125,43 +1517,82 @@
             }
         }
 
-        // 에디터에서 해당 요소 위치 하이라이트
+        // 에디터에서 해당 요소 위치 하이라이트 - 개선된 버전
         function highlightInEditor(element) {
             const editor = document.getElementById('htmlEditor');
-            const content = editor.value;
+            const editorContent = editor.value;
 
-            // 요소의 태그명과 클래스로 검색
+            // 요소의 태그명, 클래스, 텍스트 정보 수집
             const tagName = element.tagName.toLowerCase();
-            const className = element.className.replace('sync-highlight', '').trim().split(' ')[0];
-            const textContent = element.textContent.trim().substring(0, 30);
+            const className = element.className.replace('sync-highlight', '').trim();
+            const firstClass = className.split(' ')[0];
 
-            // 정규식으로 해당 태그 찾기
-            let searchPattern;
-            if (className) {
-                searchPattern = new RegExp(`<${tagName}[^>]*class="[^"]*${className}[^"]*"[^>]*>`, 'gi');
-            } else if (textContent) {
-                // 텍스트로 찾기
-                const escapedText = textContent.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                searchPattern = new RegExp(`<${tagName}[^>]*>[^<]*${escapedText}`, 'gi');
-            } else {
-                searchPattern = new RegExp(`<${tagName}[^>]*>`, 'gi');
+            // 직접적인 텍스트 내용 추출 (자식 요소의 텍스트 제외)
+            let directText = '';
+            for (let node of element.childNodes) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    directText += node.textContent.trim();
+                }
+            }
+            // 직접 텍스트가 없으면 첫 번째 줄의 텍스트 사용
+            if (!directText) {
+                directText = element.textContent.trim().split('\n')[0].substring(0, 50);
             }
 
-            const match = searchPattern.exec(content);
-            if (match) {
-                const startPos = match.index;
-                const endPos = startPos + match[0].length;
+            let foundPos = -1;
+
+            // 1. 먼저 구체적인 텍스트로 검색 (가장 정확)
+            if (directText && directText.length >= 3) {
+                // 텍스트 내용 직접 검색
+                let searchIdx = editorContent.indexOf(directText);
+                if (searchIdx !== -1) {
+                    // 이 텍스트가 포함된 태그의 시작 위치 찾기
+                    let tagStart = editorContent.lastIndexOf('<', searchIdx);
+                    if (tagStart !== -1 && tagStart < searchIdx) {
+                        foundPos = tagStart;
+                    } else {
+                        foundPos = searchIdx;
+                    }
+                }
+            }
+
+            // 2. 클래스로 검색 (텍스트로 못 찾은 경우)
+            if (foundPos === -1 && firstClass) {
+                const escapedClass = firstClass.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const classPattern = new RegExp('class="[^"]*' + escapedClass + '[^"]*"', 'i');
+                const classMatch = classPattern.exec(editorContent);
+                if (classMatch) {
+                    // class 속성이 있는 태그의 시작 위치 찾기
+                    foundPos = editorContent.lastIndexOf('<', classMatch.index);
+                }
+            }
+
+            // 3. 태그명으로 검색 (마지막 수단)
+            if (foundPos === -1) {
+                const tagPattern = new RegExp('<' + tagName + '[^>]*>', 'i');
+                const tagMatch = tagPattern.exec(editorContent);
+                if (tagMatch) {
+                    foundPos = tagMatch.index;
+                }
+            }
+
+            // 찾은 위치로 이동
+            if (foundPos !== -1) {
+                // 해당 줄의 끝 위치 찾기
+                let endPos = editorContent.indexOf('>', foundPos);
+                if (endPos === -1) endPos = foundPos + 50;
+                else endPos += 1;
 
                 // 해당 줄 번호 계산
-                const textBefore = content.substring(0, startPos);
+                const textBefore = editorContent.substring(0, foundPos);
                 const lineNum = textBefore.split('\n').length;
 
                 // 에디터 스크롤
-                const lineHeight = 18; // 대략적인 줄 높이
-                editor.scrollTop = (lineNum - 5) * lineHeight;
+                const lineHeight = 18;
+                editor.scrollTop = Math.max(0, (lineNum - 5) * lineHeight);
 
-                // 선택 표시 (시각적 하이라이트)
-                editor.setSelectionRange(startPos, endPos);
+                // 선택 표시
+                editor.setSelectionRange(foundPos, endPos);
                 editor.focus();
             }
         }
@@ -1613,5 +2044,298 @@
             return div.innerHTML;
         }
     </script>
+
+    <!-- PDF 업로드 모달 -->
+    <div id="pdfModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 12px; padding: 25px; max-width: 600px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #333;">📄 PDF를 HTML로 변환</h3>
+                <button onclick="closePdfModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+            </div>
+
+            <!-- 드래그 앤 드롭 영역 -->
+            <div id="pdfDropZone" style="border: 2px dashed #8B5CF6; border-radius: 12px; padding: 50px; text-align: center; margin-bottom: 20px; cursor: pointer; transition: all 0.3s; background: #f9f5ff;"
+                 onclick="document.getElementById('pdfFileInput').click()"
+                 ondragover="event.preventDefault(); this.style.borderColor='#6D28D9'; this.style.background='#ede9fe';"
+                 ondragleave="this.style.borderColor='#8B5CF6'; this.style.background='#f9f5ff';"
+                 ondrop="handlePdfDrop(event)">
+                <div style="font-size: 64px; margin-bottom: 15px;">📄</div>
+                <p style="margin: 0; color: #6D28D9; font-weight: 600; font-size: 1.1em;">클릭하거나 PDF 파일을 드래그하세요</p>
+                <p style="margin: 10px 0 0; color: #9333EA; font-size: 0.9em;">PDF 파일만 지원됩니다 (최대 50MB)</p>
+            </div>
+            <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" style="display: none;" onchange="handlePdfSelect(event)">
+
+            <!-- 선택된 파일 정보 -->
+            <div id="pdfFileInfo" style="display: none; padding: 15px; background: #f3f4f6; border-radius: 8px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="font-size: 32px;">📋</div>
+                    <div style="flex: 1;">
+                        <div id="pdfFileName" style="font-weight: 600; color: #333;"></div>
+                        <div id="pdfFileSize" style="font-size: 0.85em; color: #666;"></div>
+                    </div>
+                    <button onclick="clearPdfSelection()" style="background: #EF4444; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer;">✕ 제거</button>
+                </div>
+            </div>
+
+            <!-- 변환 옵션 -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">출력 파일명 (선택):</label>
+                <input type="text" id="pdfOutputName" placeholder="자동 생성됨 (예: document_20251205_123456.html)" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <!-- 변환 진행 상태 -->
+            <div id="pdfProgress" style="display: none; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <div class="spinner" style="width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #8B5CF6; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    <span id="pdfProgressText" style="color: #666;">변환 중...</span>
+                </div>
+                <div style="background: #e5e7eb; border-radius: 4px; height: 8px; overflow: hidden;">
+                    <div id="pdfProgressBar" style="background: linear-gradient(90deg, #8B5CF6, #6D28D9); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                </div>
+            </div>
+
+            <!-- 버튼 -->
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closePdfModal()" style="flex: 1; padding: 14px; background: #f3f4f6; color: #666; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px;">취소</button>
+                <button id="pdfConvertBtn" onclick="convertPdf()" style="flex: 2; padding: 14px; background: #8B5CF6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px;" disabled>📄 변환 시작</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- AI 피드백 모달 -->
+    <div id="feedbackModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 16px; padding: 25px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #333;">🧠 AI 학습 피드백</h3>
+                <button onclick="closeFeedbackModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+            </div>
+
+            <!-- 평점 -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">변환 품질 평가:</label>
+                <div id="ratingStars" style="display: flex; gap: 8px; font-size: 32px; cursor: pointer;">
+                    <span onclick="setRating(1)" data-rating="1">☆</span>
+                    <span onclick="setRating(2)" data-rating="2">☆</span>
+                    <span onclick="setRating(3)" data-rating="3">☆</span>
+                    <span onclick="setRating(4)" data-rating="4">☆</span>
+                    <span onclick="setRating(5)" data-rating="5">☆</span>
+                </div>
+                <input type="hidden" id="feedbackRating" value="0">
+            </div>
+
+            <!-- 피드백 유형 -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">피드백 유형:</label>
+                <select id="feedbackType" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    <option value="rating">일반 평가</option>
+                    <option value="correction">오류 수정 제보</option>
+                    <option value="suggestion">개선 제안</option>
+                </select>
+            </div>
+
+            <!-- 카테고리 -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">관련 카테고리:</label>
+                <select id="feedbackCategory" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    <option value="overall">전체</option>
+                    <option value="party">정당 정보</option>
+                    <option value="name">후보자 이름</option>
+                    <option value="pledge">공약</option>
+                    <option value="layout">레이아웃</option>
+                    <option value="color">색상/테마</option>
+                    <option value="image">이미지</option>
+                </select>
+            </div>
+
+            <!-- 수정 내용 (오류 수정 시) -->
+            <div id="correctionFields" style="display: none; margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">원래 값:</label>
+                <input type="text" id="originalValue" placeholder="잘못된 값" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 10px; box-sizing: border-box;">
+
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">수정된 값:</label>
+                <input type="text" id="correctedValue" placeholder="올바른 값" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <!-- 코멘트 -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">추가 의견:</label>
+                <textarea id="feedbackComment" placeholder="AI가 더 잘 학습할 수 있도록 의견을 남겨주세요" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; min-height: 80px; resize: vertical; box-sizing: border-box;"></textarea>
+            </div>
+
+            <!-- 저장 시 HTML 변경 비교 -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="checkbox" id="saveHtmlDiff" checked style="width: 18px; height: 18px;">
+                    <span style="color: #333;">저장 시 HTML 변경 내용도 학습에 활용</span>
+                </label>
+            </div>
+
+            <!-- 학습 통계 표시 -->
+            <div id="learningStats" style="background: #f3f4f6; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <div style="font-weight: 600; color: #333; margin-bottom: 10px;">📊 AI 학습 현황</div>
+                <div id="statsContent" style="font-size: 0.9em; color: #666;">로딩 중...</div>
+            </div>
+
+            <!-- 버튼 -->
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closeFeedbackModal()" style="flex: 1; padding: 14px; background: #f3f4f6; color: #666; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">취소</button>
+                <button onclick="submitFeedback()" style="flex: 2; padding: 14px; background: #8B5CF6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🧠 피드백 전송</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // AI 피드백 기능
+        // ============================================
+
+        let currentRating = 0;
+        let originalHtmlContent = '';  // 파일 로드 시 원본 저장
+
+        // 피드백 모달 열기
+        function openFeedbackModal() {
+            if (!currentFile) {
+                showNotification('파일을 먼저 선택하세요', 'error');
+                return;
+            }
+            document.getElementById('feedbackModal').style.display = 'flex';
+            loadLearningStats();
+
+            // 피드백 유형에 따라 필드 표시/숨김
+            document.getElementById('feedbackType').addEventListener('change', function() {
+                document.getElementById('correctionFields').style.display =
+                    this.value === 'correction' ? 'block' : 'none';
+            });
+        }
+
+        // 피드백 모달 닫기
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'none';
+            resetFeedbackForm();
+        }
+
+        // 평점 설정
+        function setRating(rating) {
+            currentRating = rating;
+            document.getElementById('feedbackRating').value = rating;
+
+            const stars = document.querySelectorAll('#ratingStars span');
+            stars.forEach((star, index) => {
+                star.textContent = index < rating ? '★' : '☆';
+                star.style.color = index < rating ? '#F59E0B' : '#D1D5DB';
+            });
+        }
+
+        // 피드백 전송
+        async function submitFeedback() {
+            const rating = parseInt(document.getElementById('feedbackRating').value);
+            if (rating === 0) {
+                showNotification('평점을 선택해주세요', 'error');
+                return;
+            }
+
+            const feedbackData = {
+                job_id: currentFile.replace('.html', ''),
+                rating: rating,
+                feedback_type: document.getElementById('feedbackType').value,
+                category: document.getElementById('feedbackCategory').value,
+                original_value: document.getElementById('originalValue').value,
+                corrected_value: document.getElementById('correctedValue').value,
+                comment: document.getElementById('feedbackComment').value
+            };
+
+            try {
+                // 피드백 전송
+                const response = await fetch('/api/learning/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(feedbackData)
+                });
+
+                if (response.ok) {
+                    // HTML 변경 비교 저장
+                    if (document.getElementById('saveHtmlDiff').checked && originalHtmlContent) {
+                        const currentHtml = document.getElementById('htmlEditor').value;
+                        if (currentHtml !== originalHtmlContent) {
+                            await saveHtmlDiff(currentHtml);
+                        }
+                    }
+
+                    showNotification('피드백이 전송되었습니다. AI가 학습합니다!', 'success');
+                    closeFeedbackModal();
+                } else {
+                    throw new Error('전송 실패');
+                }
+            } catch (e) {
+                console.error(e);
+                showNotification('피드백 전송 실패', 'error');
+            }
+        }
+
+        // HTML 변경 비교 저장
+        async function saveHtmlDiff(modifiedHtml) {
+            try {
+                await fetch('/api/learning/html-diff', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        job_id: currentFile.replace('.html', ''),
+                        original_html: originalHtmlContent,
+                        modified_html: modifiedHtml
+                    })
+                });
+            } catch (e) {
+                console.error('HTML diff 저장 실패:', e);
+            }
+        }
+
+        // 학습 통계 로드
+        async function loadLearningStats() {
+            try {
+                const response = await fetch('/api/learning/stats');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('statsContent').innerHTML = `
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div>📝 총 피드백: <strong>${stats.total_feedbacks || 0}건</strong></div>
+                            <div>🧠 학습 규칙: <strong>${stats.active_rules || 0}개</strong></div>
+                            <div>👍 긍정 피드백: <strong>${stats.positive_feedbacks || 0}건</strong></div>
+                            <div>⚡ 고신뢰 규칙: <strong>${stats.high_confidence_rules || 0}개</strong></div>
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                document.getElementById('statsContent').innerHTML = '통계를 불러올 수 없습니다.';
+            }
+        }
+
+        // 폼 초기화
+        function resetFeedbackForm() {
+            currentRating = 0;
+            document.getElementById('feedbackRating').value = '0';
+            setRating(0);
+            document.getElementById('feedbackType').value = 'rating';
+            document.getElementById('feedbackCategory').value = 'overall';
+            document.getElementById('originalValue').value = '';
+            document.getElementById('correctedValue').value = '';
+            document.getElementById('feedbackComment').value = '';
+            document.getElementById('correctionFields').style.display = 'none';
+        }
+
+        // 파일 로드 시 원본 저장 (기존 loadFile 함수 수정)
+        const originalLoadFile = loadFile;
+        loadFile = async function(filename) {
+            await originalLoadFile(filename);
+            // 원본 HTML 저장
+            originalHtmlContent = document.getElementById('htmlEditor').value;
+        };
+    </script>
+
 </body>
 </html>
