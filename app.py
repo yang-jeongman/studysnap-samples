@@ -2573,7 +2573,8 @@ except Exception as e:
 async def auto_convert_election(
     file: UploadFile = File(...),
     title: Optional[str] = Form(default=None),
-    save_folder: Optional[str] = Form(default=None)
+    save_folder: Optional[str] = Form(default=None),
+    create_images_folder: Optional[str] = Form(default=None)
 ):
     """
     완전 자동화 선거공보물 변환 API
@@ -2587,7 +2588,8 @@ async def auto_convert_election(
     Parameters:
     - file: PDF 파일
     - title: 출력 파일 제목 (선택사항)
-    - save_folder: 저장할 하위 폴더명 (선택사항, 예: 국민-나경원)
+    - save_folder: 저장할 하위 폴더명 (선택사항, 예: 민주-이광재)
+    - create_images_folder: images 하위 폴더 생성 여부 (선택사항, "true"인 경우 생성)
 
     Returns:
     - success: 성공 여부
@@ -2646,6 +2648,12 @@ async def auto_convert_election(
             output_dir.mkdir(parents=True, exist_ok=True)
             output_path = output_dir / output_filename
             output_url_path = f"/outputs/{save_folder}/{output_filename}"
+
+            # images 폴더 생성 (create_images_folder가 "true"인 경우)
+            if create_images_folder == "true":
+                images_dir = output_dir / "images"
+                images_dir.mkdir(parents=True, exist_ok=True)
+                logger.info(f"[{job_id}] images 폴더 생성됨: {images_dir}")
         else:
             output_dir = OUTPUT_DIR
             output_path = OUTPUT_DIR / output_filename

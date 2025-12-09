@@ -633,10 +633,10 @@
                     </label>
                     <label class="folder-option" data-folder="custom">
                         <input type="radio" name="saveFolder" value="custom">
-                        <span class="folder-icon">✏️</span>
+                        <span class="folder-icon">➕</span>
                         <div class="folder-info">
                             <div class="folder-name">새 폴더 생성</div>
-                            <div class="folder-desc">하위 폴더 직접 입력</div>
+                            <div class="folder-desc">새 폴더 + images 폴더</div>
                         </div>
                     </label>
                 </div>
@@ -644,7 +644,16 @@
                 <!-- 새 폴더 입력 -->
                 <div class="custom-folder-input" id="customFolderInput">
                     <span>outputs/</span>
-                    <input type="text" id="customFolderName" placeholder="예: 국민-홍길동">
+                    <input type="text" id="customFolderName" placeholder="예: 민주-이광재">
+                    <button type="button" onclick="validateNewFolder()" style="padding: 12px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">확인</button>
+                </div>
+                <div id="newFolderPreview" style="display: none; margin-top: 10px; padding: 12px 15px; background: #e8f5e9; border-radius: 8px; font-size: 0.9em;">
+                    <div style="color: #2e7d32; font-weight: 500;">✅ 생성될 폴더 구조:</div>
+                    <div style="margin-top: 5px; font-family: monospace; color: #333;">
+                        📁 outputs/<span id="previewFolderName">폴더명</span>/<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;├─ 📄 [후보자명]_변환결과.html<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;└─ 📁 images/ (이미지 업로드용)
+                    </div>
                 </div>
 
                 <!-- 기존 폴더 목록 -->
@@ -761,7 +770,30 @@
             selectedSaveFolder = this.value.trim();
             // 기존 폴더 선택 해제
             document.querySelectorAll('.existing-folder-chip').forEach(c => c.classList.remove('selected'));
+            // 미리보기 숨김 (재확인 필요)
+            document.getElementById('newFolderPreview').style.display = 'none';
         });
+
+        // 새 폴더 검증 및 미리보기
+        function validateNewFolder() {
+            const folderName = document.getElementById('customFolderName').value.trim();
+            if (!folderName) {
+                alert('폴더명을 입력해주세요');
+                return;
+            }
+            // 특수문자 검사 (한글, 영문, 숫자, -, _ 허용)
+            if (!/^[가-힣a-zA-Z0-9\-_]+$/.test(folderName)) {
+                alert('폴더명에는 한글, 영문, 숫자, -, _ 만 사용할 수 있습니다');
+                return;
+            }
+            // 미리보기 표시
+            document.getElementById('previewFolderName').textContent = folderName;
+            document.getElementById('newFolderPreview').style.display = 'block';
+            selectedSaveFolder = folderName;
+            createImagesFolder = true;  // images 폴더도 생성
+        }
+
+        let createImagesFolder = false;  // images 폴더 생성 여부
 
         // 기존 폴더 목록 로드
         async function loadExistingFolders() {
@@ -795,9 +827,11 @@
             // 선택 표시
             event.target.closest('.existing-folder-chip').classList.add('selected');
             selectedSaveFolder = folderName;
+            createImagesFolder = false;  // 기존 폴더는 images 폴더 이미 있을 수 있음
 
-            // 커스텀 입력 숨김
+            // 커스텀 입력 및 미리보기 숨김
             document.getElementById('customFolderInput').classList.remove('show');
+            document.getElementById('newFolderPreview').style.display = 'none';
         }
 
         // 시스템 상태 확인
@@ -976,6 +1010,11 @@
             // 저장 폴더 추가
             if (selectedSaveFolder) {
                 formData.append('save_folder', selectedSaveFolder);
+            }
+
+            // images 폴더 생성 여부
+            if (createImagesFolder) {
+                formData.append('create_images_folder', 'true');
             }
 
             progressFill.style.width = '30%';
