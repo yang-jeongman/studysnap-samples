@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>나경원 후보 - 모바일 선거공보</title>
+
+    
+
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+            background: linear-gradient(180deg, #FFE4E6 0%, #FECDD3 100%);
+
+            min-height: 100vh;
+
+            padding: 15px;
+
+            line-height: 1.6;
+
+        }
+
+        .container {
+
+            max-width: 480px;
+
+            margin: 0 auto;
+
+            background: #FFF5F5;
+
+            border-radius: 20px;
+
+            padding: 15px;
+
+        }
+
+
+
+        /* 히어로 섹션 */
+
+        .hero {
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            background: white;
+
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+        }
+
+        .hero .party {
+
+            display: inline-block;
+
+            background: #E11D48;
+
+            color: white;
+
+            padding: 8px 24px;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 15px;
+
+        }
+
+        .hero .candidate {
+
+            font-size: 42px;
+
+            font-weight: 800;
+
+            color: #1a1a1a;
+
+            margin: 10px 0;
+
+        }
+
+        .hero .slogan {
+
+            font-size: 16px;
+
+            color: #E11D48;
+
+            font-weight: 600;
+
+            margin-top: 10px;
+
+        }
+
+
+
+        /* 요약 카드 (핵심공약 6개, 주요실적 7건) */
+
+        .summary-cards {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .summary-card {
+
+            flex: 1;
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            text-align: center;
+
+            border: 2px solid #FECDD3;
+
+        }
+
+        .summary-card .number {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            color: #E11D48;
+
+        }
+
+        .summary-card .label {
+
+            font-size: 13px;
+
+            color: #666;
+
+            margin-top: 5px;
+
+        }
+
+
+
+        /* 섹션 제목 */
+
+        .section-title {
+
+            color: #1a1a1a;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            margin: 25px 0 15px;
+
+            padding: 10px 15px;
+
+            background: #FEE2E2;
+
+            border-radius: 10px;
+
+            border-left: 4px solid #E11D48;
+
+        }
+
+
+
+        /* 핵심공약/실적 카드 (확장형) */
+
+        .expandable-list {
+
+            background: white;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+        }
+
+        .expandable-item {
+
+            border-bottom: 1px solid #FEE2E2;
+
+        }
+
+        .expandable-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+        .expandable-header {
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 15px;
+
+            cursor: pointer;
+
+            transition: background 0.2s;
+
+        }
+
+        .expandable-header:hover {
+
+            background: #FFF5F5;
+
+        }
+
+        .expandable-number {
+
+            width: 32px;
+
+            height: 32px;
+
+            background: #E11D48;
+
+            color: white;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 700;
+
+            font-size: 14px;
+
+            margin-right: 12px;
+
+            flex-shrink: 0;
+
+        }
+
+        .expandable-content {
+
+            flex: 1;
+
+        }
+
+        .expandable-title {
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            color: #1a1a1a;
+
+        }
+
+        .expandable-subtitle {
+
+            font-size: 12px;
+
+            color: #888;
+
+            margin-top: 2px;
+
+        }
+
+        .expandable-toggle {
+
+            color: #E11D48;
+
+            font-size: 13px;
+
+            padding: 5px 10px;
+
+            transition: transform 0.3s;
+
+        }
+
+        .expandable-toggle.open {
+
+            transform: rotate(180deg);
+
+        }
+
+
+
+        /* 상세 내용 영역 */
+
+        .expandable-details {
+
+            max-height: 0;
+
+            overflow: hidden;
+
+            transition: max-height 0.3s ease-out;
+
+            background: #FEFEFE;
+
+        }
+
+        .expandable-details.open {
+
+            max-height: 1000px;
+
+        }
+
+        .details-inner {
+
+            padding: 15px 15px 15px 60px;
+
+            border-top: 1px dashed #FEE2E2;
+
+        }
+
+        .details-text {
+
+            font-size: 14px;
+
+            color: #444;
+
+            line-height: 1.8;
+
+            margin-bottom: 15px;
+
+        }
+
+        .details-text ul {
+
+            margin: 10px 0;
+
+            padding-left: 20px;
+
+        }
+
+        .details-text li {
+
+            margin: 5px 0;
+
+        }
+
+
+
+        /* 버튼 그룹 */
+
+        .btn-group {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 10px;
+
+        }
+
+        .btn {
+
+            flex: 1;
+
+            padding: 10px 15px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: all 0.2s;
+
+            text-decoration: none;
+
+        }
+
+        .btn-primary {
+
+            background: #E11D48;
+
+            color: white;
+
+        }
+
+        .btn-primary:hover {
+
+            background: #BE123C;
+
+        }
+
+        .btn-secondary {
+
+            background: #FEE2E2;
+
+            color: #E11D48;
+
+        }
+
+        .btn-secondary:hover {
+
+            background: #FECDD3;
+
+        }
+
+
+
+        /* 주요실적 그룹 제목 */
+
+        .achievement-group {
+
+            margin-bottom: 15px;
+
+        }
+
+        .achievement-group-title {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #E11D48;
+
+            margin-bottom: 10px;
+
+            padding: 10px 15px;
+
+            background: #FFF5F5;
+
+            border-radius: 10px 10px 0 0;
+
+        }
+
+
+
+        /* 동별공약 지도 섹션 */
+
+        .district-map-section {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 15px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .district-map {
+
+            position: relative;
+
+            width: 100%;
+
+            height: 450px;
+
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+
+            border-radius: 12px;
+
+            margin-bottom: 15px;
+
+            overflow: hidden;
+
+        }
+
+        .district-map svg {
+
+            width: 100%;
+
+            height: 100%;
+
+        }
+
+        .district-area {
+
+            fill: #FEE2E2;
+
+            stroke: #E11D48;
+
+            stroke-width: 1.5;
+
+            cursor: pointer;
+
+            transition: all 0.3s;
+
+        }
+
+        .district-area:hover {
+
+            fill: #FECDD3;
+
+        }
+
+        .district-area.active {
+
+            fill: #E11D48;
+
+        }
+
+        .district-label {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            fill: #333;
+
+            pointer-events: none;
+
+            text-anchor: middle;
+
+        }
+
+        .district-area.active + .district-label {
+
+            fill: white;
+
+        }
+
+
+
+        /* 선택된 동 정보 */
+
+        .district-info {
+
+            display: none;
+
+            padding: 15px;
+
+            background: #FFF5F5;
+
+            border-radius: 12px;
+
+            margin-top: 10px;
+
+        }
+
+        .district-info.active {
+
+            display: block;
+
+        }
+
+        .district-info-title {
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            color: #E11D48;
+
+            margin-bottom: 10px;
+
+        }
+
+        .district-info-content {
+
+            font-size: 14px;
+
+            color: #444;
+
+            line-height: 1.7;
+
+        }
+
+
+
+        /* 연락처 */
+
+        .contact-section {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            margin-top: 20px;
+
+        }
+
+        .contact-section .title {
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            color: #333;
+
+            margin-bottom: 15px;
+
+        }
+
+        .contact-item {
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 14px;
+
+            color: #555;
+
+        }
+
+        .contact-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+
+        /* 푸터 */
+
+        .footer {
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            color: rgba(255,255,255,0.7);
+
+            font-size: 12px;
+
+        }
+
+
+
+        /* 모달 (원문보기) */
+
+        .modal-overlay {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: rgba(0,0,0,0.8);
+
+            z-index: 1000;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+        .modal-overlay.active {
+
+            display: flex;
+
+        }
+
+        .modal-content {
+
+            background: white;
+
+            border-radius: 15px;
+
+            max-width: 90%;
+
+            max-height: 90%;
+
+            overflow: auto;
+
+            position: relative;
+
+        }
+
+        .modal-close {
+
+            position: absolute;
+
+            top: 10px;
+
+            right: 10px;
+
+            width: 30px;
+
+            height: 30px;
+
+            background: #E11D48;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            z-index: 10;
+
+        }
+
+        .modal-image {
+
+            width: 100%;
+
+            height: auto;
+
+        }
+
+    </style>
+
+    
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+
+    <div class="hero">
+<img src="./images/1-얼굴 2025-12-08 124629_20251208_125044.png" alt="이미지" style="max-width: 100%; height: auto;">
+
+        <div class="party">기호 2번</div>
+
+        <div class="candidate">나경원</div>
+
+        <div class="slogan">나만 믿어요 새로운 동작!</div>
+
+    </div>
+
+
+
+    <div class="summary-cards">
+
+        <div class="summary-card">
+
+            <div class="number">6개</div>
+
+            <div class="label">핵심 공약</div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="number">7건</div>
+
+            <div class="label">주요 실적</div>
+
+        </div>
+
+    </div>
+
+    <div class="section-title">핵심 공약</div>
+
+    <div class="expandable-list">
+
+
+
+        <div class="expandable-item">
+
+            <div class="expandable-header" onclick="toggleExpand(this)">
+
+                <div class="expandable-number">1</div>
+
+                <div class="expandable-content">
+
+                    <div class="expandable-title">교육특구 동작</div>
+
+                    <div class="expandable-subtitle">동작을 8학군 수준으로</div>
+
+                </div>
+
+                <div class="expandable-toggle">▼</div>
+
+            </div>
+
+            <div class="expandable-details">
+
+                <div class="details-inner">
+
+                    <div class="details-text">
+
+                        
+
+                <ul>
+
+                    <li>초·중·고 학력 향상 특별 프로그램 도입</li>
+
+                    <li>방과후 학교 무료 확대</li>
+
+                    <li>영재교육원 유치 및 확대</li>
+
+                    <li>진로·진학 컨설팅 무료 제공</li>
+
+                    <li>학교 시설 현대화 (에어컨, 공기청정기 등)</li>
+
+                </ul>
+
+            
+
+                    </div>
+
+                    
+
+                    <div class="btn-group">
+
+                        <button class="btn btn-secondary" onclick="showImage('./pledge1.png')">📄 원문보기</button>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="expandable-item">
+
+            <div class="expandable-header" onclick="toggleExpand(this)">
+
+                <div class="expandable-number">2</div>
+
+                <div class="expandable-content">
+
+                    <div class="expandable-title">사통팔달 동작</div>
+
+                    <div class="expandable-subtitle">서울 내부순환 급행전용 철도망</div>
+
+                </div>
+
+                <div class="expandable-toggle">▼</div>
+
+            </div>
+
+            <div class="expandable-details">
+
+                <div class="details-inner">
+
+                    <div class="details-text">
+
+                        
+
+                <ul>
+
+                    <li>GTX-D 동작역 유치 추진</li>
+
+                    <li>신림선·서부선 연장 추진</li>
+
+                    <li>노량진역 환승센터 구축</li>
+
+                    <li>마을버스 노선 확대</li>
+
+                    <li>교통약자 이동편의 증진</li>
+
+                </ul>
+
+            
+
+                    </div>
+
+                    
+
+                    <div class="btn-group">
+
+                        <button class="btn btn-secondary" onclick="showImage('./pledge2-1.png')">🗺️ 지도보기</button>
+
+                        <button class="btn btn-secondary" onclick="showImage('./pledge2-2.png')">📄 원문보기</button>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="expandable-item">
+
+            <div class="expandable-header" onclick="toggleExpand(this)">
+
+                <div class="expandable-number">3</div>
+
+                <div class="expandable-content">
+
+                    <div class="expandable-title">상전벽해 동작</div>
+
+                    <div class="expandable-subtitle">노량진 뉴타운, 스카이라인 확보</div>
+
+                </div>
+
+                <div class="expandable-toggle">▼</div>
+
+            </div>
+
+            <div class="expandable-details">
+
+                <div class="details-inner">
+
+                    <div class="details-text">
+
+                        
+
+                <ul>
+
+                    <li>노량진 수산시장 현대화</li>
+
+                    <li>노량진 재정비 촉진지구 활성화</li>
+
+                    <li>사당역 일대 도시재생</li>
+
+                    <li>노후 아파트 리모델링 지원</li>
+
+                    <li>한강변 스카이라인 조성</li>
+
+                </ul>
+
+            
+
+                    </div>
+
+                    
+
+                    <div class="btn-group">
+
+                        <button class="btn btn-secondary" onclick="showImage('./pledge3.png')">📄 원문보기</button>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="expandable-item">
+
+            <div class="expandable-header" onclick="toggleExpand(this)">
+
+                <div class="expandable-number">4</div>
+
+                <div class="expandable-content">
+
+                    <div class="expandable-title">15분도시 동작</div>
+
+                    <div class="expandable-subtitle">도서관, 체육관, 공원 15분 내</div>
+
+                </div>
+
+                <div class="expandable-toggle">▼</div>
+
+            </div>
+
+            <div class="expandable-details">
+
+                <div class="details-inner">
+
+                    <div class="details-text">
+
+                        
+
+                <ul>
+
+                    <li>동별 작은도서관 확충</li>
+
+                    <li>생활체육시설 확대</li>
+
+                    <li>동네공원 리모델링</li>
+
+                    <li>주민커뮤니티센터 신설</li>
+
+                    <li>걷고 싶은 거리 조성</li>
+
+                </ul>
+
+            
+
+                    </div>
+
+                    
+
+                    <div class="btn-group">
+
+                        <button class="btn btn-secondary" onclick="showImage('./pledge4.png')">📄 원문보기</button>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="expandable-item">
+
+            <div class="expandable-header" onclick="toggleExpand(this)">
+
+                <div class="expandable-number">5</div>
+
+                <div class="expandable-content">
+
+                    <div class="expandable-title">든든복지 동작</div>
+
+                    <div class="expandable-subtitle">어르신, 장애인, 아이 돌봄</div>
+
+                </div>
+
+                <div class="expandable-toggle">▼</div>
+
+            </div>
+
+            <div class="expandable-details">
+
+                <div class="details-inner">
+
+                    <div class="details-text">
+
+                        
+
+                <ul>
+
+                    <li>어르신 일자리 확대</li>
+
+                    <li>장애인 활동지원 강화</li>
+
+                    <li>국공립어린이집 확충</li>
+
+                    <li>돌봄교실 확대</li>
+
+                    <li>경로당 시설 현대화</li>
+
+                </ul>
+
+            
+
+                    </div>
+
+                    
+
+                    <div class="btn-group">
+
+                        <button class="btn btn-secondary" onclick="showImage('./pledge5.png')">📄 원문보기</button>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="expandable-item">
+
+            <div class="expandable-header" onclick="toggleExpand(this)">
+
+                <div class="expandable-number">6</div>
+
+                <div class="expandable-content">
+
+                    <div class="expandable-title">안심안전 동작</div>
+
+                    <div class="expandable-subtitle">범죄예방, CCTV, 안전통학로</div>
+
+                </div>
+
+                <div class="expandable-toggle">▼</div>
+
+            </div>
+
+            <div class="expandable-details">
+
+                <div class="details-inner">
+
+                    <div class="details-text">
+
+                        
+
+                <ul>
+
+                    <li>CCTV 사각지대 해소</li>
+
+                    <li>안전통학로 확대</li>
+
+                    <li>여성안심귀갓길 조성</li>
+
+                    <li>재난안전 대응체계 강화</li>
+
+                    <li>소방·응급 인프라 확충</li>
+
+                </ul>
+
+            
+
+                    </div>
+
+                    
+
+                    <div class="btn-group">
+
+                        <button class="btn btn-secondary" onclick="showImage('./pledge6.png')">📄 원문보기</button>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="section-title">주요 실적</div>
+
+<img src="./images/1-서리풀 2025-12-08 125136_20251208_125234.png" alt="이미지" style="max-width: 100%; height: auto;">
+
+    <div class="achievement-group">
+
+        <div class="achievement-group-title">나경원이 바꾼 동작</div>
+
+            동작 주민들과 함께한 10년의 시간<br>
+
+주민들이 들려주신 1,000여개의 이야기로<br>
+
+동작의 오늘을 보고 내일을 그려갑니다.<br>
+
+<img src="./images/1-동작 2025-12-08 125318_20251208_125553.png" alt="이미지" style="max-width: 100%; height: auto;">
+
+        <div style="padding: 10px 15px; font-size: 13px; color: #666; line-height: 1.6; background: #FFF5F5; border-radius: 0 0 10px 10px; margin-bottom: 10px;">
+
+        </div>
+
+        <div class="expandable-list">
+
+
+
+            <div class="expandable-item">
+
+                <div class="expandable-header" onclick="toggleExpand(this)">
+
+                    <div class="expandable-number" style="background: #BE123C;">1</div>
+
+                    <div class="expandable-content">
+
+                        <div class="expandable-title">교육동작</div>
+
+                        <div class="expandable-subtitle">아이 키우기 좋은 동네, 교육동작 기반 만들기</div>
+
+                    </div>
+
+                    <div class="expandable-toggle">▼</div>
+
+                </div>
+
+                <div class="expandable-details">
+
+                    <div class="details-inner">
+
+                        <div class="details-text">
+
+                            
+
+                    <ul>
+
+                        <li>30년 만의 숙원 해결! 흑석동 공립고교 신설 확정</li>
+
+                        <li>사당3동 맘스하트카페 3호점 개관</li>
+
+                        <li>흑석동 구립까망돌어린이집 등 보육시설 신설</li>
+
+                        <li>2014~2020 교육 환경개선 및 동작발전 예산 총 774억원</li>
+
+                        <li>2022~2024 학교 시설환경개선비 247억원 확정</li>
+
+                    </ul>
+
+                
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="expandable-item">
+
+                <div class="expandable-header" onclick="toggleExpand(this)">
+
+                    <div class="expandable-number" style="background: #BE123C;">2</div>
+
+                    <div class="expandable-content">
+
+                        <div class="expandable-title">교통동작</div>
+
+                        <div class="expandable-subtitle">삶의 질이 오르는, 즐거운 동작 - 서울 주요 도심을 잇는 심장</div>
+
+                    </div>
+
+                    <div class="expandable-toggle">▼</div>
+
+                </div>
+
+                <div class="expandable-details">
+
+                    <div class="details-inner">
+
+                        <div class="details-text">
+
+                            
+
+                    <ul>
+
+                        <li><strong>서리풀터널 개통</strong> - 이수에서 강남까지 8분!</li>
+
+                        <li>30년간 1,890억원의 편익 발생 추정 (서울시, 서초구, 국방부간 공조 추진)</li>
+
+                        <li>사당로 3차구간 확장사업 착공</li>
+
+                        <li>사당역 방향 마을버스 전용차로 이용</li>
+
+                        <li>40년 끊겨있던 일류동작의 지름길 개통</li>
+
+                    </ul>
+
+                
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="expandable-item">
+
+                <div class="expandable-header" onclick="toggleExpand(this)">
+
+                    <div class="expandable-number" style="background: #BE123C;">3</div>
+
+                    <div class="expandable-content">
+
+                        <div class="expandable-title">문화동작</div>
+
+                        <div class="expandable-subtitle">더 좋아진 도서관, 체육관, 놀이터</div>
+
+                    </div>
+
+                    <div class="expandable-toggle">▼</div>
+
+                </div>
+
+                <div class="expandable-details">
+
+                    <div class="details-inner">
+
+                        <div class="details-text">
+
+                            
+
+                    <ul>
+
+                        <li>흑석복합도서관 건립</li>
+
+                        <li>흑석체육센터 증축 및 개보수 완료</li>
+
+                        <li>사당문화회관 리모델링</li>
+
+                        <li>현충근린공원 정비</li>
+
+                        <li>까치어린이공원 안전놀이터 조성</li>
+
+                    </ul>
+
+                
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="expandable-item">
+
+                <div class="expandable-header" onclick="toggleExpand(this)">
+
+                    <div class="expandable-number" style="background: #BE123C;">4</div>
+
+                    <div class="expandable-content">
+
+                        <div class="expandable-title">동별 성과</div>
+
+                        <div class="expandable-subtitle">각 동별 맞춤 성과</div>
+
+                    </div>
+
+                    <div class="expandable-toggle">▼</div>
+
+                </div>
+
+                <div class="expandable-details">
+
+                    <div class="details-inner">
+
+                        <div class="details-text">
+
+                            
+
+                    <ul>
+
+                        <li><strong>사당1,2동</strong>: 한전 남부지사 부지개발 확정, 남성사계시장 현대화, 까치어린이공원 안전놀이터 조성완료</li>
+
+                        <li><strong>사당3,4,5동</strong>: 사당종합체육관 개관, 삼일공원 내 유관순 열사상 건립, 가족친화형 공원 5개소 조성</li>
+
+                        <li><strong>상도1동</strong>: 동작구 가족센터 건립, 힐스테이트 아파트브랜드 변경, 청년창업지원센터 건립</li>
+
+                        <li><strong>흑석동</strong>: 효사정 문화공원 조성, 국립현충원 둘레길 통문 개방, 6.25 한강방어선전투 전사자 명비 제작</li>
+
+                    </ul>
+
+                
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="achievement-group">
+
+        <div class="achievement-group-title">나경원이 바꾼 대한민국</div>
+
+        <div style="padding: 10px 15px; font-size: 13px; color: #666; line-height: 1.6; background: #FFF5F5; border-radius: 0 0 10px 10px; margin-bottom: 10px;">
+
+            지속가능한 대한민국, 더 좋은 내일을 위해<br>
+
+통합의 정치를 바로 세우고, 국민의 삶을 치유하겠습니다.
+
+<img src="./images/1-대_20251208_130116.png" alt="이미지" style="max-width: 100%; height: auto;">
+
+        </div>
+
+        <div class="expandable-list">
+
+
+
+            <div class="expandable-item">
+
+                <div class="expandable-header" onclick="toggleExpand(this)">
+
+                    <div class="expandable-number" style="background: #BE123C;">5</div>
+
+                    <div class="expandable-content">
+
+                        <div class="expandable-title">진심</div>
+
+                        <div class="expandable-subtitle">흔들림 없이 지켜온 원칙과 가치</div>
+
+                    </div>
+
+                    <div class="expandable-toggle">▼</div>
+
+                </div>
+
+                <div class="expandable-details">
+
+                    <div class="details-inner">
+
+                        <div class="details-text">
+
+                            
+
+                    <ul>
+
+                        <li>보수정당 최초 여성 원내대표</li>
+
+                        <li>헌정 최초 여성 외교통일위원장</li>
+
+                        <li>공수처·선거법, 종전선언 일방 강행에 맞서 지켜온 원칙</li>
+
+                        <li>중국 및 주요 4개국 FTA, 북한인권법 통과로 지켜낸 자유의 가치</li>
+
+                    </ul>
+
+                
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="expandable-item">
+
+                <div class="expandable-header" onclick="toggleExpand(this)">
+
+                    <div class="expandable-number" style="background: #BE123C;">6</div>
+
+                    <div class="expandable-content">
+
+                        <div class="expandable-title">동행</div>
+
+                        <div class="expandable-subtitle">변함없는 약자와의 동행</div>
+
+                    </div>
+
+                    <div class="expandable-toggle">▼</div>
+
+                </div>
+
+                <div class="expandable-details">
+
+                    <div class="details-inner">
+
+                        <div class="details-text">
+
+                            
+
+                    <ul>
+
+                        <li>국회 장애인특위 최초 구성</li>
+
+                        <li>장애인 지원 교육·교통·주거 5대 법안 대표발의 및 예산확보</li>
+
+                        <li>2013 평창 동계 스페셜올림픽 세계대회 조직위원장, IPC 집행위원</li>
+
+                        <li>「부가가치세법」 개정으로 서민·소상공인 비과세 한도 상향</li>
+
+                        <li>「조세특례제한법」 개정으로 새마을금고 예금이자 비과세 혜택 부여</li>
+
+                    </ul>
+
+                
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="expandable-item">
+
+                <div class="expandable-header" onclick="toggleExpand(this)">
+
+                    <div class="expandable-number" style="background: #BE123C;">7</div>
+
+                    <div class="expandable-content">
+
+                        <div class="expandable-title">변화</div>
+
+                        <div class="expandable-subtitle">시대 흐름을 읽고 미래를 준비하다</div>
+
+                    </div>
+
+                    <div class="expandable-toggle">▼</div>
+
+                </div>
+
+                <div class="expandable-details">
+
+                    <div class="details-inner">
+
+                        <div class="details-text">
+
+                            
+
+                    <ul>
+
+                        <li>국회 저출산고령화대책특위 위원장</li>
+
+                        <li>대통령직속 저출산고령사회 부위원장</li>
+
+                        <li>외교부 기후환경대사</li>
+
+                        <li>싱크탱크 인구와기후그리고내일(PACT) 이사장</li>
+
+                        <li>세계경제포럼(WEF, 다보스포럼) 대통령 특사</li>
+
+                    </ul>
+
+                
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="section-title">동별 공약</div>
+
+
+
+    <div class="district-map-section">
+
+        <div class="district-map">
+
+            <svg viewBox="0 0 360 280" preserveAspectRatio="xMidYMid meet">
+
+                <!-- 나경원 후보 지역구 7개 동 지도 -->
+
+                <!-- 상단: 흑석동 -->
+
+                <path class="district-area" data-district="흑석동" d="M20,15 L340,15 L340,75 L20,75 Z" onclick="selectDistrict('흑석동')"/>
+
+                <text class="district-label" x="180" y="52">흑석동</text>
+
+
+
+                <!-- 중상단: 상도1동 -->
+
+                <path class="district-area" data-district="상도1동" d="M20,75 L180,75 L180,135 L20,135 Z" onclick="selectDistrict('상도1동')"/>
+
+                <text class="district-label" x="100" y="112">상도1동</text>
+
+
+
+                <!-- 중앙: 사당 3개동 -->
+
+                <path class="district-area" data-district="사당2동" d="M20,135 L130,135 L130,200 L20,200 Z" onclick="selectDistrict('사당2동')"/>
+
+                <text class="district-label" x="75" y="173">사당2동</text>
+
+
+
+                <path class="district-area" data-district="사당3동" d="M130,135 L240,135 L240,200 L130,200 Z" onclick="selectDistrict('사당3동')"/>
+
+                <text class="district-label" x="185" y="173">사당3동</text>
+
+
+
+                <path class="district-area" data-district="사당5동" d="M240,135 L340,135 L340,200 L240,200 Z" onclick="selectDistrict('사당5동')"/>
+
+                <text class="district-label" x="290" y="173">사당5동</text>
+
+
+
+                <!-- 하단: 사당 2개동 -->
+
+                <path class="district-area" data-district="사당4동" d="M60,200 L180,200 L180,265 L60,265 Z" onclick="selectDistrict('사당4동')"/>
+
+                <text class="district-label" x="120" y="238">사당4동</text>
+
+
+
+                <path class="district-area" data-district="사당1동" d="M180,200 L300,200 L300,265 L180,265 Z" onclick="selectDistrict('사당1동')"/>
+
+                <text class="district-label" x="240" y="238">사당1동</text>
+
+            </svg>
+
+        </div>
+
+        <p style="text-align: center; font-size: 13px; color: #888; margin-bottom: 15px;">
+
+            나경원 후보 지역구 7개 동 - 지도를 클릭하여 동별 공약을 확인하세요
+
+        </p>
+
+
+
+        <div class="district-info" id="info-상도1동">
+
+            <div class="district-info-title">📍 상도1동</div>
+
+            <div class="district-info-content">숭실대 연계 창업지원, 골목상권 활성화</div>
+
+            <div class="btn-group" style="margin-top: 15px;">
+
+                <button class="btn btn-secondary" onclick="showImage('./district_상도1동.png')">📄 원문보기</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="district-info" id="info-흑석동">
+
+            <div class="district-info-title">📍 흑석동</div>
+
+            <div class="district-info-content">중앙대 연계 교육혁신, 한강변 조성</div>
+
+            <div class="btn-group" style="margin-top: 15px;">
+
+                <button class="btn btn-secondary" onclick="showImage('./district_흑석동.png')">📄 원문보기</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="district-info" id="info-사당1동">
+
+            <div class="district-info-title">📍 사당1동</div>
+
+            <div class="district-info-content">사당역 환승센터, 남태령 터널 확장</div>
+
+            <div class="btn-group" style="margin-top: 15px;">
+
+                <button class="btn btn-secondary" onclick="showImage('./district_사당1동.png')">📄 원문보기</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="district-info" id="info-사당2동">
+
+            <div class="district-info-title">📍 사당2동</div>
+
+            <div class="district-info-content">까치산 공원 정비, 경로복지관 확충</div>
+
+            <div class="btn-group" style="margin-top: 15px;">
+
+                <button class="btn btn-secondary" onclick="showImage('./district_사당2동.png')">📄 원문보기</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="district-info" id="info-사당3동">
+
+            <div class="district-info-title">📍 사당3동</div>
+
+            <div class="district-info-content">방배천 생태공원 연결, 도서관 신설</div>
+
+            <div class="btn-group" style="margin-top: 15px;">
+
+                <button class="btn btn-secondary" onclick="showImage('./district_사당3동.png')">📄 원문보기</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="district-info" id="info-사당4동">
+
+            <div class="district-info-title">📍 사당4동</div>
+
+            <div class="district-info-content">이수역 상권 활성화, 청년 창업지원</div>
+
+            <div class="btn-group" style="margin-top: 15px;">
+
+                <button class="btn btn-secondary" onclick="showImage('./district_사당4동.png')">📄 원문보기</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="district-info" id="info-사당5동">
+
+            <div class="district-info-title">📍 사당5동</div>
+
+            <div class="district-info-content">어르신 일자리 확대, 돌봄서비스 강화</div>
+
+            <div class="btn-group" style="margin-top: 15px;">
+
+                <button class="btn btn-secondary" onclick="showImage('./district_사당5동.png')">📄 원문보기</button>
+
+            </div>
+
+        </div>
+
+    </div>
+<img src="./images/1-내일준비 2025-12-08 130222_20251208_130439.png" alt="이미지" style="max-width: 100%; height: auto;">
+
+    <div class="contact-section">
+
+        <div class="title">📞 연락처</div>
+
+        <div class="contact-item">선거사무소 : 서울시 동작구 사당로 276, 성보빌딩 6층 <br> TEL <a href="tel:02-537-7117" style="color: #E11D48; text-decoration: none; font-weight: 600;">02-537-7117</a></div>
+
+        <div class="contact-item">
+
+            <a href="https://facebook.com/nakw1963" target="_blank" style="color: #555; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+
+                facebook.com/nakw1963
+
+            </a>
+
+        </div>
+
+        <div class="contact-item">
+
+            <a href="https://youtube.com/나경원유튜브" target="_blank" style="color: #555; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+
+                youtube.com/나경원유튜브
+
+            </a>
+
+        </div>
+
+        <div class="contact-item">
+
+            <a href="https://youtube.com/@Lrkyungwon" target="_blank" style="color: #555; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+
+                youtube.com/@Lrkyungwon
+
+            </a>
+
+        </div>
+
+        <div class="contact-item">
+
+            <a href="https://blog.naver.com/nakw63" target="_blank" style="color: #555; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#03C75A"><path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z"/></svg>
+
+                blog.naver.com/nakw63
+
+            </a>
+
+        </div>
+
+        <div class="contact-item">
+
+            <a href="https://instagram.com/kyungwon.na" target="_blank" style="color: #555; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="url(#instagram-gradient)">
+
+                    <defs>
+
+                        <linearGradient id="instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+
+                            <stop offset="0%" style="stop-color:#FFDC80"/>
+
+                            <stop offset="25%" style="stop-color:#FCAF45"/>
+
+                            <stop offset="50%" style="stop-color:#F77737"/>
+
+                            <stop offset="75%" style="stop-color:#C13584"/>
+
+                            <stop offset="100%" style="stop-color:#833AB4"/>
+
+                        </linearGradient>
+
+                    </defs>
+
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+
+                </svg>
+
+                @kyungwon.na
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="footer" style="color: #666; margin-top: 30px; padding: 20px; background: white; border-radius: 15px; text-align: center;">
+
+ 자동 생성: 2025-12-05 13:20:12<br>
+
+                mPublisher PDF 변환 시스템
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- 원문보기 모달 - 반응형 이미지 최적화 -->
+
+<div class="modal-overlay" id="originalModal" onclick="closeModal()">
+
+    <div class="modal-content" onclick="event.stopPropagation()" style="width: 95%; max-width: 600px;">
+
+        <button class="modal-close" onclick="closeModal()">×</button>
+
+        <img class="modal-image" id="modalImage" src="" alt="원문 페이지" style="width: 100%; height: auto; display: block; border-radius: 10px;">
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+// 상세보기 토글 (다른 섹션 자동 닫힘)
+
+function toggleExpand(header) {
+
+    const item = header.parentElement;
+
+    const details = item.querySelector('.expandable-details');
+
+    const toggle = header.querySelector('.expandable-toggle');
+
+    const isOpening = !details.classList.contains('open');
+
+
+
+    // 다른 모든 섹션 닫기
+
+    document.querySelectorAll('.expandable-details.open').forEach(openDetails => {
+
+        if (openDetails !== details) {
+
+            openDetails.classList.remove('open');
+
+            openDetails.parentElement.querySelector('.expandable-toggle').classList.remove('open');
+
+        }
+
+    });
+
+
+
+    // 현재 섹션 토글
+
+    details.classList.toggle('open');
+
+    toggle.classList.toggle('open');
+
+}
+
+
+
+// 동 선택
+
+function selectDistrict(districtName) {
+
+    // 모든 영역 초기화
+
+    document.querySelectorAll('.district-area').forEach(area => {
+
+        area.classList.remove('active');
+
+    });
+
+    document.querySelectorAll('.district-info').forEach(info => {
+
+        info.classList.remove('active');
+
+    });
+
+
+
+    // 선택된 영역 활성화
+
+    const selectedArea = document.querySelector(`[data-district="${districtName}"]`);
+
+    if (selectedArea) {
+
+        selectedArea.classList.add('active');
+
+    }
+
+
+
+    // 해당 정보 패널 표시
+
+    const infoPanel = document.getElementById(`info-${districtName}`);
+
+    if (infoPanel) {
+
+        infoPanel.classList.add('active');
+
+    }
+
+}
+
+
+
+// 이미지 보기 모달 (핵심공약용 - 이미지 경로 직접 지정)
+
+function showImage(imagePath) {
+
+    const modal = document.getElementById('originalModal');
+
+    const modalImage = document.getElementById('modalImage');
+
+
+
+    modalImage.src = imagePath;
+
+    modalImage.alt = '원문 이미지';
+
+    modalImage.style.display = 'block';
+
+
+
+    // 이미지 로드 실패 시 대체 메시지
+
+    modalImage.onerror = function() {
+
+        this.style.display = 'none';
+
+        this.parentElement.innerHTML = `
+
+            <button class="modal-close" onclick="closeModal()">×</button>
+
+            <div style="padding: 40px; text-align: center;">
+
+                <p style="font-size: 16px; color: #333; margin-bottom: 10px;">📄 원문 이미지</p>
+
+                <p style="font-size: 14px; color: #666;">이미지를 불러올 수 없습니다.</p>
+
+                <p style="font-size: 12px; color: #999; margin-top: 10px;">경로: ${imagePath}</p>
+
+            </div>
+
+        `;
+
+    };
+
+
+
+    modal.classList.add('active');
+
+}
+
+
+
+// 원문보기 모달 (페이지 번호 기반)
+
+function showOriginal(pageNumber) {
+
+    showImage(`/outputs/나경원_page_${pageNumber}.png`);
+
+}
+
+
+
+function closeModal() {
+
+    const modal = document.getElementById('originalModal');
+
+    const modalImage = document.getElementById('modalImage');
+
+    modal.classList.remove('active');
+
+    // 모달 내용 복구
+
+    modalImage.style.display = 'block';
+
+}
+
+
+
+// ESC 키로 모달 닫기
+
+document.addEventListener('keydown', function(e) {
+
+    if (e.key === 'Escape') {
+
+        closeModal();
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>
+
