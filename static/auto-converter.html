@@ -835,6 +835,18 @@
             // 폴더 경로 설정: 정당/후보자명
             selectedSaveFolder = partyFolder + '/' + candidateName;
             createImagesFolder = true;  // images 폴더도 생성
+
+            // 확인 후 PDF 업로드 영역으로 스크롤 및 강조
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.style.border = '3px dashed #667eea';
+            uploadArea.style.background = '#f0f4ff';
+            uploadArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // 2초 후 원래 스타일로 복원
+            setTimeout(() => {
+                uploadArea.style.border = '';
+                uploadArea.style.background = '';
+            }, 2000);
         }
 
         let createImagesFolder = false;  // images 폴더 생성 여부
