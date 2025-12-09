@@ -466,6 +466,116 @@
             border-style: solid;
             border-color: #1F2937 transparent transparent transparent;
         }
+
+        /* 요소 선택 모드 스타일 */
+        .element-selected {
+            outline: 3px solid #3B82F6 !important;
+            outline-offset: 2px !important;
+            background-color: rgba(59, 130, 246, 0.1) !important;
+            cursor: move !important;
+        }
+
+        .element-moveable:hover {
+            outline: 2px dashed #9CA3AF !important;
+            outline-offset: 1px !important;
+        }
+
+        /* 이동 컨트롤 패널 */
+        .move-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 10001;
+            display: none;
+        }
+
+        .move-controls.active {
+            display: block;
+        }
+
+        .move-controls-title {
+            font-weight: 600;
+            font-size: 0.85em;
+            color: #374151;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .move-controls-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #9CA3AF;
+        }
+
+        .move-controls-close:hover {
+            color: #374151;
+        }
+
+        .move-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .move-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #E5E7EB;
+            background: #F9FAFB;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .move-btn:hover {
+            background: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+
+        .move-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .move-btn.center {
+            background: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+
+        .move-info {
+            font-size: 0.75em;
+            color: #6B7280;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .selected-element-info {
+            background: #F0F9FF;
+            border: 1px solid #BAE6FD;
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 10px;
+            font-size: 0.8em;
+            color: #0369A1;
+            max-width: 200px;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -561,6 +671,33 @@
 
     <div id="notification" class="notification"></div>
     <div id="highlightTooltip" class="highlight-tooltip" style="display: none;"></div>
+
+    <!-- 요소 이동 컨트롤 패널 -->
+    <div id="moveControls" class="move-controls">
+        <div class="move-controls-title">
+            <span>요소 이동</span>
+            <button class="move-controls-close" onclick="deselectElement()">&times;</button>
+        </div>
+        <div id="selectedElementInfo" class="selected-element-info"></div>
+        <div class="move-grid">
+            <div></div>
+            <button class="move-btn" onclick="moveElement('up')" title="위로 이동">⬆️</button>
+            <div></div>
+            <button class="move-btn" onclick="moveElement('left')" title="왼쪽으로 이동 (들여쓰기)">⬅️</button>
+            <button class="move-btn center" title="선택된 요소">●</button>
+            <button class="move-btn" onclick="moveElement('right')" title="오른쪽으로 이동 (내어쓰기)">➡️</button>
+            <div></div>
+            <button class="move-btn" onclick="moveElement('down')" title="아래로 이동">⬇️</button>
+            <div></div>
+        </div>
+        <div style="display: flex; gap: 5px; margin-top: 10px;">
+            <button class="move-btn" style="flex:1; width:auto;" onclick="deleteElement()" title="요소 삭제">🗑️ 삭제</button>
+            <button class="move-btn" style="flex:1; width:auto;" onclick="duplicateElement()" title="요소 복제">📋 복제</button>
+        </div>
+        <div class="move-info">
+            키보드: ↑↓←→ 이동, Delete 삭제, Esc 취소
+        </div>
+    </div>
 
     <!-- 이미지 업로드 모달 -->
     <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center;">
@@ -1531,15 +1668,30 @@
             }
         }
 
-        // 에디터에서 해당 요소 위치 하이라이트 - 개선된 버전
+        // 에디터에서 해당 요소 위치 하이라이트 - 개선된 버전 v2
         function highlightInEditor(element) {
             const editor = document.getElementById('htmlEditor');
             const editorContent = editor.value;
 
             // 요소의 태그명, 클래스, 텍스트 정보 수집
             const tagName = element.tagName.toLowerCase();
-            const className = element.className.replace('sync-highlight', '').trim();
+            const className = (element.className || '').toString().replace(/sync-highlight|element-selected|element-moveable/g, '').trim();
             const firstClass = className.split(' ')[0];
+            const elementId = element.id;
+
+            // 요소의 DOM 인덱스 계산 (같은 클래스를 가진 요소들 중 몇 번째인지)
+            let elementIndex = 0;
+            if (firstClass) {
+                const iframe = document.getElementById('previewFrame');
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const sameClassElements = iframeDoc.querySelectorAll('.' + firstClass);
+                for (let i = 0; i < sameClassElements.length; i++) {
+                    if (sameClassElements[i] === element) {
+                        elementIndex = i;
+                        break;
+                    }
+                }
+            }
 
             // 직접적인 텍스트 내용 추출 (자식 요소의 텍스트 제외)
             let directText = '';
@@ -1548,40 +1700,77 @@
                     directText += node.textContent.trim();
                 }
             }
+
+            // 특별 처리: h4 태그 내의 "페이지" 텍스트 (전문보기 섹션)
+            if (tagName === 'h4' && element.textContent.includes('페이지')) {
+                directText = element.textContent.trim();
+            }
+
             // 직접 텍스트가 없으면 첫 번째 줄의 텍스트 사용
             if (!directText) {
-                directText = element.textContent.trim().split('\n')[0].substring(0, 50);
+                directText = element.textContent.trim().split('\n')[0].substring(0, 80);
             }
 
             let foundPos = -1;
 
-            // 1. 먼저 구체적인 텍스트로 검색 (가장 정확)
-            if (directText && directText.length >= 3) {
-                // 텍스트 내용 직접 검색
-                let searchIdx = editorContent.indexOf(directText);
-                if (searchIdx !== -1) {
-                    // 이 텍스트가 포함된 태그의 시작 위치 찾기
-                    let tagStart = editorContent.lastIndexOf('<', searchIdx);
-                    if (tagStart !== -1 && tagStart < searchIdx) {
-                        foundPos = tagStart;
-                    } else {
-                        foundPos = searchIdx;
+            // 1. ID가 있으면 ID로 정확히 검색
+            if (foundPos === -1 && elementId) {
+                const idPattern = new RegExp('id=["\']' + elementId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '["\']', 'i');
+                const idMatch = idPattern.exec(editorContent);
+                if (idMatch) {
+                    foundPos = editorContent.lastIndexOf('<', idMatch.index);
+                }
+            }
+
+            // 2. 구체적인 텍스트로 검색 (클래스와 함께 사용)
+            if (foundPos === -1 && directText && directText.length >= 3) {
+                // 클래스가 있는 경우, 해당 클래스 블록 내에서 텍스트 찾기
+                if (firstClass) {
+                    const escapedClass = firstClass.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const classPattern = new RegExp('class="[^"]*' + escapedClass + '[^"]*"', 'gi');
+                    let match;
+                    let matchCount = 0;
+                    while ((match = classPattern.exec(editorContent)) !== null) {
+                        if (matchCount === elementIndex) {
+                            foundPos = editorContent.lastIndexOf('<', match.index);
+                            break;
+                        }
+                        matchCount++;
+                    }
+                }
+
+                // 클래스로 못 찾은 경우 텍스트로 직접 검색
+                if (foundPos === -1) {
+                    // 특수 문자 이스케이프
+                    const searchText = directText.substring(0, 50);
+                    let searchIdx = editorContent.indexOf(searchText);
+                    if (searchIdx !== -1) {
+                        let tagStart = editorContent.lastIndexOf('<', searchIdx);
+                        if (tagStart !== -1 && tagStart < searchIdx) {
+                            foundPos = tagStart;
+                        } else {
+                            foundPos = searchIdx;
+                        }
                     }
                 }
             }
 
-            // 2. 클래스로 검색 (텍스트로 못 찾은 경우)
+            // 3. 클래스로 검색 (n번째 매칭)
             if (foundPos === -1 && firstClass) {
                 const escapedClass = firstClass.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const classPattern = new RegExp('class="[^"]*' + escapedClass + '[^"]*"', 'i');
-                const classMatch = classPattern.exec(editorContent);
-                if (classMatch) {
-                    // class 속성이 있는 태그의 시작 위치 찾기
-                    foundPos = editorContent.lastIndexOf('<', classMatch.index);
+                const classPattern = new RegExp('class="[^"]*' + escapedClass + '[^"]*"', 'gi');
+                let match;
+                let matchCount = 0;
+                while ((match = classPattern.exec(editorContent)) !== null) {
+                    if (matchCount === elementIndex) {
+                        foundPos = editorContent.lastIndexOf('<', match.index);
+                        break;
+                    }
+                    matchCount++;
                 }
             }
 
-            // 3. 태그명으로 검색 (마지막 수단)
+            // 4. 태그명으로 검색 (마지막 수단)
             if (foundPos === -1) {
                 const tagPattern = new RegExp('<' + tagName + '[^>]*>', 'i');
                 const tagMatch = tagPattern.exec(editorContent);
@@ -1592,10 +1781,18 @@
 
             // 찾은 위치로 이동
             if (foundPos !== -1) {
-                // 해당 줄의 끝 위치 찾기
+                // 해당 태그의 전체 선택 (여는 태그 + 내용 + 닫는 태그)
                 let endPos = editorContent.indexOf('>', foundPos);
                 if (endPos === -1) endPos = foundPos + 50;
                 else endPos += 1;
+
+                // 닫는 태그까지 찾기 (내용이 짧은 경우에만)
+                const closeTagPattern = new RegExp('</' + tagName + '>', 'i');
+                const contentAfterOpen = editorContent.substring(endPos);
+                const closeMatch = closeTagPattern.exec(contentAfterOpen);
+                if (closeMatch && closeMatch.index < 500) {  // 500자 이내면 전체 선택
+                    endPos = endPos + closeMatch.index + closeMatch[0].length;
+                }
 
                 // 해당 줄 번호 계산
                 const textBefore = editorContent.substring(0, foundPos);
@@ -1608,8 +1805,14 @@
                 // 선택 표시
                 editor.setSelectionRange(foundPos, endPos);
                 editor.focus();
+
+                // 현재 선택된 요소 정보 저장 (이동 기능용)
+                lastFoundPosition = { start: foundPos, end: endPos, element: element };
             }
         }
+
+        // 마지막 찾은 위치 저장 (이동 기능용)
+        let lastFoundPosition = null;
 
         // 미리보기 하이라이트 제거
         function clearPreviewHighlight() {
@@ -1671,8 +1874,421 @@
             originalUpdatePreview();
             if (isSyncModeActive) {
                 setTimeout(setupPreviewListeners, 100);
+                setTimeout(setupElementSelection, 150);
             }
         };
+
+        // ==========================================
+        // 요소 선택 및 이동 기능
+        // ==========================================
+
+        let selectedElement = null;
+        let selectedElementHTML = '';
+
+        // 요소 선택 리스너 설정
+        function setupElementSelection() {
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                // 이전 리스너 제거
+                iframeDoc.body.removeEventListener('click', onPreviewClick);
+                iframeDoc.removeEventListener('keydown', onPreviewKeydown);
+
+                // 클릭 이벤트 추가
+                iframeDoc.body.addEventListener('click', onPreviewClick);
+                iframeDoc.addEventListener('keydown', onPreviewKeydown);
+
+                // 선택 모드 스타일 주입
+                injectSelectionStyles(iframeDoc);
+            } catch (e) {
+                console.log('요소 선택 리스너 설정 실패:', e);
+            }
+        }
+
+        // 선택 모드 스타일 주입
+        function injectSelectionStyles(doc) {
+            if (doc.getElementById('selectionStyles')) return;
+
+            const style = doc.createElement('style');
+            style.id = 'selectionStyles';
+            style.textContent = `
+                .element-selected {
+                    outline: 3px solid #3B82F6 !important;
+                    outline-offset: 2px !important;
+                    background-color: rgba(59, 130, 246, 0.1) !important;
+                    cursor: move !important;
+                }
+                .element-moveable:hover {
+                    outline: 2px dashed #9CA3AF !important;
+                    outline-offset: 1px !important;
+                }
+            `;
+            doc.head.appendChild(style);
+        }
+
+        // 미리보기에서 클릭 시
+        function onPreviewClick(e) {
+            if (!isSyncModeActive) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const element = e.target;
+            if (element.tagName === 'HTML' || element.tagName === 'BODY') {
+                deselectElement();
+                return;
+            }
+
+            selectElement(element);
+        }
+
+        // 요소 선택
+        function selectElement(element) {
+            // 이전 선택 해제
+            deselectElement(false);
+
+            // 새 요소 선택
+            selectedElement = element;
+            element.classList.add('element-selected');
+
+            // 에디터에서 해당 위치 찾기
+            highlightInEditor(element);
+
+            // 이동 컨트롤 패널 표시
+            showMoveControls(element);
+        }
+
+        // 요소 선택 해제
+        function deselectElement(hideControls = true) {
+            if (selectedElement) {
+                selectedElement.classList.remove('element-selected');
+                selectedElement = null;
+            }
+
+            // 모든 선택 클래스 제거
+            const iframe = document.getElementById('previewFrame');
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                iframeDoc.querySelectorAll('.element-selected').forEach(el => {
+                    el.classList.remove('element-selected');
+                });
+            } catch (e) {}
+
+            if (hideControls) {
+                hideMoveControls();
+            }
+
+            lastFoundPosition = null;
+        }
+
+        // 이동 컨트롤 패널 표시
+        function showMoveControls(element) {
+            const controls = document.getElementById('moveControls');
+            const info = document.getElementById('selectedElementInfo');
+
+            // 요소 정보 표시
+            const tag = element.tagName.toLowerCase();
+            const classes = (element.className || '').toString().replace(/element-selected|sync-highlight/g, '').trim();
+            const text = element.textContent.trim().substring(0, 30);
+            info.innerHTML = `<b>&lt;${tag}&gt;</b>${classes ? '<br>.' + classes.split(' ')[0] : ''}<br><small>${text}${text.length >= 30 ? '...' : ''}</small>`;
+
+            controls.classList.add('active');
+        }
+
+        // 이동 컨트롤 패널 숨기기
+        function hideMoveControls() {
+            const controls = document.getElementById('moveControls');
+            controls.classList.remove('active');
+        }
+
+        // 요소 이동
+        function moveElement(direction) {
+            if (!selectedElement || !lastFoundPosition) {
+                showNotification('먼저 요소를 선택하세요.', 'error');
+                return;
+            }
+
+            const editor = document.getElementById('htmlEditor');
+            let content = editor.value;
+            const { start, end } = lastFoundPosition;
+
+            // 선택된 HTML 블록 추출
+            const selectedHTML = content.substring(start, end);
+
+            switch (direction) {
+                case 'up':
+                    // 이전 형제 요소와 위치 교환
+                    moveUp(content, selectedHTML, start, end);
+                    break;
+                case 'down':
+                    // 다음 형제 요소와 위치 교환
+                    moveDown(content, selectedHTML, start, end);
+                    break;
+                case 'left':
+                    // 부모 요소 밖으로 이동 (이전 위치로)
+                    showNotification('왼쪽 이동: 들여쓰기 감소 (미구현)', 'success');
+                    break;
+                case 'right':
+                    // 이전 형제 요소 안으로 이동
+                    showNotification('오른쪽 이동: 들여쓰기 증가 (미구현)', 'success');
+                    break;
+            }
+        }
+
+        // 위로 이동
+        function moveUp(content, selectedHTML, start, end) {
+            // 이전 형제 요소 찾기 (이전 닫는 태그 찾기)
+            const beforeContent = content.substring(0, start);
+            const prevCloseMatch = beforeContent.match(/<\/[^>]+>\s*$/);
+
+            if (!prevCloseMatch) {
+                showNotification('더 이상 위로 이동할 수 없습니다.', 'error');
+                return;
+            }
+
+            // 이전 요소의 시작 위치 찾기
+            const prevCloseEnd = start;
+            const prevCloseStart = start - prevCloseMatch[0].length;
+
+            // 이전 요소의 여는 태그 찾기
+            const tagName = prevCloseMatch[0].match(/<\/(\w+)/)[1];
+            const searchArea = content.substring(0, prevCloseStart);
+
+            // 마지막으로 나온 해당 태그의 여는 태그 찾기 (중첩 고려)
+            let depth = 1;
+            let pos = searchArea.length - 1;
+            let prevStart = -1;
+
+            while (pos >= 0 && depth > 0) {
+                const closePattern = new RegExp('</' + tagName + '>', 'gi');
+                const openPattern = new RegExp('<' + tagName + '[^>]*>', 'gi');
+
+                // 현재 위치에서 이전 태그 찾기
+                const chunk = searchArea.substring(Math.max(0, pos - 100), pos + 1);
+                const lastClose = chunk.lastIndexOf('</' + tagName);
+                const lastOpen = chunk.search(new RegExp('<' + tagName + '[^>]*>(?!.*<' + tagName + ')'));
+
+                if (lastClose > lastOpen && lastClose !== -1) {
+                    depth++;
+                    pos = pos - (chunk.length - lastClose) - 1;
+                } else if (lastOpen !== -1) {
+                    depth--;
+                    if (depth === 0) {
+                        prevStart = Math.max(0, pos - 100) + lastOpen;
+                    }
+                    pos = pos - (chunk.length - lastOpen) - 1;
+                } else {
+                    pos -= 50;
+                }
+            }
+
+            if (prevStart === -1) {
+                // 간단한 방법으로 시도: 바로 이전 줄 단위로 찾기
+                const lines = beforeContent.split('\n');
+                let accLength = 0;
+                for (let i = 0; i < lines.length - 1; i++) {
+                    accLength += lines[i].length + 1;
+                }
+                // 이전 줄 시작 위치를 prevStart로 사용
+                const prevLineStart = beforeContent.lastIndexOf('\n', start - selectedHTML.length - 2);
+                if (prevLineStart > 0) {
+                    prevStart = beforeContent.lastIndexOf('\n', prevLineStart - 1) + 1;
+                } else {
+                    prevStart = 0;
+                }
+            }
+
+            // 이전 요소의 HTML
+            const prevHTML = content.substring(prevStart, start);
+
+            // 위치 교환
+            const editor = document.getElementById('htmlEditor');
+            const newContent = content.substring(0, prevStart) + selectedHTML + prevHTML + content.substring(end);
+            editor.value = newContent;
+
+            // 미리보기 업데이트
+            updatePreview();
+
+            // 새 위치 선택
+            setTimeout(() => {
+                editor.setSelectionRange(prevStart, prevStart + selectedHTML.length);
+                editor.focus();
+                lastFoundPosition = { start: prevStart, end: prevStart + selectedHTML.length };
+            }, 100);
+
+            showNotification('위로 이동했습니다.', 'success');
+        }
+
+        // 아래로 이동
+        function moveDown(content, selectedHTML, start, end) {
+            // 다음 형제 요소 찾기
+            const afterContent = content.substring(end);
+            const nextOpenMatch = afterContent.match(/^\s*<(\w+)[^>]*>/);
+
+            if (!nextOpenMatch) {
+                showNotification('더 이상 아래로 이동할 수 없습니다.', 'error');
+                return;
+            }
+
+            // 다음 요소의 닫는 태그 찾기
+            const tagName = nextOpenMatch[1];
+            const closeTag = '</' + tagName + '>';
+            let depth = 1;
+            let searchPos = nextOpenMatch[0].length;
+
+            while (depth > 0 && searchPos < afterContent.length) {
+                const nextClose = afterContent.indexOf(closeTag, searchPos);
+                const nextOpen = afterContent.indexOf('<' + tagName, searchPos);
+
+                if (nextClose === -1) break;
+
+                if (nextOpen !== -1 && nextOpen < nextClose) {
+                    depth++;
+                    searchPos = nextOpen + 1;
+                } else {
+                    depth--;
+                    if (depth === 0) {
+                        searchPos = nextClose + closeTag.length;
+                    } else {
+                        searchPos = nextClose + 1;
+                    }
+                }
+            }
+
+            const nextEnd = end + searchPos;
+            const nextHTML = content.substring(end, nextEnd);
+
+            // 위치 교환
+            const editor = document.getElementById('htmlEditor');
+            const newContent = content.substring(0, start) + nextHTML + selectedHTML + content.substring(nextEnd);
+            editor.value = newContent;
+
+            // 미리보기 업데이트
+            updatePreview();
+
+            // 새 위치 선택
+            const newStart = start + nextHTML.length;
+            setTimeout(() => {
+                editor.setSelectionRange(newStart, newStart + selectedHTML.length);
+                editor.focus();
+                lastFoundPosition = { start: newStart, end: newStart + selectedHTML.length };
+            }, 100);
+
+            showNotification('아래로 이동했습니다.', 'success');
+        }
+
+        // 요소 삭제
+        function deleteElement() {
+            if (!selectedElement || !lastFoundPosition) {
+                showNotification('먼저 요소를 선택하세요.', 'error');
+                return;
+            }
+
+            if (!confirm('선택한 요소를 삭제하시겠습니까?')) return;
+
+            const editor = document.getElementById('htmlEditor');
+            let content = editor.value;
+            const { start, end } = lastFoundPosition;
+
+            // 요소 삭제
+            const newContent = content.substring(0, start) + content.substring(end);
+            editor.value = newContent;
+
+            // 선택 해제
+            deselectElement();
+
+            // 미리보기 업데이트
+            updatePreview();
+
+            showNotification('요소가 삭제되었습니다.', 'success');
+        }
+
+        // 요소 복제
+        function duplicateElement() {
+            if (!selectedElement || !lastFoundPosition) {
+                showNotification('먼저 요소를 선택하세요.', 'error');
+                return;
+            }
+
+            const editor = document.getElementById('htmlEditor');
+            let content = editor.value;
+            const { start, end } = lastFoundPosition;
+
+            // 선택된 HTML 블록
+            const selectedHTML = content.substring(start, end);
+
+            // 복제 (바로 아래에 추가)
+            const newContent = content.substring(0, end) + '\n' + selectedHTML + content.substring(end);
+            editor.value = newContent;
+
+            // 미리보기 업데이트
+            updatePreview();
+
+            // 새 요소 선택
+            const newStart = end + 1;
+            setTimeout(() => {
+                editor.setSelectionRange(newStart, newStart + selectedHTML.length);
+                editor.focus();
+                lastFoundPosition = { start: newStart, end: newStart + selectedHTML.length };
+            }, 100);
+
+            showNotification('요소가 복제되었습니다.', 'success');
+        }
+
+        // 미리보기에서 키보드 이벤트
+        function onPreviewKeydown(e) {
+            if (!isSyncModeActive || !selectedElement) return;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    moveElement('up');
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    moveElement('down');
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    moveElement('left');
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    moveElement('right');
+                    break;
+                case 'Delete':
+                case 'Backspace':
+                    e.preventDefault();
+                    deleteElement();
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    deselectElement();
+                    break;
+            }
+        }
+
+        // 메인 문서에서도 키보드 이벤트 처리 (이동 컨트롤 패널이 활성화된 경우)
+        document.addEventListener('keydown', (e) => {
+            if (!isSyncModeActive || !selectedElement) return;
+            if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') return;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    moveElement('up');
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    moveElement('down');
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    deselectElement();
+                    break;
+            }
+        });
 
         // ==========================================
         // 이미지 업로드/삽입 기능
