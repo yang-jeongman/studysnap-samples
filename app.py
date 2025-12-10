@@ -2170,6 +2170,313 @@ async def get_server_status(server_id: str):
 
 
 # ============================================
+# 외부 폴더 관리 API (터미널/파일 실행)
+# ============================================
+
+# 허용된 외부 폴더 목록 (보안)
+ALLOWED_EXTERNAL_FOLDERS = {
+    'k-mart': Path('C:/k-mart'),
+    'studysnap': Path('C:/StudySnap-Backend'),
+}
+
+@app.get("/api/external/folders")
+async def list_external_folders():
+    """등록된 외부 폴더 목록"""
+    folders = []
+    for name, path in ALLOWED_EXTERNAL_FOLDERS.items():
+        folders.append({
+            "name": name,
+            "path": str(path),
+            "exists": path.exists()
+        })
+    return JSONResponse({"success": True, "folders": folders})
+
+
+@app.get("/api/external/browse/{folder_name}")
+async def browse_external_folder(folder_name: str, subpath: str = ""):
+    """외부 폴더 탐색"""
+    try:
+        if folder_name not in ALLOWED_EXTERNAL_FOLDERS:
+            raise HTTPException(status_code=403, detail=f"허용되지 않은 폴더: {folder_name}")
+
+        base_path = ALLOWED_EXTERNAL_FOLDERS[folder_name]
+        target_path = base_path / subpath if subpath else base_path
+
+        # 경로 순회 공격 방지
+        target_path = target_path.resolve()
+        if not str(target_path).startswith(str(base_path.resolve())):
+            raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로")
+
+        if not target_path.exists():
+            raise HTTPException(status_code=404, detail="폴더를 찾을 수 없습니다")
+
+        items = []
+        for item in target_path.iterdir():
+            try:
+                stat = item.stat()
+                items.append({
+                    "name": item.name,
+                    "is_dir": item.is_dir(),
+                    "size": stat.st_size if item.is_file() else 0,
+                    "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                    "extension": item.suffix.lower() if item.is_file() else ""
+                })
+            except Exception:
+                continue
+
+        # 폴더 먼저, 그 다음 파일 (이름순)
+        items.sort(key=lambda x: (not x['is_dir'], x['name'].lower()))
+
+        return JSONResponse({
+            "success": True,
+            "folder_name": folder_name,
+            "current_path": subpath,
+            "full_path": str(target_path),
+            "items": items
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"외부 폴더 탐색 실패: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/external/execute")
+async def execute_command(request: Request):
+    """
+    외부 폴더에서 명령어 실행 (터미널)
+    보안: 허용된 폴더 내에서만 실행 가능
+    """
+    try:
+        data = await request.json()
+        folder_name = data.get('folder')
+        command = data.get('command', '').strip()
+        timeout = data.get('timeout', 30)
+
+        if not folder_name or folder_name not in ALLOWED_EXTERNAL_FOLDERS:
+            return JSONResponse({
+                "success": False,
+                "error": "허용되지 않은 폴더입니다"
+            })
+
+        if not command:
+            return JSONResponse({
+                "success": False,
+                "error": "명령어를 입력해주세요"
+            })
+
+        # 위험한 명령어 차단
+        dangerous_commands = ['rm -rf /', 'format', 'del /s', 'rmdir /s']
+        if any(dc in command.lower() for dc in dangerous_commands):
+            return JSONResponse({
+                "success": False,
+                "error": "위험한 명령어는 실행할 수 없습니다"
+            })
+
+        work_dir = ALLOWED_EXTERNAL_FOLDERS[folder_name]
+
+        # 명령어 실행
+        result = subprocess.run(
+            command,
+            shell=True,
+            cwd=str(work_dir),
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            encoding='utf-8',
+            errors='replace'
+        )
+
+        return JSONResponse({
+            "success": True,
+            "command": command,
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "returncode": result.returncode
+        })
+
+    except subprocess.TimeoutExpired:
+        return JSONResponse({
+            "success": False,
+            "error": f"명령어 실행 시간 초과 ({timeout}초)"
+        })
+    except Exception as e:
+        logger.error(f"명령어 실행 실패: {str(e)}")
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        })
+
+
+@app.post("/api/external/run-script")
+async def run_script(request: Request):
+    """
+    Python/Batch 스크립트 실행
+    """
+    try:
+        data = await request.json()
+        folder_name = data.get('folder')
+        script_path = data.get('script')  # 상대 경로
+        script_type = data.get('type', 'python')  # python, batch
+        args = data.get('args', [])
+        background = data.get('background', False)
+
+        if folder_name not in ALLOWED_EXTERNAL_FOLDERS:
+            return JSONResponse({
+                "success": False,
+                "error": "허용되지 않은 폴더입니다"
+            })
+
+        base_path = ALLOWED_EXTERNAL_FOLDERS[folder_name]
+        full_script_path = (base_path / script_path).resolve()
+
+        # 경로 검증
+        if not str(full_script_path).startswith(str(base_path.resolve())):
+            return JSONResponse({
+                "success": False,
+                "error": "접근이 허용되지 않은 경로입니다"
+            })
+
+        if not full_script_path.exists():
+            return JSONResponse({
+                "success": False,
+                "error": f"스크립트를 찾을 수 없습니다: {script_path}"
+            })
+
+        # 명령어 구성
+        if script_type == 'python':
+            cmd = ['python', str(full_script_path)] + args
+        elif script_type == 'batch':
+            cmd = [str(full_script_path)] + args
+        else:
+            return JSONResponse({
+                "success": False,
+                "error": f"지원하지 않는 스크립트 타입: {script_type}"
+            })
+
+        if background:
+            # 백그라운드 실행
+            process = subprocess.Popen(
+                cmd,
+                cwd=str(base_path),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == 'nt' else 0
+            )
+            return JSONResponse({
+                "success": True,
+                "message": "스크립트가 백그라운드에서 실행되었습니다",
+                "pid": process.pid
+            })
+        else:
+            # 동기 실행 (30초 타임아웃)
+            result = subprocess.run(
+                cmd,
+                cwd=str(base_path),
+                capture_output=True,
+                text=True,
+                timeout=30,
+                encoding='utf-8',
+                errors='replace'
+            )
+            return JSONResponse({
+                "success": True,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "returncode": result.returncode
+            })
+
+    except subprocess.TimeoutExpired:
+        return JSONResponse({
+            "success": False,
+            "error": "스크립트 실행 시간 초과 (30초)"
+        })
+    except Exception as e:
+        logger.error(f"스크립트 실행 실패: {str(e)}")
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        })
+
+
+@app.post("/api/external/upload")
+async def upload_to_external(
+    folder: str = Form(...),
+    subpath: str = Form(""),
+    file: UploadFile = File(...)
+):
+    """외부 폴더에 파일 업로드"""
+    try:
+        if folder not in ALLOWED_EXTERNAL_FOLDERS:
+            raise HTTPException(status_code=403, detail="허용되지 않은 폴더")
+
+        base_path = ALLOWED_EXTERNAL_FOLDERS[folder]
+        target_dir = (base_path / subpath).resolve() if subpath else base_path.resolve()
+
+        # 경로 검증
+        if not str(target_dir).startswith(str(base_path.resolve())):
+            raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로")
+
+        target_dir.mkdir(parents=True, exist_ok=True)
+        file_path = target_dir / file.filename
+
+        with open(file_path, 'wb') as f:
+            content = await file.read()
+            f.write(content)
+
+        return JSONResponse({
+            "success": True,
+            "message": f"파일 업로드 완료: {file.filename}",
+            "path": str(file_path)
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"파일 업로드 실패: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/external/read/{folder_name}")
+async def read_external_file(folder_name: str, filepath: str):
+    """외부 폴더의 파일 내용 읽기"""
+    try:
+        if folder_name not in ALLOWED_EXTERNAL_FOLDERS:
+            raise HTTPException(status_code=403, detail="허용되지 않은 폴더")
+
+        base_path = ALLOWED_EXTERNAL_FOLDERS[folder_name]
+        file_path = (base_path / filepath).resolve()
+
+        # 경로 검증
+        if not str(file_path).startswith(str(base_path.resolve())):
+            raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로")
+
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="파일을 찾을 수 없습니다")
+
+        # 텍스트 파일만 읽기
+        text_extensions = {'.py', '.txt', '.json', '.html', '.css', '.js', '.md', '.yaml', '.yml', '.bat', '.sh', '.env', '.gitignore'}
+        if file_path.suffix.lower() not in text_extensions:
+            raise HTTPException(status_code=400, detail="텍스트 파일만 읽을 수 있습니다")
+
+        content = file_path.read_text(encoding='utf-8', errors='replace')
+
+        return JSONResponse({
+            "success": True,
+            "filename": file_path.name,
+            "content": content,
+            "size": len(content)
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"파일 읽기 실패: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================
 # 학습 시스템 API
 # ============================================
 

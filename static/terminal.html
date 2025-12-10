@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap - 외부 폴더 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-title {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 폴더 선택 */
+        .folder-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .folder-btn {
+            padding: 12px 15px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .folder-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        .folder-btn.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.4);
+        }
+
+        .folder-btn .name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .folder-btn .path {
+            font-size: 12px;
+            color: #aaa;
+            font-family: monospace;
+        }
+
+        /* 파일 브라우저 */
+        .file-browser {
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+
+        .breadcrumb-item {
+            color: #667eea;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .breadcrumb-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .file-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .file-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .file-item.selected {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .file-item .icon {
+            font-size: 18px;
+        }
+
+        .file-item .name {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .file-item .size {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* 터미널 */
+        .terminal {
+            background: #0d1117;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: #161b22;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: #8b949e;
+            font-size: 13px;
+        }
+
+        .terminal-output {
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .terminal-line {
+            margin-bottom: 5px;
+        }
+
+        .terminal-line.command {
+            color: #58a6ff;
+        }
+
+        .terminal-line.stdout {
+            color: #c9d1d9;
+        }
+
+        .terminal-line.stderr {
+            color: #f85149;
+        }
+
+        .terminal-line.success {
+            color: #3fb950;
+        }
+
+        .terminal-input-wrapper {
+            display: flex;
+            padding: 10px 15px;
+            background: #161b22;
+            gap: 10px;
+        }
+
+        .terminal-prompt {
+            color: #3fb950;
+            font-family: 'Consolas', monospace;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #c9d1d9;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            outline: none;
+        }
+
+        /* 빠른 명령어 */
+        .quick-commands {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .quick-cmd {
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.2);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-cmd:hover {
+            background: rgba(102, 126, 234, 0.4);
+        }
+
+        /* 파일 액션 */
+        .file-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .action-btn.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .action-btn.success {
+            background: #28a745;
+            color: white;
+        }
+
+        .action-btn.warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 업로드 영역 */
+        .upload-zone {
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-zone:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-zone.dragover {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        /* 파일 뷰어 */
+        .file-viewer {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .file-viewer.show {
+            display: block;
+        }
+
+        .file-viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .file-viewer-content {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 400px;
+            overflow: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            color: #c9d1d9;
+        }
+
+        /* 로딩 */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">💻</span>
+                <h1>외부 폴더 관리</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/static/explorer.html">🗂️ 탐색기</a>
+                <a href="/static/auto-converter.html">🔄 변환기</a>
+                <a href="/static/server-manager.html">🖥️ 서버</a>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- 왼쪽 패널: 폴더 선택 & 파일 브라우저 -->
+            <div class="panel">
+                <h2 class="panel-title">📁 프로젝트 선택</h2>
+                <div class="folder-selector" id="folderSelector">
+                    <div class="loading"><span class="spinner"></span> 로딩 중...</div>
+                </div>
+
+                <h2 class="panel-title">📂 파일 탐색</h2>
+                <div class="breadcrumb" id="breadcrumb"></div>
+                <div class="file-list" id="fileList">
+                    <div class="loading">폴더를 선택하세요</div>
+                </div>
+
+                <div class="file-actions">
+                    <button class="action-btn primary" onclick="runSelectedScript()" id="runScriptBtn" disabled>
+                        ▶️ 스크립트 실행
+                    </button>
+                    <button class="action-btn success" onclick="viewSelectedFile()" id="viewFileBtn" disabled>
+                        👁️ 파일 보기
+                    </button>
+                </div>
+
+                <div class="upload-zone" id="uploadZone">
+                    📤 파일을 드래그하거나 클릭하여 업로드
+                    <input type="file" id="fileUpload" style="display: none;" multiple>
+                </div>
+            </div>
+
+            <!-- 오른쪽 패널: 터미널 -->
+            <div class="panel" style="display: flex; flex-direction: column;">
+                <h2 class="panel-title">🖥️ 터미널</h2>
+
+                <div class="terminal" style="flex: 1; display: flex; flex-direction: column;">
+                    <div class="terminal-header">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                        <span class="terminal-title" id="terminalTitle">터미널</span>
+                    </div>
+                    <div class="terminal-output" id="terminalOutput">
+                        <div class="terminal-line success">외부 폴더 관리 터미널이 준비되었습니다.</div>
+                        <div class="terminal-line">왼쪽에서 프로젝트를 선택하세요.</div>
+                    </div>
+                    <div class="terminal-input-wrapper">
+                        <span class="terminal-prompt" id="terminalPrompt">$</span>
+                        <input type="text" class="terminal-input" id="terminalInput" placeholder="명령어 입력..." disabled>
+                    </div>
+                </div>
+
+                <div class="quick-commands">
+                    <button class="quick-cmd" onclick="runQuickCmd('dir')">dir</button>
+                    <button class="quick-cmd" onclick="runQuickCmd('git status')">git status</button>
+                    <button class="quick-cmd" onclick="runQuickCmd('git pull')">git pull</button>
+                    <button class="quick-cmd" onclick="runQuickCmd('pip list')">pip list</button>
+                    <button class="quick-cmd" onclick="runQuickCmd('python --version')">python --version</button>
+                    <button class="quick-cmd" onclick="runQuickCmd('python manage.py runserver 0.0.0.0:8001')">Django 서버</button>
+                </div>
+
+                <!-- 파일 뷰어 -->
+                <div class="file-viewer" id="fileViewer">
+                    <div class="file-viewer-header">
+                        <span id="viewerFileName"></span>
+                        <button class="action-btn primary" onclick="closeViewer()" style="padding: 5px 10px;">✕ 닫기</button>
+                    </div>
+                    <div class="file-viewer-content" id="viewerContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFolder = null;
+        let currentPath = '';
+        let selectedFile = null;
+
+        // 폴더 목록 로드
+        async function loadFolders() {
+            try {
+                const response = await fetch('/api/external/folders');
+                const data = await response.json();
+
+                if (data.success) {
+                    const container = document.getElementById('folderSelector');
+                    container.innerHTML = data.folders.map(f => `
+                        <button class="folder-btn" onclick="selectFolder('${f.name}')" data-folder="${f.name}">
+                            <div class="name">📁 ${f.name}</div>
+                            <div class="path">${f.path}</div>
+                            ${!f.exists ? '<div style="color: #f85149; font-size: 11px;">⚠️ 폴더 없음</div>' : ''}
+                        </button>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error('폴더 목록 로드 실패:', e);
+            }
+        }
+
+        // 폴더 선택
+        async function selectFolder(folderName) {
+            currentFolder = folderName;
+            currentPath = '';
+
+            // UI 업데이트
+            document.querySelectorAll('.folder-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.folder === folderName);
+            });
+
+            document.getElementById('terminalInput').disabled = false;
+            document.getElementById('terminalPrompt').textContent = `${folderName}$`;
+            document.getElementById('terminalTitle').textContent = `터미널 - ${folderName}`;
+
+            addTerminalLine(`📁 ${folderName} 프로젝트 선택됨`, 'success');
+
+            await browseFolder();
+        }
+
+        // 폴더 탐색
+        async function browseFolder(subpath = '') {
+            if (!currentFolder) return;
+
+            currentPath = subpath;
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '<div class="loading"><span class="spinner"></span></div>';
+
+            try {
+                const url = `/api/external/browse/${currentFolder}?subpath=${encodeURIComponent(subpath)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.success) {
+                    updateBreadcrumb(subpath);
+
+                    if (data.items.length === 0) {
+                        fileList.innerHTML = '<div class="loading">빈 폴더입니다</div>';
+                        return;
+                    }
+
+                    fileList.innerHTML = data.items.map(item => `
+                        <div class="file-item" onclick="selectItem(this, '${item.name}', ${item.is_dir})" data-name="${item.name}" data-isdir="${item.is_dir}">
+                            <span class="icon">${item.is_dir ? '📁' : getFileIcon(item.extension)}</span>
+                            <span class="name">${item.name}</span>
+                            <span class="size">${item.is_dir ? '' : formatSize(item.size)}</span>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                fileList.innerHTML = '<div class="loading" style="color: #f85149;">로드 실패</div>';
+            }
+        }
+
+        function getFileIcon(ext) {
+            const icons = {
+                '.py': '🐍',
+                '.js': '📜',
+                '.html': '🌐',
+                '.css': '🎨',
+                '.json': '📋',
+                '.md': '📝',
+                '.txt': '📄',
+                '.bat': '⚙️',
+                '.sh': '⚙️',
+                '.jpg': '🖼️',
+                '.png': '🖼️',
+                '.gif': '🖼️'
+            };
+            return icons[ext] || '📄';
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function updateBreadcrumb(path) {
+            const parts = path ? path.split('/').filter(p => p) : [];
+            const breadcrumb = document.getElementById('breadcrumb');
+
+            let html = `<span class="breadcrumb-item" onclick="browseFolder('')">${currentFolder}</span>`;
+
+            let accumulated = '';
+            for (const part of parts) {
+                accumulated += (accumulated ? '/' : '') + part;
+                const pathCopy = accumulated;
+                html += ` / <span class="breadcrumb-item" onclick="browseFolder('${pathCopy}')">${part}</span>`;
+            }
+
+            breadcrumb.innerHTML = html;
+        }
+
+        function selectItem(element, name, isDir) {
+            document.querySelectorAll('.file-item').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+
+            if (isDir) {
+                // 더블클릭으로 폴더 진입
+                element.ondblclick = () => {
+                    const newPath = currentPath ? `${currentPath}/${name}` : name;
+                    browseFolder(newPath);
+                };
+                selectedFile = null;
+                document.getElementById('runScriptBtn').disabled = true;
+                document.getElementById('viewFileBtn').disabled = true;
+            } else {
+                selectedFile = {
+                    name: name,
+                    path: currentPath ? `${currentPath}/${name}` : name
+                };
+
+                const ext = name.split('.').pop().toLowerCase();
+                document.getElementById('runScriptBtn').disabled = !['py', 'bat', 'sh'].includes(ext);
+                document.getElementById('viewFileBtn').disabled = false;
+            }
+        }
+
+        // 터미널
+        const terminalInput = document.getElementById('terminalInput');
+        const terminalOutput = document.getElementById('terminalOutput');
+
+        terminalInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter' && terminalInput.value.trim()) {
+                await executeCommand(terminalInput.value.trim());
+                terminalInput.value = '';
+            }
+        });
+
+        async function executeCommand(command) {
+            if (!currentFolder) {
+                addTerminalLine('❌ 먼저 프로젝트를 선택하세요', 'stderr');
+                return;
+            }
+
+            addTerminalLine(`$ ${command}`, 'command');
+
+            try {
+                const response = await fetch('/api/external/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        folder: currentFolder,
+                        command: command,
+                        timeout: 60
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    if (data.stdout) {
+                        data.stdout.split('\n').forEach(line => {
+                            if (line.trim()) addTerminalLine(line, 'stdout');
+                        });
+                    }
+                    if (data.stderr) {
+                        data.stderr.split('\n').forEach(line => {
+                            if (line.trim()) addTerminalLine(line, 'stderr');
+                        });
+                    }
+                    if (data.returncode === 0) {
+                        addTerminalLine('✓ 명령 완료', 'success');
+                    }
+                } else {
+                    addTerminalLine(`❌ ${data.error}`, 'stderr');
+                }
+            } catch (e) {
+                addTerminalLine(`❌ 실행 실패: ${e.message}`, 'stderr');
+            }
+
+            // 파일 목록 새로고침
+            await browseFolder(currentPath);
+        }
+
+        function addTerminalLine(text, type = 'stdout') {
+            const line = document.createElement('div');
+            line.className = `terminal-line ${type}`;
+            line.textContent = text;
+            terminalOutput.appendChild(line);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function runQuickCmd(cmd) {
+            if (!currentFolder) {
+                addTerminalLine('❌ 먼저 프로젝트를 선택하세요', 'stderr');
+                return;
+            }
+            terminalInput.value = cmd;
+            executeCommand(cmd);
+        }
+
+        // 스크립트 실행
+        async function runSelectedScript() {
+            if (!selectedFile || !currentFolder) return;
+
+            const ext = selectedFile.name.split('.').pop().toLowerCase();
+            const scriptType = ext === 'py' ? 'python' : 'batch';
+
+            addTerminalLine(`▶️ 스크립트 실행: ${selectedFile.name}`, 'command');
+
+            try {
+                const response = await fetch('/api/external/run-script', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        folder: currentFolder,
+                        script: selectedFile.path,
+                        type: scriptType,
+                        background: false
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    if (data.stdout) {
+                        data.stdout.split('\n').forEach(line => {
+                            if (line.trim()) addTerminalLine(line, 'stdout');
+                        });
+                    }
+                    if (data.stderr) {
+                        data.stderr.split('\n').forEach(line => {
+                            if (line.trim()) addTerminalLine(line, 'stderr');
+                        });
+                    }
+                } else {
+                    addTerminalLine(`❌ ${data.error}`, 'stderr');
+                }
+            } catch (e) {
+                addTerminalLine(`❌ 실행 실패: ${e.message}`, 'stderr');
+            }
+        }
+
+        // 파일 보기
+        async function viewSelectedFile() {
+            if (!selectedFile || !currentFolder) return;
+
+            try {
+                const url = `/api/external/read/${currentFolder}?filepath=${encodeURIComponent(selectedFile.path)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('viewerFileName').textContent = `📄 ${data.filename}`;
+                    document.getElementById('viewerContent').textContent = data.content;
+                    document.getElementById('fileViewer').classList.add('show');
+                } else {
+                    addTerminalLine(`❌ 파일 읽기 실패: ${data.detail || '알 수 없는 오류'}`, 'stderr');
+                }
+            } catch (e) {
+                addTerminalLine(`❌ 파일 읽기 실패: ${e.message}`, 'stderr');
+            }
+        }
+
+        function closeViewer() {
+            document.getElementById('fileViewer').classList.remove('show');
+        }
+
+        // 파일 업로드
+        const uploadZone = document.getElementById('uploadZone');
+        const fileUpload = document.getElementById('fileUpload');
+
+        uploadZone.addEventListener('click', () => fileUpload.click());
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        uploadZone.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            await uploadFiles(e.dataTransfer.files);
+        });
+        fileUpload.addEventListener('change', async () => {
+            await uploadFiles(fileUpload.files);
+        });
+
+        async function uploadFiles(files) {
+            if (!currentFolder) {
+                addTerminalLine('❌ 먼저 프로젝트를 선택하세요', 'stderr');
+                return;
+            }
+
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append('folder', currentFolder);
+                formData.append('subpath', currentPath);
+                formData.append('file', file);
+
+                try {
+                    addTerminalLine(`📤 업로드 중: ${file.name}`, 'command');
+
+                    const response = await fetch('/api/external/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        addTerminalLine(`✓ ${data.message}`, 'success');
+                    } else {
+                        addTerminalLine(`❌ ${data.error || data.detail}`, 'stderr');
+                    }
+                } catch (e) {
+                    addTerminalLine(`❌ 업로드 실패: ${e.message}`, 'stderr');
+                }
+            }
+
+            await browseFolder(currentPath);
+        }
+
+        // 초기화
+        loadFolders();
+    </script>
+</body>
+</html>

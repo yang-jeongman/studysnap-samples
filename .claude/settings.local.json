@@ -4,7 +4,16 @@
       "Bash(cmd //c \"cd /d C:\\k-mart && python work\\check_products.py 2>&1\")",
       "Bash(where:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill /F /PID 48140)",
+      "Bash(cmd /c \"taskkill /F /PID 48140\")",
+      "Bash(python app.py:*)",
+      "Bash(cmd /c \"taskkill /F /PID 48140 & taskkill /F /PID 50032\")",
+      "Bash(taskkill //F //PID 48140)",
+      "Bash(taskkill //F //PID 50032)"
     ],
     "deny": [],
     "ask": []
