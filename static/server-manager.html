@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap - 서버 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .server-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .server-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.2s;
+        }
+
+        .server-item:hover {
+            border-color: #667eea;
+        }
+
+        .server-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .server-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .server-path {
+            font-size: 13px;
+            color: #666;
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .server-url {
+            font-size: 14px;
+            color: #667eea;
+        }
+
+        .server-url a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .server-url a:hover {
+            text-decoration: underline;
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-running {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-stopped {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-checking {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .status-running .status-dot {
+            background: #28a745;
+            animation: pulse 2s infinite;
+        }
+
+        .status-stopped .status-dot {
+            background: #dc3545;
+        }
+
+        .status-checking .status-dot {
+            background: #ffc107;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .server-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-start {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-start:hover {
+            background: #218838;
+        }
+
+        .btn-stop {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-stop:hover {
+            background: #c82333;
+        }
+
+        .btn-refresh {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-refresh:hover {
+            background: #5a6fd6;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .add-server-form {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px dashed #dee2e6;
+        }
+
+        .add-server-form.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-add {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            color: #d4d4d4;
+            display: none;
+        }
+
+        .log-container.show {
+            display: block;
+        }
+
+        .log-line {
+            margin-bottom: 3px;
+        }
+
+        .log-line.error {
+            color: #f48771;
+        }
+
+        .log-line.success {
+            color: #89d185;
+        }
+
+        .log-line.info {
+            color: #6cb6ff;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #004085;
+            font-size: 14px;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">🖥️</span>
+                <h1>서버 관리</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/static/explorer.html">🗂️ 탐색기</a>
+                <a href="/static/auto-converter.html">🔄 변환기</a>
+                <a href="/static/files.html">📁 파일</a>
+            </div>
+        </header>
+
+        <div class="info-box">
+            <strong>ℹ️ 로컬 서버 관리</strong>
+            이 페이지에서 등록된 로컬 서버를 시작/중지할 수 있습니다.
+            외부 접속을 위해서는 방화벽 설정과 포트 포워딩이 필요합니다.
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">
+                <span>📋</span>
+                등록된 서버 목록
+                <button class="btn btn-refresh" onclick="refreshAllStatus()" style="margin-left: auto;">
+                    🔄 전체 새로고침
+                </button>
+            </h2>
+
+            <div class="server-list" id="serverList">
+                <!-- 서버 목록이 여기에 동적으로 생성됩니다 -->
+            </div>
+
+            <button class="btn btn-add" onclick="toggleAddForm()" style="margin-top: 20px;">
+                ➕ 새 서버 등록
+            </button>
+
+            <div class="add-server-form" id="addServerForm">
+                <h3 style="margin-bottom: 15px; font-size: 16px;">새 서버 등록</h3>
+                <div class="form-group">
+                    <label>서버 이름</label>
+                    <input type="text" id="newServerName" placeholder="예: k-mart">
+                </div>
+                <div class="form-group">
+                    <label>프로젝트 경로</label>
+                    <input type="text" id="newServerPath" placeholder="예: C:\k-mart">
+                </div>
+                <div class="form-group">
+                    <label>서버 타입</label>
+                    <select id="newServerType">
+                        <option value="django">Django (manage.py runserver)</option>
+                        <option value="fastapi">FastAPI (uvicorn)</option>
+                        <option value="flask">Flask</option>
+                        <option value="custom">커스텀 명령어</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>포트</label>
+                    <input type="number" id="newServerPort" placeholder="예: 8001" value="8000">
+                </div>
+                <div class="form-group" id="customCmdGroup" style="display: none;">
+                    <label>커스텀 시작 명령어</label>
+                    <input type="text" id="newServerCmd" placeholder="예: python app.py">
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-cancel" onclick="toggleAddForm()">취소</button>
+                    <button class="btn btn-add" onclick="addServer()">등록</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">
+                <span>📜</span>
+                실행 로그
+            </h2>
+            <div class="log-container show" id="logContainer">
+                <div class="log-line info">서버 관리 페이지가 로드되었습니다.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 기본 등록 서버 목록
+        let servers = JSON.parse(localStorage.getItem('managedServers')) || [
+            {
+                id: 'studysnap',
+                name: 'StudySnap',
+                path: 'C:\\StudySnap-Backend',
+                type: 'fastapi',
+                port: 8000,
+                url: 'http://localhost:8000',
+                status: 'unknown'
+            },
+            {
+                id: 'kmart',
+                name: 'K-Mart',
+                path: 'C:\\k-mart',
+                type: 'django',
+                port: 8001,
+                url: 'http://localhost:8001',
+                status: 'unknown'
+            }
+        ];
+
+        // 서버 목록 렌더링
+        function renderServerList() {
+            const list = document.getElementById('serverList');
+            list.innerHTML = servers.map(server => `
+                <div class="server-item" data-id="${server.id}">
+                    <div class="server-info">
+                        <div class="server-name">${server.name}</div>
+                        <div class="server-path">${server.path}</div>
+                        <div class="server-url">
+                            🌐 <a href="${server.url}" target="_blank">${server.url}</a>
+                            ${server.port === 8000 || server.port === 8001 ?
+                                `→ 외부: <a href="http://115.21.251.90:${server.port}" target="_blank">http://115.21.251.90:${server.port}</a>` : ''}
+                        </div>
+                    </div>
+                    <div class="server-status ${getStatusClass(server.status)}" id="status-${server.id}">
+                        <span class="status-dot"></span>
+                        <span>${getStatusText(server.status)}</span>
+                    </div>
+                    <div class="server-actions">
+                        <button class="btn btn-start" onclick="startServer('${server.id}')" ${server.status === 'running' ? 'disabled' : ''}>
+                            ▶️ 시작
+                        </button>
+                        <button class="btn btn-stop" onclick="stopServer('${server.id}')" ${server.status !== 'running' ? 'disabled' : ''}>
+                            ⏹️ 중지
+                        </button>
+                        <button class="btn btn-refresh" onclick="checkStatus('${server.id}')">
+                            🔄
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'running': return 'status-running';
+                case 'stopped': return 'status-stopped';
+                default: return 'status-checking';
+            }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'running': return '실행 중';
+                case 'stopped': return '중지됨';
+                default: return '확인 중...';
+            }
+        }
+
+        // 로그 추가
+        function addLog(message, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const line = document.createElement('div');
+            line.className = `log-line ${type}`;
+            const time = new Date().toLocaleTimeString();
+            line.textContent = `[${time}] ${message}`;
+            container.appendChild(line);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 서버 상태 확인
+        async function checkStatus(serverId) {
+            const server = servers.find(s => s.id === serverId);
+            if (!server) return;
+
+            updateServerStatus(serverId, 'checking');
+            addLog(`${server.name} 상태 확인 중...`);
+
+            try {
+                const response = await fetch(`/api/server/status/${serverId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    server.status = data.running ? 'running' : 'stopped';
+                    addLog(`${server.name}: ${data.running ? '실행 중' : '중지됨'}`, data.running ? 'success' : 'info');
+                } else {
+                    server.status = 'stopped';
+                    addLog(`${server.name}: 중지됨`, 'info');
+                }
+            } catch (e) {
+                // API가 없으면 포트로 직접 확인
+                try {
+                    const check = await fetch(server.url, { mode: 'no-cors', cache: 'no-cache' });
+                    server.status = 'running';
+                    addLog(`${server.name}: 실행 중 (포트 응답)`, 'success');
+                } catch {
+                    server.status = 'stopped';
+                    addLog(`${server.name}: 중지됨 (포트 무응답)`, 'info');
+                }
+            }
+
+            updateServerStatus(serverId, server.status);
+            renderServerList();
+        }
+
+        function updateServerStatus(serverId, status) {
+            const statusEl = document.getElementById(`status-${serverId}`);
+            if (statusEl) {
+                statusEl.className = `server-status ${getStatusClass(status)}`;
+                statusEl.innerHTML = `<span class="status-dot"></span><span>${getStatusText(status)}</span>`;
+            }
+        }
+
+        // 서버 시작
+        async function startServer(serverId) {
+            const server = servers.find(s => s.id === serverId);
+            if (!server) return;
+
+            addLog(`${server.name} 서버 시작 요청...`, 'info');
+
+            try {
+                const response = await fetch('/api/server/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: server.id,
+                        path: server.path,
+                        type: server.type,
+                        port: server.port
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    addLog(`${server.name} 서버가 시작되었습니다!`, 'success');
+                    server.status = 'running';
+                } else {
+                    addLog(`${server.name} 시작 실패: ${data.error}`, 'error');
+                }
+            } catch (e) {
+                addLog(`${server.name} 시작 요청 실패: ${e.message}`, 'error');
+            }
+
+            renderServerList();
+        }
+
+        // 서버 중지
+        async function stopServer(serverId) {
+            const server = servers.find(s => s.id === serverId);
+            if (!server) return;
+
+            addLog(`${server.name} 서버 중지 요청...`, 'info');
+
+            try {
+                const response = await fetch('/api/server/stop', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: server.id,
+                        port: server.port
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    addLog(`${server.name} 서버가 중지되었습니다.`, 'success');
+                    server.status = 'stopped';
+                } else {
+                    addLog(`${server.name} 중지 실패: ${data.error}`, 'error');
+                }
+            } catch (e) {
+                addLog(`${server.name} 중지 요청 실패: ${e.message}`, 'error');
+            }
+
+            renderServerList();
+        }
+
+        // 전체 상태 새로고침
+        function refreshAllStatus() {
+            servers.forEach(server => checkStatus(server.id));
+        }
+
+        // 새 서버 폼 토글
+        function toggleAddForm() {
+            document.getElementById('addServerForm').classList.toggle('show');
+        }
+
+        // 서버 타입 변경 시
+        document.getElementById('newServerType').addEventListener('change', function() {
+            document.getElementById('customCmdGroup').style.display =
+                this.value === 'custom' ? 'block' : 'none';
+        });
+
+        // 새 서버 등록
+        function addServer() {
+            const name = document.getElementById('newServerName').value.trim();
+            const path = document.getElementById('newServerPath').value.trim();
+            const type = document.getElementById('newServerType').value;
+            const port = parseInt(document.getElementById('newServerPort').value) || 8000;
+            const cmd = document.getElementById('newServerCmd').value.trim();
+
+            if (!name || !path) {
+                alert('서버 이름과 경로를 입력해주세요.');
+                return;
+            }
+
+            const id = name.toLowerCase().replace(/\s+/g, '-');
+
+            if (servers.find(s => s.id === id)) {
+                alert('이미 같은 이름의 서버가 존재합니다.');
+                return;
+            }
+
+            servers.push({
+                id,
+                name,
+                path,
+                type,
+                port,
+                cmd: type === 'custom' ? cmd : null,
+                url: `http://localhost:${port}`,
+                status: 'unknown'
+            });
+
+            localStorage.setItem('managedServers', JSON.stringify(servers));
+
+            addLog(`새 서버 등록됨: ${name}`, 'success');
+            toggleAddForm();
+            renderServerList();
+
+            // 폼 초기화
+            document.getElementById('newServerName').value = '';
+            document.getElementById('newServerPath').value = '';
+            document.getElementById('newServerPort').value = '8000';
+        }
+
+        // 초기화
+        renderServerList();
+        addLog('서버 목록을 로드했습니다.');
+
+        // 잠시 후 상태 확인
+        setTimeout(() => {
+            refreshAllStatus();
+        }, 1000);
+    </script>
+</body>
+</html>

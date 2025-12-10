@@ -1998,6 +1998,178 @@ async def download_folder_as_zip(folder_path: str):
 
 
 # ============================================
+# 서버 관리 API
+# ============================================
+
+import subprocess
+import signal
+
+# 실행 중인 서버 프로세스 추적
+running_servers = {}
+
+@app.post("/api/server/start")
+async def start_server(request: Request):
+    """
+    로컬 서버 시작 API
+    """
+    try:
+        data = await request.json()
+        server_id = data.get('id')
+        server_path = data.get('path')
+        server_type = data.get('type')
+        port = data.get('port', 8000)
+        custom_cmd = data.get('cmd')
+
+        if not server_path or not os.path.exists(server_path):
+            return JSONResponse({
+                "success": False,
+                "error": f"경로를 찾을 수 없습니다: {server_path}"
+            })
+
+        # 이미 실행 중인지 확인
+        if server_id in running_servers:
+            proc = running_servers[server_id]
+            if proc.poll() is None:  # 아직 실행 중
+                return JSONResponse({
+                    "success": False,
+                    "error": "서버가 이미 실행 중입니다"
+                })
+
+        # 서버 타입별 명령어 생성
+        if custom_cmd:
+            cmd = custom_cmd.split()
+        elif server_type == 'django':
+            cmd = ['python', 'manage.py', 'runserver', f'0.0.0.0:{port}']
+        elif server_type == 'fastapi':
+            cmd = ['python', '-m', 'uvicorn', 'app:app', '--host', '0.0.0.0', '--port', str(port)]
+        elif server_type == 'flask':
+            cmd = ['python', '-m', 'flask', 'run', '--host', '0.0.0.0', '--port', str(port)]
+        else:
+            return JSONResponse({
+                "success": False,
+                "error": f"지원하지 않는 서버 타입: {server_type}"
+            })
+
+        # 서버 시작 (백그라운드)
+        process = subprocess.Popen(
+            cmd,
+            cwd=server_path,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == 'nt' else 0
+        )
+
+        running_servers[server_id] = process
+
+        logger.info(f"서버 시작됨: {server_id} (PID: {process.pid})")
+
+        return JSONResponse({
+            "success": True,
+            "message": f"서버가 시작되었습니다",
+            "pid": process.pid,
+            "port": port
+        })
+
+    except Exception as e:
+        logger.error(f"서버 시작 실패: {str(e)}", exc_info=True)
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        })
+
+
+@app.post("/api/server/stop")
+async def stop_server(request: Request):
+    """
+    로컬 서버 중지 API
+    """
+    try:
+        data = await request.json()
+        server_id = data.get('id')
+        port = data.get('port')
+
+        # 추적 중인 프로세스가 있으면 종료
+        if server_id in running_servers:
+            proc = running_servers[server_id]
+            if proc.poll() is None:
+                if os.name == 'nt':
+                    # Windows: taskkill 사용
+                    subprocess.run(['taskkill', '/F', '/T', '/PID', str(proc.pid)],
+                                   capture_output=True)
+                else:
+                    # Unix: SIGTERM
+                    os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
+
+                del running_servers[server_id]
+                logger.info(f"서버 중지됨: {server_id}")
+
+                return JSONResponse({
+                    "success": True,
+                    "message": "서버가 중지되었습니다"
+                })
+
+        # 포트로 프로세스 찾아서 종료 (Windows)
+        if port and os.name == 'nt':
+            result = subprocess.run(
+                f'netstat -ano | findstr :{port}',
+                shell=True, capture_output=True, text=True
+            )
+            if result.stdout:
+                lines = result.stdout.strip().split('\n')
+                for line in lines:
+                    if 'LISTENING' in line:
+                        parts = line.split()
+                        pid = parts[-1]
+                        subprocess.run(['taskkill', '/F', '/PID', pid], capture_output=True)
+                        logger.info(f"포트 {port} 프로세스 종료: PID {pid}")
+
+                return JSONResponse({
+                    "success": True,
+                    "message": f"포트 {port} 서버가 중지되었습니다"
+                })
+
+        return JSONResponse({
+            "success": False,
+            "error": "실행 중인 서버를 찾을 수 없습니다"
+        })
+
+    except Exception as e:
+        logger.error(f"서버 중지 실패: {str(e)}", exc_info=True)
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        })
+
+
+@app.get("/api/server/status/{server_id}")
+async def get_server_status(server_id: str):
+    """
+    서버 상태 확인 API
+    """
+    try:
+        # 추적 중인 프로세스 확인
+        if server_id in running_servers:
+            proc = running_servers[server_id]
+            running = proc.poll() is None
+            return JSONResponse({
+                "success": True,
+                "running": running,
+                "pid": proc.pid if running else None
+            })
+
+        return JSONResponse({
+            "success": True,
+            "running": False
+        })
+
+    except Exception as e:
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        })
+
+
+# ============================================
 # 학습 시스템 API
 # ============================================
 

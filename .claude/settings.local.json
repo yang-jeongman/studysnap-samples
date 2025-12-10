@@ -1,19 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cmd /c \"dir /b\")",
-      "Bash(cmd /c \"taskkill /F /IM python.exe 2>nul || echo No Python processes to kill\")",
-      "Bash(cmd /c \"taskkill //F //PID 72504\")",
-      "Bash(cmd /c \"taskkill /F /PID 72504\")",
-      "Bash(cmd /c \"taskkill /F /IM python.exe 2>nul & timeout /t 2 >nul\")",
-      "Bash(cmd /c \"taskkill /F /IM python.exe 2>nul & echo Python processes killed\")",
-      "Bash(timeout /t 5)",
-      "Bash(cmd /c \"taskkill /F /IM python.exe 2>nul & timeout /t 2 >nul & echo Done\")",
-      "Bash(timeout:*)",
-      "Bash(cmd /c \"taskkill /F /PID 55780 2>nul & echo Server process killed\")",
-      "Bash(cmd /c \"taskkill /F /IM python.exe 2>nul & timeout /t 2 >nul & echo All Python processes killed\")",
-      "Bash(cmd /c \"taskkill /F /PID 55780\")",
-      "Bash(cmd /c \"dir c:\\StudySnap-Backend\\static\\*.html /b\")"
+      "Bash(cmd //c \"cd /d C:\\k-mart && python work\\check_products.py 2>&1\")",
+      "Bash(where:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
