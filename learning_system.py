@@ -34,22 +34,38 @@ class LearningSystem:
     def log_conversion(self, job_id: str, conversion_data: Dict[str, Any]) -> None:
         """변환 작업 기록"""
         try:
+            content_type = conversion_data.get("content_type", "")
+            structured_data = conversion_data.get("structured_data", {})
+
+            # 컨텐츠 타입에 따라 다른 메타데이터 추출
+            if content_type == "church":
+                extracted_data = {
+                    "worship_services_count": len(structured_data.get("worship_services", [])),
+                    "has_sermon": bool(structured_data.get("sermon", {}).get("title", "")),
+                    "choir_count": len(structured_data.get("choir", [])),
+                    "news_count": len(structured_data.get("news", [])),
+                    "has_verse": bool(structured_data.get("today_verse", {}).get("text", "")),
+                }
+            else:
+                # 선거 공보물 등 기본 구조
+                extracted_data = {
+                    "candidate_name": structured_data.get("candidate_name", ""),
+                    "party": structured_data.get("party", ""),
+                    "pledges_count": len(structured_data.get("core_pledges", [])),
+                    "career_count": len(structured_data.get("career", [])),
+                    "has_contact": bool(structured_data.get("contact_info", "")),
+                }
+
             log_entry = {
                 "timestamp": datetime.now().isoformat(),
                 "job_id": job_id,
                 "filename": conversion_data.get("filename", ""),
-                "content_type": conversion_data.get("content_type", ""),
+                "content_type": content_type,
                 "page_count": conversion_data.get("page_count", 0),
                 "is_image_based": conversion_data.get("is_image_based", False),
                 "ocr_used": conversion_data.get("ocr_used", False),
                 "processing_time": conversion_data.get("processing_time", 0),
-                "extracted_data": {
-                    "candidate_name": conversion_data.get("structured_data", {}).get("candidate_name", ""),
-                    "party": conversion_data.get("structured_data", {}).get("party", ""),
-                    "pledges_count": len(conversion_data.get("structured_data", {}).get("core_pledges", [])),
-                    "career_count": len(conversion_data.get("structured_data", {}).get("career", [])),
-                    "has_contact": bool(conversion_data.get("structured_data", {}).get("contact_info", "")),
-                }
+                "extracted_data": extracted_data
             }
 
             # JSONL 형식으로 추가 (각 줄이 하나의 JSON 객체)

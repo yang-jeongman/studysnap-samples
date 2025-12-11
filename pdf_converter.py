@@ -198,6 +198,10 @@ class PDFConverter:
                 ocr_result = self.vision_ocr.extract_election_info(base64_img, page_number=page_num)
                 text = ocr_result.get("text", "")
                 structured = ocr_result.get("structured", {})
+            elif content_type == "church":
+                ocr_result = self.vision_ocr.extract_church_bulletin_info(base64_img, page_number=page_num)
+                text = ocr_result.get("text", "")
+                structured = ocr_result.get("structured", {})
             else:
                 text = self.vision_ocr.extract_text_from_image(base64_img)
                 structured = {}
@@ -266,6 +270,14 @@ class PDFConverter:
         if not data_list:
             return {}
 
+        # 첫 번째 데이터를 기반으로 타입 감지
+        first_data = data_list[0] if data_list else {}
+
+        # 교회 주보 데이터인지 확인
+        if "worship_services" in first_data or "today_verse" in first_data:
+            return self._merge_church_data(data_list)
+
+        # 선거 공보물 데이터 (기본)
         merged = {
             "candidate_name": "",
             "party": "",
@@ -364,6 +376,72 @@ class PDFConverter:
         merged["achievements"] = list(achievements_dict.values())
 
         merged["other_text"] = merged["other_text"].strip()
+
+        return merged
+
+    def _merge_church_data(self, data_list: List[Dict]) -> Dict:
+        """교회 주보 데이터 병합"""
+        merged = {
+            "today_verse": {"text": "", "reference": ""},
+            "worship_services": [],
+            "sermon": {"title": "", "scripture": "", "pastor": "", "content": []},
+            "choir": [],
+            "news": [],
+            "announcements": [],
+            "other_text": ""
+        }
+
+        for data in data_list:
+            if not data:
+                continue
+
+            # 오늘의 말씀
+            verse = data.get("today_verse", {})
+            if verse.get("text") and not merged["today_verse"]["text"]:
+                merged["today_verse"]["text"] = verse["text"]
+            if verse.get("reference") and not merged["today_verse"]["reference"]:
+                merged["today_verse"]["reference"] = verse["reference"]
+
+            # 예배 순서 (각 페이지에서 추출된 것 모두 병합)
+            if data.get("worship_services"):
+                merged["worship_services"].extend(data["worship_services"])
+
+            # 설교 (첫 번째 발견된 것 사용)
+            sermon = data.get("sermon", {})
+            if sermon.get("title") and not merged["sermon"]["title"]:
+                merged["sermon"]["title"] = sermon["title"]
+            if sermon.get("scripture") and not merged["sermon"]["scripture"]:
+                merged["sermon"]["scripture"] = sermon["scripture"]
+            if sermon.get("pastor") and not merged["sermon"]["pastor"]:
+                merged["sermon"]["pastor"] = sermon["pastor"]
+            if sermon.get("content"):
+                merged["sermon"]["content"].extend(sermon["content"])
+
+            # 찬양대
+            if data.get("choir"):
+                merged["choir"].extend(data["choir"])
+
+            # 교회 소식
+            if data.get("news"):
+                merged["news"].extend(data["news"])
+
+            # 광고
+            if data.get("announcements"):
+                merged["announcements"].extend(data["announcements"])
+
+        # 중복 제거
+        def remove_dups(lst):
+            seen = set()
+            result = []
+            for item in lst:
+                key = str(item) if isinstance(item, dict) else item
+                if key not in seen:
+                    seen.add(key)
+                    result.append(item)
+            return result
+
+        merged["news"] = remove_dups(merged["news"])
+        merged["announcements"] = remove_dups(merged["announcements"])
 
         return merged
 

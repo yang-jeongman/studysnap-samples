@@ -356,6 +356,248 @@ class VisionOCR:
         return result
 
 
+    def extract_church_bulletin_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1) -> dict:
+        """교회 주보에서 구조화된 정보 추출"""
+        if not self.client:
+            return {"text": "", "structured": {}}
+
+        try:
+            if "base64," in image_base64:
+                image_base64 = image_base64.split("base64,")[1]
+
+            # 페이지 번호에 따라 프롬프트 조정
+            page_context = ""
+            if page_number == 1:
+                page_context = "이것은 주보 앞면입니다. 오늘의 말씀, 예배 시간, 예배 순서를 추출하세요."
+            elif page_number == 2:
+                page_context = "이것은 주보 뒷면입니다. 설교 본문, 찬양대 순서, 교회 소식을 추출하세요."
+
+            message = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=8192,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": media_type,
+                                    "data": image_base64,
+                                },
+                            },
+                            {
+                                "type": "text",
+                                "text": f"""{page_context}
+
+이 교회 주보 이미지를 정확하게 분석하여 정보를 추출해주세요.
+
+**중요 원칙:**
+1. 이미지에 보이는 모든 텍스트를 빠짐없이 추출하세요
+2. 예배 순서의 모든 항목(사회, 성경봉독, 대표기도, 찬송, 설교)을 추출하세요
+3. 찬송가 번호, 성경 구절 참조(예: 요한복음 3:16)를 정확히 추출하세요
+4. 설교 전문 내용을 모두 추출하세요
+
+**추출 형식:**
+
+[오늘의 말씀]
+본문: (성경 구절 텍스트)
+출처: (예: 요한복음 3:16)
+
+[예배 순서]
+예배명: (1부예배/2·3·4부예배/5부예배/저녁예배)
+사회: (담당자 이름)
+성경봉독: (성경 구절 - 예: 요한복음 1:1-14)
+대표기도: (담당자 이름)
+찬송: (찬송가 번호 - 예: 94장)
+설교: (설교 제목) / (담당 목사님)
+(위 형식으로 모든 예배 순서 추출)
+
+[설교]
+제목: (설교 제목)
+본문: (성경 구절)
+목사: (설교자 이름)
+내용:
+(설교 전문 - 문단별로 구분하여 전체 내용 추출)
+
+[찬양대]
+예배: (몇 부 예배)
+찬양대: (찬양대 이름)
+곡명: (찬양 제목)
+(각 예배별로 모든 찬양대 순서 추출)
+
+[교회 소식]
+- (소식1 - 제목과 내용 모두)
+- (소식2)
+...
+
+[광고]
+- (광고1)
+- (광고2)
+...
+
+**주의:**
+- 모든 텍스트를 순서대로 추출하세요
+- 성경 구절 형식을 정확히 유지하세요 (예: 요한복음 3:16, 시편 23:1-6)
+- 찬송가 번호를 정확히 추출하세요 (예: 94장, 새찬송가 94장)
+- 설교 내용은 전체를 문단별로 추출하세요"""
+                            }
+                        ],
+                    }
+                ],
+            )
+
+            raw_text = message.content[0].text.strip()
+            return {
+                "text": raw_text,
+                "structured": self._parse_church_bulletin_response(raw_text)
+            }
+
+        except Exception as e:
+            logger.error(f"교회 주보 정보 추출 오류: {str(e)}", exc_info=True)
+            return {"text": "", "structured": {}}
+
+    def _parse_church_bulletin_response(self, text: str) -> dict:
+        """교회 주보 응답을 구조화된 데이터로 파싱"""
+        result = {
+            "today_verse": {"text": "", "reference": ""},
+            "worship_services": [],  # 예배 순서들
+            "sermon": {"title": "", "scripture": "", "pastor": "", "content": []},
+            "choir": [],  # 찬양대 순서
+            "news": [],  # 교회 소식
+            "announcements": [],  # 광고
+            "other_text": ""
+        }
+
+        current_section = None
+        current_service = None
+        current_choir = None
+        lines = text.split("\n")
+
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            i += 1
+
+            if not line:
+                continue
+
+            # 섹션 헤더 감지
+            if "[오늘의 말씀]" in line or "[금주의 말씀]" in line:
+                current_section = "verse"
+                continue
+            elif "[예배 순서]" in line or "[예배순서]" in line:
+                current_section = "worship"
+                continue
+            elif "[설교]" in line:
+                current_section = "sermon"
+                continue
+            elif "[찬양대]" in line:
+                current_section = "choir"
+                continue
+            elif "[교회 소식]" in line or "[소식]" in line:
+                current_section = "news"
+                continue
+            elif "[광고]" in line:
+                current_section = "announcements"
+                continue
+
+            # 섹션별 파싱
+            if current_section == "verse":
+                if line.startswith("본문:"):
+                    result["today_verse"]["text"] = line.replace("본문:", "").strip()
+                elif line.startswith("출처:"):
+                    result["today_verse"]["reference"] = line.replace("출처:", "").strip()
+                elif not result["today_verse"]["text"] and len(line) > 10:
+                    result["today_verse"]["text"] = line
+
+            elif current_section == "worship":
+                if line.startswith("예배명:") or line.startswith("예배:"):
+                    # 이전 예배 저장
+                    if current_service:
+                        result["worship_services"].append(current_service)
+                    service_name = line.replace("예배명:", "").replace("예배:", "").strip()
+                    current_service = {
+                        "name": service_name,
+                        "司會": "",  # 사회
+                        "scripture": "",  # 성경봉독
+                        "prayer": "",  # 대표기도
+                        "hymn": "",  # 찬송
+                        "sermon_title": "",
+                        "sermon_pastor": ""
+                    }
+                elif current_service:
+                    if line.startswith("사회:"):
+                        current_service["司會"] = line.replace("사회:", "").strip()
+                    elif line.startswith("성경봉독:"):
+                        current_service["scripture"] = line.replace("성경봉독:", "").strip()
+                    elif line.startswith("대표기도:"):
+                        current_service["prayer"] = line.replace("대표기도:", "").strip()
+                    elif line.startswith("찬송:"):
+                        current_service["hymn"] = line.replace("찬송:", "").strip()
+                    elif line.startswith("설교:"):
+                        sermon_info = line.replace("설교:", "").strip()
+                        if "/" in sermon_info:
+                            parts = sermon_info.split("/")
+                            current_service["sermon_title"] = parts[0].strip()
+                            current_service["sermon_pastor"] = parts[1].strip() if len(parts) > 1 else ""
+                        else:
+                            current_service["sermon_title"] = sermon_info
+
+            elif current_section == "sermon":
+                if line.startswith("제목:"):
+                    result["sermon"]["title"] = line.replace("제목:", "").strip()
+                elif line.startswith("본문:"):
+                    result["sermon"]["scripture"] = line.replace("본문:", "").strip()
+                elif line.startswith("목사:") or line.startswith("설교자:"):
+                    result["sermon"]["pastor"] = line.replace("목사:", "").replace("설교자:", "").strip()
+                elif line.startswith("내용:"):
+                    # 다음 줄들을 설교 내용으로 수집
+                    continue
+                elif line.startswith("-") or line.startswith("•"):
+                    continue
+                elif len(line) > 20:  # 긴 텍스트는 설교 내용
+                    result["sermon"]["content"].append(line)
+
+            elif current_section == "choir":
+                if line.startswith("예배:"):
+                    if current_choir:
+                        result["choir"].append(current_choir)
+                    current_choir = {
+                        "service": line.replace("예배:", "").strip(),
+                        "name": "",
+                        "song": ""
+                    }
+                elif current_choir:
+                    if line.startswith("찬양대:"):
+                        current_choir["name"] = line.replace("찬양대:", "").strip()
+                    elif line.startswith("곡명:"):
+                        current_choir["song"] = line.replace("곡명:", "").strip()
+
+            elif current_section == "news":
+                if line.startswith("-") or line.startswith("•"):
+                    news_item = line.lstrip("-•").strip()
+                    if len(news_item) > 3:
+                        result["news"].append(news_item)
+                elif len(line) > 5:
+                    result["news"].append(line)
+
+            elif current_section == "announcements":
+                if line.startswith("-") or line.startswith("•"):
+                    announcement = line.lstrip("-•").strip()
+                    if len(announcement) > 3:
+                        result["announcements"].append(announcement)
+
+        # 마지막 항목 추가
+        if current_service:
+            result["worship_services"].append(current_service)
+        if current_choir:
+            result["choir"].append(current_choir)
+
+        return result
+
+
 # 테스트
 if __name__ == "__main__":
     ocr = VisionOCR()

@@ -11,6 +11,9 @@ from datetime import datetime
 import re
 import json
 
+# 교회 주보 전용 생성기 (선거 홍보물과 완전 분리)
+from church_html_generator import get_church_bulletin_generator
+
 
 class HTMLGenerator:
     """모바일 최적화 HTML 생성 - 홍태용 스타일"""
@@ -53,6 +56,8 @@ class HTMLGenerator:
         """콘텐츠 유형에 따라 적절한 HTML 생성"""
         if content_type == "election":
             return self._generate_election_html(extracted_data, title, job_id)
+        elif content_type == "church":
+            return self._generate_church_html(extracted_data, title, job_id)
         else:
             return self._generate_general_html(extracted_data, title, job_id)
 
@@ -1424,3 +1429,1038 @@ class HTMLGenerator:
             {contact_html}
         </div>
     </section>'''
+
+    def _generate_church_html(
+        self,
+        extracted_data: Dict[str, Any],
+        title: str,
+        job_id: str
+    ) -> str:
+        """
+        교회 주보 HTML 생성 - 전용 생성기 모듈로 위임
+        선거 홍보물과 완전히 분리된 독립 템플릿 사용
+        """
+        # 교회 주보 전용 생성기 사용
+        generator = get_church_bulletin_generator()
+        return generator.generate(extracted_data, title)
+
+    def _generate_church_html_legacy(
+        self,
+        extracted_data: Dict[str, Any],
+        title: str,
+        job_id: str
+    ) -> str:
+        """[DEPRECATED] 레거시 교회 주보 HTML 생성 - 새 모듈로 이전됨"""
+        pages = extracted_data.get("pages", [])
+        structured_data = extracted_data.get("structured_data", {})
+
+        # 모든 페이지 텍스트 결합
+        all_text = "\n".join([p.get("text", "") for p in pages])
+
+        # 교회 주보 정보 추출
+        info = self._extract_church_info(all_text, title, structured_data)
+
+        # 여의도순복음교회 기본 SNS 정보 (PDF에서 추출 못할 경우 기본값)
+        default_sns = {
+            "youtube": "https://www.youtube.com/user/YFGCFGTV",
+            "kakaotalk": "http://pf.kakao.com/_NrTxkK",
+            "instagram": "https://www.instagram.com/yfgcprb/"
+        }
+        # info["sns"]가 빈 딕셔너리이면 기본값 사용
+        sns = info.get("sns") or default_sns
+        # 개별 키가 없으면 기본값에서 가져오기
+        sns = {
+            "youtube": sns.get("youtube") or default_sns["youtube"],
+            "kakaotalk": sns.get("kakaotalk") or default_sns["kakaotalk"],
+            "instagram": sns.get("instagram") or default_sns["instagram"]
+        }
+
+        # 헌금 링크
+        donation_url = info.get("donation_url", "https://m.fgtv.com/donate/donate_m_ver2.asp")
+
+        return f'''<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="{info.get('church_name', '교회')} 주보 - {info.get('date', '')}">
+    <title>{info.get('church_name', title)} - {info.get('date', '주보')}</title>
+
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+
+        :root {{
+            --primary-color: #6366F1;
+            --primary-light: #6366F120;
+            --primary-dark: #4F46E5;
+            --accent-color: #D97706;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F9FAFB;
+        }}
+
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }}
+
+        body.dark-mode {{
+            --primary-color: #818CF8;
+            --primary-light: #818CF830;
+            --primary-dark: #6366F1;
+            --text-dark: #F9FAFB;
+            --text-light: #D1D5DB;
+            --bg-light: #111827;
+            background: #0F172A;
+            color: var(--text-dark);
+        }}
+
+        /* Header */
+        .header {{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, background 0.3s;
+        }}
+
+        body.dark-mode .header {{
+            background: #1F2937;
+        }}
+
+        .header.hidden {{
+            transform: translateY(-100%);
+        }}
+
+        .header-title {{
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }}
+
+        .header-actions {{
+            display: flex;
+            gap: 8px;
+        }}
+
+        .header-btn {{
+            background: none;
+            border: none;
+            font-size: 1.3em;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }}
+
+        .header-btn:hover {{
+            background: var(--primary-light);
+        }}
+
+        /* Hero Section */
+        .hero {{
+            margin-top: 56px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }}
+
+        .hero-church {{
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }}
+
+        .hero-date {{
+            font-size: 1em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }}
+
+        .hero-service {{
+            font-size: 0.9em;
+            opacity: 0.8;
+        }}
+
+        /* SNS Links Bar */
+        .sns-bar {{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }}
+
+        body.dark-mode .sns-bar {{
+            background: #1F2937;
+            border-color: #374151;
+        }}
+
+        .sns-link {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.75em;
+            transition: transform 0.2s;
+        }}
+
+        .sns-link:hover {{
+            transform: scale(1.1);
+        }}
+
+        .sns-icon {{
+            font-size: 1.8em;
+            margin-bottom: 4px;
+        }}
+
+        .sns-link.youtube .sns-icon {{ color: #FF0000; }}
+        .sns-link.kakao .sns-icon {{ color: #FEE500; }}
+        .sns-link.instagram .sns-icon {{ color: #E4405F; }}
+        .sns-link.donation .sns-icon {{ color: #10B981; }}
+
+        /* Section */
+        .section {{
+            background: white;
+            margin: 12px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }}
+
+        body.dark-mode .section {{
+            background: #1F2937;
+        }}
+
+        .section-title {{
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+
+        /* Sermon Info */
+        .sermon-card {{
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }}
+
+        body.dark-mode .sermon-card {{
+            background: linear-gradient(135deg, var(--primary-light) 0%, #374151 100%);
+        }}
+
+        .sermon-title {{
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }}
+
+        .sermon-pastor {{
+            font-size: 0.95em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }}
+
+        .sermon-scripture {{
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }}
+
+        .sermon-scripture:hover {{
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }}
+
+        /* Hymn Link */
+        .hymn-link {{
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin: 5px 5px 5px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }}
+
+        .hymn-link:hover {{
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+        }}
+
+        /* Worship Order */
+        .worship-order {{
+            list-style: none;
+        }}
+
+        .worship-item {{
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }}
+
+        body.dark-mode .worship-item {{
+            border-color: #374151;
+        }}
+
+        .worship-item:last-child {{
+            border-bottom: none;
+        }}
+
+        .worship-number {{
+            width: 28px;
+            height: 28px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }}
+
+        .worship-content {{
+            flex: 1;
+        }}
+
+        .worship-name {{
+            font-weight: 600;
+            color: var(--text-dark);
+        }}
+
+        .worship-detail {{
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-top: 2px;
+        }}
+
+        /* Church News */
+        .news-item {{
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+        }}
+
+        body.dark-mode .news-item {{
+            background: #374151;
+        }}
+
+        .news-title {{
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }}
+
+        .news-content {{
+            font-size: 0.9em;
+            color: var(--text-light);
+            line-height: 1.6;
+        }}
+
+        /* Donation Button */
+        .donation-section {{
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 16px;
+            margin: 20px 12px;
+        }}
+
+        .donation-title {{
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }}
+
+        .donation-btn {{
+            display: inline-block;
+            background: white;
+            color: #059669;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }}
+
+        .donation-btn:hover {{
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }}
+
+        /* Modal */
+        .modal-overlay {{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }}
+
+        .modal-overlay.active {{
+            display: flex;
+        }}
+
+        .modal-content {{
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+        }}
+
+        body.dark-mode .modal-content {{
+            background: #1F2937;
+        }}
+
+        @keyframes modalSlide {{
+            from {{ transform: translateY(50px); opacity: 0; }}
+            to {{ transform: translateY(0); opacity: 1; }}
+        }}
+
+        .modal-header {{
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        }}
+
+        .modal-header.hymn {{
+            background: linear-gradient(135deg, var(--accent-color) 0%, #B45309 100%);
+        }}
+
+        .modal-title {{
+            font-size: 1.1em;
+            font-weight: 700;
+        }}
+
+        .modal-close {{
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+        }}
+
+        .modal-body {{
+            padding: 20px;
+            line-height: 1.8;
+        }}
+
+        .verse-num {{
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-right: 5px;
+        }}
+
+        .verse-label {{
+            display: block;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }}
+
+        /* Bottom Navigation */
+        .bottom-nav {{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+        }}
+
+        body.dark-mode .bottom-nav {{
+            background: #1F2937;
+        }}
+
+        .bottom-nav a {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.7em;
+            padding: 5px 12px;
+            transition: color 0.2s;
+        }}
+
+        .bottom-nav a.active {{
+            color: var(--primary-color);
+        }}
+
+        .bottom-nav .nav-icon {{
+            font-size: 1.6em;
+            margin-bottom: 2px;
+        }}
+
+        /* Footer */
+        .footer {{
+            text-align: center;
+            padding: 25px 20px;
+            color: var(--text-light);
+            font-size: 0.85em;
+        }}
+
+        .footer a {{
+            color: var(--primary-color);
+            text-decoration: none;
+        }}
+
+        /* Page Content */
+        .page-content {{
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary-color);
+        }}
+
+        body.dark-mode .page-content {{
+            background: #374151;
+        }}
+
+        .page-content h4 {{
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1em;
+        }}
+
+        .page-content p {{
+            margin-bottom: 8px;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <span class="header-title">{info.get('church_name', '교회')} 주보</span>
+        <div class="header-actions">
+            <button class="header-btn" onclick="toggleDarkMode()" title="다크모드">🌙</button>
+            <button class="header-btn" onclick="shareLink()" title="공유">📤</button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="hero-church">{info.get('church_name', '교회')}</h1>
+        <p class="hero-date">{info.get('date', '')}</p>
+        <p class="hero-service">{info.get('service_type', '주일예배')}</p>
+    </section>
+
+    <!-- SNS Links -->
+    <div class="sns-bar">
+        <a href="{sns.get('youtube', '#')}" target="_blank" class="sns-link youtube">
+            <span class="sns-icon">▶️</span>
+            <span>유튜브</span>
+        </a>
+        <a href="{sns.get('kakaotalk', '#')}" target="_blank" class="sns-link kakao">
+            <span class="sns-icon">💬</span>
+            <span>카카오톡</span>
+        </a>
+        <a href="{sns.get('instagram', '#')}" target="_blank" class="sns-link instagram">
+            <span class="sns-icon">📷</span>
+            <span>인스타그램</span>
+        </a>
+        <a href="{donation_url}" target="_blank" class="sns-link donation">
+            <span class="sns-icon">💝</span>
+            <span>헌금</span>
+        </a>
+    </div>
+
+    <!-- Sermon Section -->
+    <section class="section" id="sermon">
+        <h2 class="section-title">📖 오늘의 말씀</h2>
+        <div class="sermon-card">
+            <h3 class="sermon-title">{info.get('sermon_title', '말씀 제목')}</h3>
+            <p class="sermon-pastor">설교: {info.get('pastor', '담임목사')}</p>
+            {self._generate_scripture_links(info.get('scripture', ''))}
+        </div>
+        {self._generate_hymn_links(info.get('hymns', []))}
+    </section>
+
+    <!-- Worship Order -->
+    <section class="section" id="order">
+        <h2 class="section-title">⛪ 예배 순서</h2>
+        <ul class="worship-order">
+            {self._generate_worship_order_html(info.get('worship_order', []))}
+        </ul>
+    </section>
+
+    <!-- Church News -->
+    <section class="section" id="news">
+        <h2 class="section-title">📢 교회 소식</h2>
+        {self._generate_church_news_html(info.get('news', []))}
+    </section>
+
+    <!-- Donation Section -->
+    <div class="donation-section">
+        <p class="donation-title">💝 온라인 헌금</p>
+        <a href="{donation_url}" target="_blank" class="donation-btn">헌금하기</a>
+    </div>
+
+    <!-- Full Text -->
+    <section class="section" id="fulltext">
+        <h2 class="section-title">📄 전문보기</h2>
+        {self._generate_church_page_contents_html(pages)}
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>{info.get('church_name', '교회')}</p>
+        <p style="margin-top: 5px;">{info.get('address', '')}</p>
+        <p style="margin-top: 10px;">
+            <a href="https://studysnap.kr" target="_blank">StudySnap</a> | PDF를 모바일 콘텐츠로
+        </p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#sermon" class="active">
+            <span class="nav-icon">📖</span>
+            말씀
+        </a>
+        <a href="#order">
+            <span class="nav-icon">⛪</span>
+            순서
+        </a>
+        <a href="#news">
+            <span class="nav-icon">📢</span>
+            소식
+        </a>
+        <a href="#fulltext">
+            <span class="nav-icon">📄</span>
+            전문
+        </a>
+    </nav>
+
+    <!-- Bible Modal -->
+    <div class="modal-overlay" id="bibleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="bibleModalTitle">성경구절</h2>
+                <button class="modal-close" onclick="closeModal('bibleModal')">×</button>
+            </div>
+            <div class="modal-body" id="bibleModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Hymn Modal -->
+    <div class="modal-overlay" id="hymnModal">
+        <div class="modal-content">
+            <div class="modal-header hymn">
+                <h2 class="modal-title" id="hymnModalTitle">찬송가</h2>
+                <button class="modal-close" onclick="closeModal('hymnModal')">×</button>
+            </div>
+            <div class="modal-body" id="hymnModalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // 성경구절 데이터 (실제 구현 시 API 또는 데이터베이스에서 가져옴)
+        const bibleVerses = {{
+            'default': {{
+                title: '성경구절',
+                content: '<p>{info.get("scripture", "성경구절을 로드할 수 없습니다.")}</p>'
+            }}
+        }};
+
+        // 찬송가 데이터
+        const hymns = {{}};
+
+        // 성경구절 팝업 열기
+        function openBibleModal(verseKey) {{
+            const verse = bibleVerses[verseKey] || bibleVerses['default'];
+            document.getElementById('bibleModalTitle').textContent = verse.title;
+            document.getElementById('bibleModalContent').innerHTML = verse.content;
+            document.getElementById('bibleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }}
+
+        // 찬송가 팝업 열기
+        function openHymnModal(hymnNum) {{
+            const hymn = hymns[hymnNum];
+            if (hymn) {{
+                document.getElementById('hymnModalTitle').textContent = '찬송가 ' + hymnNum + '장 - ' + hymn.title;
+                document.getElementById('hymnModalContent').innerHTML = hymn.lyrics;
+            }} else {{
+                document.getElementById('hymnModalTitle').textContent = '찬송가 ' + hymnNum + '장';
+                document.getElementById('hymnModalContent').innerHTML = '<p>가사 정보를 로드할 수 없습니다.</p>';
+            }}
+            document.getElementById('hymnModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }}
+
+        // 모달 닫기
+        function closeModal(modalId) {{
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }}
+
+        // 모달 외부 클릭 시 닫기
+        document.querySelectorAll('.modal-overlay').forEach(modal => {{
+            modal.addEventListener('click', (e) => {{
+                if (e.target === modal) {{
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }}
+            }});
+        }});
+
+        // 다크모드 토글
+        function toggleDarkMode() {{
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }}
+
+        // 다크모드 초기화
+        if (localStorage.getItem('darkMode') === 'true') {{
+            document.body.classList.add('dark-mode');
+        }}
+
+        // 링크 공유
+        function shareLink() {{
+            if (navigator.share) {{
+                navigator.share({{
+                    title: '{info.get("church_name", "교회")} 주보 - {info.get("date", "")}',
+                    text: '{info.get("sermon_title", "오늘의 말씀")}',
+                    url: window.location.href
+                }});
+            }} else {{
+                navigator.clipboard.writeText(window.location.href);
+                alert('링크가 복사되었습니다!');
+            }}
+        }}
+
+        // 헤더 스크롤 숨김
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {{
+            const currentScroll = window.scrollY;
+            const header = document.getElementById('header');
+
+            if (currentScroll > lastScroll && currentScroll > 150) {{
+                header.classList.add('hidden');
+            }} else {{
+                header.classList.remove('hidden');
+            }}
+            lastScroll = currentScroll;
+        }});
+
+        // 네비게이션 스크롤 스파이
+        const sections = ['sermon', 'order', 'news', 'fulltext'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {{
+            let current = '';
+            sections.forEach(id => {{
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {{
+                    current = id;
+                }}
+            }});
+
+            navLinks.forEach(link => {{
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {{
+                    link.classList.add('active');
+                }}
+            }});
+        }});
+
+        // 부드러운 스크롤
+        navLinks.forEach(link => {{
+            link.addEventListener('click', (e) => {{
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {{
+                    window.scrollTo({{
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    }});
+                }}
+            }});
+        }});
+    </script>
+</body>
+</html>'''
+
+    def _extract_church_info(self, text: str, title: str, structured_data: Dict = None) -> Dict:
+        """교회 주보 정보 추출"""
+        info = {
+            "church_name": "",
+            "date": "",
+            "service_type": "",
+            "sermon_title": "",
+            "pastor": "",
+            "scripture": "",
+            "hymns": [],
+            "worship_order": [],
+            "news": [],
+            "address": "",
+            "sns": {},
+            "donation_url": "https://m.fgtv.com/donate/donate_m_ver2.asp"
+        }
+
+        # structured_data 우선 사용
+        if structured_data:
+            info["church_name"] = structured_data.get("church_name", "")
+            info["date"] = structured_data.get("date", "")
+            info["service_type"] = structured_data.get("service_type", "")
+            info["sermon_title"] = structured_data.get("sermon_title", "")
+            info["pastor"] = structured_data.get("pastor", "")
+            info["scripture"] = structured_data.get("scripture", "")
+            info["hymns"] = structured_data.get("hymns", [])
+            info["worship_order"] = structured_data.get("worship_order", [])
+            info["news"] = structured_data.get("news", [])
+            info["address"] = structured_data.get("address", "")
+            info["sns"] = structured_data.get("sns", {})
+
+        # 텍스트에서 추가 정보 추출
+        # 교회 이름
+        if not info["church_name"]:
+            church_patterns = [
+                r'(여의도순복음교회)',
+                r'([가-힣]+교회)',
+            ]
+            for pattern in church_patterns:
+                match = re.search(pattern, text)
+                if match:
+                    info["church_name"] = match.group(1)
+                    break
+            if not info["church_name"] and title:
+                info["church_name"] = title.split('_')[0] if '_' in title else title.replace('.pdf', '')
+
+        # 날짜 추출
+        if not info["date"]:
+            date_patterns = [
+                r'(\d{4})\s*[.년]\s*(\d{1,2})\s*[.월]\s*(\d{1,2})',
+                r'(\d{4})[-/](\d{1,2})[-/](\d{1,2})',
+            ]
+            for pattern in date_patterns:
+                match = re.search(pattern, text)
+                if match:
+                    info["date"] = f"{match.group(1)}년 {match.group(2)}월 {match.group(3)}일"
+                    break
+
+        # 예배 유형
+        if not info["service_type"]:
+            service_types = ["주일1부예배", "주일2부예배", "주일3부예배", "주일예배", "수요예배", "금요철야예배"]
+            for st in service_types:
+                if st in text:
+                    info["service_type"] = st
+                    break
+            if not info["service_type"]:
+                info["service_type"] = "주일예배"
+
+        # 설교 제목
+        if not info["sermon_title"]:
+            sermon_patterns = [
+                r'설교[제목\s:：]*[：:\s]*([^\n]{5,50})',
+                r'말씀[제목\s:：]*[：:\s]*([^\n]{5,50})',
+            ]
+            for pattern in sermon_patterns:
+                match = re.search(pattern, text)
+                if match:
+                    info["sermon_title"] = match.group(1).strip()
+                    break
+
+        # 목사님
+        if not info["pastor"]:
+            pastor_patterns = [
+                r'설교[자\s:：]*[：:\s]*([가-힣]+\s*목사)',
+                r'([가-힣]+\s*담임목사)',
+                r'([가-힣]{2,4})\s*목사',
+            ]
+            for pattern in pastor_patterns:
+                match = re.search(pattern, text)
+                if match:
+                    info["pastor"] = match.group(1).strip()
+                    break
+
+        # 성경구절
+        if not info["scripture"]:
+            scripture_patterns = [
+                r'본문[：:\s]*([가-힣]+\s*\d+[：:]\d+[-~]\d+)',
+                r'([가-힣]+\s*\d+장\s*\d+절)',
+                r'(창세기|출애굽기|레위기|민수기|신명기|여호수아|사사기|룻기|사무엘|열왕기|역대|에스라|느헤미야|에스더|욥기|시편|잠언|전도서|아가|이사야|예레미야|예레미야애가|에스겔|다니엘|호세아|요엘|아모스|오바댜|요나|미가|나훔|하박국|스바냐|학개|스가랴|말라기|마태복음|마가복음|누가복음|요한복음|사도행전|로마서|고린도전서|고린도후서|갈라디아서|에베소서|빌립보서|골로새서|데살로니가전서|데살로니가후서|디모데전서|디모데후서|디도서|빌레몬서|히브리서|야고보서|베드로전서|베드로후서|요한1서|요한2서|요한3서|유다서|요한계시록)\s*\d+[：:]\d+',
+            ]
+            for pattern in scripture_patterns:
+                match = re.search(pattern, text)
+                if match:
+                    info["scripture"] = match.group(0).strip()
+                    break
+
+        # 찬송가 번호 추출
+        if not info["hymns"]:
+            hymn_matches = re.findall(r'찬송[가\s]*(\d+)장?', text)
+            info["hymns"] = list(set(hymn_matches))[:5]
+
+        # 모든 텍스트 필드 정리
+        for key in ["church_name", "date", "service_type", "sermon_title", "pastor", "scripture", "address"]:
+            info[key] = self._clean_text(info[key])
+
+        return info
+
+    def _generate_scripture_links(self, scripture: str) -> str:
+        """성경구절 링크 생성"""
+        if not scripture:
+            return ""
+
+        scripture_escaped = scripture.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        return f'''<span class="sermon-scripture" onclick="openBibleModal('default')">📖 {scripture_escaped}</span>'''
+
+    def _generate_hymn_links(self, hymns: List[str]) -> str:
+        """찬송가 링크 생성"""
+        if not hymns:
+            return ""
+
+        html = '<div style="margin-top: 15px;">'
+        for hymn_num in hymns:
+            html += f'<span class="hymn-link" onclick="openHymnModal(\'{hymn_num}\')">🎵 찬송가 {hymn_num}장</span>'
+        html += '</div>'
+        return html
+
+    def _generate_worship_order_html(self, worship_order: List) -> str:
+        """예배 순서 HTML 생성"""
+        if not worship_order:
+            # 기본 예배 순서
+            worship_order = [
+                {"name": "예배의 부름", "detail": ""},
+                {"name": "찬양", "detail": ""},
+                {"name": "기도", "detail": ""},
+                {"name": "성경봉독", "detail": ""},
+                {"name": "설교", "detail": ""},
+                {"name": "봉헌", "detail": ""},
+                {"name": "축도", "detail": ""},
+            ]
+
+        html = ""
+        for i, item in enumerate(worship_order, 1):
+            if isinstance(item, dict):
+                name = item.get("name", "")
+                detail = item.get("detail", "")
+            else:
+                name = str(item)
+                detail = ""
+
+            name_escaped = name.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            detail_escaped = detail.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;') if detail else ""
+
+            html += f'''
+            <li class="worship-item">
+                <span class="worship-number">{i}</span>
+                <div class="worship-content">
+                    <div class="worship-name">{name_escaped}</div>
+                    {'<div class="worship-detail">' + detail_escaped + '</div>' if detail_escaped else ''}
+                </div>
+            </li>'''
+
+        return html
+
+    def _generate_church_news_html(self, news: List) -> str:
+        """교회 소식 HTML 생성"""
+        if not news:
+            return '<p style="color: var(--text-light); text-align: center; padding: 20px;">교회 소식을 추출할 수 없습니다.</p>'
+
+        html = ""
+        for item in news:
+            if isinstance(item, dict):
+                title = item.get("title", "")
+                content = item.get("content", "")
+            else:
+                title = ""
+                content = str(item)
+
+            title_escaped = title.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;') if title else ""
+            content_escaped = content.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            content_escaped = content_escaped.replace('\n', '<br>')
+
+            html += f'''
+            <div class="news-item">
+                {'<div class="news-title">' + title_escaped + '</div>' if title_escaped else ''}
+                <div class="news-content">{content_escaped}</div>
+            </div>'''
+
+        return html
+
+    def _generate_church_page_contents_html(self, pages: List[Dict]) -> str:
+        """교회 주보 페이지별 내용 HTML 생성"""
+        if not pages:
+            return ""
+
+        html = ""
+        for page in pages:
+            page_num = page.get("page_number", 1)
+            text = page.get("text", "").strip()
+
+            if text:
+                formatted_text = self._format_page_text(text)
+                html += f'''
+        <div class="page-content">
+            <h4>📄 페이지 {page_num}</h4>
+            {formatted_text}
+        </div>'''
+
+        return html

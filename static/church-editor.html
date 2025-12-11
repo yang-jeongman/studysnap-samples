@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주보 전문 편집기 - StudySnap</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        :root {
+            /* 주보 테마 - 따뜻한 브라운 계열 */
+            --primary: #8B4513;
+            --primary-dark: #5D3A1A;
+            --primary-light: #D2B48C;
+            --accent: #C5A572;
+            --accent-light: #F5F0E8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --text-dark: #2C1810;
+            --text-gray: #6B7280;
+            --bg-gray: #F9F7F4;
+            --border: #E5E0D8;
+            --white: #FFFFFF;
+            --gold: #D4AF37;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 헤더 */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-badge {
+            background: var(--gold);
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .file-info {
+            font-size: 0.85em;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 6px;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.8em;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-link.active {
+            background: var(--gold);
+            color: var(--primary-dark);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-primary {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--primary-dark);
+        }
+
+        .btn-gold:hover {
+            background: #C9A227;
+        }
+
+        /* 메인 레이아웃 */
+        .main-container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            height: calc(100vh - 52px);
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: var(--bg-gray);
+            border: none;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: var(--text-gray);
+            transition: all 0.2s;
+        }
+
+        .sidebar-tab.active {
+            background: var(--white);
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .sidebar-tab:hover:not(.active) {
+            background: var(--accent-light);
+        }
+
+        /* 파일 탐색기 */
+        .file-explorer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .breadcrumb {
+            padding: 8px 12px;
+            background: var(--accent-light);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            color: var(--info);
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .breadcrumb-item:hover {
+            background: #DBEAFE;
+        }
+
+        .breadcrumb-separator {
+            color: #9CA3AF;
+        }
+
+        .breadcrumb-current {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .file-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .folder-item, .file-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #FEF7E8;
+        }
+
+        .folder-item:hover {
+            background: #FEF3C7;
+        }
+
+        .folder-name {
+            font-size: 0.85em;
+            color: #92400E;
+            font-weight: 500;
+        }
+
+        .file-item:hover {
+            background: var(--bg-gray);
+        }
+
+        .file-item.active {
+            background: var(--accent-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        .file-name {
+            font-size: 0.85em;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+            word-break: break-all;
+        }
+
+        .file-time {
+            font-size: 0.7em;
+            color: var(--text-gray);
+        }
+
+        /* 주보 전용 도구 패널 */
+        .tools-panel {
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tools-panel.active {
+            display: flex;
+            flex: 1;
+        }
+
+        .tool-section {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tool-section-header {
+            padding: 10px 14px;
+            background: var(--bg-gray);
+            font-weight: 600;
+            font-size: 0.85em;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .tool-section-header:hover {
+            background: var(--accent-light);
+        }
+
+        .tool-section-content {
+            padding: 10px;
+            display: none;
+        }
+
+        .tool-section.open .tool-section-content {
+            display: block;
+        }
+
+        .tool-btn {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--white);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-btn:hover {
+            background: var(--accent-light);
+            border-color: var(--primary);
+        }
+
+        .tool-btn-icon {
+            font-size: 1.3em;
+        }
+
+        .tool-btn-text {
+            flex: 1;
+        }
+
+        .tool-btn-title {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--text-dark);
+        }
+
+        .tool-btn-desc {
+            font-size: 0.75em;
+            color: var(--text-gray);
+        }
+
+        /* 메인 컨텐츠 영역 */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 공통 + 주보 전용 툴바 */
+        .toolbar {
+            display: flex;
+            padding: 8px 12px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            padding-right: 10px;
+            border-right: 1px solid var(--border);
+            margin-right: 6px;
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .toolbar-group-label {
+            font-size: 0.7em;
+            color: var(--text-gray);
+            padding: 0 8px;
+            align-self: center;
+        }
+
+        .toolbar-btn {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg-gray);
+        }
+
+        .toolbar-btn.church-tool {
+            background: var(--accent-light);
+            border-color: var(--accent);
+        }
+
+        .toolbar-btn.church-tool:hover {
+            background: var(--primary-light);
+        }
+
+        /* 분할 뷰 */
+        .split-view {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            border-right: 1px solid var(--border);
+        }
+
+        .preview-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+        }
+
+        .pane-header {
+            padding: 8px 12px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pane-title {
+            font-weight: 600;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .resizer {
+            width: 6px;
+            background: var(--border);
+            cursor: col-resize;
+            transition: background 0.2s;
+        }
+
+        .resizer:hover {
+            background: var(--primary);
+        }
+
+        /* 코드 에디터 */
+        .editor-content {
+            flex: 1;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        #htmlEditor {
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: none;
+            background: #FEFEFE;
+        }
+
+        /* 미리보기 */
+        .preview-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 15px;
+            background: #E5E0D8;
+            overflow: auto;
+        }
+
+        .preview-device {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .preview-device.desktop {
+            width: 100%;
+            height: 100%;
+        }
+
+        .preview-device.tablet {
+            width: 768px;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        .preview-device.mobile {
+            width: 375px;
+            height: 100%;
+            border-radius: 24px;
+            border: 10px solid #333;
+        }
+
+        .preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .preview-size-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .preview-size-btn {
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75em;
+        }
+
+        .preview-size-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* 상태바 */
+        .status-bar {
+            padding: 6px 12px;
+            background: var(--bg-gray);
+            border-top: 1px solid var(--border);
+            font-size: 0.75em;
+            color: var(--text-gray);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* 알림 */
+        .notification {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            padding: 12px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 9999;
+            animation: slideIn 0.3s;
+        }
+
+        .notification.show {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.success { border-left: 4px solid var(--success); }
+        .notification.error { border-left: 4px solid var(--danger); }
+        .notification.info { border-left: 4px solid var(--info); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* 모달 공통 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-gray);
+        }
+
+        .modal-close:hover {
+            color: var(--text-dark);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* 폼 스타일 */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--text-dark);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* 성경 구절 선택기 */
+        .bible-selector {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px;
+            gap: 10px;
+        }
+
+        /* 찬송 검색 */
+        .hymn-search-result {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .hymn-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .hymn-item:hover {
+            background: var(--accent-light);
+        }
+
+        .hymn-item:last-child {
+            border-bottom: none;
+        }
+
+        .hymn-number {
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+        /* SNS 링크 아이템 */
+        .sns-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .sns-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .sns-icon.youtube { background: #FF0000; color: white; }
+        .sns-icon.instagram { background: linear-gradient(45deg, #833AB4, #FD1D1D, #FCAF45); color: white; }
+        .sns-icon.facebook { background: #1877F2; color: white; }
+        .sns-icon.kakao { background: #FEE500; color: #3C1E1E; }
+        .sns-icon.naver { background: #03C75A; color: white; }
+
+        /* AI 채팅 오버레이 */
+        .ai-chat-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 9998;
+        }
+
+        .ai-chat-overlay.active {
+            display: flex;
+        }
+
+        .ai-chat-header {
+            padding: 14px 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ai-message {
+            padding: 10px 14px;
+            border-radius: 12px;
+            max-width: 85%;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .ai-message.user {
+            background: var(--accent-light);
+            align-self: flex-end;
+        }
+
+        .ai-message.assistant {
+            background: var(--bg-gray);
+            align-self: flex-start;
+        }
+
+        .ai-chat-input {
+            padding: 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .ai-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 9997;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .ai-fab:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-fab.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span>🕊️</span>
+                <span>손안의 주보</span>
+                <span class="category-badge">Church</span>
+            </div>
+            <div class="header-nav">
+                <a href="/static/explorer.html" class="nav-link">🗂️ 탐색기</a>
+                <a href="/static/church-editor.html" class="nav-link active">🕊️ 주보</a>
+                <a href="/static/election-editor.html" class="nav-link">🗳️ 선거</a>
+                <a href="/static/editor.html" class="nav-link">📝 일반</a>
+            </div>
+            <div class="file-info" id="currentFileInfo">파일을 선택하세요</div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="loadFiles()">🔄 새로고침</button>
+            <button class="btn btn-gold" onclick="saveFile()">💾 저장</button>
+            <button class="btn btn-outline" onclick="downloadFile()">⬇️ 다운로드</button>
+            <button class="btn btn-primary" onclick="downloadWithImages()">📦 ZIP</button>
+        </div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-container">
+        <!-- 사이드바 -->
+        <div class="sidebar">
+            <div class="sidebar-tabs">
+                <button class="sidebar-tab active" onclick="switchSidebarTab('files')">📁 파일</button>
+                <button class="sidebar-tab" onclick="switchSidebarTab('tools')">🛠️ 도구</button>
+            </div>
+
+            <!-- 파일 탐색기 -->
+            <div class="file-explorer" id="filesPanel">
+                <div class="breadcrumb" id="breadcrumb">
+                    <span class="breadcrumb-current">📁 Church</span>
+                </div>
+                <div class="file-list" id="fileList">
+                    <div style="padding: 20px; text-align: center; color: var(--text-gray);">
+                        📂 파일 로딩 중...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 주보 전용 도구 패널 -->
+            <div class="tools-panel" id="toolsPanel">
+                <div class="tool-section open">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>📖</span> 성경/찬송
+                        <span style="margin-left: auto;">▼</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openBibleModal()">
+                            <span class="tool-btn-icon">📖</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">성경 구절 삽입</div>
+                                <div class="tool-btn-desc">성경 구절 링크 생성</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openHymnModal()">
+                            <span class="tool-btn-icon">🎵</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">찬송가 링크</div>
+                                <div class="tool-btn-desc">찬송가 YouTube 연결</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openHymnSheetModal()">
+                            <span class="tool-btn-icon">🎼</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">찬송가 악보</div>
+                                <div class="tool-btn-desc">악보 포함 링크 생성</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>🎤</span> 설교/미디어
+                        <span style="margin-left: auto;">▶</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openSermonModal()">
+                            <span class="tool-btn-icon">🎤</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">설교 오디오</div>
+                                <div class="tool-btn-desc">오디오 플레이어 삽입</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openVideoModal()">
+                            <span class="tool-btn-icon">📹</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">설교 영상</div>
+                                <div class="tool-btn-desc">YouTube 영상 삽입</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>💰</span> 헌금/결제
+                        <span style="margin-left: auto;">▶</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openOfferingModal()">
+                            <span class="tool-btn-icon">💳</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">모바일 헌금</div>
+                                <div class="tool-btn-desc">PG 결제 연동</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openAccountModal()">
+                            <span class="tool-btn-icon">🏦</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">계좌 정보</div>
+                                <div class="tool-btn-desc">복사 가능한 계좌번호</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>🔗</span> SNS/링크
+                        <span style="margin-left: auto;">▶</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openSnsModal()">
+                            <span class="tool-btn-icon">📱</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">SNS 링크 등록</div>
+                                <div class="tool-btn-desc">YouTube, 인스타 등</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openContactModal()">
+                            <span class="tool-btn-icon">📞</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">연락처 카드</div>
+                                <div class="tool-btn-desc">전화/이메일 링크</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 컨텐츠 영역 -->
+        <div class="content-area">
+            <!-- 공통 + 주보 전용 툴바 -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <span class="toolbar-group-label">공통</span>
+                    <button class="toolbar-btn" onclick="formatText('bold')" title="굵게"><b>B</b></button>
+                    <button class="toolbar-btn" onclick="formatText('italic')" title="기울임"><i>I</i></button>
+                    <button class="toolbar-btn" onclick="formatText('underline')" title="밑줄"><u>U</u></button>
+                    <button class="toolbar-btn" onclick="insertElement('h1')">H1</button>
+                    <button class="toolbar-btn" onclick="insertElement('h2')">H2</button>
+                    <button class="toolbar-btn" onclick="insertElement('p')">P</button>
+                </div>
+                <div class="toolbar-group">
+                    <span class="toolbar-group-label">주보전용</span>
+                    <button class="toolbar-btn church-tool" onclick="openBibleModal()" title="성경 구절">📖</button>
+                    <button class="toolbar-btn church-tool" onclick="openHymnModal()" title="찬송가">🎵</button>
+                    <button class="toolbar-btn church-tool" onclick="openSermonModal()" title="설교">🎤</button>
+                    <button class="toolbar-btn church-tool" onclick="openOfferingModal()" title="헌금">💳</button>
+                    <button class="toolbar-btn church-tool" onclick="openSnsModal()" title="SNS">📱</button>
+                </div>
+                <div class="toolbar-group">
+                    <span class="toolbar-group-label">편집</span>
+                    <button class="toolbar-btn" onclick="beautifyHTML()">🧹 코드정리</button>
+                    <button class="toolbar-btn" onclick="findReplace()">🔍 찾기</button>
+                </div>
+            </div>
+
+            <!-- 분할 뷰 -->
+            <div class="split-view">
+                <div class="editor-pane" id="editorPane">
+                    <div class="pane-header">
+                        <span class="pane-title">✏️ HTML 편집</span>
+                        <span id="charCount" style="font-size: 0.8em; color: var(--text-gray);">0자</span>
+                    </div>
+                    <div class="editor-content">
+                        <textarea id="htmlEditor" placeholder="HTML 파일을 선택하거나 새로 작성하세요..."></textarea>
+                    </div>
+                </div>
+
+                <div class="resizer" id="resizer"></div>
+
+                <div class="preview-pane" id="previewPane">
+                    <div class="pane-header">
+                        <span class="pane-title">👁️ 미리보기</span>
+                        <div class="preview-size-btns">
+                            <button class="preview-size-btn" onclick="setPreviewSize('desktop')">🖥️</button>
+                            <button class="preview-size-btn active" onclick="setPreviewSize('mobile')">📱</button>
+                            <button class="preview-size-btn" onclick="setPreviewSize('tablet')">📟</button>
+                        </div>
+                    </div>
+                    <div class="preview-wrapper">
+                        <div class="preview-device mobile" id="previewDevice">
+                            <iframe id="previewFrame" class="preview-frame"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 상태바 -->
+            <div class="status-bar">
+                <span id="statusText">파일을 선택하세요</span>
+                <span>주보 전문 편집기 v1.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI 채팅 FAB -->
+    <button class="ai-fab" id="aiFab" onclick="toggleAiChat()">🤖</button>
+
+    <!-- AI 채팅 패널 -->
+    <div class="ai-chat-overlay" id="aiChatPanel">
+        <div class="ai-chat-header">
+            <span>🤖 AI 주보 도우미</span>
+            <button class="modal-close" onclick="toggleAiChat()">&times;</button>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message assistant">
+                안녕하세요! 주보 편집을 도와드릴게요. 예를 들어:
+                <br>• "제목 폰트를 키워줘"
+                <br>• "예배 순서 스타일 변경해줘"
+                <br>• "색상을 더 따뜻하게 바꿔줘"
+            </div>
+        </div>
+        <div class="ai-chat-input">
+            <input type="text" id="aiChatInput" placeholder="수정 사항을 입력하세요..." onkeypress="handleAiInputKeypress(event)">
+            <button class="btn btn-primary" onclick="sendAiMessage()">전송</button>
+        </div>
+    </div>
+
+    <!-- 알림 -->
+    <div id="notification" class="notification"></div>
+
+    <!-- 성경 구절 모달 -->
+    <div class="modal-overlay" id="bibleModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">📖 성경 구절 삽입</span>
+                <button class="modal-close" onclick="closeBibleModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">성경 선택</label>
+                    <div class="bible-selector">
+                        <select class="form-select" id="bibleBook">
+                            <option value="">성경 선택</option>
+                            <optgroup label="구약">
+                                <option value="창세기">창세기</option>
+                                <option value="출애굽기">출애굽기</option>
+                                <option value="레위기">레위기</option>
+                                <option value="민수기">민수기</option>
+                                <option value="신명기">신명기</option>
+                                <option value="시편">시편</option>
+                                <option value="잠언">잠언</option>
+                                <option value="전도서">전도서</option>
+                                <option value="이사야">이사야</option>
+                            </optgroup>
+                            <optgroup label="신약">
+                                <option value="마태복음">마태복음</option>
+                                <option value="마가복음">마가복음</option>
+                                <option value="누가복음">누가복음</option>
+                                <option value="요한복음">요한복음</option>
+                                <option value="사도행전">사도행전</option>
+                                <option value="로마서">로마서</option>
+                                <option value="고린도전서">고린도전서</option>
+                                <option value="고린도후서">고린도후서</option>
+                                <option value="요한1서">요한1서</option>
+                                <option value="요한계시록">요한계시록</option>
+                            </optgroup>
+                        </select>
+                        <input type="number" class="form-input" id="bibleChapter" placeholder="장" min="1">
+                        <input type="text" class="form-input" id="bibleVerse" placeholder="절 (예: 1-5)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">표시 스타일</label>
+                    <select class="form-select" id="bibleStyle">
+                        <option value="link">링크만 (클릭시 팝업)</option>
+                        <option value="inline">본문 포함 (인라인)</option>
+                        <option value="card">카드형 (배경 포함)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">미리보기</label>
+                    <div id="biblePreview" style="padding: 15px; background: var(--accent-light); border-radius: 8px; min-height: 60px;">
+                        성경 구절을 선택하세요
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeBibleModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertBibleVerse()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 찬송가 모달 -->
+    <div class="modal-overlay" id="hymnModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">🎵 찬송가 링크 삽입</span>
+                <button class="modal-close" onclick="closeHymnModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">찬송가 검색</label>
+                    <input type="text" class="form-input" id="hymnSearch" placeholder="번호 또는 제목 검색..." oninput="searchHymn()">
+                </div>
+                <div id="hymnSearchResult" class="hymn-search-result" style="display: none;"></div>
+                <div class="form-group">
+                    <label class="form-label">선택된 찬송</label>
+                    <div id="selectedHymn" style="padding: 12px; background: var(--accent-light); border-radius: 8px;">
+                        찬송가를 검색하세요
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">링크 유형</label>
+                    <select class="form-select" id="hymnLinkType">
+                        <option value="youtube">YouTube 영상</option>
+                        <option value="audio">오디오만</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeHymnModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertHymnLink()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 설교 오디오 모달 -->
+    <div class="modal-overlay" id="sermonModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">🎤 설교 오디오 삽입</span>
+                <button class="modal-close" onclick="closeSermonModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">오디오 소스</label>
+                    <select class="form-select" id="sermonSource">
+                        <option value="url">외부 URL</option>
+                        <option value="upload">파일 업로드</option>
+                        <option value="youtube">YouTube</option>
+                    </select>
+                </div>
+                <div class="form-group" id="sermonUrlGroup">
+                    <label class="form-label">오디오 URL</label>
+                    <input type="text" class="form-input" id="sermonUrl" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">설교 제목</label>
+                    <input type="text" class="form-input" id="sermonTitle" placeholder="예: 2025년 12월 7일 주일설교">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">설교자</label>
+                    <input type="text" class="form-input" id="sermonSpeaker" placeholder="예: 홍길동 담임목사">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="sermonDownload" checked> 다운로드 버튼 포함
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeSermonModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertSermonPlayer()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모바일 헌금 모달 -->
+    <div class="modal-overlay" id="offeringModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">💳 모바일 헌금 설정</span>
+                <button class="modal-close" onclick="closeOfferingModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">결제 방식</label>
+                    <select class="form-select" id="offeringMethod">
+                        <option value="account">계좌이체 안내</option>
+                        <option value="kakaopay">카카오페이</option>
+                        <option value="naverpay">네이버페이</option>
+                        <option value="toss">토스</option>
+                    </select>
+                </div>
+                <div class="form-group" id="accountInfoGroup">
+                    <label class="form-label">계좌 정보</label>
+                    <input type="text" class="form-input" id="offeringBank" placeholder="은행명" style="margin-bottom: 8px;">
+                    <input type="text" class="form-input" id="offeringAccount" placeholder="계좌번호" style="margin-bottom: 8px;">
+                    <input type="text" class="form-input" id="offeringHolder" placeholder="예금주">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">헌금 종류 (여러 개 선택 가능)</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <label style="display: flex; align-items: center; gap: 4px;">
+                            <input type="checkbox" value="십일조" checked> 십일조
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px;">
+                            <input type="checkbox" value="감사헌금"> 감사헌금
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px;">
+                            <input type="checkbox" value="선교헌금"> 선교헌금
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px;">
+                            <input type="checkbox" value="건축헌금"> 건축헌금
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeOfferingModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertOfferingSection()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SNS 링크 모달 -->
+    <div class="modal-overlay" id="snsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">📱 SNS 링크 등록</span>
+                <button class="modal-close" onclick="closeSnsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="sns-item">
+                    <div class="sns-icon youtube">▶</div>
+                    <input type="text" class="form-input" id="snsYoutube" placeholder="YouTube 채널 URL" style="flex: 1;">
+                </div>
+                <div class="sns-item">
+                    <div class="sns-icon instagram">📷</div>
+                    <input type="text" class="form-input" id="snsInstagram" placeholder="Instagram URL" style="flex: 1;">
+                </div>
+                <div class="sns-item">
+                    <div class="sns-icon facebook">f</div>
+                    <input type="text" class="form-input" id="snsFacebook" placeholder="Facebook URL" style="flex: 1;">
+                </div>
+                <div class="sns-item">
+                    <div class="sns-icon kakao">💬</div>
+                    <input type="text" class="form-input" id="snsKakao" placeholder="카카오톡 채널 URL" style="flex: 1;">
+                </div>
+                <div class="sns-item">
+                    <div class="sns-icon naver">N</div>
+                    <input type="text" class="form-input" id="snsNaver" placeholder="네이버 카페/블로그 URL" style="flex: 1;">
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">표시 스타일</label>
+                    <select class="form-select" id="snsStyle">
+                        <option value="icons">아이콘만</option>
+                        <option value="buttons">버튼형</option>
+                        <option value="list">목록형</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeSnsModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertSnsLinks()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================
+        // 전역 변수
+        // =========================================
+        let currentFile = null;
+        let originalContent = '';
+        let currentPath = 'Church';  // 주보는 Church 폴더 기본
+        let previewUpdateTimer = null;
+        let selectedHymnData = null;
+
+        // 찬송가 데이터 (일부 예시)
+        const hymnData = [
+            { number: 1, title: '만복의 근원 하나님' },
+            { number: 21, title: '다 찬양하여라' },
+            { number: 79, title: '주 하나님 지으신 모든 세계' },
+            { number: 218, title: '네 맘과 정성을 다하여서' },
+            { number: 288, title: '예수 사랑하심은' },
+            { number: 305, title: '나 같은 죄인 살리신' },
+            { number: 488, title: '십자가 군병 되어서' },
+            { number: 558, title: '주의 친절한 팔에 안기세' },
+            { number: 635, title: '하늘에 계신 (주기도문)' },
+        ];
+
+        // =========================================
+        // 초기화
+        // =========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFiles();
+            setupResizer();
+            setupEditorEvents();
+        });
+
+        // =========================================
+        // 파일 탐색기
+        // =========================================
+        async function loadFiles() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-gray);">📂 로딩 중...</div>';
+            updateBreadcrumb();
+
+            try {
+                let apiUrl = '/api/files/outputs';
+                if (currentPath) {
+                    // 한글 경로 인코딩 처리
+                    const encodedPath = currentPath.split('/').map(p => encodeURIComponent(p)).join('/');
+                    apiUrl += '/' + encodedPath;
+                }
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayFiles(data.folders || [], data.files || []);
+                } else {
+                    fileList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-gray);">📁 파일이 없습니다</div>';
+                }
+            } catch (error) {
+                console.error('파일 로드 오류:', error);
+                fileList.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--danger);">❌ 로드 실패</div>`;
+            }
+        }
+
+        function displayFiles(folders, files) {
+            const fileList = document.getElementById('fileList');
+            if (folders.length === 0 && files.length === 0) {
+                fileList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-gray);">📁 파일이 없습니다</div>';
+                return;
+            }
+
+            let html = '';
+
+            // 폴더
+            folders.forEach(folder => {
+                const folderName = typeof folder === 'string' ? folder : folder.name;
+                const folderPath = currentPath ? currentPath + '/' + folderName : folderName;
+                const fileCount = folder.file_count || 0;
+                html += `
+                    <div class="folder-item" onclick="navigateTo('${folderPath}')">
+                        <span>📁</span>
+                        <span class="folder-name">${folderName}</span>
+                        ${fileCount > 0 ? `<span style="margin-left: auto; font-size: 0.75em; color: #92400E;">(${fileCount})</span>` : ''}
+                    </div>
+                `;
+            });
+
+            // 파일
+            files.forEach(file => {
+                const filePath = currentPath ? 'outputs/' + currentPath + '/' + file.name : file.name;
+                const isActive = currentFile === filePath;
+                html += `
+                    <div class="file-item ${isActive ? 'active' : ''}" onclick="loadFile('${filePath}')">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-time">${new Date(file.modified).toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            fileList.innerHTML = html;
+        }
+
+        function navigateTo(path) {
+            currentPath = path;
+            loadFiles();
+        }
+
+        function updateBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (!currentPath) {
+                breadcrumb.innerHTML = '<span class="breadcrumb-current">📁 outputs</span>';
+                return;
+            }
+
+            const parts = currentPath.split('/').filter(p => p);
+            let html = '<span class="breadcrumb-item" onclick="navigateTo(\'\')">📁 outputs</span>';
+
+            let accumulated = '';
+            parts.forEach((part, idx) => {
+                html += '<span class="breadcrumb-separator">/</span>';
+                accumulated += (accumulated ? '/' : '') + part;
+                if (idx === parts.length - 1) {
+                    html += `<span class="breadcrumb-current">${part}</span>`;
+                } else {
+                    html += `<span class="breadcrumb-item" onclick="navigateTo('${accumulated}')">${part}</span>`;
+                }
+            });
+
+            breadcrumb.innerHTML = html;
+        }
+
+        // =========================================
+        // 파일 로드/저장
+        // =========================================
+        async function loadFile(filename) {
+            try {
+                const response = await fetch(`/api/editor/file/${encodeURIComponent(filename)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    currentFile = filename;
+                    originalContent = data.content;
+                    document.getElementById('htmlEditor').value = data.content;
+                    document.getElementById('currentFileInfo').textContent = filename.split('/').pop();
+                    document.getElementById('statusText').textContent = `${filename} 로드됨`;
+                    updatePreview();
+                    updateCharCount();
+
+                    // 파일 목록 갱신 (active 표시)
+                    loadFiles();
+                } else {
+                    showNotification('파일 로드 실패', 'error');
+                }
+            } catch (error) {
+                console.error('파일 로드 오류:', error);
+                showNotification('파일 로드 오류', 'error');
+            }
+        }
+
+        async function saveFile() {
+            if (!currentFile) {
+                showNotification('저장할 파일을 선택하세요', 'error');
+                return;
+            }
+
+            const content = document.getElementById('htmlEditor').value;
+
+            try {
+                const response = await fetch('/api/editor/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: currentFile, content })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    originalContent = content;
+                    showNotification('저장 완료!', 'success');
+                    document.getElementById('statusText').textContent = '저장됨';
+                } else {
+                    showNotification('저장 실패: ' + data.detail, 'error');
+                }
+            } catch (error) {
+                showNotification('저장 오류', 'error');
+            }
+        }
+
+        function downloadFile() {
+            if (!currentFile) {
+                showNotification('다운로드할 파일을 선택하세요', 'error');
+                return;
+            }
+
+            const content = document.getElementById('htmlEditor').value;
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile.split('/').pop();
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('다운로드 시작!', 'success');
+        }
+
+        async function downloadWithImages() {
+            if (!currentFile) {
+                showNotification('파일을 선택하세요', 'error');
+                return;
+            }
+
+            try {
+                showNotification('ZIP 생성 중...', 'info');
+                const response = await fetch(`/api/editor/download-zip/${encodeURIComponent(currentFile)}`);
+
+                if (!response.ok) throw new Error('ZIP 생성 실패');
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentFile.split('/').pop().replace('.html', '.zip');
+                a.click();
+                URL.revokeObjectURL(url);
+                showNotification('ZIP 다운로드 완료!', 'success');
+            } catch (error) {
+                showNotification('ZIP 다운로드 실패', 'error');
+            }
+        }
+
+        // =========================================
+        // 에디터 기능
+        // =========================================
+        function setupEditorEvents() {
+            const editor = document.getElementById('htmlEditor');
+
+            editor.addEventListener('input', () => {
+                updateCharCount();
+                schedulePreviewUpdate();
+            });
+
+            // 키보드 단축키
+            editor.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === 's') {
+                        e.preventDefault();
+                        saveFile();
+                    }
+                }
+            });
+        }
+
+        function updateCharCount() {
+            const count = document.getElementById('htmlEditor').value.length;
+            document.getElementById('charCount').textContent = `${count.toLocaleString()}자`;
+        }
+
+        function schedulePreviewUpdate() {
+            clearTimeout(previewUpdateTimer);
+            previewUpdateTimer = setTimeout(updatePreview, 300);
+        }
+
+        function updatePreview() {
+            const content = document.getElementById('htmlEditor').value;
+            const frame = document.getElementById('previewFrame');
+            const doc = frame.contentDocument || frame.contentWindow.document;
+            doc.open();
+            doc.write(content);
+            doc.close();
+        }
+
+        function setPreviewSize(size) {
+            const device = document.getElementById('previewDevice');
+            device.className = 'preview-device ' + size;
+
+            document.querySelectorAll('.preview-size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(size === 'desktop' ? '🖥️' : size === 'mobile' ? '📱' : '📟')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // =========================================
+        // 리사이저
+        // =========================================
+        function setupResizer() {
+            const resizer = document.getElementById('resizer');
+            const editorPane = document.getElementById('editorPane');
+            let isResizing = false;
+
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                document.body.style.cursor = 'col-resize';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                const containerRect = document.querySelector('.split-view').getBoundingClientRect();
+                const newWidth = e.clientX - containerRect.left;
+                editorPane.style.flex = 'none';
+                editorPane.style.width = Math.max(300, Math.min(newWidth, containerRect.width - 300)) + 'px';
+            });
+
+            document.addEventListener('mouseup', () => {
+                isResizing = false;
+                document.body.style.cursor = '';
+            });
+        }
+
+        // =========================================
+        // 사이드바 탭
+        // =========================================
+        function switchSidebarTab(tab) {
+            document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.sidebar-tab[onclick="switchSidebarTab('${tab}')"]`).classList.add('active');
+
+            document.getElementById('filesPanel').style.display = tab === 'files' ? 'flex' : 'none';
+            document.getElementById('toolsPanel').classList.toggle('active', tab === 'tools');
+        }
+
+        function toggleToolSection(header) {
+            const section = header.parentElement;
+            const isOpen = section.classList.contains('open');
+
+            // 다른 섹션 닫기
+            document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('open'));
+
+            if (!isOpen) {
+                section.classList.add('open');
+                header.querySelector('span:last-child').textContent = '▼';
+            }
+
+            // 아이콘 업데이트
+            document.querySelectorAll('.tool-section-header span:last-child').forEach(icon => {
+                icon.textContent = icon.closest('.tool-section').classList.contains('open') ? '▼' : '▶';
+            });
+        }
+
+        // =========================================
+        // 알림
+        // =========================================
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> ${message}`;
+            notification.className = `notification show ${type}`;
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // =========================================
+        // 공통 텍스트 포맷
+        // =========================================
+        function formatText(type) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const selectedText = editor.value.substring(start, end);
+
+            let wrapper;
+            switch (type) {
+                case 'bold': wrapper = ['<strong>', '</strong>']; break;
+                case 'italic': wrapper = ['<em>', '</em>']; break;
+                case 'underline': wrapper = ['<u>', '</u>']; break;
+            }
+
+            const newText = wrapper[0] + selectedText + wrapper[1];
+            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+            editor.focus();
+            updatePreview();
+        }
+
+        function insertElement(tag) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const selectedText = editor.value.substring(start, editor.selectionEnd) || '내용을 입력하세요';
+
+            const newText = `<${tag}>${selectedText}</${tag}>\n`;
+            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(editor.selectionEnd);
+            editor.focus();
+            updatePreview();
+        }
+
+        function beautifyHTML() {
+            const editor = document.getElementById('htmlEditor');
+            let html = editor.value;
+
+            // 간단한 HTML 정리
+            html = html.replace(/></g, '>\n<');
+            html = html.replace(/\n\s*\n/g, '\n');
+
+            editor.value = html;
+            updatePreview();
+            showNotification('코드 정리 완료', 'success');
+        }
+
+        function findReplace() {
+            const find = prompt('찾을 텍스트:');
+            if (!find) return;
+
+            const replace = prompt('바꿀 텍스트:');
+            if (replace === null) return;
+
+            const editor = document.getElementById('htmlEditor');
+            const count = (editor.value.match(new RegExp(find, 'g')) || []).length;
+            editor.value = editor.value.split(find).join(replace);
+            updatePreview();
+            showNotification(`${count}개 항목 교체됨`, 'success');
+        }
+
+        // =========================================
+        // 성경 구절 모달
+        // =========================================
+        function openBibleModal() {
+            document.getElementById('bibleModal').classList.add('active');
+        }
+
+        function closeBibleModal() {
+            document.getElementById('bibleModal').classList.remove('active');
+        }
+
+        function insertBibleVerse() {
+            const book = document.getElementById('bibleBook').value;
+            const chapter = document.getElementById('bibleChapter').value;
+            const verse = document.getElementById('bibleVerse').value;
+            const style = document.getElementById('bibleStyle').value;
+
+            if (!book || !chapter || !verse) {
+                showNotification('성경 구절을 모두 입력하세요', 'error');
+                return;
+            }
+
+            const reference = `${book} ${chapter}:${verse}`;
+            let html = '';
+
+            if (style === 'link') {
+                html = `<a href="https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=${book}&chap=${chapter}&sec=${verse}" target="_blank" class="bible-link">${reference}</a>`;
+            } else if (style === 'inline') {
+                html = `<span class="bible-verse"><strong>${reference}</strong></span>`;
+            } else {
+                html = `
+<div class="bible-card" style="background: linear-gradient(135deg, #f5f0e8 0%, #e8e0d5 100%); padding: 20px; border-radius: 12px; margin: 15px 0; border-left: 4px solid #8B4513;">
+    <div style="font-weight: 700; color: #8B4513; margin-bottom: 10px;">${reference}</div>
+    <div style="font-style: italic; color: #5D4037; line-height: 1.8;">본문 내용을 여기에 입력하세요</div>
+</div>`;
+            }
+
+            insertAtCursor(html);
+            closeBibleModal();
+            showNotification('성경 구절 삽입됨', 'success');
+        }
+
+        // =========================================
+        // 찬송가 모달
+        // =========================================
+        function openHymnModal() {
+            document.getElementById('hymnModal').classList.add('active');
+            document.getElementById('hymnSearch').value = '';
+            document.getElementById('hymnSearchResult').style.display = 'none';
+            selectedHymnData = null;
+            document.getElementById('selectedHymn').textContent = '찬송가를 검색하세요';
+        }
+
+        function closeHymnModal() {
+            document.getElementById('hymnModal').classList.remove('active');
+        }
+
+        function searchHymn() {
+            const query = document.getElementById('hymnSearch').value.trim().toLowerCase();
+            const resultDiv = document.getElementById('hymnSearchResult');
+
+            if (!query) {
+                resultDiv.style.display = 'none';
+                return;
+            }
+
+            const results = hymnData.filter(h =>
+                h.number.toString().includes(query) ||
+                h.title.toLowerCase().includes(query)
+            );
+
+            if (results.length > 0) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = results.map(h => `
+                    <div class="hymn-item" onclick="selectHymn(${h.number}, '${h.title}')">
+                        <span class="hymn-number">${h.number}장</span>
+                        <span>${h.title}</span>
+                    </div>
+                `).join('');
+            } else {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<div style="padding: 15px; text-align: center; color: var(--text-gray);">검색 결과 없음</div>';
+            }
+        }
+
+        function selectHymn(number, title) {
+            selectedHymnData = { number, title };
+            document.getElementById('selectedHymn').innerHTML = `<span class="hymn-number">${number}장</span> ${title}`;
+            document.getElementById('hymnSearchResult').style.display = 'none';
+        }
+
+        function insertHymnLink() {
+            if (!selectedHymnData) {
+                showNotification('찬송가를 선택하세요', 'error');
+                return;
+            }
+
+            const linkType = document.getElementById('hymnLinkType').value;
+            const youtubeSearch = `https://www.youtube.com/results?search_query=찬송가+${selectedHymnData.number}장+${encodeURIComponent(selectedHymnData.title)}`;
+
+            const html = `
+<a href="${youtubeSearch}" target="_blank" class="hymn-link" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #FEF3C7; color: #92400E; text-decoration: none; border-radius: 20px; font-weight: 500;">
+    <span>🎵</span>
+    <span>${selectedHymnData.number}장 ${selectedHymnData.title}</span>
+    <span style="font-size: 0.8em;">▶</span>
+</a>`;
+
+            insertAtCursor(html);
+            closeHymnModal();
+            showNotification('찬송가 링크 삽입됨', 'success');
+        }
+
+        function openHymnSheetModal() {
+            // TODO: 악보 포함 모달 구현
+            showNotification('악보 기능은 준비 중입니다', 'info');
+        }
+
+        // =========================================
+        // 설교 오디오 모달
+        // =========================================
+        function openSermonModal() {
+            document.getElementById('sermonModal').classList.add('active');
+        }
+
+        function closeSermonModal() {
+            document.getElementById('sermonModal').classList.remove('active');
+        }
+
+        function insertSermonPlayer() {
+            const source = document.getElementById('sermonSource').value;
+            const url = document.getElementById('sermonUrl').value;
+            const title = document.getElementById('sermonTitle').value || '설교';
+            const speaker = document.getElementById('sermonSpeaker').value || '';
+            const includeDownload = document.getElementById('sermonDownload').checked;
+
+            if (!url && source !== 'upload') {
+                showNotification('오디오 URL을 입력하세요', 'error');
+                return;
+            }
+
+            let html = `
+<div class="sermon-player" style="background: linear-gradient(135deg, #f5f0e8 0%, #e8e0d5 100%); padding: 20px; border-radius: 12px; margin: 15px 0;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+        <div style="width: 60px; height: 60px; background: #8B4513; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em;">🎤</div>
+        <div>
+            <div style="font-weight: 700; color: #2C1810; font-size: 1.1em;">${title}</div>
+            ${speaker ? `<div style="color: #5D4037; font-size: 0.9em;">${speaker}</div>` : ''}
+        </div>
+    </div>
+    <audio controls style="width: 100%; border-radius: 8px;">
+        <source src="${url || '#'}" type="audio/mpeg">
+        브라우저가 오디오를 지원하지 않습니다.
+    </audio>
+    ${includeDownload ? `
+    <div style="margin-top: 10px; text-align: right;">
+        <a href="${url || '#'}" download style="color: #8B4513; font-size: 0.85em; text-decoration: none;">📥 다운로드</a>
+    </div>` : ''}
+</div>`;
+
+            insertAtCursor(html);
+            closeSermonModal();
+            showNotification('설교 플레이어 삽입됨', 'success');
+        }
+
+        function openVideoModal() {
+            showNotification('영상 삽입 기능은 준비 중입니다', 'info');
+        }
+
+        // =========================================
+        // 헌금 모달
+        // =========================================
+        function openOfferingModal() {
+            document.getElementById('offeringModal').classList.add('active');
+        }
+
+        function closeOfferingModal() {
+            document.getElementById('offeringModal').classList.remove('active');
+        }
+
+        function insertOfferingSection() {
+            const method = document.getElementById('offeringMethod').value;
+            const bank = document.getElementById('offeringBank').value;
+            const account = document.getElementById('offeringAccount').value;
+            const holder = document.getElementById('offeringHolder').value;
+
+            let html = `
+<div class="offering-section" style="background: linear-gradient(135deg, #fff9e6 0%, #f5f0e8 100%); padding: 25px; border-radius: 16px; margin: 20px 0; text-align: center;">
+    <div style="font-size: 2em; margin-bottom: 10px;">💰</div>
+    <div style="font-weight: 700; color: #8B4513; font-size: 1.2em; margin-bottom: 15px;">헌금 안내</div>
+
+    <div style="background: white; padding: 15px 20px; border-radius: 10px; display: inline-block; margin-bottom: 15px;">
+        <div style="color: #5D4037; font-size: 0.9em; margin-bottom: 5px;">${bank || '은행명'}</div>
+        <div style="font-size: 1.3em; font-weight: 700; color: #2C1810; letter-spacing: 1px;" onclick="copyAccount('${account}')" style="cursor: pointer;">
+            ${account || '계좌번호'}
+        </div>
+        <div style="color: #8D6E63; font-size: 0.85em; margin-top: 5px;">예금주: ${holder || '예금주명'}</div>
+    </div>
+
+    <div>
+        <button onclick="copyAccount('${account}')" style="padding: 10px 20px; background: #8B4513; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+            📋 계좌번호 복사
+        </button>
+    </div>
+</div>
+
+<script>
+function copyAccount(account) {
+    navigator.clipboard.writeText(account).then(() => {
+        alert('계좌번호가 복사되었습니다.');
+    });
+}
+<\/script>`;
+
+            insertAtCursor(html);
+            closeOfferingModal();
+            showNotification('헌금 섹션 삽입됨', 'success');
+        }
+
+        function openAccountModal() {
+            openOfferingModal();
+        }
+
+        // =========================================
+        // SNS 모달
+        // =========================================
+        function openSnsModal() {
+            document.getElementById('snsModal').classList.add('active');
+        }
+
+        function closeSnsModal() {
+            document.getElementById('snsModal').classList.remove('active');
+        }
+
+        function insertSnsLinks() {
+            const youtube = document.getElementById('snsYoutube').value;
+            const instagram = document.getElementById('snsInstagram').value;
+            const facebook = document.getElementById('snsFacebook').value;
+            const kakao = document.getElementById('snsKakao').value;
+            const naver = document.getElementById('snsNaver').value;
+            const style = document.getElementById('snsStyle').value;
+
+            const links = [];
+            if (youtube) links.push({ icon: '▶', name: 'YouTube', url: youtube, bg: '#FF0000' });
+            if (instagram) links.push({ icon: '📷', name: 'Instagram', url: instagram, bg: 'linear-gradient(45deg, #833AB4, #FD1D1D, #FCAF45)' });
+            if (facebook) links.push({ icon: 'f', name: 'Facebook', url: facebook, bg: '#1877F2' });
+            if (kakao) links.push({ icon: '💬', name: '카카오톡', url: kakao, bg: '#FEE500', color: '#3C1E1E' });
+            if (naver) links.push({ icon: 'N', name: '네이버', url: naver, bg: '#03C75A' });
+
+            if (links.length === 0) {
+                showNotification('최소 하나의 SNS를 입력하세요', 'error');
+                return;
+            }
+
+            let html = '<div class="sns-links" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 20px 0;">\n';
+
+            links.forEach(link => {
+                if (style === 'icons') {
+                    html += `    <a href="${link.url}" target="_blank" style="width: 45px; height: 45px; background: ${link.bg}; color: ${link.color || 'white'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-weight: 700;">${link.icon}</a>\n`;
+                } else {
+                    html += `    <a href="${link.url}" target="_blank" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: ${link.bg}; color: ${link.color || 'white'}; border-radius: 8px; text-decoration: none; font-weight: 600;"><span>${link.icon}</span><span>${link.name}</span></a>\n`;
+                }
+            });
+
+            html += '</div>';
+
+            insertAtCursor(html);
+            closeSnsModal();
+            showNotification('SNS 링크 삽입됨', 'success');
+        }
+
+        function openContactModal() {
+            showNotification('연락처 카드 기능은 준비 중입니다', 'info');
+        }
+
+        // =========================================
+        // AI 채팅
+        // =========================================
+        function toggleAiChat() {
+            const panel = document.getElementById('aiChatPanel');
+            const fab = document.getElementById('aiFab');
+            panel.classList.toggle('active');
+            fab.classList.toggle('hidden', panel.classList.contains('active'));
+        }
+
+        function handleAiInputKeypress(e) {
+            if (e.key === 'Enter') {
+                sendAiMessage();
+            }
+        }
+
+        async function sendAiMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesDiv = document.getElementById('aiChatMessages');
+
+            // 사용자 메시지 추가
+            messagesDiv.innerHTML += `<div class="ai-message user">${message}</div>`;
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // AI 응답 (실제로는 API 호출)
+            messagesDiv.innerHTML += `<div class="ai-message assistant">요청을 처리 중입니다...</div>`;
+
+            try {
+                const htmlContent = document.getElementById('htmlEditor').value;
+                const response = await fetch('/api/ai/edit-html', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        html_content: htmlContent,
+                        instruction: message,
+                        content_type: 'church'
+                    })
+                });
+
+                const data = await response.json();
+
+                // 마지막 메시지 업데이트
+                const lastMsg = messagesDiv.lastElementChild;
+
+                if (data.success) {
+                    document.getElementById('htmlEditor').value = data.html;
+                    updatePreview();
+                    lastMsg.textContent = '수정을 완료했습니다! 미리보기를 확인해주세요.';
+                } else {
+                    lastMsg.textContent = '죄송합니다. 수정에 실패했습니다: ' + (data.detail || '알 수 없는 오류');
+                    lastMsg.classList.add('error');
+                }
+            } catch (error) {
+                const lastMsg = messagesDiv.lastElementChild;
+                lastMsg.textContent = '서버 연결 오류가 발생했습니다.';
+                lastMsg.classList.add('error');
+            }
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // =========================================
+        // 유틸리티
+        // =========================================
+        function insertAtCursor(text) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+
+            editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
+            editor.selectionStart = editor.selectionEnd = start + text.length;
+            editor.focus();
+            updatePreview();
+            updateCharCount();
+        }
+    </script>
+</body>
+</html>

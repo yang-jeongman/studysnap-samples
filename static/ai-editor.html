@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 주보 편집기 - StudySnap</title>
+    <style>
+        :root {
+            --primary: #5B4B9E;
+            --primary-dark: #4A3D82;
+            --primary-light: #E8E4F4;
+            --accent: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --text-dark: #1a1a2e;
+            --text-gray: #6B7280;
+            --bg-gray: #F3F4F6;
+            --border: #E5E7EB;
+            --white: #FFFFFF;
+            --chat-user: #E8E4F4;
+            --chat-ai: #F0FDF4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 헤더 */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 1.3em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-info {
+            font-size: 0.9em;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        /* 메인 레이아웃 - 3컬럼 */
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 400px;
+            height: calc(100vh - 56px);
+        }
+
+        /* 파일 탐색기 영역 */
+        .file-explorer {
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .explorer-header {
+            padding: 12px 16px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .explorer-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95em;
+        }
+
+        /* 브레드크럼 네비게이션 */
+        .breadcrumb {
+            padding: 8px 12px;
+            background: #FEFCE8;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            color: #3B82F6;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .breadcrumb-item:hover {
+            background: #DBEAFE;
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: #9CA3AF;
+        }
+
+        .breadcrumb-current {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* 파일/폴더 목록 */
+        .file-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .folder-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #FEFCE8;
+        }
+
+        .folder-item:hover {
+            background: #FEF3C7;
+        }
+
+        .folder-icon {
+            font-size: 1.1em;
+        }
+
+        .folder-name {
+            font-size: 0.85em;
+            color: #92400E;
+            font-weight: 500;
+        }
+
+        .folder-count {
+            font-size: 0.75em;
+            color: #B45309;
+            margin-left: auto;
+        }
+
+        .file-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-item:hover {
+            background: var(--bg-gray);
+        }
+
+        .file-item.active {
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        .file-name {
+            font-size: 0.85em;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+            word-break: break-all;
+        }
+
+        .file-time {
+            font-size: 0.7em;
+            color: var(--text-gray);
+        }
+
+        /* 검색 박스 */
+        .search-box {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.85em;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-input::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* 빈 상태 */
+        .empty-state {
+            padding: 30px 15px;
+            text-align: center;
+            color: var(--text-gray);
+        }
+
+        .empty-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .empty-text {
+            font-size: 0.9em;
+        }
+
+        /* 미리보기 영역 */
+        .preview-section {
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            padding: 12px 16px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .preview-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preview-btn:hover {
+            background: var(--bg-gray);
+        }
+
+        .preview-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .preview-frame-container {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            background: #E5E7EB;
+        }
+
+        .preview-frame-wrapper {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .preview-frame-wrapper.mobile {
+            width: 375px;
+            height: 667px;
+        }
+
+        .preview-frame-wrapper.tablet {
+            width: 768px;
+            height: 600px;
+        }
+
+        .preview-frame-wrapper.desktop {
+            width: 100%;
+            max-width: 1024px;
+            height: 600px;
+        }
+
+        .preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 채팅 영역 */
+        .chat-section {
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            max-height: 100%;
+        }
+
+        .chat-header {
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #F0FDF4 100%);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0; /* 헤더 크기 고정 */
+        }
+
+        .chat-header h2 {
+            font-size: 1.1em;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .chat-header p {
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 0; /* flexbox 스크롤 문제 해결 */
+        }
+
+        .message {
+            max-width: 90%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95em;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            background: var(--chat-user);
+            color: var(--primary-dark);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai {
+            background: var(--chat-ai);
+            color: var(--text-dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.system {
+            background: #FEF3C7;
+            color: #92400E;
+            align-self: center;
+            font-size: 0.85em;
+            padding: 8px 16px;
+        }
+
+        .message.error {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .message-time {
+            font-size: 0.75em;
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: var(--chat-ai);
+            border-radius: 16px;
+            align-self: flex-start;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-gray);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        /* 입력 영역 */
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-gray);
+            flex-shrink: 0; /* 입력창 크기 고정 */
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .quick-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.95em;
+            resize: none;
+            min-height: 48px;
+            max-height: 120px;
+            line-height: 1.4;
+            transition: border-color 0.2s;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .input-counter {
+            font-size: 0.75em;
+            color: var(--text-gray);
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .input-counter.warning {
+            color: var(--warning);
+        }
+
+        .input-counter.danger {
+            color: var(--danger);
+        }
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .send-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .send-btn:disabled {
+            background: var(--text-gray);
+            cursor: not-allowed;
+        }
+
+        .cancel-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.2em;
+        }
+
+        .cancel-btn:hover {
+            background: #DC2626;
+        }
+
+        .cancel-btn.visible {
+            display: flex;
+        }
+
+        /* 파일 업로드 모달 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal h2 {
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .modal p {
+            color: var(--text-gray);
+            margin-bottom: 24px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 0.9em;
+            color: var(--text-gray);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn.secondary {
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            color: var(--text-dark);
+        }
+
+        .modal-btn.primary {
+            background: var(--primary);
+            border: none;
+            color: white;
+        }
+
+        /* 히스토리 패널 */
+        .history-panel {
+            position: absolute;
+            top: 56px;
+            right: 410px;
+            width: 280px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .history-panel.hidden {
+            display: none;
+        }
+
+        .history-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .history-item:hover {
+            background: var(--bg-gray);
+        }
+
+        .history-item.active {
+            background: var(--primary-light);
+        }
+
+        .history-time {
+            font-size: 0.8em;
+            color: var(--text-gray);
+        }
+
+        .history-action {
+            font-size: 0.9em;
+            color: var(--text-dark);
+            margin-top: 4px;
+        }
+
+        /* 로딩 오버레이 */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 16px;
+            font-size: 1em;
+            color: var(--text-gray);
+        }
+
+        /* 반응형 */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 220px 1fr 350px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr 1fr;
+            }
+
+            .file-explorer {
+                max-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .chat-section {
+                border-top: 1px solid var(--border);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span>&#x1F4DD;</span>
+                <span>AI 주보 편집기</span>
+            </div>
+            <div class="file-info" id="fileInfo">파일을 선택해주세요</div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="showHistory()">
+                <span>&#x1F4CB;</span> 히스토리
+            </button>
+            <button class="btn btn-outline" onclick="undoChange()">
+                <span>&#x21A9;</span> 실행취소
+            </button>
+            <button class="btn btn-outline" onclick="saveToServer()">
+                <span>&#x1F4E4;</span> 서버저장
+            </button>
+            <button class="btn btn-primary" onclick="saveHtml()">
+                <span>&#x1F4BE;</span> 다운로드
+            </button>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <div class="main-container">
+        <!-- 파일 탐색기 -->
+        <section class="file-explorer">
+            <div class="explorer-header">
+                <span>&#x1F4C2;</span>
+                <span class="explorer-title">파일 탐색기</span>
+                <button class="preview-btn" onclick="loadFiles()" style="margin-left: auto; font-size: 0.8em;">&#x1F504;</button>
+            </div>
+            <div class="search-box">
+                <input type="text" class="search-input" id="fileSearch" placeholder="파일 검색..." oninput="filterFiles(this.value)">
+            </div>
+            <div id="breadcrumb" class="breadcrumb">
+                <span class="breadcrumb-current">&#x1F4C1; outputs</span>
+            </div>
+            <div class="file-list" id="fileListContent">
+                <div class="empty-state">
+                    <div class="empty-icon">&#x1F4C2;</div>
+                    <div class="empty-text">파일 로딩 중...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 미리보기 영역 -->
+        <section class="preview-section">
+            <div class="preview-header">
+                <div class="preview-title">
+                    <span>&#x1F4F1;</span>
+                    <span>미리보기</span>
+                </div>
+                <div class="preview-actions">
+                    <button class="preview-btn active" data-view="mobile" onclick="setPreviewMode('mobile')">모바일</button>
+                    <button class="preview-btn" data-view="tablet" onclick="setPreviewMode('tablet')">태블릿</button>
+                    <button class="preview-btn" data-view="desktop" onclick="setPreviewMode('desktop')">데스크탑</button>
+                </div>
+            </div>
+            <div class="preview-frame-container">
+                <div class="preview-frame-wrapper mobile" id="previewWrapper">
+                    <iframe id="previewFrame" class="preview-iframe"></iframe>
+                </div>
+            </div>
+            <div class="loading-overlay hidden" id="previewLoading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">HTML 생성 중...</div>
+            </div>
+        </section>
+
+        <!-- 채팅 영역 -->
+        <section class="chat-section">
+            <div class="chat-header">
+                <h2>&#x1F916; AI 어시스턴트</h2>
+                <p>자연어로 수정사항을 말씀해주세요</p>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai">
+                    안녕하세요! AI 주보 편집기입니다.<br><br>
+                    PDF를 업로드하시거나, 기존 HTML 파일을 불러오시면
+                    자연어로 수정 요청을 하실 수 있습니다.<br><br>
+                    예시:<br>
+                    - "1부 예배 사회자를 김철수 목사로 바꿔줘"<br>
+                    - "찬송가 번호 8장을 94장으로 변경해줘"<br>
+                    - "설교 제목을 '감사의 삶'으로 수정해줘"
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="quickAction('upload')">&#x1F4C4; PDF 업로드</button>
+                    <button class="quick-btn" onclick="quickAction('load')">&#x1F4C2; HTML 불러오기</button>
+                    <button class="quick-btn" onclick="quickAction('theme')">&#x1F3A8; 테마 변경</button>
+                    <button class="quick-btn" onclick="quickAction('preview')">&#x1F440; 미리보기</button>
+                </div>
+                <div class="chat-input-wrapper">
+                    <textarea
+                        class="chat-input"
+                        id="chatInput"
+                        placeholder="수정할 내용을 입력하세요... (최대 1000자)"
+                        rows="1"
+                        maxlength="1000"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="updateCharCounter()"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
+                    <button class="cancel-btn" id="cancelBtn" onclick="cancelRequest()" title="요청 취소">
+                        ✕
+                    </button>
+                </div>
+                <div class="input-counter" id="charCounter">0 / 1000자</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 파일 업로드 모달 -->
+    <div class="modal-overlay hidden" id="uploadModal">
+        <div class="modal">
+            <h2>&#x1F4C4; PDF 업로드</h2>
+            <p>주보 PDF 파일을 업로드하면 AI가 자동으로 모바일 HTML로 변환합니다.</p>
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">&#x1F4E4;</div>
+                <div class="upload-text">파일을 드래그하거나 클릭하세요</div>
+                <div class="upload-hint">PDF 파일만 지원됩니다</div>
+            </div>
+            <input type="file" id="fileInput" accept=".pdf" style="display:none">
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('uploadModal')">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML 불러오기 모달 -->
+    <div class="modal-overlay hidden" id="loadModal">
+        <div class="modal">
+            <h2>&#x1F4C2; HTML 불러오기</h2>
+            <p>기존에 생성된 HTML 파일을 불러와 편집할 수 있습니다.</p>
+            <div class="upload-area" id="loadArea">
+                <div class="upload-icon">&#x1F4C1;</div>
+                <div class="upload-text">HTML 파일을 드래그하거나 클릭하세요</div>
+                <div class="upload-hint">HTML 파일만 지원됩니다</div>
+            </div>
+            <input type="file" id="htmlFileInput" accept=".html,.htm" style="display:none">
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal('loadModal')">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 히스토리 패널 -->
+    <div class="history-panel hidden" id="historyPanel">
+        <div class="history-item active">
+            <div class="history-time">현재 버전</div>
+            <div class="history-action">최신 상태</div>
+        </div>
+    </div>
+
+    <script>
+        // 상태 관리
+        let currentHtml = '';
+        let htmlHistory = [];
+        let historyIndex = -1;
+        let conversationHistory = [];
+        let isProcessing = false;
+        let currentFileName = '';
+        let currentPath = '';  // 현재 탐색 중인 하위 경로
+        let allFiles = [];  // 검색용 전체 파일 목록
+        let allFolders = [];  // 검색용 전체 폴더 목록
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            setupUploadArea();
+            setupLoadArea();
+            autoResizeTextarea();
+            loadFiles();  // 파일 목록 로드
+        });
+
+        // 글자 수 제한
+        const MAX_CHARS = 1000;
+
+        // 글자 수 카운터 업데이트
+        function updateCharCounter() {
+            const input = document.getElementById('chatInput');
+            const counter = document.getElementById('charCounter');
+            const length = input.value.length;
+
+            counter.textContent = `${length} / ${MAX_CHARS}자`;
+
+            // 경고 색상 적용
+            counter.className = 'input-counter';
+            if (length >= MAX_CHARS * 0.9) {
+                counter.classList.add('danger');
+            } else if (length >= MAX_CHARS * 0.7) {
+                counter.classList.add('warning');
+            }
+
+            // 전송 버튼 비활성화
+            const sendBtn = document.getElementById('sendBtn');
+            if (length > MAX_CHARS) {
+                sendBtn.disabled = true;
+            } else if (!isProcessing) {
+                sendBtn.disabled = false;
+            }
+        }
+
+        // 텍스트영역 자동 크기 조절
+        function autoResizeTextarea() {
+            const textarea = document.getElementById('chatInput');
+            textarea.addEventListener('input', () => {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+                updateCharCounter();
+            });
+        }
+
+        // 업로드 영역 설정
+        function setupUploadArea() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+
+            uploadArea.addEventListener('click', () => fileInput.click());
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type === 'application/pdf') {
+                    handlePdfUpload(file);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) handlePdfUpload(file);
+            });
+        }
+
+        // HTML 불러오기 영역 설정
+        function setupLoadArea() {
+            const loadArea = document.getElementById('loadArea');
+            const htmlFileInput = document.getElementById('htmlFileInput');
+
+            loadArea.addEventListener('click', () => htmlFileInput.click());
+
+            loadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                loadArea.classList.add('dragover');
+            });
+
+            loadArea.addEventListener('dragleave', () => {
+                loadArea.classList.remove('dragover');
+            });
+
+            loadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                loadArea.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && (file.name.endsWith('.html') || file.name.endsWith('.htm'))) {
+                    handleHtmlLoad(file);
+                }
+            });
+
+            htmlFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) handleHtmlLoad(file);
+            });
+        }
+
+        // PDF 업로드 처리
+        async function handlePdfUpload(file) {
+            closeModal('uploadModal');
+            showLoading('PDF 변환 중...');
+            addMessage('system', `${file.name} 파일을 업로드 중입니다...`);
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('content_type', 'church');
+
+            try {
+                const response = await fetch('/api/convert', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success && result.html) {
+                    currentHtml = result.html;
+                    currentFileName = file.name.replace('.pdf', '.html');
+                    updateFileInfo(currentFileName);
+                    updatePreview();
+                    saveToHistory('PDF 변환 완료');
+                    addMessage('ai', `PDF 변환이 완료되었습니다! 이제 자연어로 수정 요청을 하실 수 있습니다.\n\n예시:\n- "설교 제목을 '은혜의 삶'으로 바꿔줘"\n- "1부 예배 시간을 오전 8시로 변경해줘"`);
+                } else {
+                    addMessage('error', '변환 중 오류가 발생했습니다: ' + (result.error || '알 수 없는 오류'));
+                }
+            } catch (error) {
+                addMessage('error', '서버 연결 오류: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // HTML 파일 불러오기
+        async function handleHtmlLoad(file) {
+            closeModal('loadModal');
+            showLoading('파일 불러오는 중...');
+
+            try {
+                const text = await file.text();
+                currentHtml = text;
+                currentFileName = file.name;
+                updateFileInfo(currentFileName);
+                updatePreview();
+                saveToHistory('HTML 파일 로드');
+                addMessage('ai', `${file.name} 파일을 불러왔습니다. 수정할 내용을 말씀해주세요.`);
+            } catch (error) {
+                addMessage('error', '파일 로드 오류: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // 미리보기 업데이트
+        function updatePreview() {
+            const iframe = document.getElementById('previewFrame');
+            const blob = new Blob([currentHtml], { type: 'text/html' });
+            iframe.src = URL.createObjectURL(blob);
+        }
+
+        // 파일 정보 업데이트
+        function updateFileInfo(filename) {
+            document.getElementById('fileInfo').textContent = filename;
+        }
+
+        // 미리보기 모드 설정
+        function setPreviewMode(mode) {
+            const wrapper = document.getElementById('previewWrapper');
+            const buttons = document.querySelectorAll('.preview-btn');
+
+            wrapper.className = 'preview-frame-wrapper ' + mode;
+            buttons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === mode);
+            });
+        }
+
+        // 메시지 추가
+        function addMessage(type, content) {
+            const container = document.getElementById('chatMessages');
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.innerHTML = content.replace(/\n/g, '<br>');
+            container.appendChild(message);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 타이핑 인디케이터 표시
+        function showTyping() {
+            const container = document.getElementById('chatMessages');
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.id = 'typingIndicator';
+            typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            container.appendChild(typing);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        // 현재 요청 컨트롤러 (취소용)
+        let currentAbortController = null;
+
+        // 타임아웃 설정 fetch 헬퍼
+        async function fetchWithTimeout(url, options, timeoutMs = 180000) {
+            currentAbortController = new AbortController();
+            const timeoutId = setTimeout(() => currentAbortController.abort(), timeoutMs);
+
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    signal: currentAbortController.signal
+                });
+                clearTimeout(timeoutId);
+                currentAbortController = null;
+                return response;
+            } catch (error) {
+                clearTimeout(timeoutId);
+                currentAbortController = null;
+                if (error.name === 'AbortError') {
+                    throw new Error('요청이 취소되었습니다.');
+                }
+                throw error;
+            }
+        }
+
+        // 요청 취소
+        function cancelRequest() {
+            if (currentAbortController) {
+                currentAbortController.abort();
+                addMessage('system', '요청을 취소했습니다.');
+            }
+        }
+
+        // 진행 상태 업데이트
+        let progressInterval = null;
+        let progressSeconds = 0;
+
+        function startProgressTimer() {
+            progressSeconds = 0;
+            progressInterval = setInterval(() => {
+                progressSeconds++;
+                const typingEl = document.getElementById('typingIndicator');
+                if (typingEl) {
+                    const minutes = Math.floor(progressSeconds / 60);
+                    const seconds = progressSeconds % 60;
+                    const timeText = minutes > 0 ?
+                        `${minutes}분 ${seconds}초` : `${seconds}초`;
+
+                    // 30초 이상이면 안내 메시지 추가
+                    let statusText = `처리 중... (${timeText})`;
+                    if (progressSeconds >= 30 && progressSeconds < 60) {
+                        statusText += '<br><small style="color:#666">AI가 HTML을 분석하고 있습니다...</small>';
+                    } else if (progressSeconds >= 60 && progressSeconds < 120) {
+                        statusText += '<br><small style="color:#666">복잡한 수정을 처리하고 있습니다. 잠시만 기다려주세요...</small>';
+                    } else if (progressSeconds >= 120) {
+                        statusText += '<br><small style="color:#F59E0B">처리 시간이 오래 걸리고 있습니다. 요청이 너무 복잡할 수 있습니다.</small>';
+                    }
+
+                    typingEl.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+                            <div style="display: flex; gap: 4px;">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                            <div style="font-size: 0.8em; color: #666;">${statusText}</div>
+                        </div>
+                    `;
+                }
+            }, 1000);
+        }
+
+        function stopProgressTimer() {
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            progressSeconds = 0;
+        }
+
+        // 메시지 전송
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message || isProcessing) return;
+            if (!currentHtml) {
+                addMessage('system', 'PDF 또는 HTML 파일을 먼저 업로드해주세요.');
+                return;
+            }
+
+            // 글자 수 초과 확인
+            if (message.length > MAX_CHARS) {
+                addMessage('system', `요청이 ${message.length}자로 최대 ${MAX_CHARS}자를 초과합니다. 더 짧게 작성해주세요.`);
+                return;
+            }
+
+            // 긴 요청 경고
+            if (message.length > 500) {
+                addMessage('system', `요청이 ${message.length}자로 길어서 처리 시간이 오래 걸릴 수 있습니다. 잠시 기다려주세요.`);
+            }
+
+            isProcessing = true;
+            document.getElementById('sendBtn').disabled = true;
+            document.getElementById('sendBtn').style.display = 'none';
+            document.getElementById('cancelBtn').classList.add('visible');
+            input.value = '';
+            input.style.height = 'auto';
+
+            addMessage('user', message);
+            showTyping();
+            startProgressTimer();
+
+            try {
+                const response = await fetchWithTimeout('/api/chat/edit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        html: currentHtml,
+                        history: conversationHistory.slice(-10) // 최근 10개 대화만
+                    })
+                }, 180000); // 3분 타임아웃
+
+                const result = await response.json();
+                stopProgressTimer();
+                hideTyping();
+
+                if (result.success) {
+                    if (result.html && result.html !== currentHtml) {
+                        currentHtml = result.html;
+                        updatePreview();
+                        saveToHistory(message);
+                    }
+                    addMessage('ai', result.response);
+                    conversationHistory.push({ role: 'user', content: message });
+                    conversationHistory.push({ role: 'assistant', content: result.response });
+                } else {
+                    addMessage('error', result.error || '처리 중 오류가 발생했습니다.');
+                }
+            } catch (error) {
+                stopProgressTimer();
+                hideTyping();
+
+                // 에러 메시지 상세화
+                let errorMsg = error.message;
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    errorMsg = '서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.';
+                } else if (error.message.includes('timeout') || error.message.includes('시간이 초과')) {
+                    errorMsg = error.message;
+                }
+
+                addMessage('error', '오류: ' + errorMsg);
+            } finally {
+                isProcessing = false;
+                document.getElementById('sendBtn').disabled = false;
+                document.getElementById('sendBtn').style.display = 'flex';
+                document.getElementById('cancelBtn').classList.remove('visible');
+            }
+        }
+
+        // 키보드 이벤트
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // 빠른 액션
+        function quickAction(action) {
+            switch(action) {
+                case 'upload':
+                    document.getElementById('uploadModal').classList.remove('hidden');
+                    break;
+                case 'load':
+                    document.getElementById('loadModal').classList.remove('hidden');
+                    break;
+                case 'theme':
+                    document.getElementById('chatInput').value = '테마를 변경해줘 (default/harvest/christmas/easter 중 선택)';
+                    break;
+                case 'preview':
+                    if (currentHtml) {
+                        const win = window.open();
+                        win.document.write(currentHtml);
+                    } else {
+                        addMessage('system', '미리볼 HTML이 없습니다.');
+                    }
+                    break;
+            }
+        }
+
+        // 모달 닫기
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // 히스토리 관련
+        function saveToHistory(action) {
+            htmlHistory.push({
+                html: currentHtml,
+                action: action,
+                time: new Date().toLocaleTimeString()
+            });
+            historyIndex = htmlHistory.length - 1;
+            updateHistoryPanel();
+        }
+
+        function showHistory() {
+            const panel = document.getElementById('historyPanel');
+            panel.classList.toggle('hidden');
+        }
+
+        function updateHistoryPanel() {
+            const panel = document.getElementById('historyPanel');
+            panel.innerHTML = htmlHistory.map((item, index) => `
+                <div class="history-item ${index === historyIndex ? 'active' : ''}" onclick="restoreHistory(${index})">
+                    <div class="history-time">${item.time}</div>
+                    <div class="history-action">${item.action}</div>
+                </div>
+            `).reverse().join('');
+        }
+
+        function restoreHistory(index) {
+            if (index >= 0 && index < htmlHistory.length) {
+                currentHtml = htmlHistory[index].html;
+                historyIndex = index;
+                updatePreview();
+                updateHistoryPanel();
+                addMessage('system', `"${htmlHistory[index].action}" 버전으로 복원했습니다.`);
+            }
+        }
+
+        function undoChange() {
+            if (historyIndex > 0) {
+                restoreHistory(historyIndex - 1);
+            } else {
+                addMessage('system', '더 이상 되돌릴 수 없습니다.');
+            }
+        }
+
+        // 저장
+        async function saveHtml() {
+            if (!currentHtml) {
+                addMessage('system', '저장할 HTML이 없습니다.');
+                return;
+            }
+
+            // 다운로드
+            const blob = new Blob([currentHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFileName || 'edited_bulletin.html';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            addMessage('ai', `파일이 다운로드되었습니다: ${currentFileName || 'edited_bulletin.html'}`);
+        }
+
+        // 로딩 표시
+        function showLoading(text) {
+            const loading = document.getElementById('previewLoading');
+            loading.querySelector('.loading-text').textContent = text;
+            loading.classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('previewLoading').classList.add('hidden');
+        }
+
+        // ========== 파일 탐색기 기능 ==========
+
+        // 브레드크럼 업데이트
+        function updateBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (!currentPath) {
+                breadcrumb.innerHTML = '<span class="breadcrumb-current">&#x1F4C1; outputs</span>';
+                return;
+            }
+
+            const parts = currentPath.split('/').filter(p => p);
+            let html = '<span class="breadcrumb-item" onclick="navigateTo(\'\')">&#x1F4C1; outputs</span>';
+
+            let accumulated = '';
+            parts.forEach((part, idx) => {
+                html += '<span class="breadcrumb-separator">/</span>';
+                accumulated += (accumulated ? '/' : '') + part;
+                if (idx === parts.length - 1) {
+                    html += `<span class="breadcrumb-current">${part}</span>`;
+                } else {
+                    const pathToGo = accumulated;
+                    html += `<span class="breadcrumb-item" onclick="navigateTo('${pathToGo}')">${part}</span>`;
+                }
+            });
+
+            breadcrumb.innerHTML = html;
+        }
+
+        // 특정 경로로 이동
+        function navigateTo(path) {
+            currentPath = path;
+            document.getElementById('fileSearch').value = '';  // 검색 초기화
+            loadFiles();
+        }
+
+        // 파일 목록 로드
+        async function loadFiles() {
+            const fileListContent = document.getElementById('fileListContent');
+
+            // 로딩 상태 표시
+            fileListContent.innerHTML = '<div class="empty-state"><div class="empty-icon">&#x1F4C2;</div><div class="empty-text">로딩 중...</div></div>';
+            updateBreadcrumb();
+
+            try {
+                // API 호출
+                let apiUrl = '/api/files/outputs';
+                if (currentPath) {
+                    // 한글 경로 인코딩 처리
+                    const encodedPath = currentPath.split('/').map(p => encodeURIComponent(p)).join('/');
+                    apiUrl += '/' + encodedPath;
+                }
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    allFolders = data.folders || [];
+                    allFiles = (data.files || []).map(file => ({
+                        name: file.name,
+                        time: new Date(file.modified).toLocaleString(),
+                        size: file.size
+                    }));
+                    displayFoldersAndFiles(allFolders, allFiles);
+                } else {
+                    fileListContent.innerHTML = '<div class="empty-state"><div class="empty-icon">&#x1F4C1;</div><div class="empty-text">파일이 없습니다</div></div>';
+                }
+            } catch (error) {
+                console.error('파일 목록 로드 실패:', error);
+                fileListContent.innerHTML = `<div class="empty-state"><div class="empty-icon">&#x274C;</div><div class="empty-text">로드 실패<br><small>${error.message}</small></div></div>`;
+            }
+        }
+
+        // 폴더 및 파일 목록 표시
+        function displayFoldersAndFiles(folders, files) {
+            const fileListContent = document.getElementById('fileListContent');
+
+            if (folders.length === 0 && files.length === 0) {
+                fileListContent.innerHTML = '<div class="empty-state"><div class="empty-icon">&#x1F4C1;</div><div class="empty-text">파일이 없습니다</div></div>';
+                return;
+            }
+
+            let html = '';
+
+            // 폴더 먼저 표시
+            folders.forEach(folder => {
+                const folderName = typeof folder === 'string' ? folder : folder.name;
+                const folderPath = currentPath ? currentPath + '/' + folderName : folderName;
+                const fileCount = folder.file_count || 0;
+                html += `
+                    <div class="folder-item" onclick="navigateTo('${folderPath}')">
+                        <span class="folder-icon">&#x1F4C1;</span>
+                        <span class="folder-name">${folderName}</span>
+                        ${fileCount > 0 ? `<span class="folder-count">${fileCount}</span>` : ''}
+                    </div>
+                `;
+            });
+
+            // 파일 표시
+            files.forEach(file => {
+                const filePath = currentPath ? 'outputs/' + currentPath + '/' + file.name : file.name;
+                html += `
+                    <div class="file-item" data-filename="${file.name.toLowerCase()}" onclick="loadFileFromServer('${filePath}')">
+                        <div class="file-name">&#x1F4C4; ${file.name}</div>
+                        <div class="file-time">${file.time}</div>
+                    </div>
+                `;
+            });
+
+            fileListContent.innerHTML = html;
+        }
+
+        // 파일 검색 필터
+        function filterFiles(query) {
+            query = query.toLowerCase().trim();
+
+            if (!query) {
+                // 검색어가 없으면 전체 표시
+                displayFoldersAndFiles(allFolders, allFiles);
+                return;
+            }
+
+            // 폴더와 파일 필터링
+            const filteredFolders = allFolders.filter(folder => {
+                const name = typeof folder === 'string' ? folder : folder.name;
+                return name.toLowerCase().includes(query);
+            });
+
+            const filteredFiles = allFiles.filter(file =>
+                file.name.toLowerCase().includes(query)
+            );
+
+            displayFoldersAndFiles(filteredFolders, filteredFiles);
+        }
+
+        // 서버에서 파일 로드 (파일 탐색기용)
+        async function loadFileFromServer(filePath) {
+            try {
+                const timestamp = new Date().getTime();
+                let fetchUrl;
+                if (filePath.startsWith('outputs/') || filePath.startsWith('/outputs/')) {
+                    fetchUrl = `/${filePath.replace(/^\//, '')}?t=${timestamp}`;
+                } else {
+                    fetchUrl = `/outputs/${filePath}?t=${timestamp}`;
+                }
+
+                const response = await fetch(fetchUrl, {
+                    cache: 'no-cache',
+                    headers: { 'Cache-Control': 'no-cache' }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`파일을 불러올 수 없습니다: ${response.status}`);
+                }
+
+                const content = await response.text();
+                currentHtml = content;
+
+                // 파일명 추출
+                const filename = filePath.split('/').pop();
+                currentFileName = filename;
+                updateFileInfo(filename);
+                updatePreview();
+                saveToHistory('파일 로드: ' + filename);
+
+                // 파일 목록에서 활성 표시
+                document.querySelectorAll('.file-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.querySelector('.file-name').textContent.includes(filename)) {
+                        item.classList.add('active');
+                    }
+                });
+
+                addMessage('ai', `${filename} 파일을 불러왔습니다. 수정할 내용을 말씀해주세요.`);
+            } catch (error) {
+                console.error('파일 로드 실패:', error);
+                addMessage('error', '파일을 불러올 수 없습니다: ' + error.message);
+            }
+        }
+
+        // 서버에 파일 저장
+        async function saveToServer() {
+            if (!currentHtml || !currentFileName) {
+                addMessage('system', '저장할 파일이 없습니다.');
+                return;
+            }
+
+            try {
+                const filePath = currentPath ?
+                    `outputs/${currentPath}/${currentFileName}` :
+                    `outputs/${currentFileName}`;
+
+                const response = await fetch('/api/editor/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: filePath,
+                        content: currentHtml
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    addMessage('ai', `서버에 저장되었습니다: ${currentFileName}`);
+                } else {
+                    addMessage('error', '저장 실패: ' + (result.detail || result.error || '알 수 없는 오류'));
+                }
+            } catch (error) {
+                addMessage('error', '서버 저장 오류: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

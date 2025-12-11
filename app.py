@@ -1555,6 +1555,70 @@ async def list_folder_files(folder: str, subpath: str = ""):
         raise HTTPException(status_code=500, detail=f"파일 목록 조회 실패: {str(e)}")
 
 
+@app.get("/api/editor/file/{filepath:path}")
+async def get_editor_file(filepath: str):
+    """
+    편집기용 파일 내용 읽기 API
+
+    - filepath: outputs/Church/여의도순복음교회/index.html 형태의 경로
+
+    Returns:
+    - success: 성공 여부
+    - content: HTML 파일 내용
+    - filename: 파일명
+    """
+    try:
+        from urllib.parse import unquote
+        # URL 디코딩
+        filepath = unquote(filepath)
+
+        # 경로 검증 - outputs로 시작해야 함
+        if not filepath.startswith('outputs/'):
+            raise HTTPException(status_code=400, detail="outputs 폴더 내 파일만 접근 가능합니다")
+
+        # outputs/ 이후 경로 추출
+        relative_path = filepath[8:]  # 'outputs/' 제거
+
+        # 실제 파일 경로
+        file_path = OUTPUT_DIR / relative_path
+
+        # 경로 순회 공격 방지
+        try:
+            file_path = file_path.resolve()
+            if not str(file_path).startswith(str(OUTPUT_DIR.resolve())):
+                raise HTTPException(status_code=403, detail="접근이 허용되지 않은 경로입니다")
+        except Exception:
+            raise HTTPException(status_code=400, detail="잘못된 경로입니다")
+
+        # 파일 존재 확인
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail=f"파일을 찾을 수 없습니다: {filepath}")
+
+        if not file_path.is_file():
+            raise HTTPException(status_code=400, detail="파일이 아닙니다")
+
+        # HTML 파일만 허용
+        if not file_path.suffix.lower() in ['.html', '.htm']:
+            raise HTTPException(status_code=400, detail="HTML 파일만 편집 가능합니다")
+
+        # 파일 내용 읽기
+        file_content = file_path.read_text(encoding='utf-8')
+
+        return JSONResponse({
+            "success": True,
+            "content": file_content,
+            "filename": file_path.name,
+            "filepath": filepath
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"파일 읽기 실패: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"파일 읽기 실패: {str(e)}")
+
+
+
 @app.get("/api/serve/{file_path:path}")
 async def serve_file(file_path: str):
     """
@@ -3414,6 +3478,231 @@ async def batch_convert_elections(
         },
         "results": results
     })
+
+
+# ============================================
+# AI 채팅 기반 HTML 편집 API
+# ============================================
+
+from pydantic import BaseModel
+from typing import List, Optional
+
+class ChatEditRequest(BaseModel):
+    message: str
+    html: str
+    history: Optional[List[dict]] = []
+
+class ChatEditResponse(BaseModel):
+    success: bool
+    response: str
+    html: Optional[str] = None
+    error: Optional[str] = None
+
+# 대화 학습 데이터 저장 경로
+CHAT_LEARNING_DIR = BASE_DIR / "learning_data" / "chat_history"
+CHAT_LEARNING_DIR.mkdir(parents=True, exist_ok=True)
+
+@app.post("/api/chat/edit")
+async def chat_edit_html(request: ChatEditRequest):
+    """
+    AI 대화 기반 HTML 편집 API
+
+    사용자의 자연어 요청을 받아 HTML을 수정하고 결과를 반환합니다.
+    대화 내용은 학습 데이터로 저장됩니다.
+    """
+    try:
+        from anthropic import Anthropic
+
+        client = Anthropic()
+
+        # 시스템 프롬프트
+        system_prompt = """당신은 교회 주보 HTML 편집 전문 AI입니다.
+
+사용자의 요청에 따라 HTML을 수정합니다.
+
+**규칙:**
+1. 사용자가 수정을 요청하면, 수정된 전체 HTML을 <modified_html> 태그 안에 반환하세요.
+2. 수정 내용을 간단히 설명하세요.
+3. HTML 구조를 깨뜨리지 마세요.
+4. 한국어 텍스트는 정확하게 유지하세요.
+5. CSS 스타일은 기존 것을 최대한 유지하세요.
+
+**응답 형식:**
+수정 내용 설명
+
+<modified_html>
+(수정된 전체 HTML)
+</modified_html>
+
+또는 수정이 필요 없는 질문이면 그냥 답변만 하세요."""
+
+        # 대화 히스토리 구성
+        messages = []
+        for h in request.history[-10:]:  # 최근 10개만
+            messages.append({
+                "role": h.get("role", "user"),
+                "content": h.get("content", "")
+            })
+
+        # 현재 HTML과 사용자 메시지
+        user_content = f"""**현재 HTML:**
+```html
+{request.html[:50000]}
+```
+
+**사용자 요청:**
+{request.message}"""
+
+        messages.append({
+            "role": "user",
+            "content": user_content
+        })
+
+        # Claude API 호출
+        response = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=16384,
+            system=system_prompt,
+            messages=messages
+        )
+
+        ai_response = response.content[0].text
+
+        # 수정된 HTML 추출
+        modified_html = None
+        if "<modified_html>" in ai_response and "</modified_html>" in ai_response:
+            start = ai_response.find("<modified_html>") + len("<modified_html>")
+            end = ai_response.find("</modified_html>")
+            modified_html = ai_response[start:end].strip()
+            # 응답에서 HTML 태그 제거
+            clean_response = ai_response[:ai_response.find("<modified_html>")].strip()
+        else:
+            clean_response = ai_response
+
+        # 학습 데이터 저장
+        try:
+            chat_log = {
+                "timestamp": datetime.now().isoformat(),
+                "user_message": request.message,
+                "ai_response": clean_response,
+                "html_modified": modified_html is not None,
+                "html_length_before": len(request.html),
+                "html_length_after": len(modified_html) if modified_html else len(request.html)
+            }
+
+            log_file = CHAT_LEARNING_DIR / f"chat_{datetime.now().strftime('%Y%m%d')}.jsonl"
+            with open(log_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(chat_log, ensure_ascii=False) + "\n")
+        except Exception as e:
+            logger.warning(f"채팅 로그 저장 실패: {e}")
+
+        return JSONResponse({
+            "success": True,
+            "response": clean_response,
+            "html": modified_html
+        })
+
+    except Exception as e:
+        logger.error(f"AI 채팅 편집 오류: {str(e)}", exc_info=True)
+        return JSONResponse({
+            "success": False,
+            "error": str(e),
+            "response": f"오류가 발생했습니다: {str(e)}"
+        })
+
+
+@app.get("/api/chat/history")
+async def get_chat_history(date: str = None, limit: int = 100):
+    """
+    채팅 학습 히스토리 조회 API
+    """
+    try:
+        if date:
+            log_file = CHAT_LEARNING_DIR / f"chat_{date}.jsonl"
+            if not log_file.exists():
+                return JSONResponse({"success": True, "history": [], "count": 0})
+
+            history = []
+            with open(log_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        history.append(json.loads(line))
+
+            return JSONResponse({
+                "success": True,
+                "history": history[-limit:],
+                "count": len(history)
+            })
+        else:
+            # 모든 날짜의 히스토리 파일 목록
+            files = sorted(CHAT_LEARNING_DIR.glob("chat_*.jsonl"), reverse=True)
+            dates = [f.stem.replace("chat_", "") for f in files]
+
+            return JSONResponse({
+                "success": True,
+                "available_dates": dates,
+                "total_files": len(dates)
+            })
+
+    except Exception as e:
+        logger.error(f"채팅 히스토리 조회 오류: {str(e)}", exc_info=True)
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        })
+
+
+@app.get("/api/chat/insights")
+async def get_chat_insights():
+    """
+    채팅 학습 데이터 분석 - 자주 요청되는 수정 패턴 분석
+    """
+    try:
+        all_history = []
+
+        for log_file in CHAT_LEARNING_DIR.glob("chat_*.jsonl"):
+            with open(log_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        all_history.append(json.loads(line))
+
+        if not all_history:
+            return JSONResponse({
+                "success": True,
+                "total_conversations": 0,
+                "insights": {}
+            })
+
+        # 통계 분석
+        total = len(all_history)
+        modified_count = sum(1 for h in all_history if h.get("html_modified"))
+
+        # 자주 사용되는 키워드 분석
+        keywords = {}
+        for h in all_history:
+            msg = h.get("user_message", "").lower()
+            for word in ["바꿔", "변경", "수정", "추가", "삭제", "제목", "설교", "찬송", "예배", "목사", "시간"]:
+                if word in msg:
+                    keywords[word] = keywords.get(word, 0) + 1
+
+        return JSONResponse({
+            "success": True,
+            "total_conversations": total,
+            "html_modifications": modified_count,
+            "modification_rate": round(modified_count / total * 100, 1) if total > 0 else 0,
+            "common_keywords": dict(sorted(keywords.items(), key=lambda x: x[1], reverse=True)[:10]),
+            "insights": {
+                "description": "사용자들이 자주 요청하는 수정 패턴을 분석한 결과입니다.",
+                "recommendation": "자주 요청되는 패턴은 자동화 기능으로 추가할 수 있습니다."
+            }
+        })
+
+    except Exception as e:
+        logger.error(f"채팅 인사이트 분석 오류: {str(e)}", exc_info=True)
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        })
 
 
 # 서버 실행 (개발용)

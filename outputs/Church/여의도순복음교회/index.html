@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여의도순복음교회 모바일주보</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 30px;
+        }
+
+        .bulletin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bulletin-link {
+            display: block;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .bulletin-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .bulletin-link:active {
+            transform: translateY(0);
+        }
+
+        .bulletin-link .date {
+            font-size: 1.2em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .bulletin-link .theme {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .bulletin-link.thanksgiving {
+            background: linear-gradient(135deg, #f5af19 0%, #f12711 100%);
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">⛪</div>
+        <h1>여의도순복음교회</h1>
+        <p class="subtitle">모바일 주보</p>
+
+        <div class="bulletin-list">
+            <a href="2025-11-23.html" class="bulletin-link">
+                <span class="date">2025년 11월 23일</span>
+                <span class="theme">환경을 초월한 감사</span>
+            </a>
+
+            <a href="2025-11-16.html" class="bulletin-link thanksgiving">
+                <span class="date">2025년 11월 16일</span>
+                <span class="theme">추수감사주일 - 절대 감사의 삶</span>
+            </a>
+        </div>
+
+        <p class="footer">© 2025 여의도순복음교회</p>
+    </div>
+</body>
+</html>

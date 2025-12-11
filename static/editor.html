@@ -876,7 +876,9 @@
                 // 새로운 API 사용 (폴더 지원)
                 let apiUrl = '/api/files/outputs';
                 if (currentPath) {
-                    apiUrl += '/' + currentPath;
+                    // 한글 경로 인코딩 처리
+                    const encodedPath = currentPath.split('/').map(p => encodeURIComponent(p)).join('/');
+                    apiUrl += '/' + encodedPath;
                 }
                 const response = await fetch(apiUrl);
 

@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선거 전문 편집기 - StudySnap</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        :root {
+            /* 선거 테마 - 대한민국 국기 컬러 + 신뢰감 블루 */
+            --primary: #1e3a8a;
+            --primary-dark: #1e3a5f;
+            --primary-light: #dbeafe;
+            --accent: #dc2626;
+            --accent-light: #fee2e2;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --text-dark: #1f2937;
+            --text-gray: #6B7280;
+            --bg-gray: #f1f5f9;
+            --border: #e2e8f0;
+            --white: #FFFFFF;
+            /* 정당 컬러 */
+            --party-blue: #004EA2;
+            --party-red: #E61E2B;
+            --party-orange: #FF7210;
+            --party-green: #00A651;
+            --party-yellow: #FFCC00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 헤더 */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-badge {
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .file-info {
+            font-size: 0.85em;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 6px;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.8em;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-link.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-primary {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: #b91c1c;
+        }
+
+        /* 메인 레이아웃 */
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            height: calc(100vh - 52px);
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: var(--bg-gray);
+            border: none;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: var(--text-gray);
+            transition: all 0.2s;
+        }
+
+        .sidebar-tab.active {
+            background: var(--white);
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* 파일 탐색기 */
+        .file-explorer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .breadcrumb {
+            padding: 8px 12px;
+            background: var(--primary-light);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            color: var(--primary);
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .breadcrumb-item:hover {
+            background: #DBEAFE;
+        }
+
+        .breadcrumb-separator {
+            color: #9CA3AF;
+        }
+
+        .breadcrumb-current {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .file-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .folder-item, .file-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #FEF7E8;
+        }
+
+        .folder-item:hover {
+            background: #FEF3C7;
+        }
+
+        .folder-name {
+            font-size: 0.85em;
+            color: #92400E;
+            font-weight: 500;
+        }
+
+        .file-item:hover {
+            background: var(--bg-gray);
+        }
+
+        .file-item.active {
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        .file-name {
+            font-size: 0.85em;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+            word-break: break-all;
+        }
+
+        .file-time {
+            font-size: 0.7em;
+            color: var(--text-gray);
+        }
+
+        /* 선거 전용 도구 패널 */
+        .tools-panel {
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .tools-panel.active {
+            display: flex;
+            flex: 1;
+        }
+
+        .tool-section {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tool-section-header {
+            padding: 10px 14px;
+            background: var(--bg-gray);
+            font-weight: 600;
+            font-size: 0.85em;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .tool-section-header:hover {
+            background: var(--primary-light);
+        }
+
+        .tool-section-content {
+            padding: 10px;
+            display: none;
+        }
+
+        .tool-section.open .tool-section-content {
+            display: block;
+        }
+
+        .tool-btn {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--white);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .tool-btn-icon {
+            font-size: 1.3em;
+        }
+
+        .tool-btn-text {
+            flex: 1;
+        }
+
+        .tool-btn-title {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--text-dark);
+        }
+
+        .tool-btn-desc {
+            font-size: 0.75em;
+            color: var(--text-gray);
+        }
+
+        /* 컨텐츠 영역 */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 공통 + 선거 전용 툴바 */
+        .toolbar {
+            display: flex;
+            padding: 8px 12px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            padding-right: 10px;
+            border-right: 1px solid var(--border);
+            margin-right: 6px;
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .toolbar-group-label {
+            font-size: 0.7em;
+            color: var(--text-gray);
+            padding: 0 8px;
+            align-self: center;
+        }
+
+        .toolbar-btn {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--bg-gray);
+        }
+
+        .toolbar-btn.election-tool {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .toolbar-btn.election-tool:hover {
+            background: #bfdbfe;
+        }
+
+        /* 분할 뷰 */
+        .split-view {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            border-right: 1px solid var(--border);
+        }
+
+        .preview-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+        }
+
+        .pane-header {
+            padding: 8px 12px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pane-title {
+            font-weight: 600;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .resizer {
+            width: 6px;
+            background: var(--border);
+            cursor: col-resize;
+            transition: background 0.2s;
+        }
+
+        .resizer:hover {
+            background: var(--primary);
+        }
+
+        /* 코드 에디터 */
+        .editor-content {
+            flex: 1;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        #htmlEditor {
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: none;
+            background: #FEFEFE;
+        }
+
+        /* 미리보기 */
+        .preview-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 15px;
+            background: #e2e8f0;
+            overflow: auto;
+        }
+
+        .preview-device {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .preview-device.desktop {
+            width: 100%;
+            height: 100%;
+        }
+
+        .preview-device.tablet {
+            width: 768px;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        .preview-device.mobile {
+            width: 375px;
+            height: 100%;
+            border-radius: 24px;
+            border: 10px solid #333;
+        }
+
+        .preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .preview-size-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .preview-size-btn {
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75em;
+        }
+
+        .preview-size-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* 상태바 */
+        .status-bar {
+            padding: 6px 12px;
+            background: var(--bg-gray);
+            border-top: 1px solid var(--border);
+            font-size: 0.75em;
+            color: var(--text-gray);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* 알림 */
+        .notification {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            padding: 12px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 9999;
+            animation: slideIn 0.3s;
+        }
+
+        .notification.show {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.success { border-left: 4px solid var(--success); }
+        .notification.error { border-left: 4px solid var(--danger); }
+        .notification.info { border-left: 4px solid var(--info); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* 모달 공통 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-gray);
+        }
+
+        .modal-close:hover {
+            color: var(--text-dark);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* 폼 스타일 */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--text-dark);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* 정당 선택 */
+        .party-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .party-option {
+            padding: 12px 8px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .party-option:hover {
+            border-color: var(--primary);
+        }
+
+        .party-option.selected {
+            border-width: 3px;
+        }
+
+        .party-option.blue { --party-color: #004EA2; }
+        .party-option.red { --party-color: #E61E2B; }
+        .party-option.orange { --party-color: #FF7210; }
+        .party-option.green { --party-color: #00A651; }
+        .party-option.gray { --party-color: #6B7280; }
+
+        .party-option.selected {
+            border-color: var(--party-color);
+            background: color-mix(in srgb, var(--party-color) 10%, white);
+        }
+
+        .party-symbol {
+            font-size: 1.5em;
+            margin-bottom: 4px;
+        }
+
+        .party-name {
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        /* 후보자 카드 미리보기 */
+        .candidate-preview {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .candidate-card {
+            display: flex;
+            gap: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .candidate-photo {
+            width: 120px;
+            height: 150px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: var(--text-gray);
+        }
+
+        .candidate-info {
+            flex: 1;
+        }
+
+        .candidate-party {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .candidate-name {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .candidate-slogan {
+            color: var(--text-gray);
+            font-size: 0.95em;
+        }
+
+        /* 공약 카드 */
+        .pledge-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .pledge-number {
+            display: inline-flex;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85em;
+            margin-right: 10px;
+        }
+
+        /* 지역 선택 */
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+        }
+
+        .region-btn {
+            padding: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.2s;
+        }
+
+        .region-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .region-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* AI 채팅 */
+        .ai-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 9997;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-fab:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-fab.hidden {
+            display: none;
+        }
+
+        .ai-chat-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 9998;
+        }
+
+        .ai-chat-overlay.active {
+            display: flex;
+        }
+
+        .ai-chat-header {
+            padding: 14px 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ai-message {
+            padding: 10px 14px;
+            border-radius: 12px;
+            max-width: 85%;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .ai-message.user {
+            background: var(--primary-light);
+            align-self: flex-end;
+        }
+
+        .ai-message.assistant {
+            background: var(--bg-gray);
+            align-self: flex-start;
+        }
+
+        .ai-chat-input {
+            padding: 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span>🗳️</span>
+                <span>선거 공보물</span>
+                <span class="category-badge">Election</span>
+            </div>
+            <div class="header-nav">
+                <a href="/static/explorer.html" class="nav-link">🗂️ 탐색기</a>
+                <a href="/static/church-editor.html" class="nav-link">🕊️ 주보</a>
+                <a href="/static/election-editor.html" class="nav-link active">🗳️ 선거</a>
+                <a href="/static/editor.html" class="nav-link">📝 일반</a>
+            </div>
+            <div class="file-info" id="currentFileInfo">파일을 선택하세요</div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="loadFiles()">🔄 새로고침</button>
+            <button class="btn btn-accent" onclick="saveFile()">💾 저장</button>
+            <button class="btn btn-outline" onclick="downloadFile()">⬇️ 다운로드</button>
+            <button class="btn btn-primary" onclick="downloadWithImages()">📦 ZIP</button>
+        </div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-container">
+        <!-- 사이드바 -->
+        <div class="sidebar">
+            <div class="sidebar-tabs">
+                <button class="sidebar-tab active" onclick="switchSidebarTab('files')">📁 파일</button>
+                <button class="sidebar-tab" onclick="switchSidebarTab('tools')">🛠️ 도구</button>
+            </div>
+
+            <!-- 파일 탐색기 -->
+            <div class="file-explorer" id="filesPanel">
+                <div class="breadcrumb" id="breadcrumb">
+                    <span class="breadcrumb-current">📁 Election</span>
+                </div>
+                <div class="file-list" id="fileList">
+                    <div style="padding: 20px; text-align: center; color: var(--text-gray);">
+                        📂 파일 로딩 중...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 선거 전용 도구 패널 -->
+            <div class="tools-panel" id="toolsPanel">
+                <div class="tool-section open">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>👤</span> 후보자 정보
+                        <span style="margin-left: auto;">▼</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openCandidateModal()">
+                            <span class="tool-btn-icon">🪪</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">후보자 카드</div>
+                                <div class="tool-btn-desc">기호, 이름, 정당, 슬로건</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openDeclarationModal()">
+                            <span class="tool-btn-icon">📜</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">출사표</div>
+                                <div class="tool-btn-desc">입후보 선언문</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openProfileModal()">
+                            <span class="tool-btn-icon">📋</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">프로필 카드</div>
+                                <div class="tool-btn-desc">학력, SNS, 연락처</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>📋</span> 공약/경력
+                        <span style="margin-left: auto;">▶</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openPledgeModal()">
+                            <span class="tool-btn-icon">🎯</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">핵심 공약</div>
+                                <div class="tool-btn-desc">번호 강조 공약 카드</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openDetailedPledgeModal()">
+                            <span class="tool-btn-icon">📄</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">상세 공약</div>
+                                <div class="tool-btn-desc">분야별 상세 공약 페이지</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openCareerModal()">
+                            <span class="tool-btn-icon">💼</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">경력/이력</div>
+                                <div class="tool-btn-desc">경력 및 수상 내역</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>🗺️</span> 지역/지도
+                        <span style="margin-left: auto;">▶</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openRegionModal()">
+                            <span class="tool-btn-icon">📍</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">지역구 지도</div>
+                                <div class="tool-btn-desc">시/도, 구/군 단위 지도</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openDistrictModal()">
+                            <span class="tool-btn-icon">🏘️</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">선거구 정보</div>
+                                <div class="tool-btn-desc">선거구 경계 및 현황</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <div class="tool-section-header" onclick="toggleToolSection(this)">
+                        <span>🔗</span> SNS/연락처
+                        <span style="margin-left: auto;">▶</span>
+                    </div>
+                    <div class="tool-section-content">
+                        <button class="tool-btn" onclick="openSnsModal()">
+                            <span class="tool-btn-icon">📱</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">SNS 링크</div>
+                                <div class="tool-btn-desc">YouTube, 인스타 등</div>
+                            </div>
+                        </button>
+                        <button class="tool-btn" onclick="openContactModal()">
+                            <span class="tool-btn-icon">☎️</span>
+                            <div class="tool-btn-text">
+                                <div class="tool-btn-title">연락처</div>
+                                <div class="tool-btn-desc">선거사무소 연락처</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 컨텐츠 영역 -->
+        <div class="content-area">
+            <!-- 공통 + 선거 전용 툴바 -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <span class="toolbar-group-label">공통</span>
+                    <button class="toolbar-btn" onclick="formatText('bold')" title="굵게"><b>B</b></button>
+                    <button class="toolbar-btn" onclick="formatText('italic')" title="기울임"><i>I</i></button>
+                    <button class="toolbar-btn" onclick="formatText('underline')" title="밑줄"><u>U</u></button>
+                    <button class="toolbar-btn" onclick="insertElement('h1')">H1</button>
+                    <button class="toolbar-btn" onclick="insertElement('h2')">H2</button>
+                </div>
+                <div class="toolbar-group">
+                    <span class="toolbar-group-label">선거전용</span>
+                    <button class="toolbar-btn election-tool" onclick="openCandidateModal()" title="후보자 카드">🪪</button>
+                    <button class="toolbar-btn election-tool" onclick="openPledgeModal()" title="공약">🎯</button>
+                    <button class="toolbar-btn election-tool" onclick="openCareerModal()" title="경력">💼</button>
+                    <button class="toolbar-btn election-tool" onclick="openRegionModal()" title="지역구">📍</button>
+                    <button class="toolbar-btn election-tool" onclick="openProfileModal()" title="프로필">📋</button>
+                </div>
+                <div class="toolbar-group">
+                    <span class="toolbar-group-label">편집</span>
+                    <button class="toolbar-btn" onclick="beautifyHTML()">🧹 코드정리</button>
+                    <button class="toolbar-btn" onclick="findReplace()">🔍 찾기</button>
+                </div>
+            </div>
+
+            <!-- 분할 뷰 -->
+            <div class="split-view">
+                <div class="editor-pane" id="editorPane">
+                    <div class="pane-header">
+                        <span class="pane-title">✏️ HTML 편집</span>
+                        <span id="charCount" style="font-size: 0.8em; color: var(--text-gray);">0자</span>
+                    </div>
+                    <div class="editor-content">
+                        <textarea id="htmlEditor" placeholder="HTML 파일을 선택하거나 새로 작성하세요..."></textarea>
+                    </div>
+                </div>
+
+                <div class="resizer" id="resizer"></div>
+
+                <div class="preview-pane" id="previewPane">
+                    <div class="pane-header">
+                        <span class="pane-title">👁️ 미리보기</span>
+                        <div class="preview-size-btns">
+                            <button class="preview-size-btn" onclick="setPreviewSize('desktop')">🖥️</button>
+                            <button class="preview-size-btn active" onclick="setPreviewSize('mobile')">📱</button>
+                            <button class="preview-size-btn" onclick="setPreviewSize('tablet')">📟</button>
+                        </div>
+                    </div>
+                    <div class="preview-wrapper">
+                        <div class="preview-device mobile" id="previewDevice">
+                            <iframe id="previewFrame" class="preview-frame"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 상태바 -->
+            <div class="status-bar">
+                <span id="statusText">파일을 선택하세요</span>
+                <span>선거 전문 편집기 v1.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI 채팅 FAB -->
+    <button class="ai-fab" id="aiFab" onclick="toggleAiChat()">🤖</button>
+
+    <!-- AI 채팅 패널 -->
+    <div class="ai-chat-overlay" id="aiChatPanel">
+        <div class="ai-chat-header">
+            <span>🤖 AI 선거 도우미</span>
+            <button class="modal-close" onclick="toggleAiChat()">&times;</button>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message assistant">
+                안녕하세요! 선거 공보물 편집을 도와드릴게요. 예를 들어:
+                <br>• "후보자 사진을 더 크게"
+                <br>• "공약 카드 색상 변경"
+                <br>• "경력 섹션 추가해줘"
+            </div>
+        </div>
+        <div class="ai-chat-input">
+            <input type="text" id="aiChatInput" placeholder="수정 사항을 입력하세요..." onkeypress="handleAiInputKeypress(event)">
+            <button class="btn btn-primary" onclick="sendAiMessage()">전송</button>
+        </div>
+    </div>
+
+    <!-- 알림 -->
+    <div id="notification" class="notification"></div>
+
+    <!-- 후보자 카드 모달 -->
+    <div class="modal-overlay" id="candidateModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">🪪 후보자 카드 삽입</span>
+                <button class="modal-close" onclick="closeCandidateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">기호</label>
+                    <input type="number" class="form-input" id="candidateNumber" placeholder="예: 1" min="1" max="20" style="width: 100px;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">정당 선택</label>
+                    <div class="party-selector" id="partySelector">
+                        <div class="party-option blue" onclick="selectParty(this, '더불어민주당', '#004EA2')">
+                            <div class="party-symbol">🔵</div>
+                            <div class="party-name">더불어민주당</div>
+                        </div>
+                        <div class="party-option red" onclick="selectParty(this, '국민의힘', '#E61E2B')">
+                            <div class="party-symbol">🔴</div>
+                            <div class="party-name">국민의힘</div>
+                        </div>
+                        <div class="party-option orange" onclick="selectParty(this, '개혁신당', '#FF7210')">
+                            <div class="party-symbol">🟠</div>
+                            <div class="party-name">개혁신당</div>
+                        </div>
+                        <div class="party-option green" onclick="selectParty(this, '녹색정의당', '#00A651')">
+                            <div class="party-symbol">🟢</div>
+                            <div class="party-name">녹색정의당</div>
+                        </div>
+                        <div class="party-option gray" onclick="selectParty(this, '무소속', '#6B7280')">
+                            <div class="party-symbol">⚪</div>
+                            <div class="party-name">무소속</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">후보자 이름</label>
+                    <input type="text" class="form-input" id="candidateName" placeholder="예: 홍길동">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">선거구</label>
+                    <input type="text" class="form-input" id="candidateDistrict" placeholder="예: 서울특별시 강남구 갑">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">슬로건</label>
+                    <input type="text" class="form-input" id="candidateSlogan" placeholder="예: 변화와 혁신의 리더">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">후보자 사진 URL (선택)</label>
+                    <input type="text" class="form-input" id="candidatePhoto" placeholder="https://...">
+                </div>
+                <div class="candidate-preview" id="candidatePreview">
+                    <div class="candidate-card">
+                        <div class="candidate-photo" id="previewPhoto">👤</div>
+                        <div class="candidate-info">
+                            <div class="candidate-party" id="previewParty" style="background: #6B7280; color: white;">정당 선택</div>
+                            <div class="candidate-name" id="previewName">후보자 이름</div>
+                            <div class="candidate-slogan" id="previewSlogan">슬로건을 입력하세요</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeCandidateModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertCandidateCard()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 공약 모달 -->
+    <div class="modal-overlay" id="pledgeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">🎯 핵심 공약 삽입</span>
+                <button class="modal-close" onclick="closePledgeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">공약 수</label>
+                    <select class="form-select" id="pledgeCount" onchange="updatePledgeInputs()">
+                        <option value="3">3개</option>
+                        <option value="5" selected>5개</option>
+                        <option value="7">7개</option>
+                        <option value="10">10개</option>
+                    </select>
+                </div>
+                <div id="pledgeInputs">
+                    <!-- 동적 생성 -->
+                </div>
+                <div class="form-group">
+                    <label class="form-label">스타일</label>
+                    <select class="form-select" id="pledgeStyle">
+                        <option value="cards">카드형</option>
+                        <option value="list">목록형</option>
+                        <option value="grid">그리드형</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closePledgeModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertPledges()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 경력 모달 -->
+    <div class="modal-overlay" id="careerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">💼 경력/이력 삽입</span>
+                <button class="modal-close" onclick="closeCareerModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">경력 (한 줄에 하나씩)</label>
+                    <textarea class="form-textarea" id="careerList" placeholder="예:
+서울대학교 법학과 졸업
+제20대 국회의원
+법무부 차관
+대한변호사협회 회장"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">주요 수상 (한 줄에 하나씩)</label>
+                    <textarea class="form-textarea" id="awardList" placeholder="예:
+2020년 의정활동 우수 국회의원상
+2019년 청렴 국회의원상" style="min-height: 80px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">스타일</label>
+                    <select class="form-select" id="careerStyle">
+                        <option value="timeline">타임라인</option>
+                        <option value="list">목록형</option>
+                        <option value="cards">카드형</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeCareerModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertCareer()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 지역구 모달 -->
+    <div class="modal-overlay" id="regionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">📍 지역구 정보 삽입</span>
+                <button class="modal-close" onclick="closeRegionModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">시/도 선택</label>
+                    <select class="form-select" id="regionProvince" onchange="updateDistricts()">
+                        <option value="">선택하세요</option>
+                        <option value="서울특별시">서울특별시</option>
+                        <option value="부산광역시">부산광역시</option>
+                        <option value="대구광역시">대구광역시</option>
+                        <option value="인천광역시">인천광역시</option>
+                        <option value="광주광역시">광주광역시</option>
+                        <option value="대전광역시">대전광역시</option>
+                        <option value="울산광역시">울산광역시</option>
+                        <option value="세종특별자치시">세종특별자치시</option>
+                        <option value="경기도">경기도</option>
+                        <option value="강원도">강원도</option>
+                        <option value="충청북도">충청북도</option>
+                        <option value="충청남도">충청남도</option>
+                        <option value="전라북도">전라북도</option>
+                        <option value="전라남도">전라남도</option>
+                        <option value="경상북도">경상북도</option>
+                        <option value="경상남도">경상남도</option>
+                        <option value="제주특별자치도">제주특별자치도</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">구/군 선택</label>
+                    <div class="region-grid" id="districtGrid">
+                        <div style="padding: 20px; text-align: center; color: var(--text-gray); grid-column: 1/-1;">
+                            시/도를 먼저 선택하세요
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">선거구명 (갑/을/병)</label>
+                    <select class="form-select" id="regionSection">
+                        <option value="">해당없음</option>
+                        <option value="갑">갑</option>
+                        <option value="을">을</option>
+                        <option value="병">병</option>
+                        <option value="정">정</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeRegionModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertRegionInfo()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 프로필 모달 -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">📋 프로필 카드 삽입</span>
+                <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">학력 (한 줄에 하나씩)</label>
+                    <textarea class="form-textarea" id="profileEducation" placeholder="예:
+서울대학교 법학과 졸업
+하버드 대학교 행정학 석사"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">SNS (선택)</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" class="form-input" id="profileYoutube" placeholder="YouTube URL">
+                        <input type="text" class="form-input" id="profileInstagram" placeholder="Instagram URL">
+                        <input type="text" class="form-input" id="profileFacebook" placeholder="Facebook URL">
+                        <input type="text" class="form-input" id="profileBlog" placeholder="블로그/홈페이지 URL">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">연락처</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" class="form-input" id="profilePhone" placeholder="선거사무소 전화">
+                        <input type="text" class="form-input" id="profileEmail" placeholder="이메일">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeProfileModal()">취소</button>
+                <button class="btn btn-primary" onclick="insertProfile()">삽입</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================
+        // 전역 변수
+        // =========================================
+        let currentFile = null;
+        let originalContent = '';
+        let currentPath = 'Election';  // 선거는 Election 폴더 기본
+        let previewUpdateTimer = null;
+        let selectedParty = { name: '무소속', color: '#6B7280' };
+        let selectedDistrict = '';
+
+        // 지역 데이터
+        const districtData = {
+            '서울특별시': ['종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '마포구', '양천구', '강서구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강남구', '송파구', '강동구'],
+            '부산광역시': ['중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구', '연제구', '수영구', '사상구', '기장군'],
+            '경기도': ['수원시', '성남시', '의정부시', '안양시', '부천시', '광명시', '평택시', '동두천시', '안산시', '고양시', '과천시', '구리시', '남양주시', '오산시', '시흥시', '군포시', '의왕시', '하남시', '용인시', '파주시', '이천시', '안성시', '김포시', '화성시', '광주시', '양주시', '포천시', '여주시', '연천군', '가평군', '양평군']
+        };
+
+        // =========================================
+        // 초기화
+        // =========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFiles();
+            setupResizer();
+            setupEditorEvents();
+            updatePledgeInputs();
+        });
+
+        // =========================================
+        // 파일 탐색기 (공통 코드)
+        // =========================================
+        async function loadFiles() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-gray);">📂 로딩 중...</div>';
+            updateBreadcrumb();
+
+            try {
+                let apiUrl = '/api/files/outputs';
+                if (currentPath) {
+                    // 한글 경로 인코딩 처리
+                    const encodedPath = currentPath.split('/').map(p => encodeURIComponent(p)).join('/');
+                    apiUrl += '/' + encodedPath;
+                }
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayFiles(data.folders || [], data.files || []);
+                } else {
+                    fileList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-gray);">📁 파일이 없습니다</div>';
+                }
+            } catch (error) {
+                console.error('파일 로드 오류:', error);
+                fileList.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--danger);">❌ 로드 실패</div>`;
+            }
+        }
+
+        function displayFiles(folders, files) {
+            const fileList = document.getElementById('fileList');
+            if (folders.length === 0 && files.length === 0) {
+                fileList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-gray);">📁 파일이 없습니다</div>';
+                return;
+            }
+
+            let html = '';
+
+            folders.forEach(folder => {
+                const folderName = typeof folder === 'string' ? folder : folder.name;
+                const folderPath = currentPath ? currentPath + '/' + folderName : folderName;
+                const fileCount = folder.file_count || 0;
+                html += `
+                    <div class="folder-item" onclick="navigateTo('${folderPath}')">
+                        <span>📁</span>
+                        <span class="folder-name">${folderName}</span>
+                        ${fileCount > 0 ? `<span style="margin-left: auto; font-size: 0.75em; color: #92400E;">(${fileCount})</span>` : ''}
+                    </div>
+                `;
+            });
+
+            files.forEach(file => {
+                const filePath = currentPath ? 'outputs/' + currentPath + '/' + file.name : file.name;
+                const isActive = currentFile === filePath;
+                html += `
+                    <div class="file-item ${isActive ? 'active' : ''}" onclick="loadFile('${filePath}')">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-time">${new Date(file.modified).toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            fileList.innerHTML = html;
+        }
+
+        function navigateTo(path) {
+            currentPath = path;
+            loadFiles();
+        }
+
+        function updateBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (!currentPath) {
+                breadcrumb.innerHTML = '<span class="breadcrumb-current">📁 outputs</span>';
+                return;
+            }
+
+            const parts = currentPath.split('/').filter(p => p);
+            let html = '<span class="breadcrumb-item" onclick="navigateTo(\'\')">📁 outputs</span>';
+
+            let accumulated = '';
+            parts.forEach((part, idx) => {
+                html += '<span class="breadcrumb-separator">/</span>';
+                accumulated += (accumulated ? '/' : '') + part;
+                if (idx === parts.length - 1) {
+                    html += `<span class="breadcrumb-current">${part}</span>`;
+                } else {
+                    html += `<span class="breadcrumb-item" onclick="navigateTo('${accumulated}')">${part}</span>`;
+                }
+            });
+
+            breadcrumb.innerHTML = html;
+        }
+
+        // =========================================
+        // 파일 로드/저장 (공통 코드)
+        // =========================================
+        async function loadFile(filename) {
+            try {
+                const response = await fetch(`/api/editor/file/${encodeURIComponent(filename)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    currentFile = filename;
+                    originalContent = data.content;
+                    document.getElementById('htmlEditor').value = data.content;
+                    document.getElementById('currentFileInfo').textContent = filename.split('/').pop();
+                    document.getElementById('statusText').textContent = `${filename} 로드됨`;
+                    updatePreview();
+                    updateCharCount();
+                    loadFiles();
+                } else {
+                    showNotification('파일 로드 실패', 'error');
+                }
+            } catch (error) {
+                console.error('파일 로드 오류:', error);
+                showNotification('파일 로드 오류', 'error');
+            }
+        }
+
+        async function saveFile() {
+            if (!currentFile) {
+                showNotification('저장할 파일을 선택하세요', 'error');
+                return;
+            }
+
+            const content = document.getElementById('htmlEditor').value;
+
+            try {
+                const response = await fetch('/api/editor/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: currentFile, content })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    originalContent = content;
+                    showNotification('저장 완료!', 'success');
+                    document.getElementById('statusText').textContent = '저장됨';
+                } else {
+                    showNotification('저장 실패: ' + data.detail, 'error');
+                }
+            } catch (error) {
+                showNotification('저장 오류', 'error');
+            }
+        }
+
+        function downloadFile() {
+            if (!currentFile) {
+                showNotification('다운로드할 파일을 선택하세요', 'error');
+                return;
+            }
+
+            const content = document.getElementById('htmlEditor').value;
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile.split('/').pop();
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('다운로드 시작!', 'success');
+        }
+
+        async function downloadWithImages() {
+            if (!currentFile) {
+                showNotification('파일을 선택하세요', 'error');
+                return;
+            }
+
+            try {
+                showNotification('ZIP 생성 중...', 'info');
+                const response = await fetch(`/api/editor/download-zip/${encodeURIComponent(currentFile)}`);
+
+                if (!response.ok) throw new Error('ZIP 생성 실패');
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentFile.split('/').pop().replace('.html', '.zip');
+                a.click();
+                URL.revokeObjectURL(url);
+                showNotification('ZIP 다운로드 완료!', 'success');
+            } catch (error) {
+                showNotification('ZIP 다운로드 실패', 'error');
+            }
+        }
+
+        // =========================================
+        // 에디터 기능 (공통 코드)
+        // =========================================
+        function setupEditorEvents() {
+            const editor = document.getElementById('htmlEditor');
+
+            editor.addEventListener('input', () => {
+                updateCharCount();
+                schedulePreviewUpdate();
+            });
+
+            editor.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === 's') {
+                        e.preventDefault();
+                        saveFile();
+                    }
+                }
+            });
+        }
+
+        function updateCharCount() {
+            const count = document.getElementById('htmlEditor').value.length;
+            document.getElementById('charCount').textContent = `${count.toLocaleString()}자`;
+        }
+
+        function schedulePreviewUpdate() {
+            clearTimeout(previewUpdateTimer);
+            previewUpdateTimer = setTimeout(updatePreview, 300);
+        }
+
+        function updatePreview() {
+            const content = document.getElementById('htmlEditor').value;
+            const frame = document.getElementById('previewFrame');
+            const doc = frame.contentDocument || frame.contentWindow.document;
+            doc.open();
+            doc.write(content);
+            doc.close();
+        }
+
+        function setPreviewSize(size) {
+            const device = document.getElementById('previewDevice');
+            device.className = 'preview-device ' + size;
+
+            document.querySelectorAll('.preview-size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(size === 'desktop' ? '🖥️' : size === 'mobile' ? '📱' : '📟')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // =========================================
+        // 리사이저 (공통 코드)
+        // =========================================
+        function setupResizer() {
+            const resizer = document.getElementById('resizer');
+            const editorPane = document.getElementById('editorPane');
+            let isResizing = false;
+
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                document.body.style.cursor = 'col-resize';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                const containerRect = document.querySelector('.split-view').getBoundingClientRect();
+                const newWidth = e.clientX - containerRect.left;
+                editorPane.style.flex = 'none';
+                editorPane.style.width = Math.max(300, Math.min(newWidth, containerRect.width - 300)) + 'px';
+            });
+
+            document.addEventListener('mouseup', () => {
+                isResizing = false;
+                document.body.style.cursor = '';
+            });
+        }
+
+        // =========================================
+        // 사이드바 탭 (공통 코드)
+        // =========================================
+        function switchSidebarTab(tab) {
+            document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.sidebar-tab[onclick="switchSidebarTab('${tab}')"]`).classList.add('active');
+
+            document.getElementById('filesPanel').style.display = tab === 'files' ? 'flex' : 'none';
+            document.getElementById('toolsPanel').classList.toggle('active', tab === 'tools');
+        }
+
+        function toggleToolSection(header) {
+            const section = header.parentElement;
+            const isOpen = section.classList.contains('open');
+
+            document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('open'));
+
+            if (!isOpen) {
+                section.classList.add('open');
+            }
+
+            document.querySelectorAll('.tool-section-header span:last-child').forEach(icon => {
+                icon.textContent = icon.closest('.tool-section').classList.contains('open') ? '▼' : '▶';
+            });
+        }
+
+        // =========================================
+        // 알림 (공통 코드)
+        // =========================================
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> ${message}`;
+            notification.className = `notification show ${type}`;
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // =========================================
+        // 공통 텍스트 포맷
+        // =========================================
+        function formatText(type) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const selectedText = editor.value.substring(start, end);
+
+            let wrapper;
+            switch (type) {
+                case 'bold': wrapper = ['<strong>', '</strong>']; break;
+                case 'italic': wrapper = ['<em>', '</em>']; break;
+                case 'underline': wrapper = ['<u>', '</u>']; break;
+            }
+
+            const newText = wrapper[0] + selectedText + wrapper[1];
+            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+            editor.focus();
+            updatePreview();
+        }
+
+        function insertElement(tag) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const selectedText = editor.value.substring(start, editor.selectionEnd) || '내용을 입력하세요';
+
+            const newText = `<${tag}>${selectedText}</${tag}>\n`;
+            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(editor.selectionEnd);
+            editor.focus();
+            updatePreview();
+        }
+
+        function beautifyHTML() {
+            const editor = document.getElementById('htmlEditor');
+            let html = editor.value;
+            html = html.replace(/></g, '>\n<');
+            html = html.replace(/\n\s*\n/g, '\n');
+            editor.value = html;
+            updatePreview();
+            showNotification('코드 정리 완료', 'success');
+        }
+
+        function findReplace() {
+            const find = prompt('찾을 텍스트:');
+            if (!find) return;
+
+            const replace = prompt('바꿀 텍스트:');
+            if (replace === null) return;
+
+            const editor = document.getElementById('htmlEditor');
+            const count = (editor.value.match(new RegExp(find, 'g')) || []).length;
+            editor.value = editor.value.split(find).join(replace);
+            updatePreview();
+            showNotification(`${count}개 항목 교체됨`, 'success');
+        }
+
+        // =========================================
+        // 후보자 카드 모달
+        // =========================================
+        function openCandidateModal() {
+            document.getElementById('candidateModal').classList.add('active');
+            updateCandidatePreview();
+        }
+
+        function closeCandidateModal() {
+            document.getElementById('candidateModal').classList.remove('active');
+        }
+
+        function selectParty(element, name, color) {
+            document.querySelectorAll('.party-option').forEach(p => p.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedParty = { name, color };
+            updateCandidatePreview();
+        }
+
+        function updateCandidatePreview() {
+            const name = document.getElementById('candidateName').value || '후보자 이름';
+            const slogan = document.getElementById('candidateSlogan').value || '슬로건을 입력하세요';
+            const photo = document.getElementById('candidatePhoto').value;
+
+            document.getElementById('previewName').textContent = name;
+            document.getElementById('previewSlogan').textContent = slogan;
+            document.getElementById('previewParty').textContent = selectedParty.name;
+            document.getElementById('previewParty').style.background = selectedParty.color;
+
+            if (photo) {
+                document.getElementById('previewPhoto').innerHTML = `<img src="${photo}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`;
+            } else {
+                document.getElementById('previewPhoto').innerHTML = '👤';
+            }
+        }
+
+        // 실시간 미리보기 업데이트
+        document.addEventListener('input', (e) => {
+            if (['candidateName', 'candidateSlogan', 'candidatePhoto'].includes(e.target.id)) {
+                updateCandidatePreview();
+            }
+        });
+
+        function insertCandidateCard() {
+            const number = document.getElementById('candidateNumber').value || '1';
+            const name = document.getElementById('candidateName').value || '후보자';
+            const district = document.getElementById('candidateDistrict').value || '';
+            const slogan = document.getElementById('candidateSlogan').value || '';
+            const photo = document.getElementById('candidatePhoto').value;
+
+            const html = `
+<div class="candidate-card" style="background: linear-gradient(135deg, ${selectedParty.color}15 0%, #fff 100%); padding: 25px; border-radius: 16px; margin: 20px 0; border: 2px solid ${selectedParty.color};">
+    <div style="display: flex; gap: 20px; align-items: center;">
+        <div style="width: 120px; height: 150px; background: ${photo ? 'none' : '#f3f4f6'}; border-radius: 12px; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 3em; color: #9ca3af;">
+            ${photo ? `<img src="${photo}" style="width: 100%; height: 100%; object-fit: cover;">` : '👤'}
+        </div>
+        <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="display: inline-flex; width: 40px; height: 40px; background: ${selectedParty.color}; color: white; border-radius: 50%; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2em;">${number}</span>
+                <span style="background: ${selectedParty.color}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600;">${selectedParty.name}</span>
+            </div>
+            <div style="font-size: 2em; font-weight: 800; color: #1f2937; margin-bottom: 4px;">${name}</div>
+            ${district ? `<div style="color: #6b7280; font-size: 0.9em; margin-bottom: 8px;">📍 ${district}</div>` : ''}
+            ${slogan ? `<div style="color: ${selectedParty.color}; font-size: 1.1em; font-weight: 600; font-style: italic;">"${slogan}"</div>` : ''}
+        </div>
+    </div>
+</div>`;
+
+            insertAtCursor(html);
+            closeCandidateModal();
+            showNotification('후보자 카드 삽입됨', 'success');
+        }
+
+        // =========================================
+        // 공약 모달
+        // =========================================
+        function openPledgeModal() {
+            document.getElementById('pledgeModal').classList.add('active');
+            updatePledgeInputs();
+        }
+
+        function closePledgeModal() {
+            document.getElementById('pledgeModal').classList.remove('active');
+        }
+
+        function updatePledgeInputs() {
+            const count = parseInt(document.getElementById('pledgeCount').value);
+            const container = document.getElementById('pledgeInputs');
+
+            let html = '';
+            for (let i = 1; i <= count; i++) {
+                html += `
+                    <div class="form-group">
+                        <label class="form-label">공약 ${i}</label>
+                        <input type="text" class="form-input pledge-input" id="pledge${i}" placeholder="예: 청년 일자리 10만개 창출">
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function insertPledges() {
+            const count = parseInt(document.getElementById('pledgeCount').value);
+            const style = document.getElementById('pledgeStyle').value;
+            const pledges = [];
+
+            for (let i = 1; i <= count; i++) {
+                const input = document.getElementById(`pledge${i}`);
+                if (input && input.value.trim()) {
+                    pledges.push(input.value.trim());
+                }
+            }
+
+            if (pledges.length === 0) {
+                showNotification('최소 하나의 공약을 입력하세요', 'error');
+                return;
+            }
+
+            let html = '<div class="pledges-section" style="margin: 25px 0;">\n';
+            html += '    <h2 style="text-align: center; color: #1e3a8a; margin-bottom: 20px;">🎯 핵심 공약</h2>\n';
+
+            if (style === 'cards') {
+                pledges.forEach((pledge, i) => {
+                    html += `
+    <div style="background: white; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; border-left: 5px solid #1e3a8a; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="display: inline-flex; width: 32px; height: 32px; background: #1e3a8a; color: white; border-radius: 50%; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">${i + 1}</span>
+            <span style="font-size: 1.05em; color: #1f2937; font-weight: 500;">${pledge}</span>
+        </div>
+    </div>\n`;
+                });
+            } else if (style === 'list') {
+                html += '    <ul style="list-style: none; padding: 0;">\n';
+                pledges.forEach((pledge, i) => {
+                    html += `        <li style="padding: 12px 0; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 10px;">
+            <span style="background: #1e3a8a; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9em;">${i + 1}</span>
+            ${pledge}
+        </li>\n`;
+                });
+                html += '    </ul>\n';
+            } else {
+                html += '    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">\n';
+                pledges.forEach((pledge, i) => {
+                    html += `        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2em; font-weight: 800; margin-bottom: 8px;">${i + 1}</div>
+            <div style="font-size: 0.95em;">${pledge}</div>
+        </div>\n`;
+                });
+                html += '    </div>\n';
+            }
+
+            html += '</div>';
+
+            insertAtCursor(html);
+            closePledgeModal();
+            showNotification('공약 섹션 삽입됨', 'success');
+        }
+
+        // =========================================
+        // 경력 모달
+        // =========================================
+        function openCareerModal() {
+            document.getElementById('careerModal').classList.add('active');
+        }
+
+        function closeCareerModal() {
+            document.getElementById('careerModal').classList.remove('active');
+        }
+
+        function insertCareer() {
+            const careerText = document.getElementById('careerList').value.trim();
+            const awardText = document.getElementById('awardList').value.trim();
+            const style = document.getElementById('careerStyle').value;
+
+            const careers = careerText.split('\n').filter(c => c.trim());
+            const awards = awardText.split('\n').filter(a => a.trim());
+
+            if (careers.length === 0) {
+                showNotification('경력을 입력하세요', 'error');
+                return;
+            }
+
+            let html = '<div class="career-section" style="margin: 25px 0;">\n';
+            html += '    <h2 style="color: #1e3a8a; margin-bottom: 20px;">💼 주요 경력</h2>\n';
+
+            if (style === 'timeline') {
+                html += '    <div style="border-left: 3px solid #1e3a8a; padding-left: 20px; margin-left: 10px;">\n';
+                careers.forEach(career => {
+                    html += `        <div style="position: relative; padding-bottom: 15px;">
+            <div style="position: absolute; left: -28px; width: 12px; height: 12px; background: #1e3a8a; border-radius: 50%;"></div>
+            <div style="background: #f8fafc; padding: 12px 16px; border-radius: 8px;">${career}</div>
+        </div>\n`;
+                });
+                html += '    </div>\n';
+            } else {
+                html += '    <ul style="list-style: none; padding: 0;">\n';
+                careers.forEach(career => {
+                    html += `        <li style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">✓ ${career}</li>\n`;
+                });
+                html += '    </ul>\n';
+            }
+
+            if (awards.length > 0) {
+                html += '    <h3 style="color: #dc2626; margin: 25px 0 15px;">🏆 주요 수상</h3>\n';
+                html += '    <ul style="list-style: none; padding: 0;">\n';
+                awards.forEach(award => {
+                    html += `        <li style="padding: 8px 0; color: #dc2626;">🏅 ${award}</li>\n`;
+                });
+                html += '    </ul>\n';
+            }
+
+            html += '</div>';
+
+            insertAtCursor(html);
+            closeCareerModal();
+            showNotification('경력 섹션 삽입됨', 'success');
+        }
+
+        // =========================================
+        // 지역구 모달
+        // =========================================
+        function openRegionModal() {
+            document.getElementById('regionModal').classList.add('active');
+        }
+
+        function closeRegionModal() {
+            document.getElementById('regionModal').classList.remove('active');
+        }
+
+        function updateDistricts() {
+            const province = document.getElementById('regionProvince').value;
+            const grid = document.getElementById('districtGrid');
+
+            if (!province || !districtData[province]) {
+                grid.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-gray); grid-column: 1/-1;">시/도를 먼저 선택하세요</div>';
+                return;
+            }
+
+            const districts = districtData[province];
+            grid.innerHTML = districts.map(d => `
+                <button class="region-btn" onclick="selectDistrict(this, '${d}')">${d}</button>
+            `).join('');
+        }
+
+        function selectDistrict(btn, district) {
+            document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedDistrict = district;
+        }
+
+        function insertRegionInfo() {
+            const province = document.getElementById('regionProvince').value;
+            const section = document.getElementById('regionSection').value;
+
+            if (!province || !selectedDistrict) {
+                showNotification('지역을 선택하세요', 'error');
+                return;
+            }
+
+            const fullRegion = `${province} ${selectedDistrict}${section ? ' ' + section : ''}`;
+
+            const html = `
+<div class="region-info" style="background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%); padding: 20px; border-radius: 12px; margin: 20px 0; text-align: center; border: 2px solid #3b82f6;">
+    <div style="font-size: 2em; margin-bottom: 10px;">📍</div>
+    <div style="font-size: 0.9em; color: #3b82f6; margin-bottom: 5px;">선거구</div>
+    <div style="font-size: 1.4em; font-weight: 700; color: #1e3a8a;">${fullRegion}</div>
+</div>`;
+
+            insertAtCursor(html);
+            closeRegionModal();
+            showNotification('지역구 정보 삽입됨', 'success');
+        }
+
+        // =========================================
+        // 프로필 모달
+        // =========================================
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        function insertProfile() {
+            const education = document.getElementById('profileEducation').value.trim().split('\n').filter(e => e.trim());
+            const youtube = document.getElementById('profileYoutube').value.trim();
+            const instagram = document.getElementById('profileInstagram').value.trim();
+            const facebook = document.getElementById('profileFacebook').value.trim();
+            const blog = document.getElementById('profileBlog').value.trim();
+            const phone = document.getElementById('profilePhone').value.trim();
+            const email = document.getElementById('profileEmail').value.trim();
+
+            let html = '<div class="profile-card" style="background: #f8fafc; padding: 25px; border-radius: 16px; margin: 20px 0;">\n';
+
+            if (education.length > 0) {
+                html += '    <div style="margin-bottom: 20px;">\n';
+                html += '        <h3 style="color: #1e3a8a; margin-bottom: 12px;">🎓 학력</h3>\n';
+                html += '        <ul style="list-style: none; padding: 0; margin: 0;">\n';
+                education.forEach(edu => {
+                    html += `            <li style="padding: 6px 0; color: #374151;">• ${edu}</li>\n`;
+                });
+                html += '        </ul>\n';
+                html += '    </div>\n';
+            }
+
+            const snsLinks = [];
+            if (youtube) snsLinks.push({ icon: '▶', name: 'YouTube', url: youtube, bg: '#FF0000' });
+            if (instagram) snsLinks.push({ icon: '📷', name: 'Instagram', url: instagram, bg: '#E1306C' });
+            if (facebook) snsLinks.push({ icon: 'f', name: 'Facebook', url: facebook, bg: '#1877F2' });
+            if (blog) snsLinks.push({ icon: '🌐', name: '홈페이지', url: blog, bg: '#10B981' });
+
+            if (snsLinks.length > 0) {
+                html += '    <div style="margin-bottom: 20px;">\n';
+                html += '        <h3 style="color: #1e3a8a; margin-bottom: 12px;">📱 SNS</h3>\n';
+                html += '        <div style="display: flex; gap: 10px; flex-wrap: wrap;">\n';
+                snsLinks.forEach(link => {
+                    html += `            <a href="${link.url}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: ${link.bg}; color: white; text-decoration: none; border-radius: 8px; font-size: 0.9em;">${link.icon} ${link.name}</a>\n`;
+                });
+                html += '        </div>\n';
+                html += '    </div>\n';
+            }
+
+            if (phone || email) {
+                html += '    <div>\n';
+                html += '        <h3 style="color: #1e3a8a; margin-bottom: 12px;">📞 연락처</h3>\n';
+                if (phone) html += `        <p style="margin: 6px 0;"><a href="tel:${phone}" style="color: #1e3a8a; text-decoration: none;">☎️ ${phone}</a></p>\n`;
+                if (email) html += `        <p style="margin: 6px 0;"><a href="mailto:${email}" style="color: #1e3a8a; text-decoration: none;">✉️ ${email}</a></p>\n`;
+                html += '    </div>\n';
+            }
+
+            html += '</div>';
+
+            insertAtCursor(html);
+            closeProfileModal();
+            showNotification('프로필 카드 삽입됨', 'success');
+        }
+
+        // =========================================
+        // 기타 모달 (TODO)
+        // =========================================
+        function openDeclarationModal() {
+            showNotification('출사표 기능은 준비 중입니다', 'info');
+        }
+
+        function openDetailedPledgeModal() {
+            showNotification('상세 공약 기능은 준비 중입니다', 'info');
+        }
+
+        function openDistrictModal() {
+            showNotification('선거구 정보 기능은 준비 중입니다', 'info');
+        }
+
+        function openSnsModal() {
+            showNotification('SNS 링크 기능은 준비 중입니다', 'info');
+        }
+
+        function openContactModal() {
+            showNotification('연락처 기능은 준비 중입니다', 'info');
+        }
+
+        // =========================================
+        // AI 채팅
+        // =========================================
+        function toggleAiChat() {
+            const panel = document.getElementById('aiChatPanel');
+            const fab = document.getElementById('aiFab');
+            panel.classList.toggle('active');
+            fab.classList.toggle('hidden', panel.classList.contains('active'));
+        }
+
+        function handleAiInputKeypress(e) {
+            if (e.key === 'Enter') {
+                sendAiMessage();
+            }
+        }
+
+        async function sendAiMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesDiv = document.getElementById('aiChatMessages');
+
+            messagesDiv.innerHTML += `<div class="ai-message user">${message}</div>`;
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            messagesDiv.innerHTML += `<div class="ai-message assistant">요청을 처리 중입니다...</div>`;
+
+            try {
+                const htmlContent = document.getElementById('htmlEditor').value;
+                const response = await fetch('/api/ai/edit-html', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        html_content: htmlContent,
+                        instruction: message,
+                        content_type: 'election'
+                    })
+                });
+
+                const data = await response.json();
+                const lastMsg = messagesDiv.lastElementChild;
+
+                if (data.success) {
+                    document.getElementById('htmlEditor').value = data.html;
+                    updatePreview();
+                    lastMsg.textContent = '수정을 완료했습니다! 미리보기를 확인해주세요.';
+                } else {
+                    lastMsg.textContent = '죄송합니다. 수정에 실패했습니다: ' + (data.detail || '알 수 없는 오류');
+                }
+            } catch (error) {
+                const lastMsg = messagesDiv.lastElementChild;
+                lastMsg.textContent = '서버 연결 오류가 발생했습니다.';
+            }
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // =========================================
+        // 유틸리티
+        // =========================================
+        function insertAtCursor(text) {
+            const editor = document.getElementById('htmlEditor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+
+            editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
+            editor.selectionStart = editor.selectionEnd = start + text.length;
+            editor.focus();
+            updatePreview();
+            updateCharCount();
+        }
+    </script>
+</body>
+</html>
