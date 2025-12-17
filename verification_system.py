@@ -343,3 +343,353 @@ def get_verification_system() -> VerificationSystem:
     if _verification_system is None:
         _verification_system = VerificationSystem()
     return _verification_system
+
+
+class ChurchBulletinVerifier:
+    """교회 주보 전용 검증 시스템 - 원본 PDF와 결과물 비교"""
+
+    def __init__(self):
+        # 교회 주보에서 자주 발생하는 OCR 오류 패턴
+        self.common_ocr_errors = {
+            "예배": "예배",
+            "찬송": "찬송",
+            "기도": "기도",
+            "말씀": "말씀",
+            "헌금": "헌금",
+            "축도": "축도",
+            "성경봉독": "성경봉독",
+        }
+
+        # 교회별 중요 키워드
+        self.church_keywords = {
+            "명성교회": {
+                "required": ["김삼환", "김하나", "예배", "찬송"],
+                "forbidden": ["오늘의 말씀"],  # 명성교회에는 이 섹션이 없음
+            }
+        }
+
+    def verify_church_bulletin(
+        self,
+        original_pdf_path: str,
+        generated_html_path: str,
+        extracted_data: Dict[str, Any],
+        church_name: str = ""
+    ) -> Dict[str, Any]:
+        """
+        교회 주보 변환 결과 검증
+
+        Args:
+            original_pdf_path: 원본 PDF 파일 경로
+            generated_html_path: 생성된 HTML 파일 경로
+            extracted_data: OCR로 추출된 데이터
+            church_name: 교회명
+
+        Returns:
+            검증 결과 딕셔너리
+        """
+        logger.info(f"교회 주보 검증 시작: {Path(original_pdf_path).name}")
+
+        result = {
+            "original_file": Path(original_pdf_path).name,
+            "generated_file": Path(generated_html_path).name,
+            "church_name": church_name,
+            "status": "pending",
+            "errors": [],
+            "warnings": [],
+            "info": [],
+            "statistics": {},
+            "comparison": {
+                "missing_in_html": [],  # PDF에는 있지만 HTML에 없는 내용
+                "extra_in_html": [],     # PDF에는 없지만 HTML에 추가된 내용 (환각)
+                "mismatched": []         # 불일치 내용
+            }
+        }
+
+        try:
+            # 1. 원본 PDF 텍스트 추출
+            original_text = self._extract_pdf_text(original_pdf_path)
+            if not original_text:
+                original_text = self._get_text_from_extracted_data(extracted_data)
+
+            # 2. 생성된 HTML에서 텍스트 추출
+            html_text = self._extract_html_text(generated_html_path)
+
+            # 3. 핵심 정보 비교
+            comparison = self._compare_key_information(
+                original_text, html_text, church_name
+            )
+            result["comparison"] = comparison
+
+            # 4. 교회별 특수 검증
+            church_specific = self._verify_church_specific(
+                html_text, church_name
+            )
+            result["errors"].extend(church_specific.get("errors", []))
+            result["warnings"].extend(church_specific.get("warnings", []))
+
+            # 5. 환각(Hallucination) 검사 - HTML에만 있고 PDF에 없는 내용
+            hallucinations = self._check_hallucinations(original_text, html_text)
+            if hallucinations:
+                result["errors"].extend(hallucinations)
+
+            # 6. 누락 검사 - PDF에 있지만 HTML에 없는 중요 내용
+            missing = self._check_missing_content(original_text, html_text, church_name)
+            if missing:
+                result["warnings"].extend(missing)
+
+            # 7. 통계 계산
+            result["statistics"] = {
+                "original_length": len(original_text),
+                "html_length": len(html_text),
+                "similarity_score": self._calculate_similarity(original_text, html_text),
+                "total_errors": len(result["errors"]),
+                "total_warnings": len(result["warnings"]),
+                "hallucination_count": len([e for e in result["errors"] if e.get("type") == "hallucination"]),
+                "missing_count": len([w for w in result["warnings"] if w.get("type") == "missing_content"])
+            }
+
+            # 8. 최종 상태 결정
+            if len(result["errors"]) == 0 and len(result["warnings"]) <= 2:
+                result["status"] = "passed"
+                result["info"].append("✅ 검증 통과! 원본과 일치합니다.")
+            elif len(result["errors"]) == 0:
+                result["status"] = "warning"
+                result["info"].append("⚠️ 경미한 경고가 있지만 사용 가능합니다.")
+            else:
+                result["status"] = "failed"
+                result["info"].append("❌ 오류 발견! 수동 검토가 필요합니다.")
+
+            logger.info(f"교회 주보 검증 완료: {result['status']} "
+                       f"(오류: {result['statistics']['total_errors']}, "
+                       f"경고: {result['statistics']['total_warnings']})")
+
+            return result
+
+        except Exception as e:
+            logger.error(f"교회 주보 검증 오류: {str(e)}", exc_info=True)
+            result["status"] = "error"
+            result["errors"].append({
+                "type": "system_error",
+                "message": f"검증 시스템 오류: {str(e)}"
+            })
+            return result
+
+    def _extract_pdf_text(self, pdf_path: str) -> str:
+        """PDF에서 텍스트 추출"""
+        try:
+            import fitz
+            doc = fitz.open(pdf_path)
+            text = ""
+            for page in doc:
+                text += page.get_text() + "\n"
+            doc.close()
+            return text.strip()
+        except Exception as e:
+            logger.warning(f"PDF 텍스트 추출 실패: {e}")
+            return ""
+
+    def _get_text_from_extracted_data(self, extracted_data: Dict) -> str:
+        """추출된 데이터에서 텍스트 가져오기"""
+        texts = []
+        for page in extracted_data.get("pages", []):
+            texts.append(page.get("text", ""))
+        return "\n".join(texts)
+
+    def _extract_html_text(self, html_path: str) -> str:
+        """HTML에서 텍스트 추출 (태그 제거)"""
+        try:
+            with open(html_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            # script, style 태그 제거
+            content = re.sub(r'<script[^>]*>.*?</script>', '', content, flags=re.DOTALL)
+            content = re.sub(r'<style[^>]*>.*?</style>', '', content, flags=re.DOTALL)
+            # HTML 태그 제거
+            content = re.sub(r'<[^>]+>', ' ', content)
+            # 연속 공백 정리
+            content = re.sub(r'\s+', ' ', content).strip()
+
+            return content
+        except Exception as e:
+            logger.error(f"HTML 텍스트 추출 실패: {e}")
+            return ""
+
+    def _compare_key_information(
+        self,
+        original: str,
+        html: str,
+        church_name: str
+    ) -> Dict[str, List]:
+        """핵심 정보 비교"""
+        comparison = {
+            "missing_in_html": [],
+            "extra_in_html": [],
+            "mismatched": []
+        }
+
+        # 주요 추출 대상 패턴
+        patterns = {
+            "날짜": r'\d{4}년\s*\d{1,2}월\s*\d{1,2}일',
+            "성경구절": r'[가-힣]+\s*\d+[:\s]*\d+[-~\d]*',
+            "찬송가": r'찬송가?\s*\d+장',
+            "시간": r'\d{1,2}[:\s]*\d{2}',
+        }
+
+        for name, pattern in patterns.items():
+            original_matches = set(re.findall(pattern, original))
+            html_matches = set(re.findall(pattern, html))
+
+            # 원본에만 있는 것 (누락)
+            missing = original_matches - html_matches
+            if missing:
+                comparison["missing_in_html"].append({
+                    "type": name,
+                    "values": list(missing)
+                })
+
+            # HTML에만 있는 것 (추가됨 - 주의 필요)
+            extra = html_matches - original_matches
+            if extra:
+                comparison["extra_in_html"].append({
+                    "type": name,
+                    "values": list(extra)
+                })
+
+        return comparison
+
+    def _verify_church_specific(self, html_text: str, church_name: str) -> Dict:
+        """교회별 특수 검증"""
+        result = {"errors": [], "warnings": []}
+
+        if church_name not in self.church_keywords:
+            return result
+
+        config = self.church_keywords[church_name]
+
+        # 필수 키워드 확인
+        for keyword in config.get("required", []):
+            if keyword not in html_text:
+                result["warnings"].append({
+                    "type": "missing_required_keyword",
+                    "keyword": keyword,
+                    "message": f"필수 키워드 '{keyword}'가 결과물에 없습니다"
+                })
+
+        # 금지 키워드 확인 (해당 교회에 없어야 할 내용)
+        for keyword in config.get("forbidden", []):
+            if keyword in html_text:
+                result["errors"].append({
+                    "type": "forbidden_content",
+                    "keyword": keyword,
+                    "message": f"'{keyword}'는 {church_name}에 없어야 할 내용입니다"
+                })
+
+        return result
+
+    def _check_hallucinations(self, original: str, html: str) -> List[Dict]:
+        """환각(Hallucination) 검사 - HTML에만 있는 의심스러운 내용"""
+        errors = []
+
+        # 원본에 없는 목사 이름이 HTML에 있는지 검사
+        # 주요 패턴: "OOO 목사", "OOO 전도사" 등
+        html_names = set(re.findall(r'([가-힣]{2,4})\s*(?:목사|전도사|장로|권사)', html))
+        original_names = set(re.findall(r'([가-힣]{2,4})\s*(?:목사|전도사|장로|권사)', original))
+
+        hallucinated_names = html_names - original_names
+        for name in hallucinated_names:
+            # 프리셋에서 온 이름은 제외 (김삼환, 김하나 등)
+            if name not in ["김삼환", "김하나"]:
+                errors.append({
+                    "type": "hallucination",
+                    "severity": "high",
+                    "content": f"{name}",
+                    "message": f"원본에 없는 이름 '{name}'이(가) HTML에 있습니다 - 환각 의심"
+                })
+
+        return errors
+
+    def _check_missing_content(
+        self,
+        original: str,
+        html: str,
+        church_name: str
+    ) -> List[Dict]:
+        """누락된 중요 내용 검사"""
+        warnings = []
+
+        # 원본의 주요 숫자/시간 정보가 HTML에 있는지 확인
+        original_times = set(re.findall(r'(\d{1,2}:\d{2})', original))
+        html_times = set(re.findall(r'(\d{1,2}:\d{2})', html))
+
+        missing_times = original_times - html_times
+        if missing_times:
+            warnings.append({
+                "type": "missing_content",
+                "category": "시간정보",
+                "missing": list(missing_times),
+                "message": f"원본의 시간 정보 {missing_times}가 누락됨"
+            })
+
+        return warnings
+
+    def _calculate_similarity(self, text1: str, text2: str) -> float:
+        """텍스트 유사도 계산"""
+        if not text1 or not text2:
+            return 0.0
+
+        # 공백, 특수문자 정규화
+        t1 = re.sub(r'\s+', '', text1.lower())
+        t2 = re.sub(r'\s+', '', text2.lower())
+
+        matcher = SequenceMatcher(None, t1, t2)
+        return round(matcher.ratio() * 100, 2)
+
+    def generate_report(self, result: Dict) -> str:
+        """검증 결과 리포트 생성"""
+        lines = [
+            "=" * 60,
+            "📋 교회 주보 검증 리포트",
+            "=" * 60,
+            f"교회: {result.get('church_name', 'N/A')}",
+            f"원본: {result.get('original_file', 'N/A')}",
+            f"결과: {result.get('generated_file', 'N/A')}",
+            f"상태: {result.get('status', 'N/A').upper()}",
+            "",
+            "📊 통계:",
+            f"  - 유사도: {result.get('statistics', {}).get('similarity_score', 0)}%",
+            f"  - 오류: {result.get('statistics', {}).get('total_errors', 0)}개",
+            f"  - 경고: {result.get('statistics', {}).get('total_warnings', 0)}개",
+            f"  - 환각: {result.get('statistics', {}).get('hallucination_count', 0)}개",
+            f"  - 누락: {result.get('statistics', {}).get('missing_count', 0)}개",
+        ]
+
+        if result.get("errors"):
+            lines.append("")
+            lines.append("❌ 오류:")
+            for err in result["errors"]:
+                lines.append(f"  - [{err.get('type')}] {err.get('message')}")
+
+        if result.get("warnings"):
+            lines.append("")
+            lines.append("⚠️ 경고:")
+            for warn in result["warnings"]:
+                lines.append(f"  - [{warn.get('type')}] {warn.get('message')}")
+
+        if result.get("info"):
+            lines.append("")
+            for info in result["info"]:
+                lines.append(info)
+
+        lines.append("=" * 60)
+        return "\n".join(lines)
+
+
+# 교회 주보 검증 싱글톤
+_church_verifier = None
+
+def get_church_bulletin_verifier() -> ChurchBulletinVerifier:
+    """교회 주보 검증 시스템 싱글톤"""
+    global _church_verifier
+    if _church_verifier is None:
+        _church_verifier = ChurchBulletinVerifier()
+    return _church_verifier

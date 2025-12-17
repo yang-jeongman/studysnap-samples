@@ -357,7 +357,7 @@ class VisionOCR:
 
 
     def extract_church_bulletin_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1) -> dict:
-        """교회 주보에서 구조화된 정보 추출"""
+        """교회 주보에서 구조화된 정보 추출 - 페이지별 상세 추출"""
         if not self.client:
             return {"text": "", "structured": {}}
 
@@ -365,12 +365,186 @@ class VisionOCR:
             if "base64," in image_base64:
                 image_base64 = image_base64.split("base64,")[1]
 
-            # 페이지 번호에 따라 프롬프트 조정
-            page_context = ""
+            # 페이지별 맞춤형 상세 프롬프트
             if page_number == 1:
-                page_context = "이것은 주보 앞면입니다. 오늘의 말씀, 예배 시간, 예배 순서를 추출하세요."
+                prompt = """이 교회 주보 표지를 분석하세요.
+
+**반드시 추출할 항목:**
+
+[교회정보]
+교회명: (교회 이름)
+영문명: (영문 이름 있으면)
+날짜: (예: 2025년 12월 14일)
+통권: (예: 통권 제68권 50호)
+표어: (2025 표어: 오직 말씀으로 - 정확히 추출)
+교회목표: (목표 항목들)
+주소: (주소)
+대표전화: (전화번호)
+
+[목회자]
+위임목사: (이름)
+부목사: (목회/교무/국제 등 역할별로)
+
+**주의: 1페이지의 짧은 성경 구절은 추출하지 마세요. 오늘의 말씀은 3페이지에서 추출합니다.**"""
+
             elif page_number == 2:
-                page_context = "이것은 주보 뒷면입니다. 설교 본문, 찬양대 순서, 교회 소식을 추출하세요."
+                prompt = """이 주일예배순서 페이지를 분석하세요.
+
+**반드시 모든 예배 정보를 추출하세요:**
+
+[주일예배순서]
+공통순서:
+- 예배로 부르심: (성경구절)
+- 첫 찬송: (찬송가 번호)
+- 신앙고백: (사도신경 등)
+- 마지막 찬송: (주기도문 등)
+
+예배별 담당자 (테이블 형식으로 출력):
+| 구분 | 시간 | 사회 | 성경봉독 | 대표기도 | 헌금기도 | 찬송 | 설교제목 | 설교자 |
+| 1부 | 07:00 | (사회자 이름) | (빌립보서 1:3~8) | (기도자 이름) | (헌금기도자) | (8, 301) | (설교 제목) | (목사 이름) |
+| 2부 | 09:00 | (사회자 이름) | (누가복음 3:4~6) | (기도자 이름) | (헌금기도자) | (8, 105) | (설교 제목) | (목사 이름) |
+| 3부 | 11:00 | (사회자 이름) | (누가복음 3:4~6) | (기도자 이름) | (헌금기도자) | (8, 105) | (설교 제목) | (목사 이름) |
+| 4부 | 13:00 | (사회자 이름) | (누가복음 3:4~6) | (기도자 이름) | (헌금기도자) | (8, 105) | (설교 제목) | (목사 이름) |
+| 5부대학청년 | 14:30 | (사회자 이름) | (요한복음 1:14) | (기도자 이름) | (헌금기도자) | (찬송번호) | (설교 제목) | (목사 이름) |
+| 주일저녁 | 17:00 | (사회자 이름) | (에베소서 2:4~8) | (기도자 이름) | (헌금기도자) | (8, 94) | (설교 제목) | (목사 이름) |
+
+**중요:
+1. 모든 예배의 모든 담당자를 빠짐없이 추출
+2. 성경봉독은 전체 구절(예: 빌립보서 1:3~8)로 추출
+3. 찬송은 번호로 추출(예: 8, 301 또는 8장, 301장)
+4. 테이블 형식을 정확히 유지하세요**"""
+
+            elif page_number == 3:
+                prompt = """이 페이지를 분석하세요. 오늘의 말씀이 있으면 반드시 추출하세요.
+
+[오늘의 말씀]
+본문: (말씀 전체 텍스트를 그대로 추출 - "선지자 이사야의 책에 쓴 바 광야에서..." 등)
+출처: (예: 누가복음 3:4~6)
+
+[수요예배순]
+날짜: (날짜)
+1부: 시간, 사회, 기도, 성경봉독, 찬양, 설교, 헌금기도
+2부: 시간, 사회, 기도, 성경봉독, 찬양, 설교, 헌금기도
+3부: 시간, 사회, 기도, 성경봉독, 찬양, 설교, 헌금기도
+
+[금요성령대망회순]
+날짜: (날짜)
+시간: (시간)
+사회: (이름)
+기도: (이름)
+성경봉독: (구절)
+찬양: (찬양대)
+설교: (제목) / (목사)
+
+[토요예배순]
+날짜: (날짜)
+시간: (시간)
+사회: (이름)
+기도: (이름)
+성경봉독: (구절)
+찬양: (찬양대)
+설교: (제목) / (목사)
+헌금기도: (이름)
+
+[금주의 찬양]
+**중요: PDF에 보이는 표의 헤더(열 제목)와 데이터를 정확히 그대로 추출하세요.**
+**헤더 예시: 구분, 찬양대, 지휘, 반주, 찬양곡 등 (PDF 원본 그대로)**
+
+원본 테이블 헤더:
+| (PDF에 보이는 첫 번째 열 제목) | (두 번째 열 제목) | (세 번째 열 제목) | ... |
+
+원본 테이블 데이터:
+| (첫 번째 행 데이터) | ... |
+| (두 번째 행 데이터) | ... |
+...
+
+**모든 찬양대 정보를 빠짐없이 추출하세요. 헤더와 데이터 모두 PDF 원본 그대로!**"""
+
+            elif page_number == 4:
+                prompt = """이 설교 말씀(생명의 말씀) 페이지를 분석하세요.
+
+[생명의 말씀]
+제목: (설교 제목 - 한글)
+영문제목: (영문 제목)
+본문: (성경 구절)
+날짜: (날짜)
+
+[설교 내용]
+서론: (설교 서론 문단 전체를 그대로 추출)
+
+소제목1: (첫 번째 포인트 제목)
+영문1: (영문 제목)
+내용1: (첫 번째 포인트 내용 전체를 그대로 추출 - 문단 유지)
+
+소제목2: (두 번째 포인트 제목)
+영문2: (영문 제목)
+내용2: (두 번째 포인트 내용 전체를 그대로 추출)
+
+소제목3: (세 번째 포인트 제목)
+영문3: (영문 제목)
+내용3: (세 번째 포인트 내용 전체를 그대로 추출)
+
+설교자: (교회명 + 목사 이름 + 직분)
+
+**중요: 설교 내용을 축약하지 말고 전체를 그대로 추출하세요.**"""
+
+            elif page_number == 5:
+                prompt = """이 교회소식(News Board) 페이지의 모든 내용을 완전히 추출하세요.
+
+**중요: 각 항목의 제목과 상세 내용을 모두 추출하세요. 절대 축약하지 마세요!**
+
+[예배]
+1. (제목)
+   상세내용: (일시, 장소, 설교자, 말씀, 기타 모든 내용을 줄바꿈 포함하여 그대로)
+2. (제목)
+   상세내용: (전체 내용)
+...
+
+[모집]
+1. (제목)
+   상세내용: (일자, 과정, 대상, 문의처 등 전체 내용)
+...
+
+[안내]
+1. (제목)
+   상세내용: (전체 내용)
+2. (제목)
+   상세내용: (전체 내용)
+...
+
+[다음 주간 대표기도]
+**PDF에 보이는 표의 헤더와 데이터를 그대로 추출하세요**
+원본 테이블 헤더:
+| (첫 번째 열 제목) | (두 번째 열 제목) | ... |
+
+원본 테이블 데이터:
+| (날짜/구분) | (이름) | (이름) | ... |
+| (날짜/구분) | (이름) | (이름) | ... |
+...
+
+**모든 소식을 카테고리별로 빠짐없이 추출하세요. 상세 내용도 반드시 전체를 추출!**"""
+
+            elif page_number == 6:
+                prompt = """이 오늘의 양식(묵상) 페이지를 분석하세요.
+
+[오늘의 양식]
+제목: (양식 제목 - 예: "마카롱의 미학")
+내용: (전체 내용을 문단별로 그대로 추출)
+
+문단1: (첫 번째 문단 전체)
+문단2: (두 번째 문단 전체)
+문단3: (세 번째 문단 전체)
+...
+
+**매우 중요: 내용을 절대 요약하거나 축약하지 마세요!**
+**모든 문단의 전체 텍스트를 빠짐없이 추출하세요!**
+**글의 처음부터 끝까지 모두 포함해야 합니다!**"""
+
+            else:
+                prompt = """이 주보 페이지의 모든 텍스트를 추출하세요.
+
+[페이지 내용]
+(보이는 모든 텍스트를 순서대로 추출)"""
 
             message = self.client.messages.create(
                 model="claude-sonnet-4-20250514",
@@ -389,59 +563,7 @@ class VisionOCR:
                             },
                             {
                                 "type": "text",
-                                "text": f"""{page_context}
-
-이 교회 주보 이미지를 정확하게 분석하여 정보를 추출해주세요.
-
-**중요 원칙:**
-1. 이미지에 보이는 모든 텍스트를 빠짐없이 추출하세요
-2. 예배 순서의 모든 항목(사회, 성경봉독, 대표기도, 찬송, 설교)을 추출하세요
-3. 찬송가 번호, 성경 구절 참조(예: 요한복음 3:16)를 정확히 추출하세요
-4. 설교 전문 내용을 모두 추출하세요
-
-**추출 형식:**
-
-[오늘의 말씀]
-본문: (성경 구절 텍스트)
-출처: (예: 요한복음 3:16)
-
-[예배 순서]
-예배명: (1부예배/2·3·4부예배/5부예배/저녁예배)
-사회: (담당자 이름)
-성경봉독: (성경 구절 - 예: 요한복음 1:1-14)
-대표기도: (담당자 이름)
-찬송: (찬송가 번호 - 예: 94장)
-설교: (설교 제목) / (담당 목사님)
-(위 형식으로 모든 예배 순서 추출)
-
-[설교]
-제목: (설교 제목)
-본문: (성경 구절)
-목사: (설교자 이름)
-내용:
-(설교 전문 - 문단별로 구분하여 전체 내용 추출)
-
-[찬양대]
-예배: (몇 부 예배)
-찬양대: (찬양대 이름)
-곡명: (찬양 제목)
-(각 예배별로 모든 찬양대 순서 추출)
-
-[교회 소식]
-- (소식1 - 제목과 내용 모두)
-- (소식2)
-...
-
-[광고]
-- (광고1)
-- (광고2)
-...
-
-**주의:**
-- 모든 텍스트를 순서대로 추출하세요
-- 성경 구절 형식을 정확히 유지하세요 (예: 요한복음 3:16, 시편 23:1-6)
-- 찬송가 번호를 정확히 추출하세요 (예: 94장, 새찬송가 94장)
-- 설교 내용은 전체를 문단별로 추출하세요"""
+                                "text": prompt
                             }
                         ],
                     }
@@ -459,13 +581,23 @@ class VisionOCR:
             return {"text": "", "structured": {}}
 
     def _parse_church_bulletin_response(self, text: str) -> dict:
-        """교회 주보 응답을 구조화된 데이터로 파싱"""
+        """교회 주보 응답을 구조화된 데이터로 파싱 - 상세 버전"""
         result = {
+            "church_info": {"name": "", "english_name": "", "date": "", "volume": "", "slogan": "", "goals": [], "address": "", "phone": ""},
+            "pastors": {"senior": "", "associate": []},
             "today_verse": {"text": "", "reference": ""},
             "worship_services": [],  # 예배 순서들
-            "sermon": {"title": "", "scripture": "", "pastor": "", "content": []},
+            "common_order": {"invocation": "", "first_hymn": "", "creed": "", "second_hymns": {}, "final_hymn": ""},
+            "sermon": {"title": "", "english_title": "", "scripture": "", "pastor": "", "intro": "", "points": [], "author": ""},
             "choir": [],  # 찬양대 순서
-            "news": [],  # 교회 소식
+            "raw_choir_table": {"headers": [], "rows": []},  # 원본 PDF 테이블 형식 보존
+            "wednesday_service": {},
+            "friday_service": {},
+            "saturday_service": {},
+            "news": {"worship": [], "recruit": [], "info": []},  # 카테고리별 교회 소식 (제목+상세내용)
+            "next_week_prayers": [],  # 다음 주간 대표기도
+            "raw_prayer_table": {"headers": [], "rows": []},  # 대표기도 원본 테이블
+            "devotional": {"title": "", "content": ""},  # 오늘의 양식
             "announcements": [],  # 광고
             "other_text": ""
         }
@@ -473,6 +605,7 @@ class VisionOCR:
         current_section = None
         current_service = None
         current_choir = None
+        current_news_category = None
         lines = text.split("\n")
 
         i = 0
@@ -484,27 +617,102 @@ class VisionOCR:
                 continue
 
             # 섹션 헤더 감지
-            if "[오늘의 말씀]" in line or "[금주의 말씀]" in line:
+            if "[교회정보]" in line:
+                current_section = "church_info"
+                continue
+            elif "[목회자]" in line:
+                current_section = "pastors"
+                continue
+            elif "[오늘의 말씀]" in line or "[금주의 말씀]" in line:
                 current_section = "verse"
                 continue
-            elif "[예배 순서]" in line or "[예배순서]" in line:
+            elif "[주일예배순서]" in line or "[예배 순서]" in line or "[예배순서]" in line:
                 current_section = "worship"
                 continue
-            elif "[설교]" in line:
+            elif "[생명의 말씀]" in line or "[설교]" in line:
                 current_section = "sermon"
                 continue
-            elif "[찬양대]" in line:
+            elif "[설교 내용]" in line:
+                current_section = "sermon_content"
+                continue
+            elif "[금주의 찬양]" in line or "[찬양대]" in line:
                 current_section = "choir"
+                continue
+            elif "[수요예배순]" in line:
+                current_section = "wednesday"
+                continue
+            elif "[금요성령대망회순]" in line:
+                current_section = "friday"
+                continue
+            elif "[토요예배순]" in line:
+                current_section = "saturday"
+                continue
+            elif "[예배 안내]" in line or "[예배]" in line:
+                current_section = "news"
+                current_news_category = "worship"
+                continue
+            elif "[모집]" in line:
+                current_section = "news"
+                current_news_category = "recruit"
+                continue
+            elif "[안내]" in line:
+                current_section = "news"
+                current_news_category = "info"
                 continue
             elif "[교회 소식]" in line or "[소식]" in line:
                 current_section = "news"
+                current_news_category = "info"
+                continue
+            elif "[예배]" in line and "예배순" not in line:
+                current_section = "news"
+                current_news_category = "worship"
+                continue
+            elif "[모집]" in line:
+                current_section = "news"
+                current_news_category = "recruit"
+                continue
+            elif "[안내]" in line:
+                current_section = "news"
+                current_news_category = "info"
+                continue
+            elif "[다음 주간 대표기도]" in line or "대표기도" in line and "주간" in line:
+                current_section = "next_prayers"
+                continue
+            elif "[오늘의 양식]" in line:
+                current_section = "devotional"
                 continue
             elif "[광고]" in line:
                 current_section = "announcements"
                 continue
 
             # 섹션별 파싱
-            if current_section == "verse":
+            if current_section == "church_info":
+                if line.startswith("교회명:"):
+                    result["church_info"]["name"] = line.replace("교회명:", "").strip()
+                elif line.startswith("영문명:"):
+                    result["church_info"]["english_name"] = line.replace("영문명:", "").strip()
+                elif line.startswith("날짜:"):
+                    result["church_info"]["date"] = line.replace("날짜:", "").strip()
+                elif line.startswith("통권:"):
+                    result["church_info"]["volume"] = line.replace("통권:", "").strip()
+                elif line.startswith("표어:"):
+                    result["church_info"]["slogan"] = line.replace("표어:", "").strip()
+                elif line.startswith("교회목표:"):
+                    goals_text = line.replace("교회목표:", "").strip()
+                    result["church_info"]["goals"] = [g.strip() for g in goals_text.split(",") if g.strip()]
+                elif line.startswith("주소:"):
+                    result["church_info"]["address"] = line.replace("주소:", "").strip()
+                elif line.startswith("대표전화:"):
+                    result["church_info"]["phone"] = line.replace("대표전화:", "").strip()
+
+            elif current_section == "pastors":
+                if line.startswith("위임목사:"):
+                    result["pastors"]["senior"] = line.replace("위임목사:", "").strip()
+                elif line.startswith("부목사:"):
+                    associate = line.replace("부목사:", "").strip()
+                    result["pastors"]["associate"] = [a.strip() for a in associate.split(",") if a.strip()]
+
+            elif current_section == "verse":
                 if line.startswith("본문:"):
                     result["today_verse"]["text"] = line.replace("본문:", "").strip()
                 elif line.startswith("출처:"):
@@ -513,27 +721,64 @@ class VisionOCR:
                     result["today_verse"]["text"] = line
 
             elif current_section == "worship":
-                if line.startswith("예배명:") or line.startswith("예배:"):
-                    # 이전 예배 저장
+                # 테이블 형식 파싱 (| 구분 | 시간 | 사회 | 성경봉독 | 대표기도 | 헌금기도 | 찬송 | 설교제목 | 설교자 |)
+                if line.startswith("|") and "구분" not in line and "---" not in line:
+                    parts = [p.strip() for p in line.split("|") if p.strip()]
+                    if len(parts) >= 6:  # 최소 6개 컬럼
+                        # 9컬럼 (찬송 포함): 구분|시간|사회|성경봉독|대표기도|헌금기도|찬송|설교제목|설교자
+                        # 8컬럼 (찬송 미포함): 구분|시간|사회|성경봉독|대표기도|헌금기도|설교제목|설교자
+                        if len(parts) >= 9:
+                            service = {
+                                "name": parts[0],
+                                "time": parts[1] if len(parts) > 1 else "",
+                                "presider": parts[2] if len(parts) > 2 else "",
+                                "scripture": parts[3] if len(parts) > 3 else "",
+                                "prayer": parts[4] if len(parts) > 4 else "",
+                                "offering_prayer": parts[5] if len(parts) > 5 else "",
+                                "hymn": parts[6] if len(parts) > 6 else "",
+                                "sermon_title": parts[7] if len(parts) > 7 else "",
+                                "sermon_pastor": parts[8] if len(parts) > 8 else ""
+                            }
+                        else:
+                            # 이전 형식 (찬송 컬럼 없음)
+                            service = {
+                                "name": parts[0],
+                                "time": parts[1] if len(parts) > 1 else "",
+                                "presider": parts[2] if len(parts) > 2 else "",
+                                "scripture": parts[3] if len(parts) > 3 else "",
+                                "prayer": parts[4] if len(parts) > 4 else "",
+                                "offering_prayer": parts[5] if len(parts) > 5 else "",
+                                "hymn": "",
+                                "sermon_title": parts[6] if len(parts) > 6 else "",
+                                "sermon_pastor": parts[7] if len(parts) > 7 else ""
+                            }
+                        result["worship_services"].append(service)
+                # 기존 형식도 지원
+                elif line.startswith("예배명:") or line.startswith("예배:"):
                     if current_service:
                         result["worship_services"].append(current_service)
                     service_name = line.replace("예배명:", "").replace("예배:", "").strip()
                     current_service = {
                         "name": service_name,
-                        "司會": "",  # 사회
-                        "scripture": "",  # 성경봉독
-                        "prayer": "",  # 대표기도
-                        "hymn": "",  # 찬송
+                        "presider": "",
+                        "scripture": "",
+                        "prayer": "",
+                        "offering_prayer": "",
+                        "hymn": "",
                         "sermon_title": "",
                         "sermon_pastor": ""
                     }
                 elif current_service:
                     if line.startswith("사회:"):
-                        current_service["司會"] = line.replace("사회:", "").strip()
+                        current_service["presider"] = line.replace("사회:", "").strip()
+                    elif line.startswith("시간:"):
+                        current_service["time"] = line.replace("시간:", "").strip()
                     elif line.startswith("성경봉독:"):
                         current_service["scripture"] = line.replace("성경봉독:", "").strip()
                     elif line.startswith("대표기도:"):
                         current_service["prayer"] = line.replace("대표기도:", "").strip()
+                    elif line.startswith("헌금기도:"):
+                        current_service["offering_prayer"] = line.replace("헌금기도:", "").strip()
                     elif line.startswith("찬송:"):
                         current_service["hymn"] = line.replace("찬송:", "").strip()
                     elif line.startswith("설교:"):
@@ -544,44 +789,186 @@ class VisionOCR:
                             current_service["sermon_pastor"] = parts[1].strip() if len(parts) > 1 else ""
                         else:
                             current_service["sermon_title"] = sermon_info
+                # 공통 순서 파싱
+                elif line.startswith("- 예배로 부르심:"):
+                    result["common_order"]["invocation"] = line.replace("- 예배로 부르심:", "").strip()
+                elif line.startswith("- 첫 찬송:"):
+                    result["common_order"]["first_hymn"] = line.replace("- 첫 찬송:", "").strip()
+                elif line.startswith("- 신앙고백:"):
+                    result["common_order"]["creed"] = line.replace("- 신앙고백:", "").strip()
+                elif line.startswith("- 마지막 찬송:"):
+                    result["common_order"]["final_hymn"] = line.replace("- 마지막 찬송:", "").strip()
 
             elif current_section == "sermon":
                 if line.startswith("제목:"):
                     result["sermon"]["title"] = line.replace("제목:", "").strip()
+                elif line.startswith("영문제목:"):
+                    result["sermon"]["english_title"] = line.replace("영문제목:", "").strip()
                 elif line.startswith("본문:"):
                     result["sermon"]["scripture"] = line.replace("본문:", "").strip()
-                elif line.startswith("목사:") or line.startswith("설교자:"):
-                    result["sermon"]["pastor"] = line.replace("목사:", "").replace("설교자:", "").strip()
-                elif line.startswith("내용:"):
-                    # 다음 줄들을 설교 내용으로 수집
-                    continue
-                elif line.startswith("-") or line.startswith("•"):
-                    continue
-                elif len(line) > 20:  # 긴 텍스트는 설교 내용
-                    result["sermon"]["content"].append(line)
+                elif line.startswith("날짜:"):
+                    pass  # 날짜는 church_info에서 처리
+                elif line.startswith("설교자:"):
+                    result["sermon"]["author"] = line.replace("설교자:", "").strip()
+
+            elif current_section == "sermon_content":
+                if line.startswith("서론:"):
+                    result["sermon"]["intro"] = line.replace("서론:", "").strip()
+                elif line.startswith("소제목") and ":" in line:
+                    point_num = line.split(":")[0].replace("소제목", "").strip()
+                    point_title = line.split(":", 1)[1].strip() if ":" in line else ""
+                    result["sermon"]["points"].append({
+                        "number": point_num,
+                        "title": point_title,
+                        "english": "",
+                        "content": ""
+                    })
+                elif line.startswith("영문") and ":" in line and result["sermon"]["points"]:
+                    result["sermon"]["points"][-1]["english"] = line.split(":", 1)[1].strip()
+                elif line.startswith("내용") and ":" in line and result["sermon"]["points"]:
+                    content = line.split(":", 1)[1].strip() if ":" in line else ""
+                    # 다음 줄들도 내용에 포함
+                    while i < len(lines) and not lines[i].strip().startswith("소제목") and not lines[i].strip().startswith("[") and lines[i].strip():
+                        content += "\n" + lines[i].strip()
+                        i += 1
+                    result["sermon"]["points"][-1]["content"] = content
+                elif line.startswith("설교자:"):
+                    result["sermon"]["author"] = line.replace("설교자:", "").strip()
+                elif len(line) > 30 and not result["sermon"]["intro"]:
+                    result["sermon"]["intro"] = line
 
             elif current_section == "choir":
-                if line.startswith("예배:"):
+                # 테이블 형식 파싱 - 원본 PDF 형식 그대로 보존
+                if line.startswith("|"):
+                    parts = [p.strip() for p in line.split("|") if p.strip()]
+
+                    # 헤더 행 감지 (구분, 찬양대 등 포함)
+                    if any(h in line for h in ["구분", "찬양대", "지휘", "반주", "찬양곡"]):
+                        result["raw_choir_table"]["headers"] = parts
+                    # 구분선 무시
+                    elif "---" in line or "–––" in line:
+                        pass
+                    # 데이터 행
+                    elif len(parts) >= 2:
+                        result["raw_choir_table"]["rows"].append(parts)
+                        # 기존 choir 배열도 함께 채움 (하위 호환)
+                        choir = {
+                            "service": parts[0] if len(parts) > 0 else "",
+                            "name": parts[1] if len(parts) > 1 else "",
+                            "conductor": parts[2] if len(parts) > 2 else "",
+                            "song": parts[3] if len(parts) > 3 else "",
+                            "accompanist": parts[4] if len(parts) > 4 else ""
+                        }
+                        result["choir"].append(choir)
+                # 기존 형식도 지원
+                elif line.startswith("예배:"):
                     if current_choir:
                         result["choir"].append(current_choir)
                     current_choir = {
                         "service": line.replace("예배:", "").strip(),
                         "name": "",
+                        "conductor": "",
                         "song": ""
                     }
                 elif current_choir:
                     if line.startswith("찬양대:"):
                         current_choir["name"] = line.replace("찬양대:", "").strip()
+                    elif line.startswith("지휘자:"):
+                        current_choir["conductor"] = line.replace("지휘자:", "").strip()
                     elif line.startswith("곡명:"):
                         current_choir["song"] = line.replace("곡명:", "").strip()
 
             elif current_section == "news":
-                if line.startswith("-") or line.startswith("•"):
+                # 번호가 있는 항목 (1. 2. 등) - 제목과 상세내용 분리
+                import re
+                if re.match(r'^\d+\.', line):
+                    title = re.sub(r'^\d+\.\s*', '', line)
+                    # 다음 줄에서 상세내용 가져오기
+                    detail = ""
+                    while i < len(lines):
+                        next_line = lines[i].strip()
+                        # 다음 번호 항목이나 섹션 시작이면 중단
+                        if re.match(r'^\d+\.', next_line) or next_line.startswith("["):
+                            break
+                        # 상세내용: 으로 시작하면
+                        if next_line.startswith("상세내용:"):
+                            detail = next_line.replace("상세내용:", "").strip()
+                            i += 1
+                            # 다음 줄들도 상세내용에 포함
+                            while i < len(lines):
+                                cont_line = lines[i].strip()
+                                if re.match(r'^\d+\.', cont_line) or cont_line.startswith("["):
+                                    break
+                                if cont_line:
+                                    detail += "\n" + cont_line
+                                i += 1
+                            break
+                        elif next_line and not next_line.startswith("["):
+                            detail += ("\n" if detail else "") + next_line
+                            i += 1
+                        else:
+                            i += 1
+                            break
+
+                    if current_news_category and title:
+                        result["news"][current_news_category].append({
+                            "title": title,
+                            "detail": detail.strip()
+                        })
+                elif line.startswith("-") or line.startswith("•"):
                     news_item = line.lstrip("-•").strip()
                     if len(news_item) > 3:
-                        result["news"].append(news_item)
-                elif len(line) > 5:
-                    result["news"].append(line)
+                        if current_news_category:
+                            result["news"][current_news_category].append({
+                                "title": news_item,
+                                "detail": ""
+                            })
+                        else:
+                            result["news"]["info"].append({
+                                "title": news_item,
+                                "detail": ""
+                            })
+
+            elif current_section == "next_prayers":
+                # 대표기도 테이블 파싱 - 원본 그대로
+                if line.startswith("|"):
+                    parts = [p.strip() for p in line.split("|") if p.strip()]
+                    # 헤더 행 감지
+                    if any(h in line for h in ["구분", "1부", "2부", "3부", "4부"]):
+                        result["raw_prayer_table"]["headers"] = parts
+                    # 구분선 무시
+                    elif "---" in line or "–––" in line:
+                        pass
+                    # 데이터 행
+                    elif len(parts) >= 2:
+                        result["raw_prayer_table"]["rows"].append(parts)
+
+            elif current_section == "devotional":
+                if line.startswith("제목:"):
+                    result["devotional"]["title"] = line.replace("제목:", "").strip()
+                elif line.startswith("내용:"):
+                    content = line.replace("내용:", "").strip()
+                    # 다음 줄들도 내용에 포함
+                    while i < len(lines) and not lines[i].strip().startswith("["):
+                        content += "\n" + lines[i].strip()
+                        i += 1
+                    result["devotional"]["content"] = content
+                elif line.startswith("문단") and ":" in line:
+                    # 문단1:, 문단2: 등의 형식
+                    paragraph = line.split(":", 1)[1].strip() if ":" in line else ""
+                    if paragraph:
+                        if result["devotional"]["content"]:
+                            result["devotional"]["content"] += "\n\n" + paragraph
+                        else:
+                            result["devotional"]["content"] = paragraph
+                elif not result["devotional"]["title"] and len(line) > 5:
+                    result["devotional"]["title"] = line
+                elif result["devotional"]["title"] and len(line) > 20:
+                    # 제목이 있고 긴 줄이면 내용에 추가
+                    if result["devotional"]["content"]:
+                        result["devotional"]["content"] += "\n\n" + line
+                    else:
+                        result["devotional"]["content"] = line
 
             elif current_section == "announcements":
                 if line.startswith("-") or line.startswith("•"):
@@ -596,6 +983,715 @@ class VisionOCR:
             result["choir"].append(current_choir)
 
         return result
+
+
+    def extract_lecture_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1) -> dict:
+        """강의 자료에서 구조화된 정보 추출"""
+        if not self.client:
+            return {"text": "", "structured": {}}
+
+        try:
+            if "base64," in image_base64:
+                image_base64 = image_base64.split("base64,")[1]
+
+            message = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=8192,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": media_type,
+                                    "data": image_base64,
+                                },
+                            },
+                            {
+                                "type": "text",
+                                "text": f"""이 강의 자료 이미지(페이지 {page_number})를 분석하여 구조화된 정보를 추출해주세요.
+
+**추출 형식:**
+
+[페이지 정보]
+페이지 번호: {page_number}
+페이지 유형: (표지/목차/본문/요약/참고자료)
+
+[제목]
+메인 제목: (강의 제목)
+부제목: (있는 경우)
+
+[강사 정보] (표지에만)
+강사명:
+소속:
+연락처:
+
+[학습 목표] (있는 경우)
+- 목표1
+- 목표2
+
+[본문 내용]
+섹션1: 제목
+- 핵심 포인트1
+- 핵심 포인트2
+
+섹션2: 제목
+- 내용1
+- 내용2
+
+[표/차트] (있는 경우)
+표 제목:
+표 내용 요약:
+
+[이미지/다이어그램 설명] (있는 경우)
+- 이미지1: 설명
+- 이미지2: 설명
+
+[핵심 용어] (있는 경우)
+- 용어1: 정의
+- 용어2: 정의
+
+[질문/토론 주제] (있는 경우)
+- 질문1
+- 질문2
+
+**주의:**
+- 모든 텍스트를 순서대로 추출하세요
+- 수식이나 코드가 있으면 그대로 추출하세요
+- 표와 차트의 데이터도 추출하세요"""
+                            }
+                        ],
+                    }
+                ],
+            )
+
+            raw_text = message.content[0].text.strip()
+            return {
+                "text": raw_text,
+                "structured": self._parse_lecture_response(raw_text),
+                "page_number": page_number
+            }
+
+        except Exception as e:
+            logger.error(f"강의 정보 추출 오류: {str(e)}", exc_info=True)
+            return {"text": "", "structured": {}, "page_number": page_number}
+
+    def _parse_lecture_response(self, text: str) -> dict:
+        """강의 자료 응답을 구조화된 데이터로 파싱"""
+        result = {
+            "page_type": "",
+            "title": "",
+            "subtitle": "",
+            "instructor": {"name": "", "affiliation": "", "contact": ""},
+            "learning_objectives": [],
+            "sections": [],
+            "tables": [],
+            "images": [],
+            "key_terms": [],
+            "questions": []
+        }
+
+        current_section = None
+        current_content = None
+        lines = text.split("\n")
+
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+
+            # 섹션 헤더 감지
+            if "[페이지 정보]" in line:
+                current_section = "page_info"
+            elif "[제목]" in line:
+                current_section = "title"
+            elif "[강사 정보]" in line:
+                current_section = "instructor"
+            elif "[학습 목표]" in line:
+                current_section = "objectives"
+            elif "[본문 내용]" in line:
+                current_section = "content"
+            elif "[표/차트]" in line:
+                current_section = "tables"
+            elif "[이미지" in line or "[다이어그램" in line:
+                current_section = "images"
+            elif "[핵심 용어]" in line:
+                current_section = "terms"
+            elif "[질문" in line or "[토론" in line:
+                current_section = "questions"
+            else:
+                # 섹션별 파싱
+                if current_section == "page_info":
+                    if "페이지 유형:" in line:
+                        result["page_type"] = line.split(":", 1)[1].strip()
+                elif current_section == "title":
+                    if "메인 제목:" in line:
+                        result["title"] = line.split(":", 1)[1].strip()
+                    elif "부제목:" in line:
+                        result["subtitle"] = line.split(":", 1)[1].strip()
+                elif current_section == "instructor":
+                    if "강사명:" in line:
+                        result["instructor"]["name"] = line.split(":", 1)[1].strip()
+                    elif "소속:" in line:
+                        result["instructor"]["affiliation"] = line.split(":", 1)[1].strip()
+                    elif "연락처:" in line:
+                        result["instructor"]["contact"] = line.split(":", 1)[1].strip()
+                elif current_section == "objectives":
+                    if line.startswith("-") or line.startswith("•"):
+                        result["learning_objectives"].append(line.lstrip("-•").strip())
+                elif current_section == "content":
+                    if line.startswith("섹션") and ":" in line:
+                        section_title = line.split(":", 1)[1].strip()
+                        current_content = {"title": section_title, "points": []}
+                        result["sections"].append(current_content)
+                    elif (line.startswith("-") or line.startswith("•")) and current_content:
+                        current_content["points"].append(line.lstrip("-•").strip())
+                elif current_section == "tables":
+                    if "표 제목:" in line:
+                        result["tables"].append({"title": line.split(":", 1)[1].strip(), "summary": ""})
+                    elif "표 내용 요약:" in line and result["tables"]:
+                        result["tables"][-1]["summary"] = line.split(":", 1)[1].strip()
+                elif current_section == "images":
+                    if line.startswith("-"):
+                        result["images"].append(line.lstrip("-•").strip())
+                elif current_section == "terms":
+                    if line.startswith("-") and ":" in line:
+                        parts = line.lstrip("-•").split(":", 1)
+                        if len(parts) == 2:
+                            result["key_terms"].append({"term": parts[0].strip(), "definition": parts[1].strip()})
+                elif current_section == "questions":
+                    if line.startswith("-") or line.startswith("•"):
+                        result["questions"].append(line.lstrip("-•").strip())
+
+        return result
+
+    def extract_newsletter_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1) -> dict:
+        """뉴스레터에서 구조화된 정보 추출"""
+        if not self.client:
+            return {"text": "", "structured": {}}
+
+        try:
+            if "base64," in image_base64:
+                image_base64 = image_base64.split("base64,")[1]
+
+            message = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=8192,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": media_type,
+                                    "data": image_base64,
+                                },
+                            },
+                            {
+                                "type": "text",
+                                "text": f"""이 뉴스레터/소식지 이미지(페이지 {page_number})를 분석하여 구조화된 정보를 추출해주세요.
+
+**추출 형식:**
+
+[뉴스레터 정보]
+발행처: (조직/회사명)
+발행호: (예: 2024년 12월호, Vol.5)
+발행일: (날짜)
+
+[헤드라인 기사]
+제목: (메인 기사 제목)
+부제: (있는 경우)
+내용: (기사 전문)
+
+[서브 기사들]
+기사1:
+- 제목:
+- 카테고리: (사내소식/업계동향/인사/행사 등)
+- 요약:
+- 내용:
+
+기사2:
+- 제목:
+- 카테고리:
+- 요약:
+- 내용:
+
+[인터뷰/인물 소개] (있는 경우)
+대상:
+직위:
+내용:
+
+[이벤트/일정] (있는 경우)
+- 이벤트1: 날짜, 장소, 내용
+- 이벤트2: 날짜, 장소, 내용
+
+[공지사항] (있는 경우)
+- 공지1
+- 공지2
+
+[광고/배너] (있는 경우)
+- 광고1: 내용 설명
+- 광고2: 내용 설명
+
+**주의:**
+- 모든 텍스트를 순서대로 추출하세요
+- 기사별로 명확히 구분하세요
+- 이미지 캡션도 추출하세요"""
+                            }
+                        ],
+                    }
+                ],
+            )
+
+            raw_text = message.content[0].text.strip()
+            return {
+                "text": raw_text,
+                "structured": self._parse_newsletter_response(raw_text),
+                "page_number": page_number
+            }
+
+        except Exception as e:
+            logger.error(f"뉴스레터 정보 추출 오류: {str(e)}", exc_info=True)
+            return {"text": "", "structured": {}, "page_number": page_number}
+
+    def _parse_newsletter_response(self, text: str) -> dict:
+        """뉴스레터 응답을 구조화된 데이터로 파싱"""
+        result = {
+            "publisher": "",
+            "issue": "",
+            "date": "",
+            "headline": {"title": "", "subtitle": "", "content": ""},
+            "articles": [],
+            "interviews": [],
+            "events": [],
+            "announcements": [],
+            "ads": []
+        }
+
+        current_section = None
+        current_article = None
+        lines = text.split("\n")
+
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+
+            # 섹션 헤더
+            if "[뉴스레터 정보]" in line:
+                current_section = "info"
+            elif "[헤드라인" in line:
+                current_section = "headline"
+            elif "[서브 기사" in line:
+                current_section = "articles"
+            elif "[인터뷰" in line or "[인물" in line:
+                current_section = "interviews"
+            elif "[이벤트" in line or "[일정" in line:
+                current_section = "events"
+            elif "[공지" in line:
+                current_section = "announcements"
+            elif "[광고" in line or "[배너" in line:
+                current_section = "ads"
+            else:
+                if current_section == "info":
+                    if "발행처:" in line:
+                        result["publisher"] = line.split(":", 1)[1].strip()
+                    elif "발행호:" in line:
+                        result["issue"] = line.split(":", 1)[1].strip()
+                    elif "발행일:" in line:
+                        result["date"] = line.split(":", 1)[1].strip()
+                elif current_section == "headline":
+                    if "제목:" in line:
+                        result["headline"]["title"] = line.split(":", 1)[1].strip()
+                    elif "부제:" in line:
+                        result["headline"]["subtitle"] = line.split(":", 1)[1].strip()
+                    elif "내용:" in line:
+                        result["headline"]["content"] = line.split(":", 1)[1].strip()
+                elif current_section == "articles":
+                    if line.startswith("기사") and ":" in line:
+                        if current_article:
+                            result["articles"].append(current_article)
+                        current_article = {"title": "", "category": "", "summary": "", "content": ""}
+                    elif current_article:
+                        if "- 제목:" in line:
+                            current_article["title"] = line.split(":", 1)[1].strip()
+                        elif "- 카테고리:" in line:
+                            current_article["category"] = line.split(":", 1)[1].strip()
+                        elif "- 요약:" in line:
+                            current_article["summary"] = line.split(":", 1)[1].strip()
+                        elif "- 내용:" in line:
+                            current_article["content"] = line.split(":", 1)[1].strip()
+                elif current_section == "events":
+                    if line.startswith("-"):
+                        result["events"].append(line.lstrip("-•").strip())
+                elif current_section == "announcements":
+                    if line.startswith("-"):
+                        result["announcements"].append(line.lstrip("-•").strip())
+                elif current_section == "ads":
+                    if line.startswith("-"):
+                        result["ads"].append(line.lstrip("-•").strip())
+
+        # 마지막 기사 추가
+        if current_article and current_article.get("title"):
+            result["articles"].append(current_article)
+
+        return result
+
+    def extract_catalog_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1) -> dict:
+        """카탈로그에서 구조화된 정보 추출"""
+        if not self.client:
+            return {"text": "", "structured": {}}
+
+        try:
+            if "base64," in image_base64:
+                image_base64 = image_base64.split("base64,")[1]
+
+            message = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=8192,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": media_type,
+                                    "data": image_base64,
+                                },
+                            },
+                            {
+                                "type": "text",
+                                "text": f"""이 카탈로그/브로셔 이미지(페이지 {page_number})를 분석하여 구조화된 정보를 추출해주세요.
+
+**추출 형식:**
+
+[카탈로그 정보]
+회사/브랜드명:
+카탈로그 제목:
+카테고리: (제품/서비스/회사소개 등)
+
+[제품/서비스 목록]
+항목1:
+- 제품명:
+- 가격: (있는 경우)
+- 설명:
+- 특징:
+  - 특징1
+  - 특징2
+- 사양/스펙: (있는 경우)
+
+항목2:
+- 제품명:
+- 가격:
+- 설명:
+- 특징:
+- 사양/스펙:
+
+[회사 소개] (있는 경우)
+회사명:
+설명:
+연혁:
+비전/미션:
+
+[연락처/문의]
+주소:
+전화:
+이메일:
+웹사이트:
+SNS:
+
+[기타 정보]
+- 배송정보:
+- 보증/A/S:
+- 주의사항:
+
+**주의:**
+- 모든 제품/서비스 정보를 빠짐없이 추출하세요
+- 가격, 할인 정보를 정확히 추출하세요
+- 제품 사양/스펙을 상세히 추출하세요"""
+                            }
+                        ],
+                    }
+                ],
+            )
+
+            raw_text = message.content[0].text.strip()
+            return {
+                "text": raw_text,
+                "structured": self._parse_catalog_response(raw_text),
+                "page_number": page_number
+            }
+
+        except Exception as e:
+            logger.error(f"카탈로그 정보 추출 오류: {str(e)}", exc_info=True)
+            return {"text": "", "structured": {}, "page_number": page_number}
+
+    def _parse_catalog_response(self, text: str) -> dict:
+        """카탈로그 응답을 구조화된 데이터로 파싱"""
+        result = {
+            "company": "",
+            "catalog_title": "",
+            "category": "",
+            "products": [],
+            "company_info": {"name": "", "description": "", "history": "", "vision": ""},
+            "contact": {"address": "", "phone": "", "email": "", "website": "", "sns": ""},
+            "other_info": {"shipping": "", "warranty": "", "notes": ""}
+        }
+
+        current_section = None
+        current_product = None
+        lines = text.split("\n")
+
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+
+            # 섹션 헤더
+            if "[카탈로그 정보]" in line:
+                current_section = "info"
+            elif "[제품" in line or "[서비스" in line:
+                current_section = "products"
+            elif "[회사 소개]" in line:
+                current_section = "company"
+            elif "[연락처" in line or "[문의" in line:
+                current_section = "contact"
+            elif "[기타 정보]" in line:
+                current_section = "other"
+            else:
+                if current_section == "info":
+                    if "회사/브랜드명:" in line or "회사명:" in line:
+                        result["company"] = line.split(":", 1)[1].strip()
+                    elif "카탈로그 제목:" in line:
+                        result["catalog_title"] = line.split(":", 1)[1].strip()
+                    elif "카테고리:" in line:
+                        result["category"] = line.split(":", 1)[1].strip()
+                elif current_section == "products":
+                    if line.startswith("항목") and ":" in line:
+                        if current_product:
+                            result["products"].append(current_product)
+                        current_product = {"name": "", "price": "", "description": "", "features": [], "specs": ""}
+                    elif current_product:
+                        if "- 제품명:" in line:
+                            current_product["name"] = line.split(":", 1)[1].strip()
+                        elif "- 가격:" in line:
+                            current_product["price"] = line.split(":", 1)[1].strip()
+                        elif "- 설명:" in line:
+                            current_product["description"] = line.split(":", 1)[1].strip()
+                        elif "- 특징:" in line:
+                            continue  # 다음 줄들이 특징
+                        elif line.startswith("  - "):
+                            current_product["features"].append(line.lstrip(" -•").strip())
+                        elif "- 사양" in line or "- 스펙" in line:
+                            current_product["specs"] = line.split(":", 1)[1].strip() if ":" in line else ""
+                elif current_section == "company":
+                    if "회사명:" in line:
+                        result["company_info"]["name"] = line.split(":", 1)[1].strip()
+                    elif "설명:" in line:
+                        result["company_info"]["description"] = line.split(":", 1)[1].strip()
+                    elif "연혁:" in line:
+                        result["company_info"]["history"] = line.split(":", 1)[1].strip()
+                    elif "비전" in line or "미션" in line:
+                        result["company_info"]["vision"] = line.split(":", 1)[1].strip()
+                elif current_section == "contact":
+                    if "주소:" in line:
+                        result["contact"]["address"] = line.split(":", 1)[1].strip()
+                    elif "전화:" in line:
+                        result["contact"]["phone"] = line.split(":", 1)[1].strip()
+                    elif "이메일:" in line:
+                        result["contact"]["email"] = line.split(":", 1)[1].strip()
+                    elif "웹사이트:" in line:
+                        result["contact"]["website"] = line.split(":", 1)[1].strip()
+                    elif "SNS:" in line:
+                        result["contact"]["sns"] = line.split(":", 1)[1].strip()
+                elif current_section == "other":
+                    if "배송" in line:
+                        result["other_info"]["shipping"] = line.split(":", 1)[1].strip() if ":" in line else ""
+                    elif "보증" in line or "A/S" in line:
+                        result["other_info"]["warranty"] = line.split(":", 1)[1].strip() if ":" in line else ""
+                    elif "주의" in line:
+                        result["other_info"]["notes"] = line.split(":", 1)[1].strip() if ":" in line else ""
+
+        # 마지막 제품 추가
+        if current_product and current_product.get("name"):
+            result["products"].append(current_product)
+
+        return result
+
+    # ========== 다국어 번역 기능 ==========
+    def translate_content(self, text: str, target_languages: list = None) -> dict:
+        """
+        Claude AI를 사용하여 텍스트를 여러 언어로 번역
+
+        Args:
+            text: 번역할 한국어 텍스트
+            target_languages: 대상 언어 코드 목록 (기본: ['en', 'zh', 'ja', 'id', 'es', 'ru', 'fr'])
+
+        Returns:
+            {lang_code: translated_text} 형태의 딕셔너리
+        """
+        if not self.client or not text:
+            return {}
+
+        if target_languages is None:
+            target_languages = ['en', 'zh', 'ja', 'id', 'es', 'ru', 'fr']
+
+        lang_names = {
+            'en': 'English',
+            'zh': 'Chinese (Simplified)',
+            'ja': 'Japanese',
+            'id': 'Indonesian (Bahasa Indonesia)',
+            'es': 'Spanish',
+            'ru': 'Russian',
+            'fr': 'French'
+        }
+
+        try:
+            prompt = f"""아래 한국어 텍스트를 다음 언어로 번역해주세요.
+번역 시 원문의 의미와 뉘앙스를 정확히 전달하세요.
+성경 구절이나 종교적 내용의 경우 해당 언어의 공인된 번역을 참고하세요.
+
+원문:
+{text}
+
+**출력 형식 (JSON):**
+{{
+{', '.join([f'    "{lang}": "번역된 텍스트"' for lang in target_languages])}
+}}
+
+각 언어 번역만 출력하세요. 설명이나 주석은 포함하지 마세요."""
+
+            message = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=4096,
+                messages=[
+                    {"role": "user", "content": prompt}
+                ]
+            )
+
+            response_text = message.content[0].text.strip()
+
+            # JSON 파싱 시도
+            import json
+            import re
+            try:
+                # JSON 블록 추출
+                if "```json" in response_text:
+                    response_text = response_text.split("```json")[1].split("```")[0].strip()
+                elif "```" in response_text:
+                    response_text = response_text.split("```")[1].split("```")[0].strip()
+
+                # JSON 객체 찾기 (첫 번째 { 부터 마지막 } 까지)
+                json_match = re.search(r'\{[\s\S]*\}', response_text)
+                if json_match:
+                    response_text = json_match.group()
+
+                translations = json.loads(response_text)
+                return translations
+            except json.JSONDecodeError as e:
+                logger.warning(f"번역 응답 JSON 파싱 실패: {str(e)}, 응답: {response_text[:300]}")
+                # 부분 파싱 시도: 각 언어별로 추출
+                partial_translations = {}
+                for lang in target_languages:
+                    pattern = rf'"{lang}"\s*:\s*"([^"]*(?:\\.[^"]*)*)"'
+                    match = re.search(pattern, response_text)
+                    if match:
+                        partial_translations[lang] = match.group(1).replace('\\"', '"').replace('\\n', '\n')
+                if partial_translations:
+                    logger.info(f"부분 번역 추출 성공: {list(partial_translations.keys())}")
+                    return partial_translations
+                return {}
+
+        except Exception as e:
+            logger.error(f"번역 오류: {str(e)}")
+            return {}
+
+    def translate_church_bulletin_content(self, data: dict) -> dict:
+        """
+        교회 주보 전체 콘텐츠를 다국어로 번역
+
+        Args:
+            data: 추출된 주보 데이터 (today_verse, sermon, devotional 등)
+
+        Returns:
+            translations 키가 추가된 데이터
+        """
+        translations = {
+            'ko': {},  # 원본 한국어
+            'en': {},
+            'zh': {},
+            'ja': {},
+            'id': {},
+            'es': {},
+            'ru': {},
+            'fr': {}
+        }
+
+        # 오늘의 말씀 번역
+        verse_text = data.get('today_verse', {}).get('text', '')
+        if verse_text:
+            verse_translations = self.translate_content(verse_text)
+            translations['ko']['verse_text'] = verse_text
+            for lang, translated in verse_translations.items():
+                translations[lang]['verse_text'] = translated
+
+        # 설교 제목 번역
+        sermon_title = data.get('sermon', {}).get('title', '')
+        if sermon_title:
+            title_translations = self.translate_content(sermon_title)
+            translations['ko']['sermon_title'] = sermon_title
+            for lang, translated in title_translations.items():
+                translations[lang]['sermon_title'] = translated
+
+        # 설교 서론 번역
+        sermon_intro = data.get('sermon', {}).get('intro', '')
+        if sermon_intro:
+            intro_translations = self.translate_content(sermon_intro)
+            translations['ko']['sermon_intro'] = sermon_intro
+            for lang, translated in intro_translations.items():
+                translations[lang]['sermon_intro'] = translated
+
+        # 설교 포인트 번역
+        points = data.get('sermon', {}).get('points', [])
+        for i, point in enumerate(points):
+            point_title = point.get('title', '')
+            point_content = point.get('content', '')
+
+            if point_title:
+                pt_trans = self.translate_content(point_title)
+                translations['ko'][f'sermon_point{i+1}_title'] = point_title
+                for lang, translated in pt_trans.items():
+                    translations[lang][f'sermon_point{i+1}_title'] = translated
+
+            if point_content:
+                pc_trans = self.translate_content(point_content)
+                translations['ko'][f'sermon_point{i+1}_content'] = point_content
+                for lang, translated in pc_trans.items():
+                    translations[lang][f'sermon_point{i+1}_content'] = translated
+
+        # 오늘의 양식 번역
+        devotional_title = data.get('devotional', {}).get('title', '')
+        devotional_content = data.get('devotional', {}).get('content', '')
+
+        if devotional_title:
+            dt_trans = self.translate_content(devotional_title)
+            translations['ko']['devotional_title'] = devotional_title
+            for lang, translated in dt_trans.items():
+                translations[lang]['devotional_title'] = translated
+
+        if devotional_content:
+            dc_trans = self.translate_content(devotional_content)
+            translations['ko']['devotional_content'] = devotional_content
+            for lang, translated in dc_trans.items():
+                translations[lang]['devotional_content'] = translated
+
+        return translations
 
 
 # 테스트
