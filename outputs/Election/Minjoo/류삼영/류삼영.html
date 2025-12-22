@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="류삼영 - 인천 남동구 국회의원 후보 | 더불어민주당">
+    <title>류삼영 - 인천 남동구 국회의원 후보</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --party-color: #E11D48;
+            --party-color-light: #FEE2E2;
+            --party-color-dark: #BE123C;
+            --party-gradient: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+            --party-accent: #F43F5E;
+            --text-on-primary: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Fixed Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar .candidate-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .nav-bar .party-badge {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 60px;
+            background: var(--party-gradient);
+            color: var(--text-on-primary);
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-number {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 1.5em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-slogan {
+            font-size: 1.8em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-name {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin: 15px 0;
+        }
+
+        .hero-position {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* Vision Section (Accordion Style) */
+        .vision-section {
+            background: white;
+            margin: 0;
+            padding: 25px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .vision-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--party-color);
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--party-color-light);
+            border-radius: 10px;
+        }
+
+        .vision-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .vision-item {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .vision-item.expanded {
+            border-color: var(--party-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .vision-header {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .vision-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--party-color-light);
+            border-radius: 50%;
+        }
+
+        .vision-text {
+            flex: 1;
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .vision-expand {
+            color: var(--party-color);
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .vision-item.expanded .vision-expand {
+            transform: rotate(180deg);
+        }
+
+        .vision-content {
+            padding: 0 20px 15px;
+            display: none;
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .vision-item.expanded .vision-content {
+            display: block;
+        }
+
+        /* Quick Highlights */
+        .quick-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 25px 20px;
+            background: white;
+        }
+
+        .highlight-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: var(--party-color-light);
+            border: 2px solid var(--party-color);
+            gap: 15px;
+        }
+
+        .highlight-card .icon {
+            font-size: 2em;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .highlight-card .content {
+            flex: 1;
+        }
+
+        .highlight-card .number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .highlight-card .label {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Section Container */
+        .section {
+            background: white;
+            margin: 15px 0;
+            padding: 25px 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--party-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--party-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+
+        /* Promise Cards */
+        .promise-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .promise-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .promise-card.expanded {
+            border-color: var(--party-color);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .promise-header {
+            padding: 20px;
+            background: var(--party-color-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .promise-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--party-color);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .promise-header-text {
+            flex: 1;
+        }
+
+        .promise-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .promise-details {
+            padding: 20px;
+            display: none;
+            background: #f8f9fa;
+        }
+
+        .promise-card.expanded .promise-details {
+            display: block;
+        }
+
+        .promise-details ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .promise-details li {
+            padding: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .promise-details li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--party-color);
+            font-weight: bold;
+        }
+
+        .promise-details li:last-child {
+            border-bottom: none;
+        }
+
+        .expand-btn {
+            text-align: center;
+            color: var(--party-color);
+            font-weight: 600;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .expand-btn::after {
+            content: ' ▼';
+        }
+
+        .promise-card.expanded .expand-btn::after {
+            content: ' ▲';
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--party-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background: var(--party-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--party-color);
+        }
+
+        .timeline-year {
+            font-size: 0.85em;
+            color: var(--party-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Page Content */
+        .page-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--party-color);
+        }
+
+        .page-content h4 {
+            color: var(--party-color);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .page-content p {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        /* Contact Section */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .contact-link.phone {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+        }
+
+        .contact-link.facebook {
+            background: #1877F2;
+            color: white;
+        }
+
+        .contact-link.instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .contact-link.youtube {
+            background: #FF0000;
+            color: white;
+        }
+
+        .contact-link.blog {
+            background: #03C75A;
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.75em;
+            padding: 5px 15px;
+            transition: all 0.3s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--party-color);
+        }
+
+        .bottom-nav .nav-icon {
+            font-size: 1.5em;
+            margin-bottom: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .footer a {
+            color: var(--party-color);
+            text-decoration: none;
+        }
+
+        /* Auto Badge */
+        .auto-badge {
+            position: fixed;
+            top: 70px;
+            right: 10px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7em;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+
+        /* v2.0: Region Map Styles */
+        
+
+        /* 이미지 갤러리 스타일 */
+        
+    </style>
+</head>
+<body>
+    <!-- Auto Generation Badge -->
+    <div class="auto-badge">AUTO</div>
+
+    <!-- Fixed Top Navigation -->
+    <nav class="nav-bar">
+        <span class="candidate-name">류삼영</span>
+        <span class="party-badge">더불어민주당</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <div class="hero-number">기호 1</div>
+            <h1 class="hero-name">류삼영</h1>
+            <p class="hero-slogan">오직 남동 오직 민심<br>인천을 우리가 함께한 미래</p>
+            <p class="hero-position">국회의원 후보 | 인천 남동구</p>
+        </div>
+    </section>
+
+    <!-- 대표 이미지 (폴더 첫 번째 이미지) -->
+
+
+    <!-- Vision Section -->
+    <section class="vision-section" id="vision"><div class="vision-title">국민을 지키는 경찰에서<br>국민을 살리는 일꾼이 되자</div></section>
+
+    <!-- Quick Highlights -->
+    <div class="quick-highlights">
+        
+        <div class="highlight-card">
+            <span class="icon">🎯</span>
+            <div class="content">
+                <span class="number">12개</span>
+                <div class="label">핵심 공약</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">📋</span>
+            <div class="content">
+                <span class="number">19건</span>
+                <div class="label">주요 경력</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pledges Section -->
+    <section class="section" id="pledges">
+        <h2 class="section-title"><span class="icon">📋</span> 핵심 공약</h2>
+        <div class="promise-list">
+            
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">1</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">재개발·재건축지역 방범 CCTV 확대 설치</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>재개발·재건축지역 방범 CCTV 확대 설치</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">2</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">재개발 조속추진</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>재개발 조속추진</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">3</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">계개발 민관합동 조정위원회 설치</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>계개발 민관합동 조정위원회 설치</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">4</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">계개발·재건축지역 안전 CCTV 확대설치</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>계개발·재건축지역 안전 CCTV 확대설치</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">5</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">예술문화가 있는 갤정 확대 조성</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>예술문화가 있는 갤정 확대 조성</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">6</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">체육문화타운 조성</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>체육문화타운 조성</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">7</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">사당문화회관 남은 삶의 교해 및 리모델링</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>사당문화회관 남은 삶의 교해 및 리모델링</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">8</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">복합문화시설 건립추진</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>복합문화시설 건립추진</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">9</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">전통문화 체험관 조성</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>전통문화 체험관 조성</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">10</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title">정의실현 1번지로</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <p>정의실현 1번지로</p>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- v2.0: Region Map Section -->
+    
+
+    <!-- Career Section -->
+    <section class="section" id="career">
+        <h2 class="section-title"><span class="icon">📜</span> 주요 경력</h2>
+        <div class="timeline">
+            
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">류삼영이 걸어온 길</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">대동고등학교졸업</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">경찰대학 법학과 4기 졸업</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">동아대학교 대학원 법학박사</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">한국전 영일전사 제3호</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)부산경찰청 박부장 경재범죄수사과장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)부산영도경찰서장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)부산진대경찰서장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)울산진도경찰서장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">2022 전국경찰서장(총)회의 의장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">한국경 당대표 정치데이 대행위원</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">더불어민주당 국민혁신위원회 본부장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">더불어민주당 국민생활현장 특별위원회 위원장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">서울특별시 / 송파작가 / 공인중개사</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">[마무리 문구]</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Text Section -->
+    <section class="section" id="fulltext">
+        <h2 class="section-title"><span class="icon">📄</span> 전문보기</h2>
+        
+        <div class="page-content">
+            <h4>📄 페이지 1</h4>
+            <p>[페이지 정보]<br>페이지 유형: 메인<br><br>[후보자 기본 정보]<br>이름: 류삽영<br>기호: 1<br>정당: 더불어민주당<br>슬로건: 국민 안전 동작 발전<br>부제: 잊지말자 지난2년! 각성되다 남은3년!<br><br>[추가 정보]<br>- 제22대 국회의원선거 동작구을 선거구<br>- 더불어민주당 영입인재 3호<br>- 사진정보제공 위한 동의수신(개요요) 코드입니다 (QR코드 설명)</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 2</h4>
+            <p>[페이지 정보]<br>페이지 유형: 출사표<br><br>[출사표]<br>제목: 국민의 경찰이고 싶었습니다.<br><br>내용: <br>2022년 7월 23일<br>경찰을 권력의 시녀로 만들려는<br>윤석열 정부의<br>행정안전부 경찰국 신설에 반대해<br>전국경찰서장회의를 주도하기 전 까지<br><br>제 꿈은<br>국민의 경찰이 되는 것이었습니다.<br><br>윤명이 2022년 7월 31일<br>저는 경찰조직의 권력의 도구가 아니라,<br>오롯이 국가와 국민을 위한 경찰이 되기를<br>간절히 바랐던 그 마음을 가슴에 새기며<br>35년 정들었던 경찰을 떠나기 했습니다.<br><br>그러나 이제는<br>"국민은 지키는 경찰에서<br>국민을 살리는 일꾼이 되자"는<br>온명으로 받아들이고<br>처음 경찰에 입문하던 초심으로<br>동작구민 여러분께 인사를 드립니다.<br><br>동작구민 여러분!<br>2024년 4월 10일<br>무소속위의 권력을 위도는는<br>윤석열 김창정권에 맞서<br>대한민국을 올바른 길 위로<br>다시 올려놓는 선거입니다.<br><br>함께 하겠습니다.<br>함께 걸겠습니다.<br>희망의 횃불을 높이 들겠습니다.<br><br>흔들리는 대한민국이 마재를<br>여러분이 지켜주십시오.<br><br>제22대 국회의원선거<br>동작구을 후보 류성엽</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 3</h4>
+            <p>[페이지 정보]<br>페이지 유형: 성과<br><br>[성과]<br>대제목: 국민무사정권!<br><br>소제목1: 무너진 안전<br>- 이태원 참사<br>- 청주오송 지하차도 참사<br>- 재수근 상명 순직사건 수사 외압<br><br>소제목2: 파탄난 경제<br>- 2022년 대중국 무역적자 발생<br>- 2023년 무역수지 적자 발생<br>- 2023년 경제성장률 1.4%로 최저<br><br>소제목3: 국정의 실종<br>- 양평 고속도로 게이트<br>- 명품백 수수 의혹<br>- 주가조작 의혹<br><br>소제목4: 국격의 추락<br>- 일본 핵오염수 방류에 무책임한 대응<br>- 강제징용판결에 대한 부적절한 대응<br>- 대폭없는 남북대립<br>- 출국금지 피의자 효주대사 임명<br><br>[이미지 설명]<br>페이지 하단에는 여러 시사 관련 이미지들이 배치되어 있으며, "나는 기억한다" 등의 문구와 함께 10.29 이태원 참사, 각종 사건 관련 사진들이 포함되어 있습니다.</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 4</h4>
+            <p>[페이지 정보]<br>페이지 유형: 성과<br><br>[후보자 기본 정보]<br>이름: 나경원 (추정)<br>기호: 1번<br>정당: 국민의힘 (추정)<br><br>[성과]<br>대제목: 투표로 비봅시다.<br><br>주요 뉴스 내용:<br>- '경찰 출신' 류삼영의 피습사건<br>- 초기대응...이재명 쓰리지자 지혈하고 공간학보<br><br>기사 정보:<br>입력 2024.01.03 13:35 수정 2024.01.03<br><br>류삼영 "다행히 경동" 피해...전응이다 성애<br><br>이재명 더불어민주당 대표가 부산 방문 중 습격을 당하는 사건이 발생한 가운데 이 대표와 동행한 류삼영 전 총경이 감지스러운 응급 처치 공경으로 이차 피라청이 된 현장을 수습한 것으로 알려졌다. 류...<br><br>[투표 안내]<br>금(5일)~토(6일)<br>오전 6시부터 오후 6시까지<br>1찍 1찍<br>사/전/투/표<br><br>윤석열 정권을 심판하고<br>원초강남 특권을 지키는 부의합니다.<br><br>투표! 무책임! 무도덕 3무정권!<br>윤석열 정부는 국민의 일간다운 삶마저 무너뜨리고 있습니다.<br>이제는 윤석열 정부의 폭주를 멈춰야 합니다.<br><br>윤석열 정권의 특선과 무능, 류삼영으로 심판해야 합니다.<br><br>이제는 끝내겠습니다.</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 5</h4>
+            <p>[페이지 정보]<br>페이지 유형: 메인<br><br>[후보자 기본 정보]<br>이름: 나경원<br>기호: (이미지에서 확인 불가)<br>정당: (이미지에서 확인 불가)<br>슬로건: 동작에서 정치를 시작합니다. 동작에서 정의를 실현하겠습니다.<br>부제: 저는 35년간 국민의 안전을 책임지는 경찰로 살아 왔습니다.<br><br>[메인 메시지]<br>제목: 동작에서 정치를 시작합니다. 동작에서 정의를 실현하겠습니다.<br><br>내용: <br>저는 35년간 국민의 안전을 책임지는 경찰로 살아 왔습니다.<br><br>아직도 제 몸은 국민이 인간다운 삶을 살아갈 수 있도록 안전한 나라를 만들어야 한다고 말을 합니다.<br><br>무능 무책임! 무도한 3주정권 윤석열 정부는 국민의 인간다운 삶마저 무너뜨리고 있습니다.<br><br>이제는 윤석열 정부의 폭주를 멈춰야 합니다.<br><br>윤석열 정부의 독선과 무능 탄압정치로 심판해야 합니다.<br><br>마무리: 국민이 안전한 나라 류삼영이 만들겠습니다.</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 6</h4>
+            <p>[페이지 정보]<br>페이지 유형: 핵심공약<br><br>[핵심공약]<br>**민주당이 합니다.**<br><br>• 온종네가 함께 키우는 초등돌봄 실시<br>• 청소년 제능발전 지기계변 기획 확대<br>• 월3만원 청년패스 대중교통 무제한 이용<br>• 월 20만원 대학교 기숙사 건설<br><br>• 군 장병(시장 부사관 장교 군무원) 처우개선<br>• 병사 통신요금 할인율을 20%에서 50%로<br>• 장병급여 인상앉애 맞춰 동원훈련 보상비 현실화<br>• 보편적 동성복지 확대를 위한 가계통신비 경감<br><br>**류삽영이 합니다.**<br><br>• 직장인 지갑은 두껍게! 휴식은 확실하게!<br>• 근로소득세 부담완화정책 추진<br>• 소상공인·자영업자의 고금리 파혜획복 지원 대폭 강화<br>• 농산물가격안정제도의 안정한 국민 먹거리 보장<br><br>• 건물비 건강보험 적용<br>• 경로당 주유비 절실 제공<br><br>• 사람과 동물이 더불어 행복한 사회!<br>• 민범 개정 동물보지기법변 제정<br>• 반려동물 대상 공공의료 서비스 강화<br><br>• 화재로부터 소방관 및 국민안전 보호<br>• 인력구조 로봇 등 첨단 소방장비 도입 확대<br>• 화재 취약대상인을 위한 피난유도선 설치 의무화</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 7</h4>
+            <p>[페이지 정보]<br>페이지 유형: 후보자 소개/메시지 페이지<br><br>[후보자 기본 정보]<br>이름: 유삼영<br>기호: 1<br>정당: 국회의원 (파란색 조끼에 표시)<br>슬로건: 유삼영이 달립니다.<br><br>[후보자 메시지]<br>제목: 유삼영이 달립니다.<br><br>내용:<br>저는 민주당 영입인재 제3호로<br>동작구를 발전시키고<br>대한민국을 바로 세우려는<br>사명을 안고 동작구에 왔습니다.<br><br>이제 서울의 중심이 바뀝니다.<br><br>서울속의 동작을<br>품격있는 서울의 대표도시<br>동작특별구로 만들겠습니다.<br><br>동작구를<br>대한민국 정의실현 1번지로<br>대한민국 정권심판 1번지로<br>만들겠습니다.<br><br>유삼영이 달립니다.<br>유삼영이 동작구민 곁으로<br>달려갑니다.<br><br>원조강남 동작의 품격을<br>올려드리겠습니다.<br><br>[핵심공약]<br>이 페이지는 후보자 소개 및 메시지 페이지로, 구체적인 6개 핵심공약의 세부 항목은 포함되어 있지 않습니다. 대신 동작구 발전과 관련된 비전이 제시되어 있습니다.</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 8</h4>
+            <p>[페이지 정보]<br>페이지 유형: 핵심공약<br><br>[핵심공약]<br><br>**안전동작**<br>- 흑석동 소방관진센터 신설<br>- 관내 고지대 드론열선 확대 설치<br>- 재개발·재건축지역 방범 CCTV 확대 설치<br>- 초등학교 통학로 교통안전지도사 확대 배치<br><br>**미래동작**<br>- 사당·이수·남성역세권 상업벨트 확대<br>- 사당4동주민센터 주민복합시설 신축<br>- 예술문화가 있는 갤정 확대 조성<br>- 이수미로 문화의 거리 확대 조성<br><br>**교육동작**<br>- 영유아 전용 체육관 건립<br>- 청소년 교육·문화·예술 마우저 도입<br>- 초·중·고·대 인스턴 교육특구 조성<br>- 동작구육센터 조기완공<br><br>**류삼영이 약속드립니다**<br>- 편안한 삶이 있는 동작<br>- 여성이 롤인하지 않는 동작<br>- 청년이 주인공이 되는 동작<br>- 수해 걱정없는 살기좋은 동작<br>- 밤과 돌봄 걱정없는 동작<br>- 궁정한 교육으로 함께 성장하는 동작<br>- 공정하고 혁신적인 녹색전환 동작<br>- 모두가 행복해서 밀험 수 있는 동작<br><br>**풀컬동작**<br>- 상도동 체육문화타운 조성<br>- 흑석동 수변공원 조성 및 지하연결통로 개통<br>- 동작역 안감벽 전동 동재가나부터 조성<br>- 사당동 중랑 예술공연장 건립<br><br>**교통동작**<br>- 이수역전 대성도 확폭터널 조기착공<br>- 총신대·숭실대 4차선 터널 추진<br>- 사철로(숭실대·중앙대) 도로 확장<br>- 상습정체사·교통체증 해소<br><br>**중흥동작**<br>- 경로당 어르신 점심 후 5일 제공 확대실시<br>- 국가유공자에 대한 처우개선<br>- 시을수복가업당 및 보훈회관 건립<br>- 이수사회복지관본 종합사회복지관으로 확대이전</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 9</h4>
+            <p>[페이지 정보]<br>페이지 유형: 주민밀착공약<br><br>[주민밀착공약]<br>대제목: 구민 여러분의 목소리에 제 진심을 담았습니다.<br>부제: 목은 현안은 빠르게! 해택은 고르게 돌아가게 하겠습니다.<br><br>**상도1동**<br>- 송실대한구역 주변 지구단위 계획 수립<br>- 지하철7호선(대)~중앙대 도로확장 및 정비<br>- 청년창업 정보·문화거리 조성<br>- 동작가족센터 초기 환경<br>- 상도 문화·체육타운 조성<br><br>**사당5동**<br>- 스마트 안전마을 조성확대<br>- 주민과 함께 하는 도시재생사업 추진<br>- 고지대 골목길 도로명신 추가 설치<br>- 총신대~송실대 구간 4차선 터널 추진<br>- 총신대~송실대 고가구간 교통안전 개선<br>- 시님정초·웬컬초·상도중·중학교 교육환경 개선<br><br>**사당4동**<br>- 사당4동 주민센터 주민복합시설 신축<br>- 가지산 주변 맨홀 향후건대면 추진<br>- 남성역공복시장 문화상업거리 조성<br>- 사당문화회관 남은 삶의 교해 및 리모델링<br>- 89번 종점 복합문화시설 건립추진</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 10</h4>
+            <p>[페이지 정보]<br>페이지 유형: 주민밀착공약<br><br>[주민밀착공약]<br><br>**흑석동**<br>- 흑석동 소방안전센터 신설<br>- 흑석고등학교 안전한 공사 진행<br>- 흑석 청년창업지원센터 건립<br>- 서담샘 실버데이케어 전용체육관 건립<br>- 달마사 내 전통문화 체험관 조성<br>- 중앙대 병원 인근 부정도로 구조 개선<br>- 흑석 수변공원 조성 및 지하 연결통로 개선<br><br>**사당2동**<br>- 영화와 전통 쫄복관 건립(중앙극장원뒷길 활용)<br>- 지수레해식학원을 종합사회복지관으로 확대 이전 추진<br>- 이수마로 분화기 거리 확대 조성<br>- 서울수복기념관 보호하면 건립 추진<br>- 동작의 한강변 전통나무터 수변공원 조성<br>- 남성사계시장 지속적 환경개선 지원<br>- 동작충군극서응원충진 등례건 조속 정비<br><br>**사당3동**<br>- 남성역 중심 역세권 개발<br>- 산업공원 여성예국지식 기업옵인으로 확대 조성<br>- 노후주택 지역 재개발 조속추진<br>- 가정 동작구 계개발 민관합동 조정위원회 설치<br>- 상습 수자간 교통체증 개선<br>- 계개발·재건축지역 안전 CCTV 확대설치<br><br>**사당1동**<br>- 동작대로(이수~과천) 대심도 북한터널 건설<br>- 사당톱 층례총국방간 건립(한전지사 개발지 추진)<br>- 사당역 인근 상업지역 확대<br>- 마들포 실은거리 조성(동작대로 1, 3, 7길)<br>- 사당·이수남성 역세권 상업벨트 확대 강화</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 11</h4>
+            <p>[페이지 정보]<br>페이지 유형: 경력 및 연락처<br><br>[후보자 기본 정보]<br>이름: 류삼영<br>기호: 1<br>정당: 더불어민주당<br>슬로건: 4월 10일은 국민승리의 날입니다. 정권심판의 날입니다. 위기의 대한민국을 구하는 날입니다.<br>부제: 투표로 심판하는 날입니다.<br><br>[경력]<br>- 류삼영이 걸어온 길<br>- 부산출생<br>- 대동고등학교졸업<br>- 경찰대학 법학과 4기 졸업<br>- 동아대학교 대학원 법학박사<br>- 한국전 영일전사 제3호<br>- 전)부산경찰청 박부장 경재범죄수사과장<br>- 전)부산영도경찰서장<br>- 전)부산진대경찰서장<br>- 전)울산진도경찰서장<br>- 2022 전국경찰서장(총)회의 의장<br>- 한국경 당대표 정치데이 대행위원<br>- 더불어민주당 국민혁신위원회 본부장<br>- 더불어민주당 국민생활현장 특별위원회 위원장<br>- 서울특별시 / 송파작가 / 공인중개사<br><br>[마무리 문구]<br>오늘도 대한민국의 평화를 지키기 위해 고생하고 계신 국군장병 여러분과 그 가족분들께 감사를 드립니다.<br><br>[선거사무소 및 연락처]<br>선거사무소: 서울시 동작구 상도로 227(3층) T. 02) 533-6307 E. 630rgo@gmail.com<br><br>[SNS 정보]<br>- 류삼영TV https://www.youtube.com/@dongjak630<br>- https://www.facebook.com/ryusamyoung2<br>- https://blog.naver.com/rgo630<br><br>[추가 정보]<br>인쇄: 저작자 서울시 구로구 고척로 72-7 골방프린터 801호 T. 02) 711-8128-30</p>
+        </div>
+    </section>
+
+    <!-- Image Gallery Section (모든 이미지 모아보기) -->
+    
+
+    <!-- Contact Section (맨 마지막) -->
+    
+    <section class="section" id="contact">
+        <h2 class="section-title"><span class="icon">📞</span> 연락처 / 선거사무소</h2>
+        <div class="contact-links">
+            <div class="contact-link office" style="background:#f0f9ff; border-color:#0ea5e9;">📍 서울시 동작구 상도로 227</div><a href="https://facebook.com/ryusamyoung2" target="_blank" class="contact-link facebook">📘 Facebook</a><a href="https://youtube.com/@dongjak630" target="_blank" class="contact-link youtube">▶️ YouTube</a><a href="https://blog.naver.com/rgo630" target="_blank" class="contact-link blog">📝 Blog</a>
+        </div>
+        <div style="margin-top:15px; padding:15px; background:#f8f9fa; border-radius:10px; line-height:1.8;">서울시 동작구 상도로 227(3층) T. 02) 533-6307 E. 630rgo@gmail.com<br>- 류삼영TV https://www.youtube.com/@dongjak630<br>- https://www.facebook.com/ryusamyoung2<br>- https://blog.naver.com/rgo630<br>인쇄: 저작자 서울시 구로구 고척로 72-7 골방프린터 801호 T. 02) 711-8128-30</div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>본 페이지는 PDF 선거공보물에서 자동 생성되었습니다.</p>
+        <p style="margin-top: 10px;"><a href="https://studysnap.kr" target="_blank">StudySnap</a> | 완전 자동화 변환</p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#home" class="active">
+            <span class="nav-icon">🏠</span>
+            홈
+        </a>
+        <a href="#pledges">
+            <span class="nav-icon">📋</span>
+            공약
+        </a>
+        <a href="#career">
+            <span class="nav-icon">📜</span>
+            경력
+        </a>
+        <a href="#fulltext">
+            <span class="nav-icon">📄</span>
+            전문
+        </a>
+    </nav>
+
+    <script>
+        // Promise card toggle
+        document.querySelectorAll('.promise-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+        });
+
+        // Vision item toggle
+        document.querySelectorAll('.vision-item').forEach(item => {
+            item.querySelector('.vision-header').addEventListener('click', () => {
+                item.classList.toggle('expanded');
+            });
+        });
+
+        // Bottom navigation scroll spy
+        const sections = ['home', 'pledges', 'career', 'fulltext'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {
+                    current = id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // v2.0: Region Map Script
+        
+
+        // 이미지 갤러리 스크립트
+        
+    </script>
+</body>
+</html>
