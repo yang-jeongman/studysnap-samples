@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netlify 배포 진단</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+        .info {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #00ff00;
+        }
+        h1 { color: #00ff00; }
+        .timestamp { color: #ffaa00; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Netlify 배포 진단 페이지</h1>
+
+    <div class="info">
+        <strong>생성 시간:</strong> <span class="timestamp">2025-12-22 (최신)</span>
+    </div>
+
+    <div class="info">
+        <strong>파일 위치:</strong> /outputs/diagnostic.html
+    </div>
+
+    <div class="info">
+        <strong>Git Commit:</strong> 377bf9e 이후
+    </div>
+
+    <div class="info">
+        <strong>테스트 목적:</strong><br>
+        이 파일이 보인다면 Netlify가 outputs 폴더를 올바르게 배포하고 있는 것입니다.
+    </div>
+
+    <div class="info">
+        <strong>확인할 링크들:</strong><br>
+        <a href="/Election/Minjoo/송노섭/SONG_dangjin.html" style="color: #00aaff;">송노섭 공보물</a><br>
+        <a href="/Election/PPP/NA.html" style="color: #00aaff;">나경원 공보물</a><br>
+        <a href="/index.html" style="color: #00aaff;">Index 페이지</a>
+    </div>
+
+    <div class="info">
+        <strong>예상 결과:</strong><br>
+        ✅ 이 페이지가 보이면: Netlify 배포는 작동 중<br>
+        ✅ 위 링크들이 작동하면: 모든 파일이 정상 배포됨<br>
+        ❌ 404 에러가 나면: Netlify가 다른 소스에서 배포 중
+    </div>
+
+    <script>
+        document.write('<div class="info"><strong>현재 접속 URL:</strong><br>' + window.location.href + '</div>');
+        document.write('<div class="info"><strong>브라우저 시간:</strong><br>' + new Date().toString() + '</div>');
+    </script>
+</body>
+</html>
