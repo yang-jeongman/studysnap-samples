@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교회 주보 변환기 - StudySnap</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #5D3A1A 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p { opacity: 0.9; font-size: 1.1em; }
+
+        .auto-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #C5A572, #8B6914);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #5D3A1A;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-area {
+            border: 3px dashed #C5A572;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #FDF8F0;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #8B4513;
+            background: #FAF5EB;
+        }
+
+        .upload-area.has-file {
+            border-color: #8B6914;
+            background: #FFFEF9;
+        }
+
+        .upload-icon { font-size: 4em; margin-bottom: 15px; }
+
+        .upload-area h3 { font-size: 1.3em; color: #5D3A1A; margin-bottom: 10px; }
+        .upload-area p { color: #8D6E63; font-size: 0.95em; }
+
+        .file-input { display: none; }
+
+        .file-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #E8DCC8;
+        }
+
+        .file-info .icon { font-size: 2em; }
+        .file-info .details { flex: 1; text-align: left; }
+        .file-info .name { font-weight: 600; color: #5D3A1A; }
+        .file-info .size { color: #8D6E63; font-size: 0.9em; }
+
+        .file-info .remove {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .convert-btn.ready {
+            background: linear-gradient(135deg, #8B4513 0%, #5D3A1A 100%);
+            color: white;
+        }
+
+        .convert-btn.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .convert-btn.disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .convert-btn.loading {
+            background: linear-gradient(135deg, #C5A572 0%, #8B6914 100%);
+            color: white;
+        }
+
+        .progress-container { display: none; margin-top: 20px; }
+        .progress-container.show { display: block; }
+
+        .progress-bar {
+            height: 10px;
+            background: #E8DCC8;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B4513, #C5A572);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #5D3A1A;
+            font-weight: 500;
+        }
+
+        .result-container { display: none; }
+        .result-container.show { display: block; }
+
+        .result-success {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .result-success h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .result-item .label { font-size: 0.85em; opacity: 0.9; }
+        .result-item .value { font-size: 1.1em; font-weight: 600; margin-top: 3px; }
+
+        .result-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+        .result-actions a, .result-actions button {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+
+        .btn-preview { background: #8B4513; color: white; }
+        .btn-preview:hover { background: #5D3A1A; }
+        .btn-download { background: #C5A572; color: white; }
+        .btn-download:hover { background: #8B6914; }
+        .btn-reset { background: #6b7280; color: white; }
+        .btn-reset:hover { background: #4b5563; }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #FDF8F0;
+            border-radius: 10px;
+            border: 1px solid #E8DCC8;
+        }
+
+        .feature-item .icon { font-size: 1.5em; }
+        .feature-item .text { font-weight: 500; color: #5D3A1A; }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #FDF8F0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator { display: flex; align-items: center; gap: 8px; }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        .status-dot.ready { background: #8B6914; }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .error-container {
+            display: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .error-container.show { display: block; }
+
+        /* Church Options */
+        .church-options {
+            margin-top: 20px;
+            padding: 20px;
+            background: #FDF8F0;
+            border-radius: 12px;
+            border: 1px solid #E8DCC8;
+        }
+
+        .church-options-title {
+            font-weight: 600;
+            color: #8B4513;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .church-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .church-preset {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #E8DCC8;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .church-preset:hover {
+            border-color: #C5A572;
+            background: #FFFEF9;
+        }
+
+        .church-preset.selected {
+            border-color: #8B4513;
+            background: #FDF8F0;
+        }
+
+        .church-preset-name { font-weight: 600; color: #5D3A1A; margin-bottom: 4px; }
+        .church-preset-style { font-size: 0.75em; color: #8D6E63; }
+
+        .theme-select-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .theme-option {
+            padding: 10px;
+            border: 2px solid #E8DCC8;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .theme-option:hover { border-color: #C5A572; }
+        .theme-option.selected { border-color: #8B4513; background: #FDF8F0; }
+
+        .theme-option-icon { font-size: 1.5em; margin-bottom: 4px; }
+        .theme-option-name { font-size: 0.8em; font-weight: 500; color: #5D3A1A; }
+
+        .church-folder-input { margin-top: 15px; }
+
+        .church-folder-input label {
+            display: block;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #5D3A1A;
+            margin-bottom: 6px;
+        }
+
+        .church-folder-input input,
+        .church-folder-input select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #E8DCC8;
+            border-radius: 8px;
+            font-size: 0.95em;
+            background: white;
+        }
+
+        .church-folder-input input:focus,
+        .church-folder-input select:focus {
+            outline: none;
+            border-color: #C5A572;
+        }
+
+        .church-folder-preview {
+            margin-top: 12px;
+            padding: 12px;
+            background: #E8F5E9;
+            border-radius: 8px;
+            font-size: 0.85em;
+        }
+
+        .church-folder-preview .path {
+            font-family: monospace;
+            color: #2E7D32;
+            margin-top: 4px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .nav-tabs a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.95);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .nav-tabs a:hover { transform: translateY(-2px); }
+        .nav-tabs a.active { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+        .style-colors { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+
+        .style-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .style-chip .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-tabs" style="max-width: 900px; margin: 0 auto;">
+        <a href="/static/auto-converter.html" style="color: #667eea;">전체</a>
+        <a href="/static/election-converter.html" style="color: #667eea;">선거공보물</a>
+        <a href="/static/church-converter.html" class="active" style="color: #8B4513; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">교회주보</a>
+        <a href="/static/lecture-converter.html" style="color: #2563eb;">강의교재</a>
+        <a href="/static/newsletter-converter.html" style="color: #059669;">소식지</a>
+        <a href="/static/catalog-converter.html" style="color: #dc2626;">카탈로그</a>
+        <a href="/static/explorer.html" style="color: #1e3c72;">탐색기</a>
+    </nav>
+
+    <div class="container">
+        <header class="header">
+            <h1>
+                <span class="auto-badge">AUTO</span>
+                교회 주보 변환기
+            </h1>
+            <p>PDF 업로드로 모바일 최적화 주보 페이지 자동 생성</p>
+            <!-- 언어 선택 -->
+            <div style="margin-top: 15px;">
+                <select id="languageSelect" onchange="changeLanguage(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); font-size: 0.85em; cursor: pointer;">
+                    <option value="ko" selected>🇰🇷 한국어</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="zh">🇨🇳 中文</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="id">🇮🇩 Bahasa Indonesia</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="fr">🇫🇷 Français</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-indicator">
+                <span class="status-dot ready" id="statusDot"></span>
+                <span id="statusText">시스템 준비됨</span>
+            </div>
+            <span id="visionStatus">Vision OCR: 확인 중...</span>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">📤 PDF 업로드</h2>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">⛪</div>
+                <h3>교회 주보 PDF를 여기에 드래그하세요</h3>
+                <p>또는 클릭하여 파일 선택</p>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf">
+            </div>
+
+            <div id="fileList"></div>
+
+            <div class="church-options" id="churchOptions">
+                <div class="church-options-title">⛪ 교회 주보 설정</div>
+
+                <div class="church-folder-input">
+                    <label>📍 교회명</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <select id="churchSelect" onchange="onChurchSelect()" style="flex: 1;">
+                            <option value="">-- 교회 선택 또는 새로 입력 --</option>
+                            <option value="new">➕ 새 교회 추가</option>
+                        </select>
+                    </div>
+                    <input type="text" id="newChurchName" placeholder="새 교회명 입력 (예: 명성교회)" style="display: none; margin-top: 10px;">
+                </div>
+
+                <div id="existingChurches" style="margin-top: 15px;">
+                    <div style="font-size: 0.85em; color: #8D6E63; margin-bottom: 8px;">📂 기존 교회:</div>
+                    <div id="existingChurchList" class="church-preset-grid">
+                        <span style="color: #999; font-size: 0.85em;">로딩 중...</span>
+                    </div>
+                </div>
+
+                <div class="church-folder-input">
+                    <label>📅 주보 날짜</label>
+                    <input type="date" id="bulletinDate" onchange="updateChurchPreview()">
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 0.85em; font-weight: 600; color: #5D3A1A; margin-bottom: 10px;">
+                        🎄 절기 테마 (선택)
+                    </div>
+                    <div class="theme-select-grid" id="churchThemeGrid">
+                        <div class="theme-option selected" data-theme="default" onclick="selectChurchTheme('default')">
+                            <div class="theme-option-icon">BOOK</div>
+                            <div class="theme-option-name">일반</div>
+                        </div>
+                        <div class="theme-option" data-theme="advent" onclick="selectChurchTheme('advent')">
+                            <div class="theme-option-icon">CANDLE</div>
+                            <div class="theme-option-name">대림절</div>
+                        </div>
+                        <div class="theme-option" data-theme="christmas" onclick="selectChurchTheme('christmas')">
+                            <div class="theme-option-icon">TREE</div>
+                            <div class="theme-option-name">성탄절</div>
+                        </div>
+                        <div class="theme-option" data-theme="lent" onclick="selectChurchTheme('lent')">
+                            <div class="theme-option-icon">CROSS</div>
+                            <div class="theme-option-name">사순절</div>
+                        </div>
+                        <div class="theme-option" data-theme="easter" onclick="selectChurchTheme('easter')">
+                            <div class="theme-option-icon">FLOWER</div>
+                            <div class="theme-option-name">부활절</div>
+                        </div>
+                        <div class="theme-option" data-theme="pentecost" onclick="selectChurchTheme('pentecost')">
+                            <div class="theme-option-icon">FIRE</div>
+                            <div class="theme-option-name">성령강림</div>
+                        </div>
+                        <div class="theme-option" data-theme="harvest" onclick="selectChurchTheme('harvest')">
+                            <div class="theme-option-icon">WHEAT</div>
+                            <div class="theme-option-name">추수감사</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI 변환 모드 -->
+                <div style="margin-top: 25px; padding: 15px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; color: white;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-weight: 700; font-size: 1.1em;">🤖 AI 고품질 변환</div>
+                    </div>
+                    <div style="font-size: 0.85em; opacity: 0.9; margin-top: 8px;">
+                        Vision AI로 정확한 내용 추출
+                    </div>
+                </div>
+
+                <div class="church-folder-preview" id="churchFolderPreview" style="display: none;">
+                    <div style="color: #2E7D32; font-weight: 500;">✅ 저장 경로:</div>
+                    <div class="path" id="churchPathPreview">outputs/Church/[church]/[date].html</div>
+                </div>
+            </div>
+
+            <!-- AI Mode Toggle -->
+            <div style="margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #8B4513 0%, #5D3A1A 100%); border-radius: 12px; color: white;">
+                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <input type="checkbox" id="aiModeToggle" checked style="display: none;">
+                    <span class="ai-slider" style="
+                        position: relative;
+                        width: 50px;
+                        height: 26px;
+                        background: rgba(255,255,255,0.3);
+                        border-radius: 13px;
+                        transition: all 0.3s;
+                    ">
+                        <span style="
+                            position: absolute;
+                            top: 3px;
+                            left: 3px;
+                            width: 20px;
+                            height: 20px;
+                            background: white;
+                            border-radius: 50%;
+                            transition: all 0.3s;
+                            transform: translateX(24px);
+                        "></span>
+                    </span>
+                    <span style="font-weight: 600; font-size: 1.1em;">🤖 Claude AI 분석 모드</span>
+                </label>
+                <div id="aiModeStatus" style="margin-top: 8px; font-size: 0.9em; opacity: 0.9;">
+                    ✨ AI 모드 활성화 - 8개국어 번역, 성경/찬송가 팝업, 인터랙티브 기능
+                </div>
+            </div>
+
+            <button class="convert-btn disabled" id="convertBtn" disabled>
+                <span>PDF를 선택하세요</span>
+            </button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">Converting...</div>
+            </div>
+
+            <div class="error-container" id="errorContainer"></div>
+        </div>
+
+        <div class="card result-container" id="resultContainer">
+            <div class="result-success">
+                <h3>✅ 변환 완료!</h3>
+                <div class="result-info" id="resultInfo"></div>
+            </div>
+            <div class="result-actions">
+                <a href="#" class="btn-preview" id="previewBtn" target="_blank">미리보기</a>
+                <a href="#" class="btn-download" id="downloadBtn" download>HTML 다운로드</a>
+                <button class="btn-reset" id="resetBtn">새로 변환</button>
+                <button class="btn-clear-cache" id="clearCacheBtn" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">🗑️ 캐시 삭제</button>
+            </div>
+        </div>
+
+        <!-- 캐시 관리 섹션 -->
+        <div class="card" style="background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%); border: 2px solid #ffc107;">
+            <h2 class="card-title" style="color: #856404;">⚠️ 변환 문제 해결</h2>
+            <p style="color: #856404; margin-bottom: 15px;">이전 PDF 데이터가 남아있다면 아래 버튼으로 캐시를 완전히 삭제하세요.</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button id="fullClearBtn" style="background: #dc3545; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                    🗑️ 전체 캐시 삭제
+                </button>
+                <button id="hardRefreshBtn" style="background: #fd7e14; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                    🔄 강력 새로고침
+                </button>
+                <button id="resetFormBtn" style="background: #6c757d; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                    📋 폼 초기화
+                </button>
+            </div>
+            <p id="cacheStatus" style="margin-top: 10px; color: #856404; font-size: 12px;"></p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">주요 기능</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="icon">📋</span>
+                    <span class="text">예배 순서 자동 추출</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🎵</span>
+                    <span class="text">찬송가 YouTube 연결</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📖</span>
+                    <span class="text">성경 구절 자동 링크</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📱</span>
+                    <span class="text">모바일 최적화</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🎄</span>
+                    <span class="text">절기 테마 자동 적용</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🌙</span>
+                    <span class="text">다크모드 지원</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📰</span>
+                    <span class="text">교회 소식 자동 추출</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🔗</span>
+                    <span class="text">공유 버튼</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 25px; margin-bottom: 10px; color: #5D3A1A;">지원 스타일</h3>
+            <div class="style-colors">
+                <div class="style-chip" style="background: #5B4B9E20; color: #5B4B9E;">
+                    <span class="dot" style="background: #5B4B9E;"></span>
+                    모던
+                </div>
+                <div class="style-chip" style="background: #8B451320; color: #8B4513;">
+                    <span class="dot" style="background: #8B4513;"></span>
+                    전통
+                </div>
+                <div class="style-chip" style="background: #1E3A5F20; color: #1E3A5F;">
+                    <span class="dot" style="background: #1E3A5F;"></span>
+                    우아한
+                </div>
+                <div class="style-chip" style="background: #C5A57220; color: #8B6914;">
+                    <span class="dot" style="background: #C5A572;"></span>
+                    따뜻한
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const convertBtn = document.getElementById('convertBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const resultContainer = document.getElementById('resultContainer');
+        const errorContainer = document.getElementById('errorContainer');
+
+        let selectedFile = null;
+        let selectedChurch = '';
+        let selectedChurchTheme = 'default';
+        let bulletinDate = '';
+
+        // 오늘 날짜 설정 (항상 현재 날짜로)
+        function setTodayDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const today = `${year}-${month}-${day}`;
+            document.getElementById('bulletinDate').value = today;
+            bulletinDate = today;
+        }
+        setTodayDate();
+
+        async function loadExistingChurches() {
+            try {
+                const response = await fetch('/api/files/outputs/Church');
+                const data = await response.json();
+
+                const churchList = document.getElementById('existingChurchList');
+                const churchSelect = document.getElementById('churchSelect');
+
+                if (data.success && data.folders && data.folders.length > 0) {
+                    churchList.innerHTML = data.folders.map(folder => `
+                        <div class="church-preset" data-church="${folder.name}" onclick="selectChurchPreset('${folder.name}')">
+                            <div class="church-preset-name">${folder.name}</div>
+                            <div class="church-preset-style">${folder.file_count}개 주보</div>
+                        </div>
+                    `).join('');
+
+                    churchSelect.innerHTML = `
+                        <option value="">-- 교회 선택 --</option>
+                        ${data.folders.map(f => `<option value="${f.name}">${f.name}</option>`).join('')}
+                        <option value="new">+ 새 교회 추가</option>
+                    `;
+                } else {
+                    churchList.innerHTML = '<span style="color: #999; font-size: 0.85em;">등록된 교회 없음</span>';
+                }
+            } catch (e) {
+                document.getElementById('existingChurchList').innerHTML = '<span style="color: #999;">로드 실패</span>';
+            }
+        }
+
+        function onChurchSelect() {
+            const value = document.getElementById('churchSelect').value;
+            const newChurchInput = document.getElementById('newChurchName');
+
+            if (value === 'new') {
+                newChurchInput.style.display = 'block';
+                newChurchInput.focus();
+                selectedChurch = '';
+            } else {
+                newChurchInput.style.display = 'none';
+                selectedChurch = value;
+            }
+
+            document.querySelectorAll('.church-preset').forEach(p => p.classList.remove('selected'));
+            updateChurchPreview();
+        }
+
+        function selectChurchPreset(churchName) {
+            selectedChurch = churchName;
+            document.getElementById('churchSelect').value = churchName;
+            document.getElementById('newChurchName').style.display = 'none';
+
+            document.querySelectorAll('.church-preset').forEach(p => {
+                p.classList.toggle('selected', p.dataset.church === churchName);
+            });
+
+            updateChurchPreview();
+        }
+
+        function selectChurchTheme(theme) {
+            selectedChurchTheme = theme;
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.theme === theme);
+            });
+        }
+
+        function updateChurchPreview() {
+            const newChurchInput = document.getElementById('newChurchName');
+            const churchName = document.getElementById('churchSelect').value === 'new'
+                ? newChurchInput.value.trim()
+                : selectedChurch;
+
+            const dateValue = document.getElementById('bulletinDate').value;
+            bulletinDate = dateValue;
+
+            const preview = document.getElementById('churchFolderPreview');
+            const pathPreview = document.getElementById('churchPathPreview');
+
+            if (churchName && dateValue) {
+                preview.style.display = 'block';
+                pathPreview.textContent = `outputs/Church/${churchName}/${dateValue}.html`;
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        document.getElementById('newChurchName')?.addEventListener('input', updateChurchPreview);
+
+        async function checkStatus() {
+            try {
+                const response = await fetch('/api/auto-convert/status');
+                const data = await response.json();
+
+                if (data.auto_converter_ready) {
+                    document.getElementById('statusDot').className = 'status-dot ready';
+                    document.getElementById('statusText').textContent = '시스템 준비됨';
+                }
+
+                document.getElementById('visionStatus').textContent =
+                    `Vision OCR: ${data.vision_ocr_ready ? '활성화' : '비활성화'}`;
+            } catch (e) {
+                console.error('상태 확인 실패:', e);
+            }
+        }
+
+        checkStatus();
+        loadExistingChurches();
+
+        // AI Mode Toggle functionality
+        const aiToggle = document.getElementById('aiModeToggle');
+        const aiSlider = document.querySelector('.ai-slider');
+        const aiStatus = document.getElementById('aiModeStatus');
+
+        function updateAIToggleUI() {
+            const sliderDot = aiSlider.querySelector('span');
+            if (aiToggle.checked) {
+                aiSlider.style.background = 'rgba(255,255,255,0.9)';
+                sliderDot.style.transform = 'translateX(24px)';
+                sliderDot.style.background = '#8B4513';
+                aiStatus.textContent = '✨ AI 모드 활성화 - 8개국어 번역, 성경/찬송가 팝업, 인터랙티브 기능';
+            } else {
+                aiSlider.style.background = 'rgba(255,255,255,0.3)';
+                sliderDot.style.transform = 'translateX(0)';
+                sliderDot.style.background = 'white';
+                aiStatus.textContent = '기본 모드 - OCR 기반 텍스트 추출';
+            }
+        }
+
+        aiToggle.addEventListener('change', updateAIToggleUI);
+        updateAIToggleUI();
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+        function handleFile(file) {
+            if (!file || !file.name.toLowerCase().endsWith('.pdf')) {
+                showError('PDF 파일만 업로드 가능합니다.');
+                return;
+            }
+
+            selectedFile = file;
+            renderFileList();
+            updateConvertButton();
+        }
+
+        function renderFileList() {
+            if (!selectedFile) {
+                fileList.innerHTML = '';
+                uploadArea.classList.remove('has-file');
+                return;
+            }
+
+            uploadArea.classList.add('has-file');
+
+            fileList.innerHTML = `
+                <div class="file-info">
+                    <span class="icon">📄</span>
+                    <div class="details">
+                        <div class="name">${selectedFile.name}</div>
+                        <div class="size">${formatFileSize(selectedFile.size)}</div>
+                    </div>
+                    <button class="remove" onclick="removeFile()">삭제</button>
+                </div>
+            `;
+        }
+
+        function removeFile() {
+            selectedFile = null;
+            renderFileList();
+            updateConvertButton();
+        }
+
+        function updateConvertButton() {
+            if (selectedFile) {
+                convertBtn.disabled = false;
+                convertBtn.className = 'convert-btn ready';
+                convertBtn.innerHTML = '<span>주보 변환하기</span>';
+            } else {
+                convertBtn.disabled = true;
+                convertBtn.className = 'convert-btn disabled';
+                convertBtn.innerHTML = '<span>PDF를 선택하세요</span>';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function showError(message) {
+            errorContainer.textContent = message;
+            errorContainer.classList.add('show');
+            setTimeout(() => errorContainer.classList.remove('show'), 5000);
+        }
+
+        function getThemeName(theme) {
+            const themeNames = {
+                'default': '일반',
+                'advent': '대림절',
+                'christmas': '성탄절',
+                'lent': '사순절',
+                'easter': '부활절',
+                'pentecost': '성령강림절',
+                'harvest': '추수감사절'
+            };
+            return themeNames[theme] || theme;
+        }
+
+        convertBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            const newChurchInput = document.getElementById('newChurchName');
+            const churchName = document.getElementById('churchSelect').value === 'new'
+                ? newChurchInput.value.trim()
+                : selectedChurch;
+
+            if (!churchName) {
+                showError('교회명을 선택하거나 입력해주세요.');
+                return;
+            }
+
+            if (!bulletinDate) {
+                showError('주보 날짜를 선택해주세요.');
+                return;
+            }
+
+            errorContainer.classList.remove('show');
+            resultContainer.classList.remove('show');
+
+            convertBtn.disabled = true;
+            convertBtn.className = 'convert-btn loading';
+            convertBtn.innerHTML = '<span>변환 중...</span>';
+
+            progressContainer.classList.add('show');
+            progressFill.style.width = '10%';
+            progressText.textContent = 'PDF 분석 중...';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('church_name', churchName);
+                formData.append('bulletin_date', bulletinDate);
+                formData.append('theme', selectedChurchTheme);
+
+                progressFill.style.width = '30%';
+                progressText.textContent = '내용 추출 중...';
+
+                await new Promise(r => setTimeout(r, 500));
+                progressFill.style.width = '50%';
+
+                // AI 모드에 따라 엔드포인트 선택
+                const useAI = document.getElementById('aiModeToggle').checked;
+                const apiEndpoint = useAI ? '/api/church-convert-ai' : '/api/church-convert';
+
+                if (useAI) {
+                    progressText.textContent = '🤖 AI가 예배 순서 추출 중... (다국어 번역 포함)';
+                } else {
+                    progressText.textContent = '예배 순서 추출 중...';
+                }
+
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                progressFill.style.width = '80%';
+                progressText.textContent = 'HTML 생성 중...';
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || '변환 실패');
+                }
+
+                const result = await response.json();
+
+                progressFill.style.width = '100%';
+                progressText.textContent = '완료!';
+
+                setTimeout(() => {
+                    progressContainer.classList.remove('show');
+                    showResult(result);
+                }, 500);
+
+            } catch (error) {
+                progressContainer.classList.remove('show');
+                showError(error.message);
+                updateConvertButton();
+            }
+        });
+
+        function showResult(data) {
+            resultContainer.classList.add('show');
+
+            const resultInfo = document.getElementById('resultInfo');
+            const previewBtn = document.getElementById('previewBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            resultInfo.innerHTML = `
+                <div class="result-item">
+                    <div class="label">교회</div>
+                    <div class="value">${data.church_name || '변환됨'}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">날짜</div>
+                    <div class="value">${data.bulletin_date || ''}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">테마</div>
+                    <div class="value">${getThemeName(data.theme) || '일반'}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">페이지</div>
+                    <div class="value">${data.page_count || 0}페이지</div>
+                </div>
+                ${data.ai_powered ? `
+                <div class="result-item" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 8px; padding: 8px 12px;">
+                    <div class="label" style="color: rgba(255,255,255,0.8);">변환방식</div>
+                    <div class="value" style="font-weight: 700;">🤖 AI Powered</div>
+                </div>
+                ` : ''}
+            `;
+
+            previewBtn.href = data.url;
+            downloadBtn.href = data.url;
+            downloadBtn.download = data.filename;
+
+            convertBtn.innerHTML = '<span>완료!</span>';
+            convertBtn.className = 'convert-btn ready';
+        }
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            selectedFile = null;
+            renderFileList();
+            updateConvertButton();
+            resultContainer.classList.remove('show');
+            fileInput.value = '';
+        });
+
+        // ========== 캐시 관리 기능 ==========
+
+        // 전체 캐시 삭제
+        document.getElementById('fullClearBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('fullClearBtn');
+            const statusEl = document.getElementById('cacheStatus');
+
+            btn.disabled = true;
+            btn.innerHTML = '🔄 삭제 중...';
+
+            try {
+                const response = await fetch('/api/cache/clear', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    statusEl.innerHTML = `✅ ${result.message}`;
+                    statusEl.style.color = '#28a745';
+
+                    // 로컬 스토리지도 삭제
+                    localStorage.clear();
+                    sessionStorage.clear();
+
+                    alert('캐시가 완전히 삭제되었습니다.\n페이지를 새로고침합니다.');
+                    location.reload(true);
+                } else {
+                    statusEl.innerHTML = `❌ 오류: ${result.error}`;
+                    statusEl.style.color = '#dc3545';
+                }
+            } catch (error) {
+                statusEl.innerHTML = `❌ 네트워크 오류: ${error.message}`;
+                statusEl.style.color = '#dc3545';
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '🗑️ 전체 캐시 삭제';
+        });
+
+        // 결과 옆 캐시 삭제 버튼
+        document.getElementById('clearCacheBtn')?.addEventListener('click', async () => {
+            const churchName = document.getElementById('churchName').value || '여의도순복음교회';
+
+            try {
+                const response = await fetch(`/api/cache/clear-church/${encodeURIComponent(churchName)}`, { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`${churchName} 캐시가 삭제되었습니다.`);
+                } else {
+                    alert(`오류: ${result.error}`);
+                }
+            } catch (error) {
+                alert(`네트워크 오류: ${error.message}`);
+            }
+        });
+
+        // 강력 새로고침 (브라우저 캐시 무시)
+        document.getElementById('hardRefreshBtn').addEventListener('click', () => {
+            // 로컬 스토리지 삭제
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 캐시 무시 새로고침
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+            }
+
+            // 강제 새로고침 (Ctrl+Shift+R 효과)
+            location.href = location.href.split('?')[0] + '?nocache=' + Date.now();
+        });
+
+        // 폼 초기화
+        document.getElementById('resetFormBtn').addEventListener('click', () => {
+            selectedFile = null;
+            renderFileList();
+            updateConvertButton();
+            resultContainer.classList.remove('show');
+            fileInput.value = '';
+
+            // 입력 필드 초기화
+            document.getElementById('churchName').value = '여의도순복음교회';
+            document.getElementById('bulletinDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('theme').value = 'default';
+
+            const statusEl = document.getElementById('cacheStatus');
+            statusEl.innerHTML = '✅ 폼이 초기화되었습니다.';
+            statusEl.style.color = '#28a745';
+        });
+
+        // 페이지 로드 시 캐시 타임스탬프 표시
+        (function() {
+            const statusEl = document.getElementById('cacheStatus');
+            if (statusEl) {
+                statusEl.innerHTML = `마지막 로드: ${new Date().toLocaleString('ko-KR')}`;
+            }
+        })();
+    </script>
+</body>
+</html>

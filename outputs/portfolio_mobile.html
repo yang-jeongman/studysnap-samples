@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Digital Solutions - 솔루션 포트폴리오</title>
+    <meta name="description" content="PDF 모바일 변환, 카카오톡 커머스, 데이터 변환 솔루션">
+    <!-- PWA 지원 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2563EB">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+
+    <!-- 카카오톡 공유용 메타 태그 -->
+    <meta property="og:title" content="Digital Solutions - 솔루션 포트폴리오">
+    <meta property="og:description" content="PDF 모바일 변환 · 카카오톡 커머스 · 데이터 변환 솔루션">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1D4ED8;
+            --primary-light: #DBEAFE;
+            --secondary: #7C3AED;
+            --accent: #10B981;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --light-gray: #9CA3AF;
+            --bg: #F9FAFB;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 헤더 */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-logo {
+            font-size: 3em;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .header-subtitle {
+            font-size: 0.95em;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85em;
+        }
+
+        /* 네비게이션 */
+        .nav-tabs {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tabs-inner {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--gray);
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav-tab.active,
+        .nav-tab:hover {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* 섹션 */
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-light) 0%, white 100%);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header.orange {
+            background: linear-gradient(135deg, #FEF3C7 0%, white 100%);
+        }
+
+        .section-header.green {
+            background: linear-gradient(135deg, #D1FAE5 0%, white 100%);
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            color: white;
+        }
+
+        .section-icon.blue { background: var(--primary); }
+        .section-icon.orange { background: var(--warning); }
+        .section-icon.green { background: var(--accent); }
+        .section-icon.purple { background: var(--secondary); }
+
+        .section-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .section-subtitle {
+            font-size: 0.8em;
+            color: var(--gray);
+        }
+
+        .section-body {
+            padding: 20px;
+        }
+
+        /* 소개 카드 */
+        .intro-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .intro-card h2 {
+            font-size: 1.3em;
+            margin-bottom: 12px;
+        }
+
+        .intro-card p {
+            font-size: 0.95em;
+            opacity: 0.95;
+            line-height: 1.7;
+        }
+
+        /* 기능 리스트 */
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 28px;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95em;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* 하이라이트 그리드 */
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .highlight-box.green {
+            background: linear-gradient(135deg, var(--accent), #059669);
+        }
+
+        .highlight-box h4 {
+            font-size: 0.8em;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .highlight-box .value {
+            font-size: 1.8em;
+            font-weight: 900;
+        }
+
+        .highlight-box .unit {
+            font-size: 0.7em;
+            opacity: 0.8;
+        }
+
+        /* 프로세스 플로우 */
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            overflow-x: auto;
+        }
+
+        .process-step {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .process-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            margin: 0 auto 8px;
+        }
+
+        .process-step h5 {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .process-arrow {
+            font-size: 1em;
+            color: var(--primary);
+            padding: 0 4px;
+        }
+
+        /* 기술 스택 */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .tech-badge {
+            padding: 6px 12px;
+            background: var(--primary-light);
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        /* 적용 분야 그리드 */
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .use-case-item {
+            background: var(--bg);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .use-case-item .icon {
+            font-size: 1.5em;
+            margin-bottom: 6px;
+        }
+
+        .use-case-item h5 {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .use-case-item p {
+            font-size: 0.75em;
+            color: var(--gray);
+        }
+
+        /* 연락처 섹션 */
+        .contact-section {
+            background: linear-gradient(135deg, var(--dark) 0%, #374151 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .contact-section h2 {
+            font-size: 1.3em;
+            margin-bottom: 24px;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-item .icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .contact-item h4 {
+            font-size: 0.8em;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .contact-item p {
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .contact-item a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .contact-note {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        /* 공유 버튼 */
+        .share-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .share-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .share-btn {
+            flex: 1;
+            max-width: 140px;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .share-btn.kakao {
+            background: #FEE500;
+            color: #3C1E1E;
+        }
+
+        .share-btn.copy {
+            background: var(--primary);
+            color: white;
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* 푸터 */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.8em;
+        }
+
+        /* 다크모드 토글 */
+        .dark-toggle {
+            position: fixed;
+            top: 100px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 99;
+        }
+
+        /* 다크모드 */
+        body.dark-mode {
+            --bg: #1a1a2e;
+            --white: #252540;
+            --dark: #ffffff;
+            --gray: #a0a0b0;
+            --border: #3a3a50;
+            --primary-light: #3a3a50;
+        }
+
+        body.dark-mode .section,
+        body.dark-mode .nav-tabs,
+        body.dark-mode .share-section {
+            background: var(--white);
+        }
+
+        body.dark-mode .dark-toggle {
+            background: var(--white);
+        }
+
+        body.dark-mode .use-case-item {
+            background: var(--border);
+        }
+
+        /* 반응형 */
+        @media (max-width: 375px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+
+            .highlight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-logo">💡</div>
+        <h1>Digital Transformation<br>솔루션 포트폴리오</h1>
+        <p class="header-subtitle">문서 자동화 · 커머스 연동 · 데이터 변환</p>
+        <span class="header-badge">2025년 12월</span>
+    </header>
+
+    <!-- 네비게이션 -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-inner">
+            <a href="#studysnap" class="nav-tab active">StudySnap</a>
+            <a href="#kmart" class="nav-tab">K-MART</a>
+            <a href="#flowgen" class="nav-tab">FlowGen</a>
+            <a href="#contact" class="nav-tab">문의</a>
+        </div>
+    </nav>
+
+    <!-- 다크모드 토글 -->
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+    <main class="container">
+        <!-- 소개 -->
+        <div class="intro-card">
+            <h2>3가지 핵심 솔루션</h2>
+            <p>PDF 모바일 변환, 카카오톡 커머스 연동, 대용량 데이터 변환까지<br>비즈니스 디지털화를 위한 맞춤형 솔루션을 제공합니다.</p>
+        </div>
+
+        <!-- StudySnap -->
+        <section id="studysnap" class="section">
+            <div class="section-header">
+                <div class="section-icon blue">📱</div>
+                <div>
+                    <h2 class="section-title">StudySnap</h2>
+                    <p class="section-subtitle">PDF → Mobile HTML 자동 변환</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <p style="margin-bottom: 16px; color: var(--gray); font-size: 0.95em;">
+                    A4 PDF 문서를 스마트폰에 최적화된 반응형 HTML로 자동 변환하는 AI 솔루션입니다.
+                </p>
+
+                <ul class="feature-list">
+                    <li>AI 기반 레이아웃 분석 및 자동 재구성</li>
+                    <li>카테고리별 맞춤 템플릿 적용</li>
+                    <li>다크모드, 폰트 크기 조절 지원</li>
+                    <li>SNS 공유 기능 내장</li>
+                    <li>10페이지 PDF 기준 3~5초 변환</li>
+                </ul>
+
+                <h4 style="font-size: 0.9em; color: var(--primary); margin: 20px 0 12px;">적용 분야</h4>
+                <div class="use-case-grid">
+                    <div class="use-case-item">
+                        <div class="icon">⛪</div>
+                        <h5>교회 주보</h5>
+                        <p>모바일 주보 자동 생성</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">🗳️</div>
+                        <h5>선거 공보</h5>
+                        <p>후보자 공약 배포</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">📚</div>
+                        <h5>외국어 학습</h5>
+                        <p>맞춤 학습 콘텐츠</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">📰</div>
+                        <h5>뉴스레터</h5>
+                        <p>사내보 디지털화</p>
+                    </div>
+                </div>
+
+                <h4 style="font-size: 0.9em; color: var(--primary); margin: 20px 0 12px;">기술 스택</h4>
+                <div class="tech-stack">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">FastAPI</span>
+                    <span class="tech-badge">OpenAI GPT-4</span>
+                    <span class="tech-badge">PyMuPDF</span>
+                </div>
+
+                <div class="highlight-grid">
+                    <div class="highlight-box">
+                        <h4>변환 속도</h4>
+                        <div class="value">3~5<span class="unit">초</span></div>
+                    </div>
+                    <div class="highlight-box green">
+                        <h4>모바일 최적화</h4>
+                        <div class="value">95<span class="unit">%+</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- K-MART -->
+        <section id="kmart" class="section">
+            <div class="section-header orange">
+                <div class="section-icon orange">🛒</div>
+                <div>
+                    <h2 class="section-title">K-MART</h2>
+                    <p class="section-subtitle">카카오톡 모바일 주문 연동</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <p style="margin-bottom: 16px; color: var(--gray); font-size: 0.95em;">
+                    별도 앱 설치 없이 카카오톡 채팅방에서 URL 링크만으로 주문이 가능한 유통관리 시스템입니다.
+                </p>
+
+                <ul class="feature-list">
+                    <li>카카오톡 오픈채팅방 주문 연동</li>
+                    <li>실시간 주문 알림 메시지 자동 발송</li>
+                    <li>도매가/소매가 이중 가격 체계</li>
+                    <li>재고 실시간 추적 및 알림</li>
+                    <li>정산 내역 엑셀 다운로드</li>
+                </ul>
+
+                <h4 style="font-size: 0.9em; color: var(--warning); margin: 20px 0 12px;">주문 플로우</h4>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="process-icon">📲</div>
+                        <h5>링크 공유</h5>
+                    </div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step">
+                        <div class="process-icon">🛍️</div>
+                        <h5>상품 선택</h5>
+                    </div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step">
+                        <div class="process-icon">✅</div>
+                        <h5>주문 완료</h5>
+                    </div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step">
+                        <div class="process-icon">💬</div>
+                        <h5>카톡 알림</h5>
+                    </div>
+                </div>
+
+                <h4 style="font-size: 0.9em; color: var(--warning); margin: 20px 0 12px;">대상 고객</h4>
+                <div class="use-case-grid">
+                    <div class="use-case-item">
+                        <div class="icon">🏪</div>
+                        <h5>소규모 유통</h5>
+                        <p>도소매 거래 관리</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">🥬</div>
+                        <h5>농산물 직거래</h5>
+                        <p>산지직송 주문</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">👥</div>
+                        <h5>공동구매</h5>
+                        <p>그룹 주문 관리</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">🏠</div>
+                        <h5>소상공인</h5>
+                        <p>모바일 간편 판매</p>
+                    </div>
+                </div>
+
+                <h4 style="font-size: 0.9em; color: var(--warning); margin: 20px 0 12px;">기술 스택</h4>
+                <div class="tech-stack">
+                    <span class="tech-badge">Django 6.0</span>
+                    <span class="tech-badge">Python 3.12</span>
+                    <span class="tech-badge">Kakao API</span>
+                    <span class="tech-badge">Bootstrap 5</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FlowGen -->
+        <section id="flowgen" class="section">
+            <div class="section-header green">
+                <div class="section-icon green">🔄</div>
+                <div>
+                    <h2 class="section-title">FlowGen</h2>
+                    <p class="section-subtitle">대용량 비정형 데이터 → HTML</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <p style="margin-bottom: 16px; color: var(--gray); font-size: 0.95em;">
+                    대용량 비정형 데이터를 구조화된 HTML로 자동 변환하여 웹에서 검색/열람이 가능하게 합니다.
+                </p>
+
+                <ul class="feature-list">
+                    <li>TXT, CSV, LOG 등 다양한 형식 지원</li>
+                    <li>데이터 패턴 자동 인식</li>
+                    <li>검색/필터 기능 내장 HTML 생성</li>
+                    <li>20+ 인코딩 자동 감지</li>
+                    <li>1GB 이상 대용량 병렬 처리</li>
+                </ul>
+
+                <h4 style="font-size: 0.9em; color: var(--accent); margin: 20px 0 12px;">활용 분야</h4>
+                <div class="use-case-grid">
+                    <div class="use-case-item">
+                        <div class="icon">🏭</div>
+                        <h5>제조/물류</h5>
+                        <p>생산 로그 시각화</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">🏥</div>
+                        <h5>의료/연구</h5>
+                        <p>실험 데이터 구조화</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">📊</div>
+                        <h5>금융/회계</h5>
+                        <p>거래 내역 대시보드</p>
+                    </div>
+                    <div class="use-case-item">
+                        <div class="icon">🏛️</div>
+                        <h5>공공/행정</h5>
+                        <p>문서 디지털 아카이브</p>
+                    </div>
+                </div>
+
+                <div class="highlight-grid">
+                    <div class="highlight-box green">
+                        <h4>지원 인코딩</h4>
+                        <div class="value">20<span class="unit">+</span></div>
+                    </div>
+                    <div class="highlight-box">
+                        <h4>최대 처리</h4>
+                        <div class="value">1GB<span class="unit">+</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 연락처 -->
+        <section id="contact" class="contact-section">
+            <h2>프로젝트 문의</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="icon">📧</div>
+                    <h4>이메일</h4>
+                    <p><a href="mailto:jmyangkr@gmail.com">jmyangkr@gmail.com</a></p>
+                </div>
+                <div class="contact-item">
+                    <div class="icon">📞</div>
+                    <h4>연락처</h4>
+                    <p><a href="tel:010-8665-8150">010-8665-8150</a></p>
+                </div>
+            </div>
+            <p class="contact-note">맞춤형 솔루션 개발 및 기술 컨설팅 상담 가능</p>
+        </section>
+
+        <!-- 공유 -->
+        <div class="share-section">
+            <div class="share-title">이 포트폴리오 공유하기</div>
+            <div class="share-buttons">
+                <button class="share-btn kakao" onclick="shareKakao()">카카오톡</button>
+                <button class="share-btn copy" onclick="copyLink()">링크 복사</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 Digital Solutions. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 다크모드
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.dark-toggle');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.dark-toggle').textContent = '☀️';
+        }
+
+        // 네비게이션 활성화
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navTabs.forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('href') === '#' + current);
+            });
+        });
+
+        // 부드러운 스크롤
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 카카오톡 공유
+        function shareKakao() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Digital Solutions - 솔루션 포트폴리오',
+                    text: 'PDF 모바일 변환 · 카카오톡 커머스 · 데이터 변환 솔루션',
+                    url: window.location.href
+                });
+            } else {
+                copyLink();
+                alert('카카오톡에 링크를 붙여넣기 해주세요!');
+            }
+        }
+
+        // 링크 복사
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('링크가 복사되었습니다!');
+            });
+        }
+    </script>
+</body>
+</html>

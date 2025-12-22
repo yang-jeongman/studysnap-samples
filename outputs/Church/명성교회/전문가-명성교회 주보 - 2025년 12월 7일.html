@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<!-- saved from url=(0096)file:///C:/StudySnap-Backend/outputs/Church/%EB%AA%85%EC%84%B1%EA%B5%90%ED%9A%8C/2025-12-07.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>명성교회 주보 - 2025년 12월 7일</title>
+    <meta name="description" content="명성교회 2025년 12월 7일 대림절 둘째 주일 주보 - 시험을 이기는 자가 되라">
+    <!-- PWA 지원 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="명성교회">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 100 100&#39;&gt;&lt;text y=&#39;.9em&#39; font-size=&#39;90&#39;&gt;%E2%9B%AA&lt;/text&gt;&lt;/svg&gt;">
+    <meta name="theme-color" content="#1E3A5F">
+    <link href="./전문가-명성교회 주보 - 2025년 12월 7일_files/css2" rel="stylesheet">
+    <style>
+        :root {
+            /* 명성교회 컬러 - 격조있는 네이비 + 대림절 보라 */
+            --primary: #1E3A5F;
+            --primary-dark: #152A45;
+            --primary-light: #E8EEF4;
+            --advent: #4A0D67;
+            --advent-light: #E8D5F0;
+            --accent: #C9A857;
+            --accent-light: #F5EED8;
+            --text-dark: #1a1a2e;
+            --text-gray: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-gray: #F8F9FA;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #DC2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 헤더 - 명성교회 격조있는 스타일 */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 24px 20px;
+            padding-top: calc(env(safe-area-inset-top, 20px) + 20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(74,13,103,0.3) 100%);
+            pointer-events: none;
+        }
+
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .advent-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--advent);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .church-name {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 8px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .church-name-en {
+            font-size: 0.5em;
+            font-weight: 400;
+            letter-spacing: 2px;
+            opacity: 0.85;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .jubo-info {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 12px;
+        }
+
+        .jubo-date {
+            font-weight: 600;
+        }
+
+        .jubo-number {
+            opacity: 0.8;
+        }
+
+        /* 네비게이션 */
+        .nav-tabs {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .nav-tabs::-webkit-scrollbar { display: none; }
+
+        .nav-tabs-inner {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 4px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .nav-tab.active, .nav-tab:hover {
+            color: var(--advent);
+            border-bottom-color: var(--advent);
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+            padding-bottom: 100px;
+        }
+
+        /* 섹션 카드 */
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-light) 0%, white 100%);
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header.advent {
+            background: linear-gradient(135deg, var(--advent-light) 0%, white 100%);
+        }
+
+        .section-icon { font-size: 1.3em; }
+
+        .section-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .section-title.advent {
+            color: var(--advent);
+        }
+
+        .section-body { padding: 18px; }
+
+        /* 오늘의 말씀 카드 */
+        .verse-card {
+            background: linear-gradient(135deg, var(--advent) 0%, #6B21A8 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verse-card::before {
+            content: '🕯️';
+            position: absolute;
+            font-size: 4em;
+            opacity: 0.15;
+            top: -10px;
+            right: -10px;
+        }
+
+        .verse-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .verse-text {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.1em;
+            line-height: 1.9;
+            font-weight: 500;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .verse-ref {
+            font-size: 0.9em;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+
+        /* 설교 정보 */
+        .sermon-card {
+            background: linear-gradient(135deg, var(--accent-light) 0%, white 100%);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .sermon-label {
+            font-size: 0.75em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .sermon-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .sermon-scripture {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            margin-bottom: 8px;
+        }
+
+        .sermon-preacher {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* 예배 시간 그리드 */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .service-item {
+            background: var(--bg-gray);
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .service-item.highlight {
+            background: var(--advent-light);
+            border: 1px solid var(--advent);
+        }
+
+        .service-part {
+            font-size: 0.75em;
+            color: var(--advent);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .service-time {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .service-pastor {
+            font-size: 0.7em;
+            color: var(--text-gray);
+            margin-top: 2px;
+        }
+
+        /* 예배 순서 */
+        .worship-order {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .worship-item {
+            display: flex;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .worship-item:last-child {
+            border-bottom: none;
+        }
+
+        .worship-item.highlight {
+            background: var(--advent-light);
+        }
+
+        .worship-name {
+            flex: 1;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .worship-detail {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            text-align: right;
+        }
+
+        .worship-hymn {
+            color: var(--advent);
+            font-weight: 600;
+        }
+
+        /* 찬양대 그리드 */
+        .choir-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .choir-item {
+            background: var(--bg-gray);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .choir-part {
+            font-size: 0.7em;
+            color: var(--advent);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .choir-name {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* 교회 소식 */
+        .news-item {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .news-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7em;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .news-title {
+            font-weight: 700;
+            font-size: 0.95em;
+            color: var(--text-dark);
+            display: inline;
+        }
+
+        .news-content {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            margin-top: 8px;
+            line-height: 1.7;
+            padding-left: 28px;
+        }
+
+        .news-highlight {
+            background: var(--advent-light);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-size: 0.85em;
+        }
+
+        /* 교우 소식 */
+        .member-news-section {
+            margin-bottom: 16px;
+        }
+
+        .member-news-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .member-news-list {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            line-height: 1.8;
+        }
+
+        /* 결혼 소식 */
+        .wedding-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .wedding-card {
+            background: linear-gradient(135deg, #FDF2F8 0%, white 100%);
+            border: 1px solid #FBCFE8;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .wedding-couple {
+            font-weight: 700;
+            color: #BE185D;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wedding-info {
+            font-size: 0.8em;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* 새벽기도회 스케줄 */
+        .dawn-schedule {
+            overflow-x: auto;
+        }
+
+        .dawn-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8em;
+            min-width: 500px;
+        }
+
+        .dawn-table th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .dawn-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .dawn-table tr:nth-child(even) {
+            background: var(--bg-gray);
+        }
+
+        /* 지난주 말씀 요약 */
+        .last-week-sermon {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .last-week-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .last-week-ref {
+            font-size: 0.85em;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .last-week-content {
+            font-size: 0.9em;
+            color: var(--text-dark);
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        /* 연락처 */
+        .contact-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+        }
+
+        .contact-icon { font-size: 1.2em; }
+
+        .contact-info { flex: 1; }
+
+        .contact-label {
+            font-size: 0.75em;
+            color: var(--text-gray);
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .contact-value a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* 푸터 */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .footer-address {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .footer-copyright {
+            font-size: 0.75em;
+            opacity: 0.7;
+        }
+
+        /* 공유 버튼 */
+        .share-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .share-title {
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .share-btn {
+            flex: 1;
+            max-width: 140px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+        }
+
+        .share-btn.kakao {
+            background: #FEE500;
+            border-color: #FEE500;
+            color: #3C1E1E;
+        }
+
+        /* 다크모드 토글 */
+        .dark-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* 다크모드 */
+        body.dark-mode {
+            --bg-gray: #1a1a2e;
+            --bg-white: #252540;
+            --text-dark: #ffffff;
+            --text-gray: #a0a0b0;
+            --border: #3a3a50;
+            --primary-light: #2a3a4a;
+            --advent-light: #2a2040;
+        }
+
+        body.dark-mode .section,
+        body.dark-mode .share-section,
+        body.dark-mode .nav-tabs,
+        body.dark-mode .sermon-card,
+        body.dark-mode .worship-order,
+        body.dark-mode .dark-toggle {
+            background: var(--bg-white);
+        }
+
+        body.dark-mode .service-item,
+        body.dark-mode .choir-item,
+        body.dark-mode .contact-item,
+        body.dark-mode .last-week-sermon {
+            background: #1a1a2e;
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section { animation: fadeInUp 0.5s ease-out; }
+
+        /* 반응형 */
+        @media (max-width: 375px) {
+            .church-name { font-size: 1.6em; letter-spacing: 4px; }
+            .service-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-tab { font-size: 0.75em; padding: 10px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="advent-badge">🕯️ 대림절 둘째 주일</div>
+            <h1 class="church-name">
+                명성교회
+                <span class="church-name-en">MYUNGSUNG CHURCH</span>
+            </h1>
+            <div class="jubo-info">
+                <span class="jubo-date">2025년 12월 7일</span>
+                <span class="jubo-number">46권 49호</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 네비게이션 -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-inner">
+            <a href="file:///C:/StudySnap-Backend/outputs/Church/%EB%AA%85%EC%84%B1%EA%B5%90%ED%9A%8C/2025-12-07.html#sermon" class="nav-tab active">말씀</a>
+            <a href="file:///C:/StudySnap-Backend/outputs/Church/%EB%AA%85%EC%84%B1%EA%B5%90%ED%9A%8C/2025-12-07.html#worship" class="nav-tab">예배</a>
+            <a href="file:///C:/StudySnap-Backend/outputs/Church/%EB%AA%85%EC%84%B1%EA%B5%90%ED%9A%8C/2025-12-07.html#news" class="nav-tab">소식</a>
+            <a href="file:///C:/StudySnap-Backend/outputs/Church/%EB%AA%85%EC%84%B1%EA%B5%90%ED%9A%8C/2025-12-07.html#members" class="nav-tab">교우</a>
+            <a href="file:///C:/StudySnap-Backend/outputs/Church/%EB%AA%85%EC%84%B1%EA%B5%90%ED%9A%8C/2025-12-07.html#dawn" class="nav-tab">새벽</a>
+            <a href="file:///C:/StudySnap-Backend/outputs/Church/%EB%AA%85%EC%84%B1%EA%B5%90%ED%9A%8C/2025-12-07.html#contact" class="nav-tab">안내</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- 대림절 말씀 -->
+        <section id="sermon" class="verse-card">
+            <div class="verse-label">🕯️ 대림절 둘째 주일</div>
+            <p class="verse-text">
+                "시험을 참는 자는 복이 있도다<br>
+                이것을 견디어 낸 자는 주께서 자기를 사랑하는 자들에게<br>
+                약속하신 생명의 면류관을 얻을 것임이라"
+            </p>
+            <span class="verse-ref">야고보서 1:12</span>
+        </section>
+
+        <!-- 오늘 설교 -->
+        <div class="sermon-card">
+            <div class="sermon-label">오늘의 말씀</div>
+            <div class="sermon-title">시험을 이기는 자가 되라</div>
+            <div class="sermon-scripture">📖 야고보서 1:12-15</div>
+            <div class="sermon-preacher">김하나 담임목사</div>
+        </div>
+
+        <!-- 예배 안내 -->
+        <section id="worship" class="section">
+            <div class="section-header advent">
+                <span class="section-icon">⛪</span>
+                <h2 class="section-title advent">주일낮예배</h2>
+            </div>
+            <div class="section-body">
+                <!-- 예배 시간 -->
+                <div class="service-grid">
+                    <div class="service-item">
+                        <div class="service-part">1부</div>
+                        <div class="service-time">07:00</div>
+                        <div class="service-pastor">정정일 목사</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-part">2부</div>
+                        <div class="service-time">09:10</div>
+                        <div class="service-pastor">백재용 목사</div>
+                    </div>
+                    <div class="service-item highlight">
+                        <div class="service-part">3부</div>
+                        <div class="service-time">11:20</div>
+                        <div class="service-pastor">김동진 목사</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-part">4부</div>
+                        <div class="service-time">13:30</div>
+                        <div class="service-pastor">편경호 목사</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-part">5부</div>
+                        <div class="service-time">16:30</div>
+                        <div class="service-pastor">김영광 목사</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-part">찬양</div>
+                        <div class="service-time">19:00</div>
+                        <div class="service-pastor">김동민 목사</div>
+                    </div>
+                </div>
+
+                <!-- 예배 순서 -->
+                <div class="worship-order">
+                    <div class="worship-item">
+                        <span class="worship-name">예배선포</span>
+                        <span class="worship-detail">인도자</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">주기도문찬양</span>
+                        <span class="worship-detail">다같이</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">찬송</span>
+                        <span class="worship-detail worship-hymn">1장</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">신앙고백</span>
+                        <span class="worship-detail">사도신경</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">찬송</span>
+                        <span class="worship-detail worship-hymn">21장(통 21장)</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">성경봉독</span>
+                        <span class="worship-detail">야고보서 1:12-15</span>
+                    </div>
+                    <div class="worship-item highlight">
+                        <span class="worship-name">성찬식</span>
+                        <span class="worship-detail">분병 · 분잔</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">찬양</span>
+                        <span class="worship-detail">찬양대</span>
+                    </div>
+                    <div class="worship-item highlight">
+                        <span class="worship-name">설교</span>
+                        <span class="worship-detail">김하나 목사</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">찬송</span>
+                        <span class="worship-detail worship-hymn">433장(통 490장)</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">헌금</span>
+                        <span class="worship-detail">"우리에게 향하신"</span>
+                    </div>
+                    <div class="worship-item">
+                        <span class="worship-name">축도</span>
+                        <span class="worship-detail">김하나 목사</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 찬양대 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎵</span>
+                <h2 class="section-title">금주의 찬양대</h2>
+            </div>
+            <div class="section-body">
+                <div class="choir-grid">
+                    <div class="choir-item">
+                        <div class="choir-part">1부</div>
+                        <div class="choir-name">은혜풍성한 찬양대</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-part">2부</div>
+                        <div class="choir-name">감사넘치는 찬양대</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-part">3부</div>
+                        <div class="choir-name">기도열심히하는 찬양대</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-part">4부</div>
+                        <div class="choir-name">성령충만한 찬양대</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-part">5부</div>
+                        <div class="choir-name">선교봉사힘쓰는 찬양대</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-part">찬양예배</div>
+                        <div class="choir-name">감사넘치는 찬양대</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 교회 소식 -->
+        <section id="news" class="section">
+            <div class="section-header advent">
+                <span class="section-icon">📢</span>
+                <h2 class="section-title advent">교회 소식</h2>
+            </div>
+            <div class="section-body">
+                <div class="news-item">
+                    <span class="news-number">1</span>
+                    <span class="news-title">대림절</span>
+                    <div class="news-content">
+                        대림절 둘째 주일입니다. 완전한 사랑으로 구원의 소망을 보여주신 예수님의 오심을 기다리며, 어떠한 상황 속에서도 주님께 소망을 두는 한 주간 되시기 바랍니다.
+                        <div class="news-highlight">
+                            <strong>🎄 성탄절 점등식</strong><br>
+                            일시: 12.14(다음 주일) 오후 6시<br>
+                            장소: 교회 앞마당
+                        </div>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <span class="news-number">2</span>
+                    <span class="news-title">2025-26 Love In(러빙) 축제</span>
+                    <div class="news-content">
+                        준비위원장: 서용태 장로<br>
+                        담당교역자: 백재용 목사<br>
+                        상임부장: 이태훈 집사
+                    </div>
+                </div>
+                <div class="news-item">
+                    <span class="news-number">3</span>
+                    <span class="news-title">성찬식</span>
+                    <div class="news-content">
+                        오늘 주일 낮 1-5부 예배 시에 성찬식이 있습니다. 성도들께서는 기도로 준비해 주시고 경건한 마음으로 참여해 주시기 바랍니다.
+                    </div>
+                </div>
+                <div class="news-item">
+                    <span class="news-number">4</span>
+                    <span class="news-title">2026년 집사 임명</span>
+                    <div class="news-content">
+                        집사 15,116명 (재임명 14,378명 / 신규임명 728명 / 등록자임명 10명), 명예집사 216명<br>
+                        게시장소: 샬롬관 1층, 교회 홈페이지
+                    </div>
+                </div>
+                <div class="news-item">
+                    <span class="news-number">5</span>
+                    <span class="news-title">문화선교학교</span>
+                    <div class="news-content">
+                        종합전시회: 12.19(금)까지 / 예루살렘성전 지하 1층<br>
+                        종합발표회: 12.27(토)까지 / 각 부서별 진행<br>
+                        문의: 교육부 ☎ 02-6930-9406
+                    </div>
+                </div>
+                <div class="news-item">
+                    <span class="news-number">6</span>
+                    <span class="news-title">제직회 안내</span>
+                    <div class="news-content">
+                        일시: 12.20(토) 토요새벽을깨우는가정 예배 후<br>
+                        장소: 예루살렘성전 본당<br>
+                        안건: 2025회계연도 결산 및 2026회계연도 예산안 심의<br>
+                        대상: 집사 이상
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 지난주 말씀 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📖</span>
+                <h2 class="section-title">지난주 말씀</h2>
+            </div>
+            <div class="section-body">
+                <div class="last-week-sermon">
+                    <div class="last-week-title">예수님 잘 믿는 기회를 반드시 성취하십시오</div>
+                    <div class="last-week-ref">마태복음 11:11-14 | 김삼환 원로목사</div>
+                    <div class="last-week-content">
+                        예수님이 오신 후 이 땅에 하나님의 구원과 은혜가 임했습니다. 예수님을 믿으면 멸망하지 않고 영생을 얻으니 절망하고 낙심할 일이 하나도 없습니다. 한평생의 기쁨과 자유는 예수 그리스도로 말미암아 옵니다. 천국은 가만히 서서 들어가는 것이 아닙니다. 새벽기도는 하나님께서 우리에게 찬스를 만들어 주시는 것이고, 기도하는 사람은 그 찬스를 살려 도루에 성공하는 사람입니다.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 교우 소식 -->
+        <section id="members" class="section">
+            <div class="section-header">
+                <span class="section-icon">👨‍👩‍👧‍👦</span>
+                <h2 class="section-title">교우 소식</h2>
+            </div>
+            <div class="section-body">
+                <!-- 출산 -->
+                <div class="member-news-section">
+                    <div class="member-news-title">👶 출산</div>
+                    <div class="member-news-list">
+                        42교구 장희원(박광윤) 집사 득녀
+                    </div>
+                </div>
+
+                <!-- 소천 -->
+                <div class="member-news-section">
+                    <div class="member-news-title">🕊️ 소천</div>
+                    <div class="member-news-list">
+                        12교구 이경순 집사 모친 · 21교구 故 전범성 성도 · 25교구 박해련 권사 모친 · 31교구 정태영 집사 모친, 故 정귀순 집사 · 33교구 故 유대영 집사 · 43교구 故 홍병의 집사 · 52교구 故 신복순 집사 · 61교구 故 이금주 집사
+                    </div>
+                </div>
+
+                <!-- 결혼 -->
+                <div class="member-news-section">
+                    <div class="member-news-title">💒 결혼</div>
+                    <div class="wedding-grid">
+                        <div class="wedding-card">
+                            <div class="wedding-couple">💍 권예찬 전도사 ♥ 이예은</div>
+                            <div class="wedding-info">
+                                12.13(토) 오전 11시 / 샬롬아트홀
+                            </div>
+                        </div>
+                        <div class="wedding-card">
+                            <div class="wedding-couple">💍 김용현 ♥ 박현지</div>
+                            <div class="wedding-info">
+                                12.12(금) 오후 5시 / KDW웨딩
+                            </div>
+                        </div>
+                        <div class="wedding-card">
+                            <div class="wedding-couple">💍 홍지오 ♥ 김지희</div>
+                            <div class="wedding-info">
+                                12.13(토) 오후 12:30 / 보테가마지오
+                            </div>
+                        </div>
+                        <div class="wedding-card">
+                            <div class="wedding-couple">💍 유재준 ♥ 정유진</div>
+                            <div class="wedding-info">
+                                12.13(토) 낮 12시 / 임마누엘홀
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 새가족 -->
+                <div class="member-news-section">
+                    <div class="member-news-title">🤝 새가족 등록</div>
+                    <div class="member-news-list" style="font-size: 0.8em;">
+                        유성희, 유명옥, 김동영, 김주영, 김서진, 은대위, 송준호, 심유하, 강민준, 하미선, 최성미, 하민지, 최민서, 정재숙, 최용중, 정창후, 권현아, 정재윤, 박민정, 김영규, 김유찬, 문해인 외 다수
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 새벽기도회 -->
+        <section id="dawn" class="section">
+            <div class="section-header">
+                <span class="section-icon">🌅</span>
+                <h2 class="section-title">새벽기도회</h2>
+            </div>
+            <div class="section-body">
+                <div style="margin-bottom: 12px; font-size: 0.85em; color: var(--text-gray);">
+                    1부 05:00 | 2부 06:00 | 3부 07:00 | 4부 08:30 | (주일 05:30)
+                </div>
+                <div class="dawn-schedule">
+                    <table class="dawn-table">
+                        <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>12.9(화)</th>
+                                <th>12.10(수)</th>
+                                <th>12.11(목)</th>
+                                <th>12.12(금)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>2부</strong></td>
+                                <td>김미숙 권사</td>
+                                <td>이만섭 집사</td>
+                                <td>장계섭 권사</td>
+                                <td>김주흥 집사</td>
+                            </tr>
+                            <tr>
+                                <td><strong>안내</strong></td>
+                                <td>루디아 2,3</td>
+                                <td>루디아 4,5,6</td>
+                                <td>루디아 7,8 / 라헬 1</td>
+                                <td>라헬 2,3,4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 수요/찬양 예배 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🙏</span>
+                <h2 class="section-title">주중 예배 안내</h2>
+            </div>
+            <div class="section-body">
+                <div style="display: grid; gap: 12px;">
+                    <div style="background: var(--bg-gray); border-radius: 10px; padding: 14px;">
+                        <div style="font-weight: 700; color: var(--primary); margin-bottom: 6px;">주일찬양예배</div>
+                        <div style="font-size: 0.85em; color: var(--text-gray);">
+                            오후 7:00 | 인도: 김동민 목사<br>
+                            설교: "너희의 말소리를 들으시고" - 김하나 목사<br>
+                            본문: 신명기 1:34-40
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-gray); border-radius: 10px; padding: 14px;">
+                        <div style="font-weight: 700; color: var(--primary); margin-bottom: 6px;">수요기도회</div>
+                        <div style="font-size: 0.85em; color: var(--text-gray);">
+                            오후 7:30 | 인도: 조재영 목사<br>
+                            설교: "추수하는 즐거움" - 김삼환 목사<br>
+                            본문: 이사야 9:1-7
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 연락처 -->
+        <section id="contact" class="section">
+            <div class="section-header">
+                <span class="section-icon">📞</span>
+                <h2 class="section-title">교회 안내</h2>
+            </div>
+            <div class="section-body">
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div class="contact-info">
+                            <div class="contact-label">주소</div>
+                            <div class="contact-value">서울특별시 강동구 구천면로 452 (명일동)</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <div class="contact-info">
+                            <div class="contact-label">대표전화</div>
+                            <div class="contact-value"><a href="tel:02-440-9000">02-440-9000</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📠</span>
+                        <div class="contact-info">
+                            <div class="contact-label">FAX</div>
+                            <div class="contact-value">02-440-9099</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌐</span>
+                        <div class="contact-info">
+                            <div class="contact-label">홈페이지</div>
+                            <div class="contact-value"><a href="https://www.msch.or.kr/" target="_blank">www.msch.or.kr</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섬기는 이들 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🙏</span>
+                <h2 class="section-title">섬기는 이들</h2>
+            </div>
+            <div class="section-body" style="font-size: 0.85em; line-height: 1.8;">
+                <div style="margin-bottom: 12px;">
+                    <strong style="color: var(--advent);">원로목사</strong> 김삼환 ·
+                    <strong style="color: var(--advent);">담임목사</strong> 김하나
+                </div>
+                <div style="color: var(--text-gray);">
+                    <strong>협동목사</strong> 김도훈 노영상 배진태 안주훈 최윤배<br>
+                    <strong>교육목사</strong> 권오병 김경환 문태은 이승갑
+                </div>
+            </div>
+        </section>
+
+        <!-- 공유 -->
+        <div class="share-section">
+            <div class="share-title">🕯️ 대림절 주보를 공유해 보세요</div>
+            <div class="share-buttons">
+                <button class="share-btn kakao" onclick="shareKakao()">카카오톡</button>
+                <button class="share-btn" onclick="shareLink()">링크 복사</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-logo">명성교회</div>
+        <div class="footer-address">
+            서울특별시 강동구 구천면로 452 (명일동)<br>
+            TEL 02-440-9000 · FAX 02-440-9099
+        </div>
+        <div class="footer-copyright">
+            © 2025 Myungsung Church. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- 다크모드 토글 -->
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+    <script>
+        // 네비게이션 활성화
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const sections = document.querySelectorAll('section[id]');
+
+        function setActiveNav(hash) {
+            navTabs.forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('href') === hash);
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            if (current) setActiveNav('#' + current);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                    setActiveNav(this.getAttribute('href'));
+                }
+            });
+        });
+
+        // 다크모드
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.dark-toggle');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.dark-toggle').textContent = '☀️';
+        }
+
+        // 공유 기능
+        function shareKakao() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '명성교회 주보 - 2025년 12월 7일',
+                    text: '대림절 둘째 주일 - 시험을 이기는 자가 되라',
+                    url: window.location.href
+                });
+            } else {
+                alert('카카오톡 공유는 모바일에서 이용 가능합니다.');
+            }
+        }
+
+        function shareLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('링크가 복사되었습니다.');
+            });
+        }
+    </script>
+
+
+</body></html>

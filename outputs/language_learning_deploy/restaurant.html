@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🍽️ 음식점 외국어 학습기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b35 0%, #e55a2b 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            padding: 15px;
+            background: #fff8f5;
+            border-bottom: 1px solid #ffe0d0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #ffe0d0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #d84315;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .day-selector {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px;
+            gap: 8px;
+            background: #fff;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .day-btn {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ffccbc;
+            background: white;
+            color: #d84315;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .day-btn.active {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border-color: #ff6b35;
+            transform: scale(1.1);
+        }
+
+        .day-btn.completed {
+            background: #81c784;
+            color: white;
+            border-color: #81c784;
+        }
+
+        .day-btn.locked {
+            background: #f5f5f5;
+            color: #bdbdbd;
+            border-color: #e0e0e0;
+        }
+
+        .content-area {
+            padding: 15px;
+        }
+
+        .day-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .day-title h2 {
+            color: #d84315;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .day-title .situation {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .phrase-card {
+            background: linear-gradient(145deg, #ffffff, #fff8f5);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.15);
+            border: 1px solid #ffe0d0;
+        }
+
+        .korean-phrase {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #ffccbc;
+        }
+
+        .language-section {
+            margin-bottom: 18px;
+        }
+
+        .lang-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .lang-flag {
+            font-size: 1.3rem;
+        }
+
+        .lang-name {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .foreign-text {
+            font-size: 1.15rem;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .pronunciation {
+            color: #ff6b35;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            background: #fff3e0;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .speak-btn {
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .speak-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .speak-btn:active {
+            transform: scale(0.95);
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #fff8f5, #ffe0d0);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-top: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .tip-icon {
+            font-size: 1.2rem;
+        }
+
+        .tip-text {
+            color: #bf360c;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .speed-control {
+            padding: 15px;
+            background: #fff8f5;
+            border-top: 1px solid #ffe0d0;
+        }
+
+        .speed-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #d84315;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .speed-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #ffe0d0;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #81c784, #66bb6a);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(129, 199, 132, 0.5);
+        }
+
+        .complete-btn:disabled {
+            background: #bdbdbd;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .review-section {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .review-title {
+            font-size: 1.5rem;
+            color: #d84315;
+            margin-bottom: 20px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .review-card {
+            background: #fff8f5;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ffe0d0;
+        }
+
+        .review-korean {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .review-foreign {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 로그인 화면 */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .login-title {
+            color: #d84315;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ffe0d0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .login-input:focus {
+            border-color: #ff6b35;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .error-msg {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .expired-notice {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .company-info {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .phrase-card {
+                padding: 15px;
+            }
+
+            .korean-phrase {
+                font-size: 1.1rem;
+            }
+
+            .foreign-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 로그인 화면 -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-icon">🍽️</div>
+            <h2 class="login-title">음식점 외국어 학습기</h2>
+            <p class="login-subtitle">2주 완성 실무 외국어 과정</p>
+            <div id="loginForm">
+                <input type="password" class="login-input" id="passwordInput" placeholder="비밀번호를 입력하세요">
+                <button class="login-btn" onclick="checkPassword()">시작하기</button>
+                <p class="error-msg" id="errorMsg">비밀번호가 올바르지 않습니다</p>
+            </div>
+            <div id="expiredNotice" class="expired-notice" style="display: none;">
+                <p><strong>⚠️ 이용 기간이 만료되었습니다</strong></p>
+                <p style="margin-top: 10px;">갱신 문의: contact@thesotong.com</p>
+            </div>
+            <div class="company-info">
+                <p>© 2024 더소통</p>
+                <p>문의: contact@thesotong.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="header">
+            <h1>🍽️ 음식점 외국어 학습기</h1>
+            <p>2주 완성 실무 회화 과정</p>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <p class="progress-text" id="progressText">0 / 14일 완료</p>
+        </div>
+
+        <div class="day-selector" id="daySelector"></div>
+
+        <div class="content-area" id="contentArea"></div>
+
+        <div class="speed-control">
+            <div class="speed-label">
+                <span>🔊 발음 속도</span>
+                <span id="speedValue">1.0x</span>
+            </div>
+            <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="1.2" step="0.1" value="1.0">
+        </div>
+    </div>
+
+    <script>
+        // 라이선스 설정
+        const LICENSE_CONFIG = {
+            password: 'restaurant2024',
+            expiryDate: '2026-11-30',
+            company: '더소통',
+            contact: 'contact@thesotong.com'
+        };
+
+        // 학습 데이터 - 음식점 실무 회화
+        const lessonData = [
+            {
+                day: 1,
+                situation: "입장 및 안내",
+                phrases: [
+                    {
+                        korean: "몇 분이세요?",
+                        english: "How many people?",
+                        englishPron: "하우 매니 피플?",
+                        japanese: "何名様ですか?",
+                        japanesePron: "난메이사마 데스카?",
+                        chinese: "请问几位?",
+                        chinesePron: "칭원 지웨이?",
+                        tip: "'How many'는 숫자를 물을 때 사용해요"
+                    },
+                    {
+                        korean: "이쪽으로 오세요",
+                        english: "This way, please",
+                        englishPron: "디스 웨이, 플리즈",
+                        japanese: "こちらへどうぞ",
+                        japanesePron: "코치라에 도조",
+                        chinese: "请这边走",
+                        chinesePron: "칭 쩌비엔 저우",
+                        tip: "'This way'는 방향을 안내할 때 사용해요"
+                    }
+                ]
+            },
+            {
+                day: 2,
+                situation: "자리 안내",
+                phrases: [
+                    {
+                        korean: "잠시만 기다려 주세요",
+                        english: "Please wait a moment",
+                        englishPron: "플리즈 웨잇 어 모먼트",
+                        japanese: "少々お待ちください",
+                        japanesePron: "쇼쇼 오마치 쿠다사이",
+                        chinese: "请稍等",
+                        chinesePron: "칭 샤오덩",
+                        tip: "'moment'는 잠깐이라는 뜻이에요"
+                    },
+                    {
+                        korean: "자리 준비되었습니다",
+                        english: "Your table is ready",
+                        englishPron: "유어 테이블 이즈 레디",
+                        japanese: "お席の準備ができました",
+                        japanesePron: "오세키노 준비가 데키마시타",
+                        chinese: "您的座位准备好了",
+                        chinesePron: "닌더 쭤웨이 쥔베이 하오러",
+                        tip: "'ready'는 준비됐다는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 3,
+                situation: "메뉴 안내",
+                phrases: [
+                    {
+                        korean: "메뉴판입니다",
+                        english: "Here is the menu",
+                        englishPron: "히어 이즈 더 메뉴",
+                        japanese: "メニューです",
+                        japanesePron: "메뉴 데스",
+                        chinese: "这是菜单",
+                        chinesePron: "쩌스 차이단",
+                        tip: "'Here is ~'는 무언가를 건넬 때 사용해요"
+                    },
+                    {
+                        korean: "추천 메뉴는 이것입니다",
+                        english: "I recommend this dish",
+                        englishPron: "아이 레커멘드 디스 디쉬",
+                        japanese: "おすすめはこちらです",
+                        japanesePron: "오스스메와 코치라 데스",
+                        chinese: "推荐这道菜",
+                        chinesePron: "투이지엔 쩌다오 차이",
+                        tip: "'recommend'는 추천하다는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 4,
+                situation: "주문 받기",
+                phrases: [
+                    {
+                        korean: "주문하시겠어요?",
+                        english: "May I take your order?",
+                        englishPron: "메이 아이 테이크 유어 오더?",
+                        japanese: "ご注文よろしいですか?",
+                        japanesePron: "고츄몬 요로시 데스카?",
+                        chinese: "可以点菜了吗?",
+                        chinesePron: "커이 디엔차이 러 마?",
+                        tip: "'May I ~'는 정중하게 물을 때 사용해요"
+                    },
+                    {
+                        korean: "다른 것 더 필요하세요?",
+                        english: "Would you like anything else?",
+                        englishPron: "우쥬 라이크 애니띵 엘스?",
+                        japanese: "他にご注文はありますか?",
+                        japanesePron: "호카니 고츄몬와 아리마스카?",
+                        chinese: "还需要别的吗?",
+                        chinesePron: "하이 쉬야오 비에더 마?",
+                        tip: "'anything else'는 다른 것이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 5,
+                situation: "알레르기 확인",
+                phrases: [
+                    {
+                        korean: "알레르기가 있으세요?",
+                        english: "Do you have any allergies?",
+                        englishPron: "두 유 해브 애니 알러지스?",
+                        japanese: "アレルギーはありますか?",
+                        japanesePron: "아레루기와 아리마스카?",
+                        chinese: "您有过敏吗?",
+                        chinesePron: "닌 요우 궈민 마?",
+                        tip: "'allergy'는 알레르기라는 뜻이에요"
+                    },
+                    {
+                        korean: "이 음식에는 ~이/가 들어있어요",
+                        english: "This dish contains ~",
+                        englishPron: "디스 디쉬 컨테인즈 ~",
+                        japanese: "この料理には~が入っています",
+                        japanesePron: "코노 료리니와 ~가 하잇테이마스",
+                        chinese: "这道菜里有~",
+                        chinesePron: "쩌다오 차이리 요우 ~",
+                        tip: "'contains'는 포함하다는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 6,
+                situation: "음식 제공",
+                phrases: [
+                    {
+                        korean: "주문하신 음식입니다",
+                        english: "Here is your order",
+                        englishPron: "히어 이즈 유어 오더",
+                        japanese: "ご注文の料理です",
+                        japanesePron: "고츄몬노 료리 데스",
+                        chinese: "这是您点的菜",
+                        chinesePron: "쩌스 닌 디엔더 차이",
+                        tip: "'Here is ~'는 물건을 건넬 때 사용해요"
+                    },
+                    {
+                        korean: "맛있게 드세요",
+                        english: "Enjoy your meal",
+                        englishPron: "인조이 유어 밀",
+                        japanese: "ごゆっくりどうぞ",
+                        japanesePron: "고윳쿠리 도조",
+                        chinese: "请慢用",
+                        chinesePron: "칭 만용",
+                        tip: "'Enjoy'는 즐기세요라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 7,
+                situation: "추가 요청",
+                phrases: [
+                    {
+                        korean: "물 더 드릴까요?",
+                        english: "Would you like more water?",
+                        englishPron: "우쥬 라이크 모어 워터?",
+                        japanese: "お水のおかわりはいかがですか?",
+                        japanesePron: "오미즈노 오카와리와 이카가 데스카?",
+                        chinese: "需要加水吗?",
+                        chinesePron: "쉬야오 지아슈이 마?",
+                        tip: "'more'는 더라는 뜻이에요"
+                    },
+                    {
+                        korean: "반찬 더 드릴까요?",
+                        english: "Would you like more side dishes?",
+                        englishPron: "우쥬 라이크 모어 사이드 디쉬즈?",
+                        japanese: "おかずのおかわりはいかがですか?",
+                        japanesePron: "오카즈노 오카와리와 이카가 데스카?",
+                        chinese: "需要加小菜吗?",
+                        chinesePron: "쉬야오 지아 샤오차이 마?",
+                        tip: "'side dishes'는 반찬이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 8,
+                situation: "문제 해결",
+                phrases: [
+                    {
+                        korean: "음식이 맞지 않으세요?",
+                        english: "Is everything okay with your food?",
+                        englishPron: "이즈 에브리띵 오케이 위드 유어 푸드?",
+                        japanese: "お料理はお口に合いましたか?",
+                        japanesePron: "오료리와 오쿠치니 아이마시타카?",
+                        chinese: "菜合口味吗?",
+                        chinesePron: "차이 허 코우웨이 마?",
+                        tip: "'Is everything okay'는 괜찮으신지 물을 때 사용해요"
+                    },
+                    {
+                        korean: "바로 새것으로 가져다 드릴게요",
+                        english: "I'll bring you a new one right away",
+                        englishPron: "아일 브링 유 어 뉴 원 라잇 어웨이",
+                        japanese: "すぐに新しいのをお持ちします",
+                        japanesePron: "스구니 아타라시이노오 오모치 시마스",
+                        chinese: "我马上给您换新的",
+                        chinesePron: "워 마샹 게이닌 환 신더",
+                        tip: "'right away'는 바로, 즉시라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 9,
+                situation: "계산",
+                phrases: [
+                    {
+                        korean: "계산서입니다",
+                        english: "Here is your bill",
+                        englishPron: "히어 이즈 유어 빌",
+                        japanese: "お会計です",
+                        japanesePron: "오카이케이 데스",
+                        chinese: "这是账单",
+                        chinesePron: "쩌스 장단",
+                        tip: "'bill'은 계산서라는 뜻이에요"
+                    },
+                    {
+                        korean: "카드로 하시겠어요, 현금으로 하시겠어요?",
+                        english: "Card or cash?",
+                        englishPron: "카드 오어 캐쉬?",
+                        japanese: "カードですか、現金ですか?",
+                        japanesePron: "카도 데스카, 겐킨 데스카?",
+                        chinese: "刷卡还是现金?",
+                        chinesePron: "슈아카 하이스 시엔진?",
+                        tip: "'cash'는 현금이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 10,
+                situation: "배웅",
+                phrases: [
+                    {
+                        korean: "감사합니다, 또 오세요",
+                        english: "Thank you, please come again",
+                        englishPron: "땡큐, 플리즈 컴 어겐",
+                        japanese: "ありがとうございます、またお越しください",
+                        japanesePron: "아리가토 고자이마스, 마타 오코시 쿠다사이",
+                        chinese: "谢谢，欢迎再来",
+                        chinesePron: "시에시에, 환잉 짜이라이",
+                        tip: "'come again'은 또 오세요라는 뜻이에요"
+                    },
+                    {
+                        korean: "맛있게 드셨나요?",
+                        english: "Did you enjoy your meal?",
+                        englishPron: "디쥬 인조이 유어 밀?",
+                        japanese: "お食事はいかがでしたか?",
+                        japanesePron: "오쇼쿠지와 이카가 데시타카?",
+                        chinese: "吃得好吗?",
+                        chinesePron: "츠더 하오 마?",
+                        tip: "'enjoy'는 즐기다라는 뜻이에요"
+                    }
+                ]
+            },
+            { day: 11, situation: "1-5일차 복습", review: true, reviewDays: [1, 2, 3, 4, 5] },
+            { day: 12, situation: "6-10일차 복습", review: true, reviewDays: [6, 7, 8, 9, 10] },
+            { day: 13, situation: "영어 집중 복습", review: true, reviewLang: "english" },
+            { day: 14, situation: "일본어/중국어 집중 복습", review: true, reviewLang: "asian" }
+        ];
+
+        let currentDay = 1;
+        let completedDays = [];
+        let speechRate = 1.0;
+
+        // 라이선스 체크
+        function checkLicense() {
+            const today = new Date();
+            const expiry = new Date(LICENSE_CONFIG.expiryDate);
+
+            if (today > expiry) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('expiredNotice').style.display = 'block';
+                return false;
+            }
+            return true;
+        }
+
+        // 비밀번호 확인
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+
+            if (!checkLicense()) {
+                return;
+            }
+
+            if (input === LICENSE_CONFIG.password) {
+                sessionStorage.setItem('restaurant_authenticated', 'true');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                initApp();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        // 엔터키 지원
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // 세션 체크
+        function checkSession() {
+            if (sessionStorage.getItem('restaurant_authenticated') === 'true') {
+                if (checkLicense()) {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    initApp();
+                }
+            }
+        }
+
+        // 앱 초기화
+        function initApp() {
+            loadProgress();
+            renderDaySelector();
+            renderContent();
+            updateProgress();
+
+            document.getElementById('speedSlider').addEventListener('input', function() {
+                speechRate = parseFloat(this.value);
+                document.getElementById('speedValue').textContent = speechRate.toFixed(1) + 'x';
+            });
+        }
+
+        // 진행상황 로드
+        function loadProgress() {
+            const saved = localStorage.getItem('restaurant_progress');
+            if (saved) {
+                completedDays = JSON.parse(saved);
+            }
+        }
+
+        // 진행상황 저장
+        function saveProgress() {
+            localStorage.setItem('restaurant_progress', JSON.stringify(completedDays));
+        }
+
+        // 일차 선택 버튼 렌더링
+        function renderDaySelector() {
+            const container = document.getElementById('daySelector');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= 14; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'day-btn';
+                btn.textContent = i + '일';
+
+                if (i === currentDay) {
+                    btn.classList.add('active');
+                }
+                if (completedDays.includes(i)) {
+                    btn.classList.add('completed');
+                }
+
+                btn.addEventListener('click', () => {
+                    currentDay = i;
+                    renderDaySelector();
+                    renderContent();
+                });
+
+                container.appendChild(btn);
+            }
+        }
+
+        // 콘텐츠 렌더링
+        function renderContent() {
+            const container = document.getElementById('contentArea');
+            const dayData = lessonData.find(d => d.day === currentDay);
+
+            if (!dayData) return;
+
+            if (dayData.review) {
+                renderReviewContent(container, dayData);
+            } else {
+                renderLessonContent(container, dayData);
+            }
+        }
+
+        // 학습 콘텐츠 렌더링
+        function renderLessonContent(container, dayData) {
+            let html = `
+                <div class="day-title">
+                    <h2>Day ${dayData.day}</h2>
+                    <span class="situation">${dayData.situation}</span>
+                </div>
+            `;
+
+            dayData.phrases.forEach((phrase, index) => {
+                html += `
+                    <div class="phrase-card">
+                        <div class="korean-phrase">${phrase.korean}</div>
+
+                        <div class="language-section">
+                            <div class="lang-header">
+                                <span class="lang-flag">🇺🇸</span>
+                                <span class="lang-name">English</span>
+                            </div>
+                            <div class="foreign-text">${phrase.english}</div>
+                            <div class="pronunciation">${phrase.englishPron}</div>
+                            <button class="speak-btn" onclick="speak('${phrase.english}', 'en-US')">
+                                🔊 발음 듣기
+                            </button>
+                        </div>
+
+                        <div class="language-section">
+                            <div class="lang-header">
+                                <span class="lang-flag">🇯🇵</span>
+                                <span class="lang-name">日本語</span>
+                            </div>
+                            <div class="foreign-text">${phrase.japanese}</div>
+                            <div class="pronunciation">${phrase.japanesePron}</div>
+                            <button class="speak-btn" onclick="speak('${phrase.japanese}', 'ja-JP')">
+                                🔊 발음 듣기
+                            </button>
+                        </div>
+
+                        <div class="language-section">
+                            <div class="lang-header">
+                                <span class="lang-flag">🇨🇳</span>
+                                <span class="lang-name">中文</span>
+                            </div>
+                            <div class="foreign-text">${phrase.chinese}</div>
+                            <div class="pronunciation">${phrase.chinesePron}</div>
+                            <button class="speak-btn" onclick="speak('${phrase.chinese}', 'zh-CN')">
+                                🔊 발음 듣기
+                            </button>
+                        </div>
+
+                        <div class="tip-box">
+                            <span class="tip-icon">💡</span>
+                            <span class="tip-text">${phrase.tip}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <button class="complete-btn" onclick="completeDay(${dayData.day})"
+                    ${completedDays.includes(dayData.day) ? 'disabled' : ''}>
+                    ${completedDays.includes(dayData.day) ? '✅ 학습 완료!' : '✓ 오늘 학습 완료하기'}
+                </button>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // 복습 콘텐츠 렌더링
+        function renderReviewContent(container, dayData) {
+            let html = `
+                <div class="review-section">
+                    <h2 class="review-title">📚 ${dayData.situation}</h2>
+                    <div class="review-grid">
+            `;
+
+            if (dayData.reviewDays) {
+                dayData.reviewDays.forEach(day => {
+                    const lesson = lessonData.find(d => d.day === day);
+                    if (lesson && lesson.phrases) {
+                        lesson.phrases.forEach(phrase => {
+                            html += `
+                                <div class="review-card">
+                                    <div class="review-korean">${phrase.korean}</div>
+                                    <div class="review-foreign">
+                                        🇺🇸 ${phrase.english}<br>
+                                        🇯🇵 ${phrase.japanese}<br>
+                                        🇨🇳 ${phrase.chinese}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                });
+            } else if (dayData.reviewLang === 'english') {
+                lessonData.filter(d => d.phrases).forEach(lesson => {
+                    lesson.phrases.forEach(phrase => {
+                        html += `
+                            <div class="review-card">
+                                <div class="review-korean">${phrase.korean}</div>
+                                <div class="review-foreign">
+                                    🇺🇸 ${phrase.english}<br>
+                                    <span style="color: #ff6b35;">${phrase.englishPron}</span>
+                                </div>
+                                <button class="speak-btn" style="margin-top: 10px;" onclick="speak('${phrase.english}', 'en-US')">
+                                    🔊 듣기
+                                </button>
+                            </div>
+                        `;
+                    });
+                });
+            } else if (dayData.reviewLang === 'asian') {
+                lessonData.filter(d => d.phrases).forEach(lesson => {
+                    lesson.phrases.forEach(phrase => {
+                        html += `
+                            <div class="review-card">
+                                <div class="review-korean">${phrase.korean}</div>
+                                <div class="review-foreign">
+                                    🇯🇵 ${phrase.japanese} (${phrase.japanesePron})<br>
+                                    🇨🇳 ${phrase.chinese} (${phrase.chinesePron})
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+            }
+
+            html += `
+                    </div>
+                    <button class="complete-btn" onclick="completeDay(${dayData.day})"
+                        ${completedDays.includes(dayData.day) ? 'disabled' : ''}>
+                        ${completedDays.includes(dayData.day) ? '✅ 복습 완료!' : '✓ 복습 완료하기'}
+                    </button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // TTS 발음
+        function speak(text, lang) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = speechRate;
+                utterance.pitch = 1;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('이 브라우저는 음성 기능을 지원하지 않습니다.');
+            }
+        }
+
+        // 일차 완료
+        function completeDay(day) {
+            if (!completedDays.includes(day)) {
+                completedDays.push(day);
+                saveProgress();
+                renderDaySelector();
+                renderContent();
+                updateProgress();
+            }
+        }
+
+        // 진행률 업데이트
+        function updateProgress() {
+            const percent = (completedDays.length / 14) * 100;
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = completedDays.length + ' / 14일 완료';
+        }
+
+        // 페이지 로드시 세션 체크
+        checkSession();
+    </script>
+</body>
+</html>

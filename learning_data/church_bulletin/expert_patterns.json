@@ -1,0 +1,193 @@
+{
+  "version": "2.0",
+  "last_updated": "2025-12-13",
+  "description": "전문가 수준 주보 변환을 위한 학습 패턴",
+
+  "sections_required": {
+    "header": {
+      "elements": ["advent_badge", "church_name", "church_name_en", "date", "volume_issue"],
+      "example": {
+        "advent_badge": "대림절 둘째 주일",
+        "date": "2025년 12월 7일",
+        "volume_issue": "46권 49호"
+      }
+    },
+    "navigation": {
+      "tabs": ["말씀", "예배", "소식", "교우", "새벽", "안내"],
+      "style": "sticky top navigation with smooth scroll"
+    },
+    "verse_card": {
+      "elements": ["theme_icon", "verse_text", "verse_reference"],
+      "style": "gradient background with theme color"
+    },
+    "sermon_card": {
+      "elements": ["label", "title", "scripture", "preacher"],
+      "example": {
+        "title": "시험을 이기는 자가 되라",
+        "scripture": "야고보서 1:12-15",
+        "preacher": "김하나 담임목사"
+      }
+    },
+    "worship_section": {
+      "layout": "service-grid (compact 3-column)",
+      "service_item": {
+        "elements": ["part", "time", "pastor"],
+        "example": {"part": "1부", "time": "07:00", "pastor": "정정일 목사"}
+      },
+      "worship_order": {
+        "items": [
+          {"name": "예배선포", "detail": "인도자"},
+          {"name": "주기도문찬양", "detail": "다같이"},
+          {"name": "찬송", "detail": "1장", "has_hymn_number": true},
+          {"name": "신앙고백", "detail": "사도신경"},
+          {"name": "찬송", "detail": "21장(통 21장)", "has_hymn_number": true},
+          {"name": "성경봉독", "detail": "야고보서 1:12-15"},
+          {"name": "성찬식", "detail": "분병 · 분잔", "highlight": true},
+          {"name": "찬양", "detail": "찬양대"},
+          {"name": "설교", "detail": "김하나 목사", "highlight": true},
+          {"name": "찬송", "detail": "433장(통 490장)", "has_hymn_number": true},
+          {"name": "헌금", "detail": "우리에게 향하신"},
+          {"name": "축도", "detail": "김하나 목사"}
+        ],
+        "style": "worship-item with highlight for important items"
+      }
+    },
+    "choir_section": {
+      "layout": "choir-grid (2-3 columns)",
+      "items": [
+        {"part": "1부", "name": "은혜풍성한 찬양대"},
+        {"part": "2부", "name": "감사넘치는 찬양대"},
+        {"part": "3부", "name": "기도열심히하는 찬양대"},
+        {"part": "4부", "name": "성령충만한 찬양대"},
+        {"part": "5부", "name": "선교봉사힘쓰는 찬양대"},
+        {"part": "찬양예배", "name": "감사넘치는 찬양대"}
+      ]
+    },
+    "news_section": {
+      "layout": "numbered news items with expandable content",
+      "item_structure": {
+        "number": "1-10",
+        "title": "주요 제목",
+        "content": "상세 내용",
+        "highlight": "특별 안내 박스"
+      }
+    },
+    "last_week_sermon": {
+      "elements": ["title", "reference", "preacher", "summary"],
+      "style": "subtle background card"
+    },
+    "member_news": {
+      "categories": [
+        {"id": "birth", "icon": "👶", "title": "출산"},
+        {"id": "passing", "icon": "🕊️", "title": "소천"},
+        {"id": "wedding", "icon": "💒", "title": "결혼", "layout": "wedding-grid with cards"},
+        {"id": "new_members", "icon": "🤝", "title": "새가족 등록"}
+      ]
+    },
+    "dawn_prayer": {
+      "header_info": "1부 05:00 | 2부 06:00 | 3부 07:00 | 4부 08:30 | (주일 05:30)",
+      "layout": "table with dates and assigned members",
+      "columns": ["날짜", "일자별 담당자"]
+    },
+    "weekly_service": {
+      "services": [
+        {"name": "주일찬양예배", "time": "오후 7:00", "leader": "김동민 목사"},
+        {"name": "수요기도회", "time": "오후 7:30", "leader": "조재영 목사"}
+      ],
+      "item_details": ["설교제목", "설교자", "본문"]
+    },
+    "contact_section": {
+      "items": [
+        {"icon": "📍", "label": "주소", "value": "서울특별시 강동구 구천면로 452"},
+        {"icon": "📞", "label": "대표전화", "value": "02-440-9000", "link": "tel:02-440-9000"},
+        {"icon": "📠", "label": "FAX", "value": "02-440-9099"},
+        {"icon": "🌐", "label": "홈페이지", "value": "www.msch.or.kr", "link": "https://www.msch.or.kr/"}
+      ]
+    },
+    "staff_section": {
+      "layout": "inline with emphasis on senior/lead pastor",
+      "categories": ["원로목사", "담임목사", "협동목사", "교육목사"]
+    },
+    "share_section": {
+      "buttons": ["카카오톡", "링크 복사"],
+      "message_template": "{theme} 주보를 공유해 보세요"
+    },
+    "footer": {
+      "elements": ["church_name", "address", "phone", "fax", "copyright"]
+    }
+  },
+
+  "css_classes": {
+    "service-grid": "display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;",
+    "service-item": "text-align: center; padding: 12px; background: var(--bg-gray); border-radius: 10px;",
+    "service-item.highlight": "background: var(--advent-light); border: 2px solid var(--advent);",
+    "worship-order": "margin-top: 20px;",
+    "worship-item": "display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);",
+    "worship-item.highlight": "background: var(--accent-light); margin: 0 -18px; padding: 10px 18px;",
+    "choir-grid": "display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;",
+    "news-item": "display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 0; border-bottom: 1px solid var(--border);",
+    "news-number": "width: 24px; height: 24px; background: var(--advent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;",
+    "member-news-section": "margin-bottom: 16px;",
+    "wedding-grid": "display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;",
+    "wedding-card": "background: var(--bg-gray); border-radius: 10px; padding: 12px;",
+    "dawn-table": "width: 100%; border-collapse: collapse; font-size: 0.8em;",
+    "contact-grid": "display: grid; gap: 10px;",
+    "contact-item": "display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-gray); border-radius: 10px;"
+  },
+
+  "theme_badges": {
+    "advent": {"icon": "🕯️", "text": "대림절", "color": "#4A0D67"},
+    "christmas": {"icon": "🎄", "text": "성탄절", "color": "#C41E3A"},
+    "lent": {"icon": "✝️", "text": "사순절", "color": "#4A0D67"},
+    "easter": {"icon": "🌸", "text": "부활절", "color": "#9370DB"},
+    "pentecost": {"icon": "🔥", "text": "성령강림절", "color": "#DC143C"},
+    "harvest": {"icon": "🌾", "text": "추수감사절", "color": "#8B6914"}
+  },
+
+  "myungsung_specific": {
+    "services": [
+      {"part": 1, "time": "07:00", "pastor": "정정일 목사"},
+      {"part": 2, "time": "09:10", "pastor": "백재용 목사"},
+      {"part": 3, "time": "11:20", "pastor": "김동진 목사", "highlight": true},
+      {"part": 4, "time": "13:30", "pastor": "편경호 목사"},
+      {"part": 5, "time": "16:30", "pastor": "김영광 목사"},
+      {"part": "찬양", "time": "19:00", "pastor": "김동민 목사"}
+    ],
+    "lead_pastors": {
+      "senior": "김삼환",
+      "lead": "김하나"
+    },
+    "contact": {
+      "address": "서울특별시 강동구 구천면로 452 (명일동)",
+      "phone": "02-440-9000",
+      "fax": "02-440-9099",
+      "website": "www.msch.or.kr"
+    },
+    "choirs": [
+      "은혜풍성한 찬양대", "감사넘치는 찬양대", "기도열심히하는 찬양대",
+      "성령충만한 찬양대", "선교봉사힘쓰는 찬양대"
+    ]
+  },
+
+  "parsing_improvements_needed": [
+    "날짜 추출 형식 개선 (YYYY년 MM월 DD일)",
+    "권/호 추출 패턴 강화",
+    "예배별 담당 목사 매핑",
+    "찬송가 번호 추출 (통일찬송가 포함)",
+    "교우소식 카테고리별 파싱 (출산, 소천, 결혼, 새가족)",
+    "새벽기도회 일정표 파싱",
+    "주중예배 안내 파싱"
+  ],
+
+  "html_improvements_needed": [
+    "service-grid 레이아웃으로 변경 (worship-card 대신)",
+    "예배 순서에 찬송가 번호 표시",
+    "설교/축도 항목 하이라이트",
+    "찬양대 그리드 레이아웃",
+    "교우소식 섹션 추가",
+    "새벽기도회 테이블 섹션 추가",
+    "주중예배 안내 섹션 추가",
+    "섬기는 이들 섹션 추가",
+    "연락처 그리드 레이아웃"
+  ]
+}

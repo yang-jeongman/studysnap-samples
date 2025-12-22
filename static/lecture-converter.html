@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강의 교재 변환기 - StudySnap</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p { opacity: 0.9; font-size: 1.1em; }
+
+        .auto-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10B981, #059669);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-area {
+            border: 3px dashed #93c5fd;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #eff6ff;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #2563eb;
+            background: #dbeafe;
+        }
+
+        .upload-area.has-file {
+            border-color: #10B981;
+            background: #ecfdf5;
+        }
+
+        .upload-icon { font-size: 4em; margin-bottom: 15px; }
+
+        .upload-area h3 { font-size: 1.3em; color: #1e40af; margin-bottom: 10px; }
+        .upload-area p { color: #3b82f6; font-size: 0.95em; }
+
+        .file-input { display: none; }
+
+        .file-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .file-info .icon { font-size: 2em; }
+        .file-info .details { flex: 1; text-align: left; }
+        .file-info .name { font-weight: 600; color: #1e40af; }
+        .file-info .size { color: #3b82f6; font-size: 0.9em; }
+
+        .file-info .remove {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .convert-btn.ready {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+        }
+
+        .convert-btn.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .convert-btn.disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .convert-btn.loading {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+
+        .progress-container { display: none; margin-top: 20px; }
+        .progress-container.show { display: block; }
+
+        .progress-bar {
+            height: 10px;
+            background: #bfdbfe;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #10B981);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        .result-container { display: none; }
+        .result-container.show { display: block; }
+
+        .result-success {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .result-success h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .result-item .label { font-size: 0.85em; opacity: 0.9; }
+        .result-item .value { font-size: 1.1em; font-weight: 600; margin-top: 3px; }
+
+        .result-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+        .result-actions a, .result-actions button {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+
+        .btn-preview { background: #2563eb; color: white; }
+        .btn-download { background: #10B981; color: white; }
+        .btn-reset { background: #6b7280; color: white; }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #eff6ff;
+            border-radius: 10px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .feature-item .icon { font-size: 1.5em; }
+        .feature-item .text { font-weight: 500; color: #1e40af; }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #eff6ff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator { display: flex; align-items: center; gap: 8px; }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10B981;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .error-container {
+            display: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .error-container.show { display: block; }
+
+        /* Lecture Options */
+        .lecture-options {
+            margin-top: 20px;
+            padding: 20px;
+            background: #eff6ff;
+            border-radius: 12px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .lecture-options-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-item {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #bfdbfe;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .option-item:hover { border-color: #2563eb; }
+        .option-item.selected { border-color: #2563eb; background: #dbeafe; }
+
+        .option-item-name { font-weight: 600; color: #1e40af; margin-bottom: 4px; }
+        .option-item-desc { font-size: 0.75em; color: #3b82f6; }
+
+        .input-group { margin-top: 15px; }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 6px;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #bfdbfe;
+            border-radius: 8px;
+            font-size: 0.95em;
+            background: white;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .nav-tabs a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.95);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .nav-tabs a:hover { transform: translateY(-2px); }
+        .nav-tabs a.active { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+        .type-colors { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+
+        .type-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .type-chip .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-tabs" style="max-width: 900px; margin: 0 auto;">
+        <a href="/static/auto-converter.html" style="color: #667eea;">전체</a>
+        <a href="/static/election-converter.html" style="color: #667eea;">선거공보물</a>
+        <a href="/static/church-converter.html" style="color: #8B4513;">교회주보</a>
+        <a href="/static/lecture-converter.html" class="active" style="color: #2563eb; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">강의교재</a>
+        <a href="/static/newsletter-converter.html" style="color: #059669;">소식지</a>
+        <a href="/static/catalog-converter.html" style="color: #dc2626;">카탈로그</a>
+        <a href="/static/explorer.html" style="color: #1e3c72;">탐색기</a>
+    </nav>
+
+    <div class="container">
+        <header class="header">
+            <h1>
+                <span class="auto-badge">AUTO</span>
+                강의 교재 변환기
+            </h1>
+            <p>PDF를 인터랙티브 학습 자료로 자동 변환</p>
+            <!-- 언어 선택 -->
+            <div style="margin-top: 15px;">
+                <select id="languageSelect" onchange="changeLanguage(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); font-size: 0.85em; cursor: pointer;">
+                    <option value="ko" selected>🇰🇷 한국어</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="zh">🇨🇳 中文</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="id">🇮🇩 Bahasa Indonesia</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="fr">🇫🇷 Français</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">시스템 준비됨</span>
+            </div>
+            <span id="visionStatus">Vision OCR: 활성화</span>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">📤 PDF 업로드</h2>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📚</div>
+                <h3>강의 PDF를 여기에 드래그하세요</h3>
+                <p>PPT 내보내기, 핸드아웃, 교과서 지원</p>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf" multiple>
+            </div>
+
+            <div id="fileList"></div>
+
+            <div class="lecture-options">
+                <div class="lecture-options-title">📖 강의 설정</div>
+
+                <div class="input-group">
+                    <label>강의 제목</label>
+                    <input type="text" id="lectureTitle" placeholder="예: 머신러닝 개론">
+                </div>
+
+                <div class="input-group">
+                    <label>강사명</label>
+                    <input type="text" id="instructorName" placeholder="예: 김교수">
+                </div>
+
+                <div class="input-group">
+                    <label>과목/강좌</label>
+                    <input type="text" id="courseName" placeholder="예: 컴퓨터공학개론">
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 0.85em; font-weight: 600; color: #1e40af; margin-bottom: 10px;">
+                        📝 콘텐츠 유형
+                    </div>
+                    <div class="option-grid">
+                        <div class="option-item selected" data-type="slides" onclick="selectLectureType('slides')">
+                            <div class="option-item-name">📊 슬라이드</div>
+                            <div class="option-item-desc">PPT 형식</div>
+                        </div>
+                        <div class="option-item" data-type="handout" onclick="selectLectureType('handout')">
+                            <div class="option-item-name">📄 핸드아웃</div>
+                            <div class="option-item-desc">텍스트 중심</div>
+                        </div>
+                        <div class="option-item" data-type="textbook" onclick="selectLectureType('textbook')">
+                            <div class="option-item-name">📖 교재</div>
+                            <div class="option-item-desc">챕터 형식</div>
+                        </div>
+                        <div class="option-item" data-type="quiz" onclick="selectLectureType('quiz')">
+                            <div class="option-item-name">❓ 퀴즈</div>
+                            <div class="option-item-desc">문답 형식</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 0.85em; font-weight: 600; color: #1e40af; margin-bottom: 10px;">
+                        ⚙️ 출력 기능
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <input type="checkbox" id="featureNav" checked> 네비게이션
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <input type="checkbox" id="featureSearch" checked> 검색
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <input type="checkbox" id="featureNotes"> 노트 영역
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <input type="checkbox" id="featureDark" checked> 다크모드
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <input type="checkbox" id="featurePrint"> 인쇄 스타일
+                        </label>
+                    </div>
+                </div>
+
+                <!-- AI 변환 모드 토글 -->
+                <div style="margin-top: 25px; padding: 15px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; color: white;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 1em; display: flex; align-items: center; gap: 8px;">
+                                <span>🤖</span> AI 고품질 변환
+                                <span style="background: #fbbf24; color: #78350f; padding: 2px 8px; border-radius: 10px; font-size: 0.7em;">추천</span>
+                            </div>
+                            <div style="font-size: 0.8em; opacity: 0.9; margin-top: 4px;">
+                                Claude Vision AI로 정확한 내용 추출
+                            </div>
+                        </div>
+                        <label class="ai-toggle" style="position: relative; display: inline-block; width: 56px; height: 28px;">
+                            <input type="checkbox" id="aiModeToggle" checked style="opacity: 0; width: 0; height: 0;">
+                            <span class="ai-slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.3); transition: .3s; border-radius: 28px;"></span>
+                        </label>
+                    </div>
+                    <div id="aiModeStatus" style="margin-top: 10px; padding: 8px 12px; background: rgba(255,255,255,0.2); border-radius: 8px; font-size: 0.8em;">
+                        ✨ AI 모드 활성화 - 섹션, 핵심용어, 질문 자동 추출
+                    </div>
+                </div>
+                <style>
+                    .ai-toggle input:checked + .ai-slider { background-color: #34d399; }
+                    .ai-slider:before {
+                        position: absolute; content: ""; height: 22px; width: 22px;
+                        left: 3px; bottom: 3px; background-color: white;
+                        transition: .3s; border-radius: 50%;
+                    }
+                    .ai-toggle input:checked + .ai-slider:before { transform: translateX(28px); }
+                </style>
+            </div>
+
+            <button class="convert-btn disabled" id="convertBtn" disabled>
+                <span>PDF를 선택하세요</span>
+            </button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">변환 중...</div>
+            </div>
+
+            <div class="error-container" id="errorContainer"></div>
+        </div>
+
+        <div class="card result-container" id="resultContainer">
+            <div class="result-success">
+                <h3>✅ 변환 완료!</h3>
+                <div class="result-info" id="resultInfo"></div>
+            </div>
+            <div class="result-actions">
+                <a href="#" class="btn-preview" id="previewBtn" target="_blank">미리보기</a>
+                <a href="#" class="btn-download" id="downloadBtn" download>HTML 다운로드</a>
+                <button class="btn-reset" id="resetBtn">새로 변환</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">주요 기능</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="icon">📑</span>
+                    <span class="text">목차 자동 생성</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🔄</span>
+                    <span class="text">슬라이드 네비게이션</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🔍</span>
+                    <span class="text">내용 검색</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📱</span>
+                    <span class="text">모바일 최적화</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🌙</span>
+                    <span class="text">다크모드</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📝</span>
+                    <span class="text">개인 노트</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">💻</span>
+                    <span class="text">코드 하이라이팅</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">➗</span>
+                    <span class="text">수식 지원</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 25px; margin-bottom: 10px; color: #1e40af;">지원 유형</h3>
+            <div class="type-colors">
+                <div class="type-chip" style="background: #2563eb20; color: #2563eb;">
+                    <span class="dot" style="background: #2563eb;"></span>
+                    슬라이드
+                </div>
+                <div class="type-chip" style="background: #10B98120; color: #059669;">
+                    <span class="dot" style="background: #10B981;"></span>
+                    핸드아웃
+                </div>
+                <div class="type-chip" style="background: #f59e0b20; color: #d97706;">
+                    <span class="dot" style="background: #f59e0b;"></span>
+                    교재
+                </div>
+                <div class="type-chip" style="background: #8b5cf620; color: #7c3aed;">
+                    <span class="dot" style="background: #8b5cf6;"></span>
+                    퀴즈/시험
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const convertBtn = document.getElementById('convertBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const resultContainer = document.getElementById('resultContainer');
+        const errorContainer = document.getElementById('errorContainer');
+
+        let selectedFiles = [];
+        let selectedLectureType = 'slides';
+
+        function selectLectureType(type) {
+            selectedLectureType = type;
+            document.querySelectorAll('.option-item').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.type === type);
+            });
+        }
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+        function handleFiles(files) {
+            const pdfFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf'));
+
+            if (pdfFiles.length === 0) {
+                showError('PDF 파일만 업로드 가능합니다.');
+                return;
+            }
+
+            selectedFiles = pdfFiles;
+            renderFileList();
+            updateConvertButton();
+        }
+
+        function renderFileList() {
+            if (selectedFiles.length === 0) {
+                fileList.innerHTML = '';
+                uploadArea.classList.remove('has-file');
+                return;
+            }
+
+            uploadArea.classList.add('has-file');
+
+            fileList.innerHTML = selectedFiles.map((file, index) => `
+                <div class="file-info">
+                    <span class="icon">📄</span>
+                    <div class="details">
+                        <div class="name">${file.name}</div>
+                        <div class="size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <button class="remove" onclick="removeFile(${index})">삭제</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFileList();
+            updateConvertButton();
+        }
+
+        function updateConvertButton() {
+            if (selectedFiles.length > 0) {
+                convertBtn.disabled = false;
+                convertBtn.className = 'convert-btn ready';
+                convertBtn.innerHTML = `<span>${selectedFiles.length}개 파일 변환하기</span>`;
+            } else {
+                convertBtn.disabled = true;
+                convertBtn.className = 'convert-btn disabled';
+                convertBtn.innerHTML = '<span>PDF를 선택하세요</span>';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function showError(message) {
+            errorContainer.textContent = message;
+            errorContainer.classList.add('show');
+            setTimeout(() => errorContainer.classList.remove('show'), 5000);
+        }
+
+        convertBtn.addEventListener('click', async () => {
+            if (selectedFiles.length === 0) return;
+
+            errorContainer.classList.remove('show');
+            resultContainer.classList.remove('show');
+
+            convertBtn.disabled = true;
+            convertBtn.className = 'convert-btn loading';
+            convertBtn.innerHTML = '<span>변환 중...</span>';
+
+            progressContainer.classList.add('show');
+            progressFill.style.width = '10%';
+            progressText.textContent = 'PDF 분석 중...';
+
+            try {
+                const formData = new FormData();
+                selectedFiles.forEach(file => formData.append('files', file));
+                formData.append('lecture_title', document.getElementById('lectureTitle').value || '강의');
+                formData.append('instructor', document.getElementById('instructorName').value || '');
+                formData.append('course', document.getElementById('courseName').value || '');
+                formData.append('content_type', selectedLectureType);
+                formData.append('feature_nav', document.getElementById('featureNav').checked);
+                formData.append('feature_search', document.getElementById('featureSearch').checked);
+                formData.append('feature_notes', document.getElementById('featureNotes').checked);
+                formData.append('feature_dark', document.getElementById('featureDark').checked);
+                formData.append('feature_print', document.getElementById('featurePrint').checked);
+
+                progressFill.style.width = '30%';
+                progressText.textContent = '내용 추출 중...';
+
+                await new Promise(r => setTimeout(r, 500));
+                progressFill.style.width = '50%';
+                progressText.textContent = '슬라이드 구성 중...';
+
+                // AI 모드 확인
+                const useAI = document.getElementById('aiModeToggle').checked;
+                const apiEndpoint = useAI ? '/api/lecture-convert-ai' : '/api/lecture-convert';
+
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                progressFill.style.width = '80%';
+                progressText.textContent = 'HTML 생성 중...';
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || '변환 실패');
+                }
+
+                const result = await response.json();
+
+                progressFill.style.width = '100%';
+                progressText.textContent = '완료!';
+
+                setTimeout(() => {
+                    progressContainer.classList.remove('show');
+                    showResult(result);
+                }, 500);
+
+            } catch (error) {
+                progressContainer.classList.remove('show');
+                showError(error.message);
+                updateConvertButton();
+            }
+        });
+
+        function showResult(data) {
+            resultContainer.classList.add('show');
+
+            const resultInfo = document.getElementById('resultInfo');
+            const previewBtn = document.getElementById('previewBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            const typeNames = {
+                'slides': '슬라이드',
+                'handout': '핸드아웃',
+                'textbook': '교재',
+                'quiz': '퀴즈'
+            };
+
+            resultInfo.innerHTML = `
+                <div class="result-item">
+                    <div class="label">제목</div>
+                    <div class="value">${data.title || '강의'}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">유형</div>
+                    <div class="value">${typeNames[data.content_type || selectedLectureType] || selectedLectureType}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">슬라이드</div>
+                    <div class="value">${data.slide_count || data.page_count || 0}개</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">상태</div>
+                    <div class="value">성공</div>
+                </div>
+            `;
+
+            previewBtn.href = data.url || '#';
+            downloadBtn.href = data.url || '#';
+            downloadBtn.download = data.filename || 'lecture.html';
+
+            convertBtn.innerHTML = '<span>완료!</span>';
+            convertBtn.className = 'convert-btn ready';
+        }
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            selectedFiles = [];
+            renderFileList();
+            updateConvertButton();
+            resultContainer.classList.remove('show');
+            fileInput.value = '';
+        });
+    </script>
+</body>
+</html>

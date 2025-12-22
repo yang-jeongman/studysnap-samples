@@ -1,0 +1,237 @@
+{
+  "church_id": "fgfc",
+  "church_name": "여의도순복음교회",
+  "church_name_en": "Yoido Full Gospel Church",
+  "version": "1.0",
+  "last_updated": "2025-12-19",
+  "description": "여의도순복음교회 전용 주보 변환 템플릿 - 100% 정확도 목표",
+
+  "pdf_structure": {
+    "total_pages": 6,
+    "pages": {
+      "1": {
+        "name": "표지",
+        "sections": [
+          {"id": "church_name", "type": "fixed", "value": "여의도순복음교회"},
+          {"id": "church_name_en", "type": "fixed", "value": "Yoido Full Gospel Church"},
+          {"id": "date", "type": "variable", "pattern": "\\d{4}년 \\d{1,2}월 \\d{1,2}일", "required": true},
+          {"id": "volume_issue", "type": "variable", "pattern": "제?\\d+권\\s*제?\\d+호", "required": false},
+          {"id": "seasonal_badge", "type": "variable", "options": ["대림절", "성탄절", "사순절", "부활절", "성령강림절", "추수감사절"]},
+          {"id": "todays_verse", "type": "variable", "required": true, "description": "오늘의 말씀 (성경 구절)"}
+        ]
+      },
+      "2": {
+        "name": "예배안내",
+        "sections": [
+          {"id": "service_schedule", "type": "table", "required": true, "columns": ["예배", "시간", "장소", "인도", "설교", "찬양", "경배와찬양", "대표기도", "찬송"]},
+          {"id": "worship_order", "type": "list", "required": true, "description": "예배 순서"},
+          {"id": "sermon_title", "type": "variable", "required": true},
+          {"id": "sermon_scripture", "type": "variable", "required": true, "pattern": "[가-힣]+\\s*\\d+:\\d+(-\\d+)?"}
+        ]
+      },
+      "3": {
+        "name": "금주의 찬양",
+        "sections": [
+          {"id": "choir_schedule", "type": "table", "required": true, "columns": ["찬양대", "날짜1", "날짜2", "날짜3", "날짜4"]},
+          {"id": "prayer_schedule", "type": "table", "required": false, "description": "대표기도 일정"}
+        ]
+      },
+      "4": {
+        "name": "생명의 말씀 (설교)",
+        "sections": [
+          {"id": "sermon_word_title", "type": "variable", "required": true},
+          {"id": "sermon_word_content", "type": "text_blocks", "required": true, "description": "설교 전문 (문단별)"},
+          {"id": "sermon_author", "type": "variable", "required": true, "default": "이영훈 위임목사"}
+        ]
+      },
+      "5": {
+        "name": "교회소식",
+        "sections": [
+          {"id": "news_worship", "type": "list", "category": "예배", "required": false},
+          {"id": "news_recruit", "type": "list", "category": "모집", "required": false},
+          {"id": "news_info", "type": "list", "category": "안내", "required": false}
+        ]
+      },
+      "6": {
+        "name": "오늘의 양식",
+        "sections": [
+          {"id": "devotional_title", "type": "variable", "required": true},
+          {"id": "devotional_scripture", "type": "variable", "required": true},
+          {"id": "devotional_content", "type": "text_blocks", "required": true, "description": "묵상 전문"}
+        ]
+      }
+    }
+  },
+
+  "services": {
+    "main_services": [
+      {"part": "1부", "time": "07:00", "location": "대성전"},
+      {"part": "2부", "time": "09:00", "location": "대성전"},
+      {"part": "3부", "time": "11:00", "location": "대성전"},
+      {"part": "4부", "time": "14:00", "location": "대성전"},
+      {"part": "5부 대학청년", "time": "16:00", "location": "대성전"},
+      {"part": "주일저녁", "time": "19:30", "location": "대성전"}
+    ],
+    "weekly_services": [
+      {"name": "수요예배", "day": "수요일", "time": "19:30"},
+      {"name": "금요철야", "day": "금요일", "time": "21:00"},
+      {"name": "새벽기도회", "day": "매일", "time": "05:00, 06:00"}
+    ]
+  },
+
+  "worship_order": {
+    "common_items": [
+      {"name": "예배로 부르심", "detail": "요 4:24", "performer": "사회자", "hymn_clickable": false},
+      {"name": "찬송", "detail": "8장(통9장) 4절", "performer": "다같이", "hymn_clickable": true},
+      {"name": "신앙고백", "detail": "사도신경", "performer": "다같이", "hymn_clickable": false}
+    ],
+    "variable_items": [
+      {"name": "찬송", "varies_by_service": true, "hymn_clickable": true},
+      {"name": "기도", "performer_type": "대표기도자"},
+      {"name": "성경봉독", "performer_type": "사회자", "scripture_clickable": true},
+      {"name": "찬양", "performer_type": "찬양대"},
+      {"name": "설교", "performer_type": "설교자", "highlight": true},
+      {"name": "기도와 결신", "performer_type": "설교자"},
+      {"name": "헌금기도", "performer_type": "헌금기도자"}
+    ],
+    "closing_items": [
+      {"name": "찬송", "detail": "635장 주기도문", "performer": "다같이", "hymn_clickable": true},
+      {"name": "축도", "performer_type": "설교자"}
+    ]
+  },
+
+  "staff": {
+    "senior_pastor": {"title": "위임목사", "name": "이영훈"},
+    "pastors": [
+      {"title": "원로목사", "name": "조용기"}
+    ]
+  },
+
+  "contact": {
+    "address": "서울특별시 영등포구 여의대방로 10 (여의도동)",
+    "phone": "02-783-4000",
+    "fax": "02-761-9533",
+    "website": "www.fgtv.com",
+    "email": "webmaster@fgtv.com"
+  },
+
+  "theme": {
+    "primary": "#5B4B9E",
+    "primary_dark": "#4A3D82",
+    "primary_light": "#E8E4F4",
+    "accent": "#C9A857",
+    "seasonal_themes": {
+      "advent": {"color": "#5B2C6F", "badge": "대림절", "icon": "🕯️"},
+      "christmas": {"color": "#C41E3A", "badge": "성탄절", "icon": "🎄"},
+      "lent": {"color": "#4A0D67", "badge": "사순절", "icon": "✝️"},
+      "easter": {"color": "#9370DB", "badge": "부활절", "icon": "🌸"},
+      "pentecost": {"color": "#DC143C", "badge": "성령강림절", "icon": "🔥"},
+      "thanksgiving": {"color": "#8B6914", "badge": "추수감사절", "icon": "🌾"}
+    }
+  },
+
+  "html_structure": {
+    "sections_order": [
+      "header",
+      "nav_tabs",
+      "todays_verse",
+      "worship_section",
+      "sermon_word",
+      "choir_section",
+      "news_section",
+      "devotional_section",
+      "sns_section",
+      "offering_section",
+      "footer"
+    ],
+    "nav_tabs": ["말씀", "예배", "찬양", "소식", "양식", "SNS", "헌금"]
+  },
+
+  "validation_rules": {
+    "date": {
+      "pattern": "^\\d{4}[-년]\\s*\\d{1,2}[-월]\\s*\\d{1,2}일?$",
+      "error_tolerance": 0
+    },
+    "scripture": {
+      "pattern": "^[가-힣]+\\s*\\d+:\\d+(-\\d+)?$",
+      "validate_book": true,
+      "error_tolerance": 0
+    },
+    "hymn_number": {
+      "pattern": "^\\d{1,3}장?(\\s*\\(통\\s*\\d{1,3}장?\\))?",
+      "validate_exists": true,
+      "error_tolerance": 0
+    },
+    "service_time": {
+      "pattern": "^\\d{2}:\\d{2}$",
+      "error_tolerance": 0
+    },
+    "sermon_title": {
+      "min_length": 5,
+      "max_length": 100,
+      "error_tolerance": 0.05
+    },
+    "news_items": {
+      "title_content_match": true,
+      "error_tolerance": 0.1
+    }
+  },
+
+  "ocr_hints": {
+    "page_1": {
+      "focus_areas": ["상단 중앙 (날짜)", "중앙 (오늘의 말씀)", "하단 (성경 구절)"],
+      "common_errors": {
+        "여의도순북음": "여의도순복음",
+        "대렴절": "대림절"
+      }
+    },
+    "page_2": {
+      "focus_areas": ["예배 시간표 (표)", "예배 순서 목록"],
+      "table_structure": "9열 (예배, 시간, 장소, 인도, 설교, 찬양, 경배와찬양, 대표기도, 찬송)"
+    },
+    "page_3": {
+      "focus_areas": ["찬양대 배치표", "대표기도 일정표"],
+      "table_structure": "가변 열 (날짜별)"
+    },
+    "page_4": {
+      "focus_areas": ["설교 제목", "설교 본문 (다단)"],
+      "text_flow": "다단 레이아웃 → 단일 텍스트로 병합"
+    },
+    "page_5": {
+      "focus_areas": ["카테고리별 뉴스 (예배/모집/안내)"],
+      "structure": "제목 + 상세내용"
+    },
+    "page_6": {
+      "focus_areas": ["묵상 제목", "묵상 본문"],
+      "text_flow": "다단 → 단일"
+    }
+  },
+
+  "i18n": {
+    "supported_languages": ["ko", "en", "zh", "ja", "id", "es", "ru", "fr"],
+    "default_language": "ko",
+    "translation_priority": ["sermon_title", "verse_text", "sermon_content", "devotional_content"]
+  },
+
+  "interactive_features": {
+    "scripture_popup": {
+      "enabled": true,
+      "data_source": "bible_api",
+      "languages": ["ko", "en", "zh", "ja"]
+    },
+    "hymn_popup": {
+      "enabled": true,
+      "data_source": "hymn_db",
+      "show_lyrics": true,
+      "show_music_sheet": false
+    },
+    "share": {
+      "platforms": ["kakao", "link_copy"],
+      "message_template": "{church_name} {date} 주보를 공유합니다"
+    },
+    "dark_mode": {
+      "enabled": true,
+      "auto_detect": true
+    }
+  }
+}

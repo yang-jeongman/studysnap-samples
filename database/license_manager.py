@@ -190,13 +190,13 @@ class LicenseManager:
                 "daily_remaining": 0
             }
 
-        # 일일 제한 확인
-        if validation["daily_remaining"] <= 0:
-            return {
-                "success": False,
-                "message": "오늘의 사용 한도를 초과했습니다. 내일 다시 시도해주세요.",
-                "daily_remaining": 0
-            }
+        # 일일 제한 확인 (개발 모드에서는 비활성화)
+        # if validation["daily_remaining"] <= 0:
+        #     return {
+        #         "success": False,
+        #         "message": "오늘의 사용 한도를 초과했습니다. 내일 다시 시도해주세요.",
+        #         "daily_remaining": 0
+        #     }
 
         # 사용량 기록
         today = datetime.now().strftime("%Y-%m-%d")

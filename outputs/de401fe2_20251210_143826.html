@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="여의도순복음교회 주보 - 2025년 11월 30일">
+    <title>여의도순복음교회 - 2025년 11월 30일</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366F1;
+            --primary-light: #6366F120;
+            --primary-dark: #4F46E5;
+            --accent-color: #D97706;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F9FAFB;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        body.dark-mode {
+            --primary-color: #818CF8;
+            --primary-light: #818CF830;
+            --primary-dark: #6366F1;
+            --text-dark: #F9FAFB;
+            --text-light: #D1D5DB;
+            --bg-light: #111827;
+            background: #0F172A;
+            color: var(--text-dark);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, background 0.3s;
+        }
+
+        body.dark-mode .header {
+            background: #1F2937;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+        }
+
+        .header-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            background: none;
+            border: none;
+            font-size: 1.3em;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 56px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .hero-church {
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero-date {
+            font-size: 1em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .hero-service {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* SNS Links Bar */
+        .sns-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        body.dark-mode .sns-bar {
+            background: #1F2937;
+            border-color: #374151;
+        }
+
+        .sns-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.75em;
+            transition: transform 0.2s;
+        }
+
+        .sns-link:hover {
+            transform: scale(1.1);
+        }
+
+        .sns-icon {
+            font-size: 1.8em;
+            margin-bottom: 4px;
+        }
+
+        .sns-link.youtube .sns-icon { color: #FF0000; }
+        .sns-link.kakao .sns-icon { color: #FEE500; }
+        .sns-link.instagram .sns-icon { color: #E4405F; }
+        .sns-link.donation .sns-icon { color: #10B981; }
+
+        /* Section */
+        .section {
+            background: white;
+            margin: 12px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode .section {
+            background: #1F2937;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Sermon Info */
+        .sermon-card {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .sermon-card {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #374151 100%);
+        }
+
+        .sermon-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .sermon-pastor {
+            font-size: 0.95em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .sermon-scripture {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .sermon-scripture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Hymn Link */
+        .hymn-link {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin: 5px 5px 5px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .hymn-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+        }
+
+        /* Worship Order */
+        .worship-order {
+            list-style: none;
+        }
+
+        .worship-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        body.dark-mode .worship-item {
+            border-color: #374151;
+        }
+
+        .worship-item:last-child {
+            border-bottom: none;
+        }
+
+        .worship-number {
+            width: 28px;
+            height: 28px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .worship-content {
+            flex: 1;
+        }
+
+        .worship-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .worship-detail {
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* Church News */
+        .news-item {
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        body.dark-mode .news-item {
+            background: #374151;
+        }
+
+        .news-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .news-content {
+            font-size: 0.9em;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Donation Button */
+        .donation-section {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 16px;
+            margin: 20px 12px;
+        }
+
+        .donation-title {
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .donation-btn {
+            display: inline-block;
+            background: white;
+            color: #059669;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .donation-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+        }
+
+        body.dark-mode .modal-content {
+            background: #1F2937;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .modal-header.hymn {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #B45309 100%);
+        }
+
+        .modal-title {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .verse-num {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .verse-label {
+            display: block;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+
+        body.dark-mode .bottom-nav {
+            background: #1F2937;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.7em;
+            padding: 5px 12px;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--primary-color);
+        }
+
+        .bottom-nav .nav-icon {
+            font-size: 1.6em;
+            margin-bottom: 2px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 25px 20px;
+            color: var(--text-light);
+            font-size: 0.85em;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Page Content */
+        .page-content {
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        body.dark-mode .page-content {
+            background: #374151;
+        }
+
+        .page-content h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .page-content p {
+            margin-bottom: 8px;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <span class="header-title">여의도순복음교회 주보</span>
+        <div class="header-actions">
+            <button class="header-btn" onclick="toggleDarkMode()" title="다크모드">🌙</button>
+            <button class="header-btn" onclick="shareLink()" title="공유">📤</button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="hero-church">여의도순복음교회</h1>
+        <p class="hero-date">2025년 11월 30일</p>
+        <p class="hero-service">주일예배</p>
+    </section>
+
+    <!-- SNS Links -->
+    <div class="sns-bar">
+        <a href="#" target="_blank" class="sns-link youtube">
+            <span class="sns-icon">▶️</span>
+            <span>유튜브</span>
+        </a>
+        <a href="#" target="_blank" class="sns-link kakao">
+            <span class="sns-icon">💬</span>
+            <span>카카오톡</span>
+        </a>
+        <a href="#" target="_blank" class="sns-link instagram">
+            <span class="sns-icon">📷</span>
+            <span>인스타그램</span>
+        </a>
+        <a href="https://m.fgtv.com/donate/donate_m_ver2.asp" target="_blank" class="sns-link donation">
+            <span class="sns-icon">💝</span>
+            <span>헌금</span>
+        </a>
+    </div>
+
+    <!-- Sermon Section -->
+    <section class="section" id="sermon">
+        <h2 class="section-title">📖 오늘의 말씀</h2>
+        <div class="sermon-card">
+            <h3 class="sermon-title">……………………………………………………………………………………………………………………………………</h3>
+            <p class="sermon-pastor">설교: 양승호 목사</p>
+            
+        </div>
+        
+    </section>
+
+    <!-- Worship Order -->
+    <section class="section" id="order">
+        <h2 class="section-title">⛪ 예배 순서</h2>
+        <ul class="worship-order">
+            
+            <li class="worship-item">
+                <span class="worship-number">1</span>
+                <div class="worship-content">
+                    <div class="worship-name">예배의 부름</div>
+                    
+                </div>
+            </li>
+            <li class="worship-item">
+                <span class="worship-number">2</span>
+                <div class="worship-content">
+                    <div class="worship-name">찬양</div>
+                    
+                </div>
+            </li>
+            <li class="worship-item">
+                <span class="worship-number">3</span>
+                <div class="worship-content">
+                    <div class="worship-name">기도</div>
+                    
+                </div>
+            </li>
+            <li class="worship-item">
+                <span class="worship-number">4</span>
+                <div class="worship-content">
+                    <div class="worship-name">성경봉독</div>
+                    
+                </div>
+            </li>
+            <li class="worship-item">
+                <span class="worship-number">5</span>
+                <div class="worship-content">
+                    <div class="worship-name">설교</div>
+                    
+                </div>
+            </li>
+            <li class="worship-item">
+                <span class="worship-number">6</span>
+                <div class="worship-content">
+                    <div class="worship-name">봉헌</div>
+                    
+                </div>
+            </li>
+            <li class="worship-item">
+                <span class="worship-number">7</span>
+                <div class="worship-content">
+                    <div class="worship-name">축도</div>
+                    
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Church News -->
+    <section class="section" id="news">
+        <h2 class="section-title">📢 교회 소식</h2>
+        <p style="color: var(--text-light); text-align: center; padding: 20px;">교회 소식을 추출할 수 없습니다.</p>
+    </section>
+
+    <!-- Donation Section -->
+    <div class="donation-section">
+        <p class="donation-title">💝 온라인 헌금</p>
+        <a href="https://m.fgtv.com/donate/donate_m_ver2.asp" target="_blank" class="donation-btn">헌금하기</a>
+    </div>
+
+    <!-- Full Text -->
+    <section class="section" id="fulltext">
+        <h2 class="section-title">📄 전문보기</h2>
+        
+        <div class="page-content">
+            <h4>📄 페이지 1</h4>
+            <p>주보 2025. 11. 30.</p>
+            <p>위임목사 이영훈</p>
+            <p>(Senior Pastor Rev. Younghoon Lee)</p>
+            <p>부 목 사 양승호</p>
+            <p>(Pastor Rev. Seungho Yang)</p>
+            <p>‘소망의 하나님이 모든 기쁨과 평강을 믿음 안에서 너희에게 충만하게 하사 성령의 능력으로 소망이 넘치게 하시기를 원하노라’ (롬 15:13)</p>
+            <p>https://www.fgtv.com 1958년 5월 18일 창립(설립자 조용기 목사) 통권 제68권 48호</p>
+            <p>◈ 2025 교회목표 ◈</p>
+            <p>◈ 2025 교회목표 ◈</p>
+            <p>1. 말씀의 능력이 나타나는 교회</p>
+            <p>1. 말씀의 능력이 나타나는 교회</p>
+            <p>2. 사랑으로 나눔을 실천하는 교회</p>
+            <p>2. 사랑으로 나눔을 실천하는 교회</p>
+            <p>3. 부흥의 역사를 이루는 교회</p>
+            <p>3. 부흥의 역사를 이루는 교회</p>
+            <p>◈ 2025 표어 ◈</p>
+            <p>◈ 2025 표어 ◈</p>
+            <p>오직 말씀으로</p>
+            <p>오직 말씀으로</p>
+            <p>07239 서울특별시 영등포구 국회대로76길 15</p>
+            <p>07239 서울특별시 영등포구 국회대로76길 15</p>
+            <p>15, Gukhoe-daero 76-gil, Yeongdeungpo-gu, Seoul</p>
+            <p>15, Gukhoe-daero 76-gil, Yeongdeungpo-gu, Seoul</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 2</h4>
+            <p>2025. 11. 30.</p>
+            <p>주일예배순</p>
+            <p>Sunday Worship Service</p>
+            <p>예배로 부르심 ………………………………………………………………… 요(John) 4:24………………………………………………………………………………………… 사회자</p>
+            <p>Invocation</p>
+            <p>Presider</p>
+            <p>찬송 … …………………………………………………………………………………………… 8장(통9장) 4절 … ………………………………………………………… 다같이(일어서서)</p>
+            <p>Hymn</p>
+            <p>Hymn No. 8 v. 4</p>
+            <p>All Together(Please Stand)</p>
+            <p>신앙고백 …………………………………………………………………………………………… 사도신경 …………………………………………………………………… 다같이(일어서서)</p>
+            <p>Confession</p>
+            <p>The Apostles’ Creed</p>
+            <p>All Together(Please Stand)</p>
+            <p>찬송 … ……………………………………………… 1부: 502장, 2·3·4부: 104장, 주일저녁: 259장 …………………………………………… 다같이</p>
+            <p>Hymn</p>
+            <p>All Together</p>
+            <p>기도 …………………………………………………………………………………………………………………………………………………………………………………………………………………………………… 기도자</p>
+            <p>Prayer</p>
+            <p>Prayer</p>
+            <p>성경봉독 ………………………………………………………………………………………………………………………………………………………………………………………………………………………… 사회자</p>
+            <p>Scripture Reading</p>
+            <p>Presider</p>
+            <p>찬양 … ………………………………………………………………………………………………………………………………………………………………………………………………………………………………… 찬양대</p>
+            <p>Anthem</p>
+            <p>Choir</p>
+            <p>설교 ……………………………………………………………………………………………………………………………………………………………………………………………………………………………………</p>
+            <p>설교자</p>
+            <p>Sermon</p>
+            <p>Preacher</p>
+            <p>1부 어떻게 해야 승리할 수 있을까요? … ………………………………………………………………………………… 양승호 목사</p>
+            <p>How Can We Be Victorious?</p>
+            <p>Rev. Seungho Yang</p>
+            <p>2·3·4부 주님의 기쁨으로 충만하라… …………………………………………………………………………………………………………… 이영훈 목사</p>
+            <p>Be Filled with the Joy of the Lord</p>
+            <p>Rev. Younghoon Lee</p>
+            <p>5부 대학청년 선교적 교회 생활…………………………………………………………………………………………………………………………………………… 오수황 목사</p>
+            <p>Missional Life in the Church</p>
+            <p>Rev. Soohwang Oh</p>
+            <p>주일저녁 당신의 마음은 전쟁터입니다………………………………………………………………………………………………………… 이승준 목사</p>
+            <p>Your Heart Is a Battlefield</p>
+            <p>Rev. Seungjun Lee</p>
+            <p>기도와 결신 … …………………………………………………………………………………………………………………………………………………………………………………………………………… 설교자</p>
+            <p>Prayer &amp; Altar-Call</p>
+            <p>Preacher</p>
+            <p>헌금기도 ………………………………………………………………………………………………………………………………………………………………………………………………………………………… 기도자</p>
+            <p>Offering</p>
+            <p>Prayer</p>
+            <p>찬송 … ………………………………………………………………………………………… 주기도문(635장) … ……………………………………………………… 다같이(일어서서)</p>
+            <p>Hymn</p>
+            <p>The Lord’s Prayer</p>
+            <p>All Together(Please Stand)</p>
+            <p>축도 …………………………………………………………………………………………………………………………………………………………………………………………………………………………………… 설교자</p>
+            <p>Benediction</p>
+            <p>Preacher</p>
+            <p>눅(Luke) 10:17~20</p>
+            <p>살전(1Thess.) 1:1~3</p>
+            <p>1부</p>
+            <p>5부 대학청년</p>
+            <p>느(Neh.) 8:8~10</p>
+            <p>잠(Prov.) 4:20~27</p>
+            <p>2·3·4부</p>
+            <p>주일저녁</p>
+            <p>(통104장)</p>
+            <p>(통193장)</p>
+            <p>(통259장)</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 3</h4>
+            <p>2025. 12. 6.</p>
+            <p>토요성찬예배순</p>
+            <p>Saturday Communion Worship Service</p>
+            <p>사 회 / 최성민 목사</p>
+            <p>10시 30분</p>
+            <p>예배로 부르심 … ……………………………………… 요(John) 4:24……………………………………………………………… 사회자</p>
+            <p>찬송 … ………………………………………………………………… 90장(통98장)……………………………………………………………… 다같이</p>
+            <p>기도 ………………………………………………………………………………………………………………………………………………………… 김주용 장로</p>
+            <p>성경봉독 … ……………………………………………… 잠(Prov.) 4:23~27 … …………………………………………………… 사회자</p>
+            <p>찬양 … …………………………………………………………………………………………………………………………………………… 가브리엘 찬양대</p>
+            <p>설교 … …………………………………………………… 더욱 네 마음을 지키라… …………………………………… 정용훈 목사</p>
+            <p>헌금기도 … ………………………………………………………………………………………………………………………………… 유광진 안수집사</p>
+            <p>2025. 12. 5.</p>
+            <p>사 회 / 안현주 목사</p>
+            <p>20시 30분</p>
+            <p>기도 ………………………………………………………………………………………………………………………………………………………… 조일원 장로</p>
+            <p>성경봉독 … …………………………………………… 삿(Judg.) 16:15~22 …………………………………………………… 사회자</p>
+            <p>찬양 … ………………………………………………………………………………………………………………………………………… 겟세마네 찬양대</p>
+            <p>설교 … ………………………………………………… 진짜 사랑을 해야 합니다 … …………………………… 양승호 목사</p>
+            <p>금요성령대망회순</p>
+            <p>Friday Night Holy Spirit Prayer Meeting</p>
+            <p>오늘의 말씀</p>
+            <p>“하나님의 율법책을 낭독하고</p>
+            <p>그 뜻을 해석하여 백성에게</p>
+            <p>그 낭독하는 것을 다 깨닫게</p>
+            <p>하니 백성이 율법의 말씀을 듣고</p>
+            <p>다 우는지라 총독 느헤미야와</p>
+            <p>제사장 겸 학사 에스라와 백성</p>
+            <p>을 가르치는…” (이하줄임)</p>
+            <p>(느 8:8~10)</p>
+            <p>목사</p>
+            <p>목사</p>
+            <p>목사</p>
+            <p>목사</p>
+            <p>목사</p>
+            <p>목사</p>
+            <p>사 회</p>
+            <p>헌금기도</p>
+            <p>07:00</p>
+            <p>09:00</p>
+            <p>11:00</p>
+            <p>13:00</p>
+            <p>14:30</p>
+            <p>17:00</p>
+            <p>최 진 용</p>
+            <p>정 용 훈</p>
+            <p>김 형 건</p>
+            <p>신 효 영</p>
+            <p>이지영B</p>
+            <p>박 정 웅</p>
+            <p>1부</p>
+            <p>2부</p>
+            <p>3부</p>
+            <p>4부</p>
+            <p>5부</p>
+            <p>주일저녁</p>
+            <p>조 윤 재</p>
+            <p>이 진 봉</p>
+            <p>문 진 수</p>
+            <p>오 준 환</p>
+            <p>박 초 롱</p>
+            <p>김 기 호</p>
+            <p>안수집사</p>
+            <p>안수집사</p>
+            <p>안수집사</p>
+            <p>안수집사</p>
+            <p>성</p>
+            <p>도</p>
+            <p>안수집사</p>
+            <p>1부</p>
+            <p>2부</p>
+            <p>3부</p>
+            <p>4부</p>
+            <p>5부</p>
+            <p>주일저녁</p>
+            <p>대표기도</p>
+            <p>김 신 기</p>
+            <p>원 용 채</p>
+            <p>정 해 영</p>
+            <p>장 동 래</p>
+            <p>김현철C</p>
+            <p>김 성 주</p>
+            <p>장로</p>
+            <p>장로</p>
+            <p>장로</p>
+            <p>장로</p>
+            <p>장로</p>
+            <p>장로</p>
+            <p>1부</p>
+            <p>2부</p>
+            <p>3부</p>
+            <p>4부</p>
+            <p>5부</p>
+            <p>주일저녁</p>
+            <p>2025. 12. 3.</p>
+            <p>사 회 / 1부 10시 30분 오수황 목사 2부 14시 정성준 목사 3부 19시 30분</p>
+            <p>예배로 부르심 ………………………………………………… 사도신경 …………………………………………………………………</p>
+            <p>다같이</p>
+            <p>찬송… ……………………………………………………… 1·2부: 325장(통359장)…………………………………………………</p>
+            <p>다같이</p>
+            <p>기도… ………………………………………………………………………………………………… 1부: 손영수 장로 2부: 오규록 장로</p>
+            <p>성경봉독… …………………… 1·2부: 삿(Judg.) 11:30~31, 3부: 약(Jas.） 2:1~13 …………………… 사회자</p>
+            <p>찬양… ……………………………………… 1부: 베데스다 찬양대 2부: 시온 찬양대 3부: 호산나 찬양대</p>
+            <p>설교… …………………………………………… 우리가 알아야 할 것 …………………… 1부: 엄태욱 목사 2부: 스크린</p>
+            <p>… …………………………………… 복음을 위한다면 지갑을 찢어라 … ……………………………… 3부: 변원중 목사</p>
+            <p>헌금기도… ………………………………………………………………… 1부: 정성운 안수집사  2부: 전상호 안수집사</p>
+            <p>수요예배순</p>
+            <p>Wednesday Worship Service</p>
+            <p>금주의 찬양</p>
+            <p>Choir Anthem</p>
+            <p>구 분찬양대명지휘자</p>
+            <p>찬 양</p>
+            <p>구 분찬양대명지휘자</p>
+            <p>찬 양</p>
+            <p>주일1부</p>
+            <p>주일2부</p>
+            <p>주일3부</p>
+            <p>주일4부</p>
+            <p>5부 대학청년</p>
+            <p>주일저녁</p>
+            <p>베다니</p>
+            <p>베들레헴</p>
+            <p>예루살렘</p>
+            <p>나 사 렛</p>
+            <p>임마누엘</p>
+            <p>에벤에셀</p>
+            <p>강내우</p>
+            <p>데이비드 이</p>
+            <p>이종진</p>
+            <p>이수범</p>
+            <p>김영준</p>
+            <p>저 성벽을 향해</p>
+            <p>주의 영광</p>
+            <p>하나님의 은혜</p>
+            <p>길을 만드시는 분</p>
+            <p>슬픈 마음 있는 사람</p>
+            <p>여호와는 나의 목자</p>
+            <p>수요1 부</p>
+            <p>수요2 부</p>
+            <p>수요3 부</p>
+            <p>금요성령대망회</p>
+            <p>토요예배</p>
+            <p>베데스다</p>
+            <p>시</p>
+            <p>온</p>
+            <p>호산나</p>
+            <p>겟세마네</p>
+            <p>가브리엘</p>
+            <p>김호식</p>
+            <p>조현호</p>
+            <p>윤규섭</p>
+            <p>송성철</p>
+            <p>이용중</p>
+            <p>사랑이 예 오셨네</p>
+            <p>문들아 머리 들라</p>
+            <p>두려워 말라</p>
+            <p>감사하라</p>
+            <p>주의 영광</p>
+            <p>김호식</p>
+            <p>(객원지휘)</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 4</h4>
+            <p>생명의 말씀</p>
+            <p>The Word of Life</p>
+            <p>2025. 11. 30.</p>
+            <p>주님의 기쁨으로 충만하라</p>
+            <p>(Be Filled with the Joy of the Lord)</p>
+            <p>느(Neh.) 8:8~10</p>
+            <p>하나님은 우리가 죄로 넘어질지라도 회개하고 돌아오기를 기다리시는 사랑의 아버지이십니다. 우리가</p>
+            <p>죄에서 돌이킬 때 하나님께서 우리를 품어주시고 복된 삶으로 이끄십니다. 이러한 하나님의 은혜를 기억하며</p>
+            <p>바벨론 포로에서 70년 만에 돌아온 유다 백성이 가장 먼저 무너진 성벽을 재건했던 것처럼 우리도 무너진</p>
+            <p>신앙의 벽을 다시 세우기를 소망합니다.</p>
+            <p>1. 말씀의 은혜 (The Grace of the Word)</p>
+            <p>유다 백성이 한자리에 모였을 때 에스라가 하나님을 송축하며 말씀을 선포하자 백성들은 그 뜻을</p>
+            <p>깨닫고 모두 울었습니다(느 8:6, 8~9). 하나님의 말씀 앞에서 자신들의 죄와 연약함이 드러나고</p>
+            <p>잃어버렸던 하나님 사랑의 감동이 다시 찾아왔기 때문입니다. 이처럼 우리가 회복해야 할 첫 번째 은혜는</p>
+            <p>말씀의 은혜입니다. 말씀은 하나님의 감동으로 쓰여진 사랑의 언어이며 우리의 생각과 마음을 찔러</p>
+            <p>변화시키는 능력입니다(딤후 3:16, 히 4:12). 무너진 마음의 성벽을 다시 세우듯 인생의 길잡이인 말씀</p>
+            <p>앞에서 다시 일어나는 은혜가 우리 가운데 회복되기를 바랍니다.</p>
+            <p>2. 나눔의 은혜 (The Grace of Sharing)</p>
+            <p>느헤미야와 에스라는 말씀 앞에서 울던 백성들에게 근심을 거두고 살진 것을 먹으며 준비하지 못한</p>
+            <p>이들에게 나누어 주라고 권했습니다(느 8:10). 말씀의 은혜를 깨달은 백성들은 집으로 돌아가 음식을 먹고</p>
+            <p>이웃과 나누며 큰 기쁨을 누렸습니다(느 8:12). 이렇게 하나님의 은혜는 나눔을 통해 더욱 깊어집니다.</p>
+            <p>오순절 성령 강림 후 초대 예루살렘 교회는 재산과 소유를 서로 통용하며 필요에 따라 나누었습니다(행</p>
+            <p>2:44~46; 4:32). 그 결과 교회는 세상으로부터 큰 칭송을 받게 되었고 구원받는 사람이 날마다 더하게</p>
+            <p>되었습니다(행 2:47). 오늘의 교회 역시 이런 나눔의 은혜를 회복해야 합니다. 받은 은혜를 나누며 사회적</p>
+            <p>약자와 어려운 이웃을 돌볼 때 교회는 세상의 빛이 됩니다.</p>
+            <p>3. 기쁨 충만의 은혜 (The Grace of Full Joy)</p>
+            <p>우리는 언제나 주님께서 주시는 은혜로 인해 기뻐하며 감사해야 합니다. 느헤미야는 유다 백성들에게</p>
+            <p>근심하지 말고 주님 안에서 기뻐하는 것이 우리의 힘임을 기억하라고 했습니다. 주님의 은혜를 경험한</p>
+            <p>사람은 염려와 근심 대신 기쁨과 감사로 하루를 채우며 그 기쁨을 다른 사람과 나누고 어려운 이웃을</p>
+            <p>섬기는 삶을 삽니다(골 2:6~7). 우리도 주님께 받은 은혜를 마음에 새기며 항상 기쁨과 넘치는 감사로</p>
+            <p>나아가야 합니다. 받은 은혜에 기뻐하고 서로 나누며 어려운 이웃에게 사랑을 실천함으로 기쁨 충만의</p>
+            <p>은혜를 누리는 우리 모두가 되기를 축원합니다.</p>
+            <p>여의도순복음교회 이영훈 위임목사</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 5</h4>
+            <p>▣ 교회 대표전화 (주간) ☎ 02-6181-9191, (야간) ☎ 02-6181-9000∼3</p>
+            <p>▣ 의례팀(장례 상담 및 조화 신청 시간 07:00~20:00) ☎ 02-6181-6533</p>
+            <p>▣ 다음 주간(12/7, 12/10, 12/12, 12/13) 대표기도(장로)</p>
+            <p>성찬예배(12/7)</p>
+            <p>수요예배(12/10)</p>
+            <p>1부:민영목</p>
+            <p>2부:이기석</p>
+            <p>1부</p>
+            <p>2부</p>
+            <p>3부</p>
+            <p>4부</p>
+            <p>5부</p>
+            <p>대학청년</p>
+            <p>주일저녁</p>
+            <p>금요성령대망회(12/12)</p>
+            <p>이동근</p>
+            <p>윤호현</p>
+            <p>유재홍</p>
+            <p>이명주</p>
+            <p>이종윤B</p>
+            <p>이근영B</p>
+            <p>김태봉</p>
+            <p>토요예배(12/13)</p>
+            <p>이일수</p>
+            <p>교회소식</p>
+            <p>News Board</p>
+            <p>1. 남선교회 2025년 회원 모집-문의 ☎ 02-6181-7029</p>
+            <p>자격: 본 교회 1년 이상 출석, 물·성령 침례 받은 성도 / 장소: 남선교회 사무실</p>
+            <p>모</p>
+            <p>집</p>
+            <p>1. 다음 주일은 성찬주일입니다. 대속의 은혜에 감사하는 마음으로 성찬에 참여하시기 바랍니다.</p>
+            <p>2. 11월 다섯째 주 새벽예배-일시: 12월 1일(월)~6일(토) 새벽 5시 30분(토요일은 새벽 6시 30분) / 장소: 대성전</p>
+            <p>설교: 양승호 목사(2일 제직특화), 김성만 목사(3일~5일), 박용식 목사(1일, 6일)</p>
+            <p>3. 장로회 2025년 장로부부 송년예배</p>
+            <p>일시: 12월 9일(화) 오후 5시 30분 / 장소: 호텔롯데 서울(소공동) / 설교: 이영훈 목사</p>
+            <p>예</p>
+            <p>배</p>
+            <p>1. 오늘 결신한 분들을 위한 새가족 환영회가 베들레헴성전에서 있습니다.</p>
+            <p>온라인 새가족분들은 교회 홈페이지와 모바일 앱으로 등록 및 교육에 참여하실 수 있습니다.</p>
+            <p>2. 2025년도 제2차 운영위원회</p>
+            <p>일시: 11월 30일(주일) 오후 2시 10분 / 장소: 벧엘성전(선교센터 7층)</p>
+            <p>3. 2026년도 예산 당회</p>
+            <p>일시: 11월 30일(주일) 오후 2시 30분 / 장소: 벧엘성전(선교센터 7층)</p>
+            <p>4. 복지사업국 고독사 및 자살 예방 교육-문의 ☎ 02-6181-7594, 9099</p>
+            <p>일시: 11월 30일(주일)~12월 21일(주일) 매주 주일 오후 1시 / 장소: 세미나실(제1교육관 10층)</p>
+            <p>5. 재정국 국세청 간소화서비스 전자기부금영수증 의무발급 제도 시행-문의 ☎ 02-6181-5730</p>
+            <p>신청기간: 12월 1일(월)부터 / 접수: 교회 홈페이지(www.fgtv.com) 휴대폰 실명확인 인증 필수, 재정국</p>
+            <p>6. ‘신앙계’ 12월호가 나왔습니다. 구독하신 후 성경공부 및 전도용으로 활용하시기 바랍니다.</p>
+            <p>안</p>
+            <p>내</p>
+            <p>◈ 여의도순복음교회에서는 교회 내 각종 판매행위(다단계 등) 또는 성도 간 투자권유 및 금전거래를 금지합니다.</p>
+        </div>
+        <div class="page-content">
+            <h4>📄 페이지 6</h4>
+            <p>오늘의 양식</p>
+            <p>1878년, 화가 메리 카사트는 아홉 살 소녀의 초상화를 의뢰받았습니다.</p>
+            <p>파란 소파에 앉은 소녀는 팔을 비스듬히 뻗고 뾰로통한 표정을 지었습니다.</p>
+            <p>어머니가 “가만히 앉아 미소 지으라”고 재촉하자, 카사트는 조용히 말했</p>
+            <p>습니다. “그냥 두세요. 이대로 그리겠습니다.” 완성된 『푸른 팔걸이 의자에</p>
+            <p>앉은 소녀』는 단정한 귀족 자제의 모습과는 거리가 멀었습니다. 투덜대고</p>
+            <p>안절부절못하는 모습이 그대로 담겼습니다. 하지만 흐트러진 자세와</p>
+            <p>솔직한 표정은 오히려 진짜 아이다움을 드러냈고, 이 작품은 카사트의</p>
+            <p>대표작이 되었습니다.</p>
+            <p>우리는 종종 완벽한 모습을 보여야 한다는 압박에 시달립니다. 격식을</p>
+            <p>차리고, 예의를 지키며, 기대에 부응해야 한다고 느낍니다. 하지만 삶은</p>
+            <p>항상 뜻대로 되지 않습니다. 지친 얼굴을 감추지 못하고, 실수로 엉뚱한 말을</p>
+            <p>내뱉고, 맡은 역할에서 벗어나는 일이 생깁니다. 그런 순간들을 자책하지</p>
+            <p>마십시오. 오히려 그런 흐트러진 모습에서 진정한 인간다움이 드러납니다.</p>
+            <p>완벽하게 포장된 미소보다 솔직한 찡그림이 더 마음에 닿을 때가 있습니다.</p>
+            <p>연약함을 숨기지 않을 때, 비로소 사람들은 서로를 진심으로 이해하게</p>
+            <p>됩니다. 오늘, 흐트러진 당신의 모습을 너무 다그치지 마시기 바랍니다. 그</p>
+            <p>틈새로 비치는 진짜 당신이, 누군가에게는 가장 아름다운 기억이 될 수</p>
+            <p>있습니다. 완벽하지 않아도 괜찮습니다. 진정한 아름다움은 꾸밈없는</p>
+            <p>솔직함에서 피어납니다.</p>
+            <p>흐트러진 아름다움</p>
+            <p>07239 서울특별시 영등포구 국회대로76길 15</p>
+            <p>15, Gukhoe-daero 76-gil, Yeongdeungpo-gu, Seoul</p>
+            <p>교회 대표번호 ☎ 02-6181-9191</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>여의도순복음교회</p>
+        <p style="margin-top: 5px;"></p>
+        <p style="margin-top: 10px;">
+            <a href="https://studysnap.kr" target="_blank">StudySnap</a> | PDF를 모바일 콘텐츠로
+        </p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#sermon" class="active">
+            <span class="nav-icon">📖</span>
+            말씀
+        </a>
+        <a href="#order">
+            <span class="nav-icon">⛪</span>
+            순서
+        </a>
+        <a href="#news">
+            <span class="nav-icon">📢</span>
+            소식
+        </a>
+        <a href="#fulltext">
+            <span class="nav-icon">📄</span>
+            전문
+        </a>
+    </nav>
+
+    <!-- Bible Modal -->
+    <div class="modal-overlay" id="bibleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="bibleModalTitle">성경구절</h2>
+                <button class="modal-close" onclick="closeModal('bibleModal')">×</button>
+            </div>
+            <div class="modal-body" id="bibleModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Hymn Modal -->
+    <div class="modal-overlay" id="hymnModal">
+        <div class="modal-content">
+            <div class="modal-header hymn">
+                <h2 class="modal-title" id="hymnModalTitle">찬송가</h2>
+                <button class="modal-close" onclick="closeModal('hymnModal')">×</button>
+            </div>
+            <div class="modal-body" id="hymnModalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // 성경구절 데이터 (실제 구현 시 API 또는 데이터베이스에서 가져옴)
+        const bibleVerses = {
+            'default': {
+                title: '성경구절',
+                content: '<p></p>'
+            }
+        };
+
+        // 찬송가 데이터
+        const hymns = {};
+
+        // 성경구절 팝업 열기
+        function openBibleModal(verseKey) {
+            const verse = bibleVerses[verseKey] || bibleVerses['default'];
+            document.getElementById('bibleModalTitle').textContent = verse.title;
+            document.getElementById('bibleModalContent').innerHTML = verse.content;
+            document.getElementById('bibleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 찬송가 팝업 열기
+        function openHymnModal(hymnNum) {
+            const hymn = hymns[hymnNum];
+            if (hymn) {
+                document.getElementById('hymnModalTitle').textContent = '찬송가 ' + hymnNum + '장 - ' + hymn.title;
+                document.getElementById('hymnModalContent').innerHTML = hymn.lyrics;
+            } else {
+                document.getElementById('hymnModalTitle').textContent = '찬송가 ' + hymnNum + '장';
+                document.getElementById('hymnModalContent').innerHTML = '<p>가사 정보를 로드할 수 없습니다.</p>';
+            }
+            document.getElementById('hymnModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 모달 닫기
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // 다크모드 토글
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // 다크모드 초기화
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 링크 공유
+        function shareLink() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '여의도순복음교회 주보 - 2025년 11월 30일',
+                    text: '……………………………………………………………………………………………………………………………………',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('링크가 복사되었습니다!');
+            }
+        }
+
+        // 헤더 스크롤 숨김
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            const header = document.getElementById('header');
+
+            if (currentScroll > lastScroll && currentScroll > 150) {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // 네비게이션 스크롤 스파이
+        const sections = ['sermon', 'order', 'news', 'fulltext'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {
+                    current = id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 부드러운 스크롤
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

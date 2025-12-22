@@ -1,0 +1,22 @@
+{
+  "licenses": {
+    "FGFC-248E7DE5-68B4CFBB": {
+      "license_key": "FGFC-248E7DE5-68B4CFBB",
+      "church_id": "fgfc",
+      "church_name": "여의도순복음교회",
+      "plan_type": "trial",
+      "days": 15,
+      "start_date": "2025-12-17T08:59:30.390961",
+      "expire_date": "2026-01-01T08:59:30.390961",
+      "daily_limit": 10,
+      "max_bulletins": 30,
+      "is_active": true,
+      "created_at": "2025-12-17T08:59:30.390961"
+    }
+  },
+  "usage": {
+    "FGFC-248E7DE5-68B4CFBB_2025-12-17": 3,
+    "FGFC-248E7DE5-68B4CFBB_2025-12-18": 10
+  },
+  "created_at": "2025-12-17T08:59:30.389367"
+}

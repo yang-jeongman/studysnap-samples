@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>직군별 외국어 학습기 - AI 음성 지원</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* 헤더 */
+        .header {
+            padding: 25px 20px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 0.95em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* 소개 섹션 */
+        .intro {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .intro h1 {
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .intro h1 span {
+            background: linear-gradient(135deg, #10B981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* 기능 배지 */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .feature-badge {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10B981;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        /* 직군 선택 그리드 */
+        .section-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .job-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .job-card:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .job-card:active {
+            transform: scale(0.98);
+        }
+
+        .job-icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+        }
+
+        .job-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .job-desc {
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* 풀 와이드 카드 */
+        .job-card.full-width {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .job-card.full-width .job-name {
+            color: #10B981;
+        }
+
+        /* 안내 섹션 */
+        .info-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .info-section h3 {
+            font-size: 1em;
+            margin-bottom: 15px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            font-size: 1.2em;
+        }
+
+        /* 푸터 */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85em;
+        }
+
+        .footer a {
+            color: #10B981;
+            text-decoration: none;
+        }
+
+        /* 반응형 */
+        @media (max-width: 400px) {
+            .job-grid {
+                grid-template-columns: 1fr;
+            }
+            .job-card.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">외국어 학습기</div>
+        <p class="tagline">AI 음성 지원 직군별 전문 외국어</p>
+    </header>
+
+    <div class="container">
+        <div class="intro">
+            <h1>직군별 <span>전문 외국어</span>를<br>음성으로 학습하세요</h1>
+            <p>치과, 한방병원, 호텔, 면세점, 레스토랑 등<br>실무에서 바로 사용할 수 있는 외국어 학습</p>
+        </div>
+
+        <div class="features">
+            <span class="feature-badge">🔊 AI 음성 재생</span>
+            <span class="feature-badge">🌏 영어/일본어/중국어</span>
+            <span class="feature-badge">📱 모바일 최적화</span>
+        </div>
+
+        <div class="section-title">
+            <span>📚</span> 학습할 분야를 선택하세요
+        </div>
+
+        <div class="job-grid">
+            <a href="dental.html" class="job-card">
+                <div class="job-icon">🦷</div>
+                <div class="job-name">치과</div>
+                <div class="job-desc">Dental Clinic</div>
+            </a>
+
+            <a href="oriental.html" class="job-card">
+                <div class="job-icon">🏥</div>
+                <div class="job-name">한방병원</div>
+                <div class="job-desc">Oriental Medicine</div>
+            </a>
+
+            <a href="hotel.html" class="job-card">
+                <div class="job-icon">🏨</div>
+                <div class="job-name">호텔</div>
+                <div class="job-desc">Hotel Service</div>
+            </a>
+
+            <a href="dutyfree.html" class="job-card">
+                <div class="job-icon">🛍️</div>
+                <div class="job-name">면세점</div>
+                <div class="job-desc">Duty Free Shop</div>
+            </a>
+
+            <a href="restaurant.html" class="job-card">
+                <div class="job-icon">🍽️</div>
+                <div class="job-name">레스토랑</div>
+                <div class="job-desc">Restaurant</div>
+            </a>
+
+            <a href="nurse.html" class="job-card">
+                <div class="job-icon">👩‍⚕️</div>
+                <div class="job-name">간호사</div>
+                <div class="job-desc">Nursing</div>
+            </a>
+
+            <a href="salon.html" class="job-card full-width">
+                <div class="job-icon">💇</div>
+                <div class="job-name">미용실</div>
+                <div class="job-desc">Beauty Salon - 다양한 미용 서비스 표현</div>
+            </a>
+        </div>
+
+        <div class="info-section">
+            <h3>💡 학습 안내</h3>
+            <ul class="info-list">
+                <li>
+                    <span class="info-icon">🔊</span>
+                    <span>발음 듣기 버튼을 눌러 원어민 발음을 들을 수 있습니다</span>
+                </li>
+                <li>
+                    <span class="info-icon">🌐</span>
+                    <span>영어, 일본어, 중국어 3개 국어를 지원합니다</span>
+                </li>
+                <li>
+                    <span class="info-icon">📖</span>
+                    <span>상황별로 분류된 실무 대화를 학습할 수 있습니다</span>
+                </li>
+                <li>
+                    <span class="info-icon">📱</span>
+                    <span>스마트폰에서 언제 어디서나 학습하세요</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>더소통 외국어 학습기 | 문의: <a href="mailto:jmyangkr@gmail.com">jmyangkr@gmail.com</a></p>
+        <p style="margin-top: 8px;">© 2024 Language Learning. All rights reserved.</p>
+    </footer>
+</body>
+</html>

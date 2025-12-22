@@ -1,0 +1,4328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>여의도순복음교회 주보 - 2025년 12월 14일</title>
+    <meta name="description" content="여의도순복음교회 2025년 12월 14일 주보 - ">
+    <!-- PWA 전체화면 지원 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="여의도순복음교회">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛪</text></svg>">
+    <meta name="theme-color" content="#5B4B9E">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #5B4B9E;
+            --primary-dark: #4A3D82;
+            --primary-light: #E8E4F4;
+            --accent: #C9A857;
+            --text-dark: #1a1a2e;
+            --text-gray: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-gray: #F5F3FA;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --harvest: #5B4B9E;
+            --letter-spacing: 2px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 헤더 - 스크롤 시 숨김/표시 */
+        .header {
+            background: linear-gradient(135deg, #5B4B9E 0%, #4A3D82 100%);
+            color: white;
+            padding: 20px;
+            padding-top: env(safe-area-inset-top, 20px);
+            position: relative;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .harvest-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .church-name {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: var(--letter-spacing);
+        }
+
+        .church-name-en {
+            font-size: 0.7em;
+            font-weight: 400;
+            opacity: 0.9;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .jubo-date {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-top: 8px;
+        }
+
+        .theme-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        /* 표어 뱃지 */
+        .slogan-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            margin: 12px 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .slogan-year {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .slogan-text {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* 네비게이션 탭 - 항상 상단 고정 */
+        .nav-tabs {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tabs-inner {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 8px;
+            justify-content: space-around;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .nav-tab.active,
+        .nav-tab:hover {
+            color: var(--harvest);
+            border-bottom-color: var(--harvest);
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+            padding-bottom: 30px;
+        }
+
+        /* 섹션 */
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header.harvest {
+            background: linear-gradient(135deg, #FEF3C7 0%, #fff 100%);
+        }
+
+        .section-icon {
+            font-size: 1.5em;
+        }
+
+        .section-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .section-title.harvest {
+            color: var(--harvest);
+        }
+
+        .section-body {
+            padding: 20px;
+        }
+
+        /* 오늘의 말씀 - 컴팩트 카드 스타일 */
+        .verse-card {
+            background: linear-gradient(135deg, #5B4B9E 0%, #4A3D82 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 14px 20px;
+            margin-bottom: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(91, 75, 158, 0.2);
+        }
+
+        .verse-card::before {
+            content: "✝️";
+            position: absolute;
+            font-size: 3em;
+            opacity: 0.1;
+            top: -8px;
+            right: -8px;
+            filter: blur(1px);
+        }
+
+        .verse-label {
+            font-size: 0.85em;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            opacity: 0.95;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+
+        .verse-ref {
+            font-size: 0.85em;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+        }
+
+        .verse-ref:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .verse-ref a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* 말씀 아코디언 스타일 - 한 줄 레이아웃 */
+        .verse-accordion {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .verse-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .verse-toggle {
+            font-size: 0.7em;
+            opacity: 0.8;
+            transition: transform 0.3s ease;
+            margin-left: 4px;
+        }
+
+        .verse-accordion.expanded .verse-toggle {
+            transform: rotate(180deg);
+        }
+
+        .verse-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .verse-accordion.expanded .verse-content {
+            max-height: 500px;
+            opacity: 1;
+            transition: max-height 0.5s ease-in, opacity 0.3s ease;
+        }
+
+        .verse-text {
+            font-size: 1.1em;
+            line-height: 2;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            color: white;
+            word-break: keep-all;
+            text-align: justify;
+            margin: 16px auto 20px;
+            max-width: 95%;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .verse-hint {
+            font-size: 0.75em;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        .verse-accordion.expanded .verse-hint {
+            display: none;
+        }
+
+        /* 공통 예배순서 */
+        .common-worship-order {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(91, 75, 158, 0.08);
+        }
+
+        .common-order-title {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--primary);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .order-icon {
+            font-size: 1.2em;
+        }
+
+        /* 📖 생명의 말씀 섹션 */
+        .sermon-word-section {
+            background: linear-gradient(135deg, #f8f6ff 0%, #fff 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(91, 75, 158, 0.1);
+        }
+
+        .sermon-word-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .sermon-word-header:hover {
+            background: #4a3d8f;
+        }
+
+        .sermon-word-titles {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sermon-word-titles .section-title {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: white;
+        }
+
+        .sermon-word-subtitle {
+            font-size: 0.75em;
+            opacity: 0.85;
+            font-style: italic;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .sermon-word-toggle {
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+            color: white;
+        }
+
+        .sermon-word-section.expanded .sermon-word-toggle {
+            transform: rotate(180deg);
+        }
+
+        .sermon-word-preview {
+            padding: 16px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .sermon-title-ko {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .sermon-title-en {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .sermon-scripture-ref {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 6px 14px;
+            border-radius: 16px;
+            display: inline-block;
+        }
+
+        .sermon-word-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .sermon-word-section.expanded .sermon-word-content {
+            max-height: 2000px;
+            transition: max-height 0.6s ease-in;
+        }
+
+        .sermon-full-text {
+            padding: 20px;
+            line-height: 1.8;
+            color: var(--text);
+            font-size: 0.95em;
+            background: white;
+        }
+
+        .sermon-intro {
+            margin: 0 0 24px 0;
+            padding: 16px;
+            background: var(--primary-light);
+            border-radius: 12px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+            word-break: keep-all;
+            font-weight: 500;
+        }
+
+        .sermon-section {
+            margin-bottom: 28px;
+        }
+
+        .sermon-subtitle {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .sermon-paragraph {
+            margin: 0;
+            text-align: justify;
+            word-break: keep-all;
+            line-height: 1.9;
+            color: #333;
+        }
+
+        .sermon-pastor {
+            margin-top: 28px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.95em;
+        }
+
+        /* 예배별 탭 버튼 */
+        .service-tabs {
+            display: flex;
+            gap: 6px;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+
+        .service-tab {
+            padding: 6px 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: var(--primary);
+            background: white;
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .service-tab:hover {
+            background: var(--primary-light);
+        }
+
+        .service-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(91, 75, 158, 0.3);
+        }
+
+        .common-order-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid rgba(91, 75, 158, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .order-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(91, 75, 158, 0.12);
+        }
+
+        .order-item.highlight-item {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+        }
+
+        .order-item.highlight-item .order-label,
+        .order-item.highlight-item .order-value {
+            color: white;
+        }
+
+        .order-item.sermon-order {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border: 1px solid rgba(91, 75, 158, 0.2);
+        }
+
+        .order-item.sermon-order .order-label {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .order-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95em;
+        }
+
+        .order-value {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            text-align: right;
+        }
+
+        .order-value .bible-link,
+        .order-value .hymn-link {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary);
+        }
+
+        .order-value .bible-link:hover,
+        .order-value .hymn-link:hover {
+            border-bottom-style: solid;
+        }
+
+        /* 예배 정보 카드 */
+        .worship-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .worship-header {
+            background: var(--primary);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .worship-title {
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+
+        .worship-time {
+            font-size: 0.9em;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .worship-body {
+            padding: 16px;
+        }
+
+        .worship-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .worship-item:last-child {
+            border-bottom: none;
+        }
+
+        .worship-item-label {
+            color: var(--text-gray);
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .worship-item-value {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+            text-align: right;
+        }
+
+        .worship-item-value .bible-link,
+        .worship-item-value .hymn-link {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary);
+        }
+
+        .worship-item-value .bible-link:hover,
+        .worship-item-value .hymn-link:hover {
+            border-bottom-style: solid;
+        }
+
+        /* 설교 항목 강조 */
+        .worship-item.sermon-item {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            margin: 8px -16px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(91, 75, 158, 0.15);
+        }
+
+        .worship-item.sermon-item .worship-item-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .worship-item.sermon-item .worship-item-value {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* 사회자 항목 */
+        .worship-item.mc-item {
+            background: rgba(201, 168, 87, 0.1);
+            margin: 0 -16px 8px;
+            padding: 10px 16px;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .worship-item.mc-item .worship-item-label {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sermon-highlight {
+            background: var(--primary-light);
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+
+        .sermon-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .sermon-preacher {
+            font-size: 0.9em;
+            color: var(--text-gray);
+        }
+
+        /* 설교 본문 */
+        .sermon-content {
+            line-height: 1.9;
+            font-size: 1em;
+            color: var(--text-dark);
+        }
+
+        .sermon-content h3 {
+            font-size: 1.1em;
+            color: var(--harvest);
+            margin: 24px 0 12px 0;
+            padding-left: 12px;
+            border-left: 4px solid var(--harvest);
+        }
+
+        .sermon-content p {
+            margin-bottom: 16px;
+            text-align: justify;
+            word-break: keep-all;
+        }
+
+        .sermon-author {
+            text-align: right;
+            margin-top: 24px;
+            font-weight: 600;
+            color: var(--harvest);
+        }
+
+        /* 설교 제목 박스 */
+        .sermon-title-box {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+        }
+
+        .sermon-main-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .sermon-title-en {
+            font-size: 0.95em;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+        }
+
+        .sermon-scripture {
+            font-size: 0.95em;
+        }
+
+        .sermon-scripture .bible-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .sermon-scripture .bible-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 설교 아코디언 */
+        .sermon-accordion {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            background: white;
+            margin-bottom: 20px;
+        }
+
+        .sermon-accordion[open] {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .sermon-accordion-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .sermon-accordion-header:hover {
+            filter: brightness(1.05);
+        }
+
+        .accordion-icon {
+            font-size: 1.3em;
+        }
+
+        .accordion-title {
+            flex: 1;
+            font-size: 1em;
+        }
+
+        .sermon-accordion[open] .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .sermon-accordion-body {
+            padding: 24px;
+            background: white;
+        }
+
+        .sermon-content-full {
+            line-height: 2;
+            font-size: 1em;
+            color: var(--text-dark);
+        }
+
+        .sermon-section-title {
+            font-size: 1.1em;
+            color: var(--primary);
+            margin: 28px 0 16px 0;
+            padding: 12px 16px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .sermon-section-title-en {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            font-weight: 400;
+        }
+
+        .sermon-paragraph {
+            margin-bottom: 16px;
+            text-align: justify;
+            word-break: keep-all;
+            text-indent: 1em;
+        }
+
+        .sermon-placeholder {
+            color: var(--text-gray);
+            font-style: italic;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .sermon-author-box {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .author-label {
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        .author-name {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* 설교 오디오 플레이어 스타일 */
+        .sermon-audio-section {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .audio-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .audio-icon {
+            font-size: 1.4em;
+        }
+
+        .audio-title {
+            font-weight: 700;
+            color: var(--harvest);
+            font-size: 0.95em;
+        }
+
+        .audio-player {
+            width: 100%;
+            height: 44px;
+            border-radius: 8px;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .audio-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--harvest);
+            background: white;
+            color: var(--harvest);
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: var(--harvest);
+            color: white;
+        }
+
+        .audio-btn.download {
+            background: var(--harvest);
+            color: white;
+        }
+
+        .audio-btn.download:hover {
+            background: var(--primary-dark);
+        }
+
+        /* 교회 소식 */
+        .news-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .news-category.worship { background: var(--harvest); }
+        .news-category.recruit { background: var(--success); }
+        .news-category.info { background: var(--warning); }
+        .news-category.special { background: #E11D48; }
+
+        .news-title {
+            font-weight: 700;
+            font-size: 1em;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .news-content {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* 예배 시간 그리드 - 전문가 템플릿 스타일 */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .service-item {
+            text-align: center;
+            padding: 14px 10px;
+            background: var(--bg-gray);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .service-item.highlight {
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+        }
+
+        .service-part {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .service-time {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .service-pastor {
+            font-size: 0.75em;
+            color: var(--text-gray);
+        }
+
+        /* 담당자 상세 테이블 */
+        .service-roles-container {
+            margin: 16px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .roles-table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .service-roles-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            font-size: 0.85em;
+        }
+
+        .service-roles-table th,
+        .service-roles-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .service-roles-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85em;
+            white-space: nowrap;
+        }
+
+        .service-roles-table td {
+            background: white;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+
+        .service-roles-table tr:nth-child(even) td {
+            background: var(--bg-gray);
+        }
+
+        .service-roles-table .part-cell {
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--primary-light) !important;
+        }
+
+        .service-roles-table .sermon-cell {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* 예배별 담당자 상세 카드 */
+        .service-detail-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .service-detail-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .service-card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #5a6fd6 100%);
+            color: white;
+            padding: 12px 16px;
+            font-weight: 700;
+        }
+
+        .service-card-part {
+            font-size: 1.1em;
+        }
+
+        .service-card-body {
+            padding: 16px;
+        }
+
+        .service-roles {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .role-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px 12px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+        }
+
+        .role-label {
+            font-size: 0.75em;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        .role-value {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .role-value.hymn-badge {
+            color: var(--accent);
+        }
+
+        .sermon-info-card {
+            margin-top: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .sermon-label {
+            font-size: 0.75em;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .sermon-info-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .sermon-info-preacher {
+            font-size: 0.9em;
+            color: var(--text-gray);
+        }
+
+        @media (max-width: 400px) {
+            .service-roles {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 예배 순서 - 전문가 템플릿 스타일 */
+        .worship-order {
+            margin-top: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+        }
+
+        .worship-order-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 0.9em;
+        }
+
+        .worship-order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .worship-order-item:last-child {
+            border-bottom: none;
+        }
+
+        .worship-order-item.highlight {
+            background: var(--primary-light);
+            margin: 0 -18px;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .worship-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+        }
+
+        .worship-detail {
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        .worship-hymn {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* 설교 카드 - 전문가 템플릿 스타일 */
+        .sermon-card-box {
+            background: linear-gradient(135deg, var(--accent-light, #FEF3C7) 0%, white 100%);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .sermon-card-label {
+            font-size: 0.75em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .sermon-card-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .sermon-card-scripture {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            margin-bottom: 8px;
+        }
+
+        .sermon-card-preacher {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* 찬양대 정보 */
+        .choir-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .choir-item {
+            background: var(--bg-gray);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: none;
+        }
+
+        .choir-part {
+            font-size: 0.8em;
+            color: var(--harvest);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .choir-service {
+            font-size: 0.8em;
+            color: var(--harvest);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .choir-name {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .choir-song {
+            font-size: 0.75em;
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+
+        /* 찬양 테이블 (데스크톱) */
+        .choir-table-container {
+            display: block;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .choir-table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .choir-table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+            font-size: 0.85em;
+        }
+
+        .choir-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 8px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .choir-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: white;
+        }
+
+        .choir-table tr:nth-child(even) td {
+            background: var(--bg-gray);
+        }
+
+        .choir-service-cell {
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 80px;
+        }
+
+        .choir-name-cell {
+            font-weight: 600;
+            color: var(--text-dark);
+            min-width: 100px;
+        }
+
+        .choir-song-cell {
+            color: var(--accent);
+            font-weight: 500;
+            min-width: 120px;
+            white-space: normal;
+            word-break: keep-all;
+        }
+
+        .choir-conductor-cell,
+        .choir-accompanist-cell {
+            min-width: 70px;
+            color: var(--text-gray);
+        }
+
+        /* 슬라이드 힌트 표시 */
+        .choir-scroll-hint {
+            display: none;
+            text-align: center;
+            padding: 8px;
+            font-size: 0.75em;
+            color: var(--text-gray);
+            background: linear-gradient(to right, transparent, var(--bg-gray), transparent);
+        }
+
+        .choir-scroll-hint::before {
+            content: '← ';
+        }
+
+        .choir-scroll-hint::after {
+            content: ' →';
+        }
+
+        /* 모바일에서 슬라이드 힌트 표시 */
+        @media (max-width: 600px) {
+            .choir-table {
+                min-width: 550px;
+            }
+
+            .choir-table th,
+            .choir-table td {
+                padding: 10px 8px;
+                font-size: 0.8em;
+            }
+
+            .choir-scroll-hint {
+                display: block;
+            }
+        }
+
+        /* 교회 소식 - 전문가 템플릿 스타일 */
+        .news-item-expert {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .news-item-expert:last-child {
+            border-bottom: none;
+        }
+
+        .news-number {
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .news-title-expert {
+            flex: 1;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .news-content-expert {
+            width: 100%;
+            padding-left: 34px;
+            font-size: 0.9em;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .news-highlight {
+            background: var(--primary-light);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        /* 교회 소식 아코디언 */
+        .news-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .news-category-accordion {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .news-category-accordion[open] {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .news-category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .news-category-header:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+
+        .news-category-icon {
+            font-size: 1.2em;
+        }
+
+        .news-category-name {
+            flex: 1;
+            font-size: 0.95em;
+            color: var(--text-dark);
+        }
+
+        .news-category-count {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+        }
+
+        .accordion-arrow {
+            font-size: 0.7em;
+            color: var(--text-gray);
+            transition: transform 0.3s ease;
+        }
+
+        .news-category-accordion[open] .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .news-category-body {
+            padding: 12px 16px;
+            background: white;
+        }
+
+        .news-item-accordion {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .news-item-accordion:last-child {
+            border-bottom: none;
+        }
+
+        .news-num {
+            width: 22px;
+            height: 22px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .news-item-content {
+            flex: 1;
+        }
+
+        .news-item-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+            margin-bottom: 4px;
+        }
+
+        .news-item-detail {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* 교우 소식 섹션 */
+        .member-news-section {
+            margin-bottom: 16px;
+        }
+
+        .member-news-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .member-news-list {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .wedding-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .wedding-card {
+            background: var(--bg-gray);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .wedding-couple {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.85em;
+            margin-bottom: 4px;
+        }
+
+        .wedding-info {
+            font-size: 0.8em;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* 새벽기도회 테이블 */
+        .dawn-schedule {
+            overflow-x: auto;
+        }
+
+        .dawn-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8em;
+            min-width: 400px;
+        }
+
+        .dawn-table th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .dawn-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .dawn-table tr:nth-child(even) {
+            background: var(--bg-gray);
+        }
+
+        /* 지난주 말씀 */
+        .last-week-sermon {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .last-week-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .last-week-ref {
+            font-size: 0.85em;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .last-week-content {
+            font-size: 0.9em;
+            color: var(--text-dark);
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        /* ========================================
+           명성교회 고도화 - 아코디언 컴포넌트
+           ======================================== */
+        .accordion {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: var(--bg-gray);
+            cursor: pointer;
+            transition: background 0.2s;
+            user-select: none;
+        }
+
+        .accordion-header:hover {
+            background: var(--primary-light);
+        }
+
+        .accordion-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accordion-title .icon {
+            font-size: 1.1em;
+        }
+
+        .accordion-ref {
+            font-size: 0.85em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .accordion-arrow {
+            font-size: 0.8em;
+            color: var(--text-gray);
+            transition: transform 0.3s;
+        }
+
+        .accordion.open .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: white;
+        }
+
+        .accordion.open .accordion-content {
+            max-height: 2000px;
+        }
+
+        .accordion-body {
+            padding: 16px;
+            font-size: 0.9em;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        /* 지난주 말씀 아코디언 */
+        .last-week-accordion {
+            background: linear-gradient(135deg, var(--bg-gray) 0%, white 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .last-week-accordion .accordion-header {
+            background: transparent;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .last-week-accordion.open .accordion-header {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .last-week-accordion .accordion-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* 예배 회차별 탭 */
+        .service-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .service-tab {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            background: var(--bg-gray);
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .service-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .service-tab .tab-name {
+            display: block;
+            font-weight: 700;
+        }
+
+        .service-tab .tab-time {
+            display: block;
+            font-size: 0.75em;
+            font-weight: 400;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .service-tab-content {
+            display: none;
+        }
+
+        .service-tab-content.active {
+            display: block;
+        }
+
+        /* 회차별 상세 정보 */
+        .service-details-container {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .service-detail {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .service-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .detail-part {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .detail-time {
+            font-size: 0.9em;
+            color: var(--text-gray);
+        }
+
+        .service-leader-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .leader-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .leader-label {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            padding: 2px 8px;
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        .leader-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .service-hymns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .hymn-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hymn-badge:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 예배 순서 클릭 가능 항목 */
+        .worship-order-item.clickable {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .worship-order-item.clickable:hover {
+            background: var(--primary-light);
+            border-radius: 6px;
+            padding-left: 8px;
+            margin-left: -8px;
+        }
+
+        .worship-order-item.clickable::after {
+            content: '→';
+            margin-left: 8px;
+            opacity: 0.5;
+            font-size: 0.85em;
+        }
+
+        .worship-order-item.standing {
+            background: linear-gradient(90deg, var(--primary-light) 0%, transparent 50%);
+            border-left: 3px solid var(--primary);
+            padding-left: 8px;
+            margin-left: -8px;
+        }
+
+        /* 예배 순서 상세 - 기립 표시 */
+        .worship-order-item .stand-mark {
+            color: var(--accent);
+            font-weight: 700;
+            margin-right: 4px;
+        }
+
+        .worship-order-item.stand {
+            position: relative;
+        }
+
+        .worship-order-item.stand::before {
+            content: '*';
+            color: var(--accent);
+            font-weight: 700;
+            margin-right: 4px;
+        }
+
+        /* 찬송가/교독문/사도신경 아코디언 */
+        .liturgy-accordion {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .liturgy-accordion .accordion-header {
+            padding: 10px 14px;
+            background: var(--primary-light);
+        }
+
+        .liturgy-accordion .accordion-body {
+            background: white;
+            font-size: 0.85em;
+            padding: 14px;
+        }
+
+        .liturgy-accordion .verse-line {
+            padding: 4px 0;
+            border-bottom: 1px dotted var(--border);
+        }
+
+        .liturgy-accordion .verse-line:last-child {
+            border-bottom: none;
+        }
+
+        .liturgy-accordion .responsive {
+            display: flex;
+            gap: 8px;
+        }
+
+        .liturgy-accordion .responsive .leader {
+            color: var(--primary);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .liturgy-accordion .responsive .people {
+            color: var(--text-dark);
+        }
+
+        /* 교우소식 카테고리 아코디언 */
+        .member-news-accordion {
+            margin-bottom: 8px;
+        }
+
+        .member-news-accordion .accordion-header {
+            padding: 12px 14px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .member-news-accordion.open .accordion-header {
+            border-radius: 10px 10px 0 0;
+            border-bottom: none;
+        }
+
+        .member-news-accordion .accordion-content {
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .member-news-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 0.75em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        .category-count {
+            font-size: 0.75em;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .category-arrow {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* 교우소식 상세 항목 스타일 */
+        .birth-list, .passing-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .birth-item, .passing-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+        }
+
+        .birth-parent, .passing-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .birth-baby {
+            color: var(--primary);
+        }
+
+        .birth-date, .passing-date {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+
+        .passing-relation {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        .wedding-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .wedding-card {
+            background: var(--bg-gray);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .wedding-couple {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .wedding-info {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+
+        /* SNS 및 모바일 헌금 섹션 */
+        .sns-offering-section {
+            background: linear-gradient(135deg, var(--primary-light) 0%, white 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .sns-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sns-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .sns-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .sns-btn.youtube {
+            border-color: #FF0000;
+            color: #FF0000;
+        }
+
+        .sns-btn.youtube:hover {
+            background: #FF0000;
+            color: white;
+        }
+
+        .sns-btn.instagram {
+            border-color: #E4405F;
+            color: #E4405F;
+        }
+
+        .sns-btn.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .sns-btn.facebook {
+            border-color: #1877F2;
+            color: #1877F2;
+        }
+
+        .sns-btn.facebook:hover {
+            background: #1877F2;
+            color: white;
+        }
+
+        .sns-btn.kakao {
+            border-color: #FEE500;
+            color: #3C1E1E;
+            background: #FEE500;
+        }
+
+        .sns-btn.kakao:hover {
+            background: #F7D600;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(254, 229, 0, 0.4);
+        }
+
+        .sns-btn.homepage {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .sns-btn.homepage:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 75, 158, 0.4);
+        }
+
+        /* SNS 그리드 - 전문가 결과물 스타일 (fg-2025-12-14 기준) */
+        .sns-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .sns-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 8px;
+            background: var(--bg-gray);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .sns-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .sns-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .sns-name {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .sns-item.youtube { background: linear-gradient(135deg, #FFE5E5 0%, #FFF 100%); }
+        .sns-item.youtube:hover { background: #FFE5E5; }
+        .sns-item.instagram { background: linear-gradient(135deg, #FCE4EC 0%, #FFF 100%); }
+        .sns-item.instagram:hover { background: #FCE4EC; }
+        .sns-item.facebook { background: linear-gradient(135deg, #E3F2FD 0%, #FFF 100%); }
+        .sns-item.facebook:hover { background: #E3F2FD; }
+        .sns-item.website { background: linear-gradient(135deg, #E8F5E9 0%, #FFF 100%); }
+        .sns-item.website:hover { background: #E8F5E9; }
+
+        /* 헌금 그리드 - 전문가 결과물 스타일 (fg-2025-12-14 기준) */
+        .offering-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .offering-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .offering-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 75, 158, 0.15);
+        }
+
+        .offering-item .offering-icon {
+            font-size: 2em;
+            margin-right: 16px;
+        }
+
+        .offering-info {
+            flex: 1;
+        }
+
+        .offering-name {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .offering-desc {
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        .offering-arrow {
+            font-size: 1.2em;
+            color: var(--primary);
+        }
+
+        .offering-section {
+            text-align: center;
+        }
+
+        /* 헌금 버튼 그룹 (전문가 수준) */
+        .offering-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .offering-method-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 16px;
+            background: var(--bg-gray);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .offering-method-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .offering-method-btn .offering-icon {
+            font-size: 2em;
+        }
+
+        .offering-method-btn .offering-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .offering-method-btn.kakao {
+            border-color: #FEE500;
+        }
+
+        .offering-method-btn.kakao:hover {
+            background: #FFF9D9;
+            border-color: #FEE500;
+        }
+
+        .offering-method-btn.app {
+            border-color: var(--primary);
+        }
+
+        .offering-method-btn.app:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .offering-title {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .offering-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .offering-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .bank-accounts {
+            margin-top: 12px;
+            font-size: 0.85em;
+        }
+
+        .bank-account {
+            padding: 4px 0;
+        }
+
+        .bank-account-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+            gap: 12px;
+        }
+
+        .bank-name {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 70px;
+        }
+
+        .account-number {
+            flex: 1;
+            font-family: 'Courier New', monospace;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 4px 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px dashed var(--border);
+            transition: all 0.2s;
+        }
+
+        .account-number:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .account-holder {
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        /* 계좌번호 등록 예정 스타일 */
+        .bank-account-item.pending {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px dashed var(--border);
+        }
+
+        .pending-text {
+            color: var(--text-gray);
+            font-style: italic;
+            cursor: default;
+            background: transparent;
+            border: none;
+        }
+
+        .pending-text:hover {
+            background: transparent;
+            border: none;
+        }
+
+        .section-subtitle {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        /* 연락처 그리드 */
+        .contact-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+        }
+
+        .contact-icon {
+            font-size: 1.2em;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.75em;
+            color: var(--text-gray);
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .contact-value a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* 주보 정보 */
+        .jubo-info {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 12px;
+        }
+
+        .jubo-number {
+            opacity: 0.8;
+        }
+
+        /* 오늘의 양식 */
+        .devotional-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--harvest);
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .devotional-content {
+            font-size: 0.95em;
+            line-height: 1.9;
+            color: var(--text-dark);
+            text-align: justify;
+            word-break: keep-all;
+        }
+
+        .devotional-content p {
+            margin-bottom: 16px;
+            text-indent: 1em;
+        }
+
+        /* 오늘의 양식 아코디언 */
+        .devotional-accordion {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+        }
+
+        .devotional-accordion[open] {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .devotional-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .devotional-header:hover {
+            filter: brightness(1.05);
+        }
+
+        .devotional-icon {
+            font-size: 1.3em;
+        }
+
+        .devotional-header .devotional-title {
+            flex: 1;
+            font-size: 1em;
+            font-weight: 700;
+            color: white;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .devotional-arrow {
+            font-size: 0.8em;
+            opacity: 0.8;
+            transition: transform 0.3s ease;
+        }
+
+        .devotional-accordion[open] .devotional-arrow {
+            transform: rotate(180deg);
+        }
+
+        .devotional-body {
+            padding: 20px;
+            background: white;
+        }
+
+        /* 연락처 */
+        .contact-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+        }
+
+        .contact-icon {
+            font-size: 1.2em;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.8em;
+            color: var(--text-gray);
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .contact-value a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* 성경/찬송가 링크 스타일 */
+        .bible-link, .hymn-link {
+            color: var(--harvest);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--harvest);
+            transition: all 0.2s;
+        }
+
+        .bible-link:hover, .hymn-link:hover {
+            background: var(--primary-light);
+            border-bottom-style: solid;
+        }
+
+        /* 모달 팝업 스타일 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header.hymn {
+            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+        }
+
+        .modal-title {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .bible-verse-content {
+            font-size: 1.05em;
+            line-height: 1.9;
+            color: var(--text-dark);
+        }
+
+        .bible-verse-content .verse-num {
+            color: var(--harvest);
+            font-weight: 700;
+            font-size: 0.85em;
+            vertical-align: super;
+            margin-right: 2px;
+        }
+
+        .bible-verse-content p {
+            margin-bottom: 12px;
+        }
+
+        .hymn-content {
+            text-align: center;
+        }
+
+        .hymn-number {
+            font-size: 2em;
+            font-weight: 800;
+            color: #D97706;
+            margin-bottom: 8px;
+        }
+
+        .hymn-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .hymn-lyrics {
+            font-size: 1em;
+            line-height: 1.8;
+            color: var(--text-dark);
+            text-align: left;
+            white-space: pre-line;
+        }
+
+        .hymn-lyrics .verse-label {
+            font-weight: 700;
+            color: #D97706;
+            margin-top: 16px;
+            display: block;
+        }
+
+        /* 주보 저장 버튼 스타일 */
+        .save-jubo-section {
+            background: linear-gradient(135deg, #E8F5E9 0%, #fff 100%);
+            border: 2px dashed #4CAF50;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .save-title {
+            font-weight: 700;
+            color: #2E7D32;
+            margin-bottom: 8px;
+        }
+
+        .save-desc {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+        }
+
+        .save-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #388E3C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        /* 공유 섹션 */
+        .share-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .share-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .share-btn {
+            flex: 1;
+            max-width: 140px;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+            background: var(--bg-gray);
+        }
+
+        .share-btn.kakao {
+            background: #FEE500;
+            border-color: #FEE500;
+            color: #3C1E1E;
+        }
+
+        /* 푸터 */
+        .footer {
+            background: var(--harvest);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .footer-address {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .footer-copyright {
+            font-size: 0.75em;
+            opacity: 0.7;
+        }
+
+        /* 우측 상단 컨트롤 */
+        .top-controls {
+            position: fixed;
+            top: 80px;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 998;
+        }
+
+        /* 언어 선택 */
+        .language-selector {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.85em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .language-selector:hover {
+            border-color: var(--primary);
+        }
+
+        /* 다크모드 토글 */
+        .dark-mode-toggle {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        /* 다크모드 */
+        body.dark-mode {
+            --bg-gray: #1a1a2e;
+            --bg-white: #252540;
+            --text-dark: #ffffff;
+            --text-gray: #a0a0b0;
+            --border: #3a3a50;
+            --primary-light: #3a3a50;
+        }
+
+        body.dark-mode .section,
+        body.dark-mode .worship-card,
+        body.dark-mode .share-section,
+        body.dark-mode .nav-tabs {
+            background: var(--bg-white);
+        }
+
+        body.dark-mode .dark-mode-toggle,
+        body.dark-mode .language-selector {
+            background: var(--bg-white);
+            color: var(--text-dark);
+            border-color: var(--border);
+        }
+
+        body.dark-mode .choir-item {
+            background: var(--bg-white);
+            border-color: #3a3a50;
+        }
+
+        body.dark-mode .sermon-highlight {
+            background: #3a3a50;
+        }
+
+        body.dark-mode .modal-content {
+            background: var(--bg-white);
+        }
+
+        body.dark-mode .sermon-audio-section {
+            background: var(--bg-white);
+        }
+
+        body.dark-mode .save-jubo-section {
+            background: var(--bg-white);
+            border-color: #388E3C;
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* 반응형 */
+        @media (max-width: 375px) {
+            .church-name {
+                font-size: 1.4em;
+            }
+
+            .nav-tab {
+                padding: 12px 12px;
+                font-size: 0.85em;
+            }
+
+            .choir-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            
+            
+            <h1 class="church-name">
+                여의도순복음교회
+                <span class="church-name-en">YOIDO FULL GOSPEL CHURCH</span>
+            </h1>
+            
+            <div class="jubo-info">
+                <span class="jubo-date">2025년 12월 14일</span>
+                
+            </div>
+        </div>
+    </header>
+    
+    <!-- 네비게이션 탭 -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-inner">
+            <a href="#verse" class="nav-tab active" data-i18n="nav_verse">말씀</a>
+            <a href="#worship" class="nav-tab" data-i18n="nav_worship">예배</a>
+            <a href="#sermon-word" class="nav-tab" data-i18n="nav_sermon">설교</a>
+            <a href="#news" class="nav-tab" data-i18n="nav_news">소식</a>
+            <a href="#devotional" class="nav-tab" data-i18n="nav_devotional">양식</a>
+            <a href="#sns" class="nav-tab" data-i18n="nav_sns">SNS</a>
+            <a href="#offering" class="nav-tab" data-i18n="nav_offering">헌금</a>
+        </div>
+    </nav>
+    
+    <!-- 우측 상단 컨트롤 -->
+    <div class="top-controls">
+        <!-- 언어 선택 -->
+        <select class="language-selector" onchange="changeLanguage(this.value)" title="언어 선택">
+            <option value="ko" selected>한국어</option>
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="es">Español</option>
+            <option value="ru">Русский</option>
+            <option value="fr">Français</option>
+        </select>
+        <!-- 다크모드 토글 -->
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="다크모드">
+            🌙
+        </button>
+    </div>
+
+    <main class="container">
+        
+        <!-- 오늘의 말씀 - 컴팩트 아코디언 -->
+        <section id="verse" class="verse-card verse-accordion" onclick="toggleVerseAccordion(this)">
+            <div class="verse-header">
+                <span class="verse-label" data-i18n="section_verse">오늘의 말씀</span>
+                <span class="verse-ref">
+                    <a href="javascript:void(0)" onclick="event.stopPropagation(); openBibleModal('luke-3-4')" data-i18n="verse_ref">누가복음 3:4~6</a>
+                    <span class="verse-toggle">▼</span>
+                </span>
+            </div>
+            <div class="verse-hint" data-i18n="tap_to_expand">👆 터치하여 말씀 보기</div>
+            <div class="verse-content">
+                <p class="verse-text" data-i18n="verse_text">"선지자 이사야의 책에 쓴 바 광야에서 외치는 자의 소리가 있어 이르되 너희는 주의 길을 준비하라 그의 오실 길을 곧게 하라 모든 골짜기가 메워지고 모든 산과 작은 산이 낮아지고 굽은 것이 곧아지고 험한 길이 평탄하여질 것이요 모든 육체가 하나님의 구원하심을 보리라 하였느니라"</p>
+            </div>
+        </section>
+        
+        <!-- 예배 안내 -->
+        <section id="worship" class="section">
+            <div class="section-header">
+                <span class="section-icon">⛪</span>
+                <h2 class="section-title" data-i18n="section_worship">주일예배 안내</h2>
+            </div>
+            <div class="section-body">
+                
+                <!-- 주일예배 순서 (탭 전환) -->
+                <div class="common-worship-order">
+                    <div class="common-order-title">
+                        <span class="order-icon">📋</span>
+                        <span data-i18n="common_order_title">주일예배 순서</span>
+                        <div class="service-tabs">
+                            <button class="service-tab active" onclick="switchService('1bu')" data-service="1bu">1부</button>
+                            <button class="service-tab" onclick="switchService('234bu')" data-service="234bu">2·3·4부</button>
+                            <button class="service-tab" onclick="switchService('youth')" data-service="youth">5부 대학청년</button>
+                            <button class="service-tab" onclick="switchService('evening')" data-service="evening">주일저녁</button>
+                        </div>
+                    </div>
+                    <div class="common-order-items">
+                        <div class="order-item">
+                            <span class="order-label">예배로 부르심</span>
+                            <span class="order-value"><a href="javascript:void(0)" onclick="openBibleModal('john-4-24')" class="bible-link">요 4:24</a> (사회자)</span>
+                        </div>
+                        <div class="order-item">
+                            <span class="order-label">찬송</span>
+                            <span class="order-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8장(통9장)</a> 4절 (다같이, 일어서서)</span>
+                        </div>
+                        <div class="order-item">
+                            <span class="order-label">신앙고백</span>
+                            <span class="order-value">사도신경 (다같이, 일어서서)</span>
+                        </div>
+                        <div class="order-item" id="hymn-row">
+                            <span class="order-label">찬송</span>
+                            <span class="order-value" id="hymn-value"><a href="javascript:void(0)" onclick="openHymnModal('301')" class="hymn-link">301장</a>(통460장) (다같이)</span>
+                        </div>
+                        <div class="order-item" id="prayer-row">
+                            <span class="order-label">기도</span>
+                            <span class="order-value" id="prayer-value">대표기도자</span>
+                        </div>
+                        <div class="order-item" id="scripture-row">
+                            <span class="order-label">성경봉독</span>
+                            <span class="order-value" id="scripture-value"><a href="javascript:void(0)" onclick="openBibleModal('phil-1-3')" class="bible-link">빌 1:3~8</a> (사회자)</span>
+                        </div>
+                        <div class="order-item" id="choir-row">
+                            <span class="order-label">찬양</span>
+                            <span class="order-value" id="choir-value">찬양대</span>
+                        </div>
+                        <div class="order-item sermon-order" id="sermon-row">
+                            <span class="order-label">설교</span>
+                            <span class="order-value" id="sermon-value">담임목사</span>
+                        </div>
+                        <div class="order-item">
+                            <span class="order-label">기도와 결신</span>
+                            <span class="order-value">설교자</span>
+                        </div>
+                        <div class="order-item" id="offering-row">
+                            <span class="order-label">헌금기도</span>
+                            <span class="order-value" id="offering-value">헌금기도자</span>
+                        </div>
+                        <div class="order-item">
+                            <span class="order-label">찬송</span>
+                            <span class="order-value"><a href="javascript:void(0)" onclick="openHymnModal('635')" class="hymn-link">635장</a> 주기도문 (다같이, 일어서서)</span>
+                        </div>
+                        <div class="order-item">
+                            <span class="order-label">축도</span>
+                            <span class="order-value">설교자</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- 📖 생명의 말씀 -->
+        <section id="sermon-word" class="section sermon-word-section">
+            <div class="section-header sermon-word-header" onclick="toggleSermonWord(this.parentElement)">
+                <div class="sermon-word-titles">
+                    <h2 class="section-title">📖 생명의 말씀</h2>
+                    <span class="sermon-word-subtitle">The Word of Life</span>
+                </div>
+                <span class="sermon-word-toggle">▼</span>
+            </div>
+            <div class="sermon-word-preview">
+                <div class="sermon-title-ko">예수님 오심을 기다리며(Ⅱ)</div>
+                <div class="sermon-title-en">(Waiting for Jesus' Coming(Ⅱ))</div>
+                <div class="sermon-scripture-ref">눅(Luke) 3:4~6</div>
+            </div>
+            <div class="sermon-word-content">
+                <div class="sermon-full-text">
+                    <p class="sermon-intro">예수님께서 이 땅에 오신 성탄절이 두 주 앞으로 다가왔습니다. 우리는 온 인류를 구원하시기 위해 오신 주님을 감사로 맞이해야 합니다. 굽어진 길을 곧게 하고 높아진 마음을 낮추며 빈 골짜기를 은혜로 채워 예수님의 성탄을 준비해야 합니다.</p>
+
+                    <div class="sermon-section">
+                        <h3 class="sermon-subtitle">1. 굽은 것이 곧아지고 (The Crooked Become Straight)</h3>
+                        <p class="sermon-paragraph">주님의 길을 준비하기 위해서는 먼저 우리 마음의 굽어진 부분이 곧아져야 합니다. 울퉁불퉁한 땅이 평탄해져야 길이 열리듯 우리 안의 거짓되고 교활한 마음, 위선과 뒤틀린 생각이 바로 펴져야 주님을 맞이할 수 있습니다. 마음이 비뚤어지면 모든 것을 부정적으로 바라보게 되고 비방과 거짓으로 사람들에게 상처를 주기 쉽습니다. 이런 모습을 경계하며 성경은 분함과 악의, 위선과 거짓을 버리라고 권면합니다(골 3:8~9, 벧전 2:1). 그러므로 우리는 우리 마음을 살펴 굽어진 부분을 주님 앞에 겸손히 회개해야 합니다. 정직과 진실로 마음을 곧게 세울 때 주님께서 우리 안에 찾아오십니다. 왜곡된 마음을 바로잡고 어려운 이웃을 사랑으로 돌보는 삶을 통해 주님의 길을 준비하는 성도가 되기를 소망합니다.</p>
+                    </div>
+
+                    <div class="sermon-section">
+                        <h3 class="sermon-subtitle">2. 험한 길이 평탄하여질 것이요 (The Rough Way Will Be Made Smooth)</h3>
+                        <p class="sermon-paragraph">성경이 말하는 험한 길은 사람들이 지나기 어려운 울퉁불퉁한 땅, 열매 맺기 힘든 황폐한 땅을 말합니다. 이는 우리의 거친 마음과 황량한 심령을 의미합니다. 이렇게 마음이 거칠어지면 고집스럽고 날카로운 태도로 사람들과 부딪히기 쉽습니다. 또한 우리 안에 자리한 죄의 습관은 우리 마음을 황폐하게 합니다. 그러나 예수님을 만나면 이러한 죄의 굴레가 끊어지고 심령이 온유하게 변화되어 이웃과 화평을 이루며 선한 열매를 맺는 삶으로 나아가게 됩니다. 주님의 은혜가 임하면 하나님께서 우리보다 앞서가시며 거친 길을 평탄하게 만들어 주십니다(사 45:2).</p>
+                    </div>
+
+                    <div class="sermon-section">
+                        <h3 class="sermon-subtitle">3. 모든 육체가 하나님의 구원을 보리라 (All Flesh Will See the Salvation of God)</h3>
+                        <p class="sermon-paragraph">무관심과 상처로 깊어진 골짜기는 십자가의 사랑으로 메우고 교만의 산은 겸손으로 낮추며 굽어진 마음은 정직과 진실로 곧게 펴야 합니다. 또한 죄의 습관과 거친 성격으로 인해 불화가 계속되던 험한 길을 화평의 길로 바꾸어야 합니다(눅 3:5). 이처럼 우리의 마음이 바로 세워지고 치유될 때 하나님의 구원이 우리 가운데 역사합니다. 구원의 역사가 우리 안에 나타날 때 예수님의 십자가 은혜가 주님을 사랑하는 모든 그리스도인의 삶 속에 임하게 됩니다. 그렇게 영혼이 잘 되고 범사가 잘 되고 강건케 되는 복을 누리며 깨어지고 낮아져 회개함으로 예수님으로 마음과 삶을 가득 채우는 복된 성탄절을 맞이하는 우리가 되기를 축원합니다.</p>
+                    </div>
+
+                    <div class="sermon-pastor">
+                        여의도순복음교회 이영훈 위임목사
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 연락처 -->
+        <section id="contact" class="section">
+            <div class="section-header">
+                <span class="section-icon">📞</span>
+                <h2 class="section-title">교회 안내</h2>
+            </div>
+            <div class="section-body">
+                <div class="contact-grid">
+                    
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div class="contact-info">
+                            <div class="contact-label">주소</div>
+                            <div class="contact-value">서울특별시 영등포구 국회대로76길 15</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <div class="contact-info">
+                            <div class="contact-label">대표전화</div>
+                            <div class="contact-value"><a href="tel:02-6181-9191">02-6181-9191</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌐</span>
+                        <div class="contact-info">
+                            <div class="contact-label">홈페이지</div>
+                            <div class="contact-value"><a href="https://www.fgtv.com" target="_blank">www.fgtv.com</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 목회자 안내 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🙏</span>
+                <h2 class="section-title">목회자 안내</h2>
+            </div>
+            <div class="section-body" style="font-size: 0.85em; line-height: 1.8;">
+                <div style="margin-bottom: 12px;">
+                    <strong style="color: var(--primary);">원로목사</strong> 조용기
+                     · 
+                    <strong style="color: var(--primary);">담임목사</strong> 이영훈
+                </div>
+                
+                
+            </div>
+        </section>
+        
+        <!-- SNS 링크 -->
+        <section id="sns" class="section">
+            <div class="section-header">
+                <span class="section-icon">📱</span>
+                <h2 class="section-title" data-i18n="section_sns">SNS 채널</h2>
+            </div>
+            <div class="section-body">
+                <div class="sns-grid">
+                    <a href="https://www.youtube.com/@fgtv" target="_blank" class="sns-item youtube">
+                        <span class="sns-icon">▶️</span>
+                        <span class="sns-name">YouTube</span>
+                    </a>
+                    <a href="https://www.instagram.com/yfgc_official" target="_blank" class="sns-item instagram">
+                        <span class="sns-icon">📷</span>
+                        <span class="sns-name">Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/fgtv" target="_blank" class="sns-item facebook">
+                        <span class="sns-icon">👍</span>
+                        <span class="sns-name">Facebook</span>
+                    </a>
+                    <a href="https://www.fgtv.com" target="_blank" class="sns-item website">
+                        <span class="sns-icon">🌐</span>
+                        <span class="sns-name">홈페이지</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 모바일 헌금 -->
+        <section id="offering" class="section">
+            <div class="section-header">
+                <span class="section-icon">💝</span>
+                <h2 class="section-title" data-i18n="section_offering">모바일 헌금</h2>
+            </div>
+            <div class="section-body">
+                <div class="offering-grid">
+                    <div class="offering-item" onclick="openOfferingModal('bank')">
+                        <span class="offering-icon">🏦</span>
+                        <div class="offering-info">
+                            <div class="offering-name">계좌이체 헌금</div>
+                            <div class="offering-desc">은행 계좌로 헌금하기</div>
+                        </div>
+                        <span class="offering-arrow">→</span>
+                    </div>
+                    <div class="offering-item" onclick="openOfferingModal('kakaopay')">
+                        <span class="offering-icon">💛</span>
+                        <div class="offering-info">
+                            <div class="offering-name">카카오페이 헌금</div>
+                            <div class="offering-desc">간편하게 헌금하기</div>
+                        </div>
+                        <span class="offering-arrow">→</span>
+                    </div>
+                    <div class="offering-item" onclick="openOfferingModal('app')">
+                        <span class="offering-icon">📲</span>
+                        <div class="offering-info">
+                            <div class="offering-name">교회 앱 헌금</div>
+                            <div class="offering-desc">여의도순복음교회 앱으로 헌금</div>
+                        </div>
+                        <span class="offering-arrow">→</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 공유 섹션 -->
+        <div class="share-section">
+            <div class="share-title">주보를 공유해 보세요</div>
+            <div class="share-buttons">
+                <button class="share-btn kakao" onclick="shareKakao()">카카오톡</button>
+                <button class="share-btn" onclick="shareLink()">링크 복사</button>
+            </div>
+        </div>
+    </main>
+
+    
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-logo">여의도순복음교회</div>
+        <div class="footer-address">
+            서울특별시 영등포구 국회대로76길 15<br>
+            1958년 5월 18일 창립 (설립자 조용기 목사)
+        </div>
+        <div class="footer-copyright">
+            © 2025 여의도순복음교회. All rights reserved.
+        </div>
+    </footer>
+    
+    <!-- 성경/찬송가 모달 -->
+    <div class="modal-overlay" id="bibleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="bibleModalTitle">📖 성경 말씀</span>
+                <button class="modal-close" onclick="closeModal('bibleModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="bible-verse-content" id="bibleModalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="hymnModal">
+        <div class="modal-content">
+            <div class="modal-header hymn">
+                <span class="modal-title" id="hymnModalTitle">🎵 찬송가</span>
+                <button class="modal-close" onclick="closeModal('hymnModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="hymn-content" id="hymnModalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 지난주 말씀 전체 보기 모달 -->
+    <div class="modal-overlay" id="lastWeekModal">
+        <div class="modal-content" style="max-height: 85vh;">
+            <div class="modal-header">
+                <span class="modal-title" id="lastWeekModalTitle">📖 지난주 말씀</span>
+                <button class="modal-close" onclick="closeModal('lastWeekModal')">✕</button>
+            </div>
+            <div class="modal-body" style="max-height: calc(85vh - 60px); overflow-y: auto;">
+                <div class="last-week-modal-content" id="lastWeekModalContent">
+                    <div class="sermon-title" style="font-family: 'Noto Serif KR', serif; font-size: 1.3em; font-weight: 700; color: var(--primary); margin-bottom: 8px;"></div>
+                    <div class="sermon-ref" style="font-size: 0.9em; color: var(--accent); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);"></div>
+                    <div class="sermon-text" style="font-size: 1em; color: var(--text-dark); line-height: 2; text-align: justify; white-space: pre-line;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 교독문 모달 -->
+    <div class="modal-overlay" id="responsiveReadingModal">
+        <div class="modal-content" style="max-height: 80vh;">
+            <div class="modal-header">
+                <span class="modal-title" id="responsiveReadingTitle">📜 교독문</span>
+                <button class="modal-close" onclick="closeModal('responsiveReadingModal')">✕</button>
+            </div>
+            <div class="modal-body" style="max-height: calc(80vh - 60px); overflow-y: auto;">
+                <div id="responsiveReadingContent" style="line-height: 2;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사도신경 모달 -->
+    <div class="modal-overlay" id="creedModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">✝️ 사도신경</span>
+                <button class="modal-close" onclick="closeModal('creedModal')">✕</button>
+            </div>
+            <div class="modal-body" style="max-height: calc(80vh - 60px); overflow-y: auto;">
+                <div style="font-size: 1.05em; line-height: 2.2; text-align: justify;">
+                    <p style="margin-bottom: 16px;">전능하사 천지를 만드신 하나님 아버지를 내가 믿사오며,</p>
+                    <p style="margin-bottom: 16px;">그 외아들 우리 주 예수 그리스도를 믿사오니, 이는 성령으로 잉태하사 동정녀 마리아에게 나시고,</p>
+                    <p style="margin-bottom: 16px;">본디오 빌라도에게 고난을 받으사 십자가에 못 박혀 죽으시고, 장사한 지 사흘 만에 죽은 자 가운데서 다시 살아나시며,</p>
+                    <p style="margin-bottom: 16px;">하늘에 오르사 전능하신 하나님 우편에 앉아 계시다가, 저리로서 산 자와 죽은 자를 심판하러 오시리라.</p>
+                    <p style="margin-bottom: 16px;">성령을 믿사오며, 거룩한 공회와 성도가 서로 교통하는 것과,</p>
+                    <p style="margin-bottom: 16px;">죄를 사하여 주시는 것과, 몸이 다시 사는 것과, 영원히 사는 것을 믿사옵나이다.</p>
+                    <p style="font-weight: 700; color: var(--primary); text-align: center; margin-top: 20px;">아멘.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 주기도문 모달 -->
+    <div class="modal-overlay" id="lordsPrayerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">🙏 주기도문</span>
+                <button class="modal-close" onclick="closeModal('lordsPrayerModal')">✕</button>
+            </div>
+            <div class="modal-body" style="max-height: calc(80vh - 60px); overflow-y: auto;">
+                <div style="font-size: 1.05em; line-height: 2.2; text-align: justify;">
+                    <p style="margin-bottom: 16px;">하늘에 계신 우리 아버지여,</p>
+                    <p style="margin-bottom: 16px;">이름이 거룩히 여김을 받으시오며, 나라이 임하옵시며, 뜻이 하늘에서 이룬 것같이 땅에서도 이루어지이다.</p>
+                    <p style="margin-bottom: 16px;">오늘날 우리에게 일용할 양식을 주옵시고, 우리가 우리에게 죄 지은 자를 사하여 준 것같이 우리 죄를 사하여 주옵시고,</p>
+                    <p style="margin-bottom: 16px;">우리를 시험에 들게 하지 마옵시고, 다만 악에서 구하옵소서.</p>
+                    <p style="margin-bottom: 16px;">대개 나라와 권세와 영광이 아버지께 영원히 있사옵나이다.</p>
+                    <p style="font-weight: 700; color: var(--primary); text-align: center; margin-top: 20px;">아멘.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 헌금 모달 (전문가 수준) -->
+    <div class="modal-overlay" id="offeringModal">
+        <div class="modal-content">
+            <div class="modal-header offering">
+                <span class="modal-title" id="offeringModalTitle">💝 헌금 안내</span>
+                <button class="modal-close" onclick="closeOfferingModal(event)">✕</button>
+            </div>
+            <div class="modal-body" id="offeringModalBody">
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ========== 다국어 번역 시스템 ==========
+        const translations = {
+            ko: {
+                nav_sermon: "말씀",
+                nav_worship: "예배",
+                nav_news: "소식",
+                nav_members: "교우",
+                nav_dawn: "새벽",
+                nav_last_sermon: "지난주 말씀",
+                nav_contact: "안내",
+                section_verse: "오늘의 말씀",
+                section_worship: "예배 안내",
+                section_news: "교회 소식",
+                section_members: "교우 소식",
+                section_dawn: "새벽기도",
+                section_contact: "교회 안내",
+                btn_share: "공유하기",
+                btn_copy: "복사",
+                btn_offering: "헌금",
+                verse_text: ``
+            },
+            en: {
+                nav_sermon: "Sermon",
+                nav_worship: "Worship",
+                nav_news: "News",
+                nav_members: "Members",
+                nav_dawn: "Dawn",
+                nav_last_sermon: "Last Week",
+                nav_contact: "Contact",
+                section_verse: "Today's Word",
+                section_worship: "Worship Service",
+                section_news: "Church News",
+                section_members: "Member News",
+                section_dawn: "Dawn Prayer",
+                section_contact: "Church Info",
+                btn_share: "Share",
+                btn_copy: "Copy",
+                btn_offering: "Offering"
+            },
+            zh: {
+                nav_sermon: "讲道",
+                nav_worship: "礼拜",
+                nav_news: "消息",
+                nav_members: "教友",
+                nav_dawn: "晨祷",
+                nav_last_sermon: "上周讲道",
+                nav_contact: "联系",
+                section_verse: "今日经文",
+                section_worship: "礼拜指南",
+                section_news: "教会新闻",
+                section_members: "教友消息",
+                section_dawn: "晨祷会",
+                section_contact: "教会信息",
+                btn_share: "分享",
+                btn_copy: "复制",
+                btn_offering: "奉献"
+            },
+            ja: {
+                nav_sermon: "説教",
+                nav_worship: "礼拝",
+                nav_news: "お知らせ",
+                nav_members: "教友",
+                nav_dawn: "早朝",
+                nav_last_sermon: "先週の説教",
+                nav_contact: "案内",
+                section_verse: "今日のみことば",
+                section_worship: "礼拝案内",
+                section_news: "教会ニュース",
+                section_members: "教友便り",
+                section_dawn: "早朝祈祷",
+                section_contact: "教会案内",
+                btn_share: "共有",
+                btn_copy: "コピー",
+                btn_offering: "献金"
+            },
+            id: {
+                nav_sermon: "Khotbah",
+                nav_worship: "Ibadah",
+                nav_news: "Berita",
+                nav_members: "Jemaat",
+                nav_dawn: "Fajar",
+                nav_last_sermon: "Minggu Lalu",
+                nav_contact: "Kontak",
+                section_verse: "Firman Hari Ini",
+                section_worship: "Jadwal Ibadah",
+                section_news: "Berita Gereja",
+                section_members: "Berita Jemaat",
+                section_dawn: "Doa Fajar",
+                section_contact: "Info Gereja",
+                btn_share: "Bagikan",
+                btn_copy: "Salin",
+                btn_offering: "Persembahan"
+            },
+            es: {
+                nav_sermon: "Sermón",
+                nav_worship: "Culto",
+                nav_news: "Noticias",
+                nav_members: "Miembros",
+                nav_dawn: "Amanecer",
+                nav_last_sermon: "Semana Pasada",
+                nav_contact: "Contacto",
+                section_verse: "Palabra de Hoy",
+                section_worship: "Horario de Culto",
+                section_news: "Noticias de la Iglesia",
+                section_members: "Noticias de Miembros",
+                section_dawn: "Oración Matutina",
+                section_contact: "Info de la Iglesia",
+                btn_share: "Compartir",
+                btn_copy: "Copiar",
+                btn_offering: "Ofrenda"
+            },
+            ru: {
+                nav_sermon: "Проповедь",
+                nav_worship: "Богослужение",
+                nav_news: "Новости",
+                nav_members: "Члены",
+                nav_dawn: "Утро",
+                nav_last_sermon: "Прошлая неделя",
+                nav_contact: "Контакты",
+                section_verse: "Слово на сегодня",
+                section_worship: "Расписание служений",
+                section_news: "Новости церкви",
+                section_members: "Новости членов",
+                section_dawn: "Утренняя молитва",
+                section_contact: "Информация о церкви",
+                btn_share: "Поделиться",
+                btn_copy: "Копировать",
+                btn_offering: "Пожертвование"
+            },
+            fr: {
+                nav_sermon: "Sermon",
+                nav_worship: "Culte",
+                nav_news: "Actualités",
+                nav_members: "Membres",
+                nav_dawn: "Aube",
+                nav_last_sermon: "Semaine Dernière",
+                nav_contact: "Contact",
+                section_verse: "Parole du Jour",
+                section_worship: "Horaires des Cultes",
+                section_news: "Nouvelles de l'Église",
+                section_members: "Nouvelles des Membres",
+                section_dawn: "Prière Matinale",
+                section_contact: "Infos de l'Église",
+                btn_share: "Partager",
+                btn_copy: "Copier",
+                btn_offering: "Offrande"
+            }
+        };
+
+        let currentLanguage = 'ko';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                // 선택한 언어 -> 영어 -> 한국어 순으로 폴백
+                const text = (translations[lang] && translations[lang][key])
+                    || (translations['en'] && translations['en'][key])
+                    || (translations['ko'] && translations['ko'][key])
+                    || el.textContent;
+                el.textContent = text;
+            });
+            localStorage.setItem('church_bulletin_lang', lang);
+        }
+
+        // 페이지 로드 시 저장된 언어 복원
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('church_bulletin_lang');
+            if (savedLang && translations[savedLang]) {
+                document.querySelector('.language-selector').value = savedLang;
+                changeLanguage(savedLang);
+            }
+        });
+
+        // ========== 성경 구절 데이터 (다국어 - 전문가 수준) ==========
+        const bibleVerses = {
+            'main-verse': {
+                ko: { title: '', content: `` },
+                en: { title: '', content: `` },
+                zh: { title: '', content: '' },
+                ja: { title: '', content: '' },
+                id: { title: '', content: '' },
+                es: { title: '', content: '' },
+                ru: { title: '', content: '' },
+                fr: { title: '', content: '' }
+            },
+            // 누가복음 3:4-6 (대림절/강림절 핵심 말씀)
+            'luke-3-4': {
+                ko: { title: '누가복음 3:4~6', content: '선지자 이사야의 책에 쓴 바 광야에서 외치는 자의 소리가 있어 이르되 너희는 주의 길을 준비하라 그의 오실 길을 곧게 하라 모든 골짜기가 메워지고 모든 산과 작은 산이 낮아지고 굽은 것이 곧아지고 험한 길이 평탄하여질 것이요 모든 육체가 하나님의 구원하심을 보리라 하였느니라' },
+                en: { title: 'Luke 3:4-6', content: 'As it is written in the book of the words of Isaiah the prophet: "A voice of one calling in the wilderness, Prepare the way for the Lord, make straight paths for him. Every valley shall be filled in, every mountain and hill made low. The crooked roads shall become straight, the rough ways smooth. And all people will see God\'s salvation."' },
+                zh: { title: '路加福音 3:4-6', content: '正如先知以赛亚书上所记的话，说：在旷野有人声喊着说：预备主的道，修直他的路！一切山洼都要填满；大小山冈都要削平！弯弯曲曲的地方要改为正直；高高低低的道路要改为平坦！凡有血气的，都要见神的救恩！' },
+                ja: { title: 'ルカ 3:4-6', content: '預言者イザヤの書に書いてあるとおりである。「荒野で叫ぶ者の声がする。『主の道を用意し、その道筋をまっすぐにせよ。すべての谷は埋められ、すべての山と丘は低くされる。曲がった道はまっすぐになり、でこぼこ道は平らになる。こうして、すべての肉なる者が神の救いを見る。』」' },
+                id: { title: 'Lukas 3:4-6', content: 'seperti ada tertulis dalam kitab nubuat-nubuat Yesaya: Ada suara yang berseru-seru di padang gurun: Persiapkanlah jalan untuk Tuhan, luruskanlah jalan bagi-Nya. Setiap lembah akan ditimbun dan setiap gunung dan bukit akan menjadi rata, yang berliku-liku akan diluruskan, yang berlekak-lekuk akan diratakan, dan semua orang akan melihat keselamatan yang dari Allah.' },
+                es: { title: 'Lucas 3:4-6', content: 'como está escrito en el libro de las palabras del profeta Isaías: Voz del que clama en el desierto: Preparad el camino del Señor, enderezad sus sendas. Todo valle será rellenado, y todo monte y collado será bajado; los caminos torcidos serán enderezados, y los caminos ásperos allanados; y verá toda carne la salvación de Dios.' },
+                ru: { title: 'Луки 3:4-6', content: 'как написано в книге слов пророка Исаии: глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему; всякий дол да наполнится, и всякая гора и холм да понизятся, кривизны выпрямятся и неровные пути сделаются гладкими; и узрит всякая плоть спасение Божие.' },
+                fr: { title: 'Luc 3:4-6', content: 'selon ce qui est écrit dans le livre des paroles du prophète Ésaïe: C\'est la voix de celui qui crie dans le désert: Préparez le chemin du Seigneur, Aplanissez ses sentiers. Toute vallée sera comblée, Toute montagne et toute colline seront abaissées; Ce qui est tortueux sera redressé, Et les chemins raboteux seront aplanis. Et toute chair verra le salut de Dieu.' }
+            },
+            // 빌립보서 1:3-8 (감사)
+            'phil-1-3': {
+                ko: { title: '빌립보서 1:3~8', content: '내가 너희를 생각할 때마다 나의 하나님께 감사하며 간구할 때마다 너희 모든 사람을 위하여 기쁨으로 항상 간구함은 첫날부터 이제까지 복음을 위한 너희의 교제로 말미암음이라 너희 안에서 착한 일을 시작하신 이가 그리스도 예수의 날까지 이루실 줄을 우리는 확신하노라' },
+                en: { title: 'Philippians 1:3-8', content: 'I thank my God every time I remember you. In all my prayers for all of you, I always pray with joy because of your partnership in the gospel from the first day until now, being confident of this, that he who began a good work in you will carry it on to completion until the day of Christ Jesus.' },
+                zh: { title: '腓立比书 1:3-8', content: '我每逢想念你们，就感谢我的神；每逢为你们众人祈求的时候，常是欢欢喜喜地祈求。因为从头一天直到如今，你们是同心合意地兴旺福音。我深信那在你们心里动了善工的，必成全这工，直到耶稣基督的日子。' },
+                ja: { title: 'ピリピ 1:3-8', content: '私は、あなたがたのことを思うごとに私の神に感謝しています。あなたがたすべてのために祈るごとに、いつも喜びをもって祈り、最初の日から今日まで、福音を広めることにあなたがたが参加してきたことを感謝しています。' },
+                id: { title: 'Filipi 1:3-8', content: 'Aku mengucap syukur kepada Allahku setiap kali aku mengingat kamu. Dan setiap kali aku berdoa untuk kamu semua, aku selalu berdoa dengan sukacita.' },
+                es: { title: 'Filipenses 1:3-8', content: 'Doy gracias a mi Dios siempre que me acuerdo de vosotros, siempre en todas mis oraciones rogando con gozo por todos vosotros.' },
+                ru: { title: 'Филиппийцам 1:3-8', content: 'Благодарю Бога моего при всяком воспоминании о вас, всегда во всякой молитве моей за всех вас принося с радостью молитву мою.' },
+                fr: { title: 'Philippiens 1:3-8', content: 'Je rends grâces à mon Dieu de tout le souvenir que je garde de vous.' }
+            },
+            // 요한복음 1:14 (성탄절/말씀이 육신이 되어)
+            'john-1-14': {
+                ko: { title: '요한복음 1:14', content: '말씀이 육신이 되어 우리 가운데 거하시매 우리가 그의 영광을 보니 아버지의 독생자의 영광이요 은혜와 진리가 충만하더라' },
+                en: { title: 'John 1:14', content: 'The Word became flesh and made his dwelling among us. We have seen his glory, the glory of the one and only Son, who came from the Father, full of grace and truth.' },
+                zh: { title: '约翰福音 1:14', content: '道成了肉身，住在我们中间，充充满满地有恩典有真理。我们也见过他的荣光，正是父独生子的荣光。' },
+                ja: { title: 'ヨハネ 1:14', content: 'ことばは人となって、私たちの間に住まわれた。私たちはこの方の栄光を見た。父のひとり子としての栄光である。この方は恵みとまことに満ちておられた。' },
+                id: { title: 'Yohanes 1:14', content: 'Firman itu telah menjadi manusia, dan diam di antara kita, dan kita telah melihat kemuliaan-Nya.' },
+                es: { title: 'Juan 1:14', content: 'Y aquel Verbo fue hecho carne, y habitó entre nosotros, y vimos su gloria, gloria como del unigénito del Padre.' },
+                ru: { title: 'Иоанна 1:14', content: 'И Слово стало плотию, и обитало с нами, полное благодати и истины.' },
+                fr: { title: 'Jean 1:14', content: 'Et la parole a été faite chair, et elle a habité parmi nous, pleine de grâce et de vérité.' }
+            },
+            // 에베소서 2:4-8 (은혜)
+            'eph-2-4': {
+                ko: { title: '에베소서 2:4~8', content: '긍휼이 풍성하신 하나님이 우리를 사랑하신 그 큰 사랑을 인하여 허물로 죽은 우리를 그리스도와 함께 살리셨고 너희는 은혜로 구원을 받은 것이라' },
+                en: { title: 'Ephesians 2:4-8', content: 'But because of his great love for us, God, who is rich in mercy, made us alive with Christ even when we were dead in transgressions—it is by grace you have been saved.' },
+                zh: { title: '以弗所书 2:4-8', content: '然而，神既有丰富的怜悯，因他爱我们的大爱，当我们死在过犯中的时候，便叫我们与基督一同活过来。你们得救是本乎恩。' },
+                ja: { title: 'エペソ 2:4-8', content: 'しかし、あわれみ豊かな神は、私たちを愛してくださったその大きな愛のゆえに、背きの中に死んでいた私たちを、キリストとともに生かしてくださいました。' },
+                id: { title: 'Efesus 2:4-8', content: 'Tetapi Allah yang kaya dengan rahmat, oleh karena kasih-Nya yang besar, telah menghidupkan kita bersama-sama dengan Kristus.' },
+                es: { title: 'Efesios 2:4-8', content: 'Pero Dios, que es rico en misericordia, por su gran amor con que nos amó, nos dio vida juntamente con Cristo.' },
+                ru: { title: 'Ефесянам 2:4-8', content: 'Бог, богатый милостью, по Своей великой любви, которою возлюбил нас, оживотворил со Христом.' },
+                fr: { title: 'Éphésiens 2:4-8', content: 'Mais Dieu, qui est riche en miséricorde, nous a rendus à la vie avec Christ.' }
+            },
+            // 로마서 15:13 (소망)
+            'rom-15-13': {
+                ko: { title: '로마서 15:13', content: '소망의 하나님이 모든 기쁨과 평강을 믿음 안에서 너희에게 충만하게 하사 성령의 능력으로 소망이 넘치게 하시기를 원하노라' },
+                en: { title: 'Romans 15:13', content: 'May the God of hope fill you with all joy and peace as you trust in him, so that you may overflow with hope by the power of the Holy Spirit.' },
+                zh: { title: '罗马书 15:13', content: '但愿使人有盼望的神，因信将诸般的喜乐、平安充满你们的心，使你们借着圣灵的能力大有盼望。' },
+                ja: { title: 'ローマ 15:13', content: '希望の神が、信仰によるすべての喜びと平安であなたがたを満たし、聖霊の力によって希望にあふれさせてくださいますように。' },
+                id: { title: 'Roma 15:13', content: 'Semoga Allah, sumber pengharapan, memenuhi kamu dengan segala sukacita dan damai sejahtera.' },
+                es: { title: 'Romanos 15:13', content: 'Y el Dios de esperanza os llene de todo gozo y paz en el creer.' },
+                ru: { title: 'Римлянам 15:13', content: 'Бог же надежды да исполнит вас всякой радости и мира в вере.' },
+                fr: { title: 'Romains 15:13', content: 'Que le Dieu de l\'espérance vous remplisse de toute joie et de toute paix dans la foi.' }
+            }
+        };
+
+        // ========== 찬송가 데이터 (다국어 - 전문가 수준) ==========
+        const hymnData = {
+            '8': {
+                ko: { title: '기뻐하며 경배하세', subtitle: 'Joyful, Joyful, We Adore Thee', composer: '베토벤 작곡', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '기뻐하며 경배하세 영광의 주 하나님\n주의 얼굴 빛 같으니 모든 근심 물러가네\n죄와 슬픔 다 사라지고 의심 구름 걷히나니\n영원하신 기쁨 되어 주의 빛 안에 살리라'}, {verse: 2, text: '주는 만물 다스리며 만유의 주 되시니\n들의 꽃과 산과 강도 다 주를 찬양하도다\n주의 손이 펼쳐 있어 온 세상에 복 주시고\n사랑으로 덮으셨네 우리 찬양 받으소서'}] },
+                en: { title: 'Joyful, Joyful, We Adore Thee', subtitle: 'Hymn to Joy', composer: 'Beethoven', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'Joyful, joyful, we adore Thee\nGod of glory, Lord of love\nHearts unfold like flowers before Thee\nOpening to the sun above'}, {verse: 2, text: 'All Thy works with joy surround Thee\nEarth and heaven reflect Thy rays\nStars and angels sing around Thee\nCenter of unbroken praise'}] },
+                zh: { title: '欢乐颂', subtitle: '欢欣崇拜', composer: '贝多芬 作曲', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '欢欣敬拜荣耀主\n天父上帝慈爱深\n心如花朵向主开放\n迎向阳光灿烂新'}] },
+                ja: { title: '喜びの歌', subtitle: '喜び喜び主を崇めん', composer: 'ベートーヴェン作曲', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '喜び喜び主を崇めん\n栄光の神 愛の主\n心は花のように開く\n太陽に向かって'}] },
+                id: { title: 'Sukacita, Sukacita', subtitle: 'Bersuka Menyembah', composer: 'Beethoven', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Sukacita sukacita\nKita sembah Tuhan mulia'}] },
+                es: { title: 'Jubilosos, Te Adoramos', subtitle: 'Himno a la Alegría', composer: 'Beethoven', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'Jubilosos te adoramos\nDios de gloria, Dios de amor'}] },
+                ru: { title: 'Радостно, Радостно', subtitle: 'Ода к Радости', composer: 'Бетховен', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Радостно, радостно поклоняемся\nБогу славы, Богу любви'}] },
+                fr: { title: 'Joyeux, Joyeux, Nous T\'adorons', subtitle: 'Hymne à la Joie', composer: 'Beethoven', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'Joyeux, joyeux, nous t\'adorons\nDieu de gloire, Seigneur d\'amour'}] },
+                musical: { key: 'G', tempo: 'Allegro maestoso', timeSignature: '4/4' }
+            },
+            '94': {
+                ko: { title: '저 높고 푸른 하늘과', subtitle: 'This Is My Father\'s World', composer: 'Franklin L. Sheppard', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '저 높고 푸른 하늘과 그 아래 푸른 들\n산과 나무와 꽃과 새 모두가 주 지으신 것\n주님의 솜씨 온 세상에 깃들어 있나니\n바람 소리 들리는 곳 주 음성이 들리네'}] },
+                en: { title: 'This Is My Father\'s World', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'This is my Father\'s world\nAnd to my listening ears\nAll nature sings and round me rings\nThe music of the spheres'}] },
+                zh: { title: '这是天父世界', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '这是天父世界\n我要侧耳细听'}] },
+                ja: { title: 'この世は父の世界', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: 'この世は父の世界\n耳を澄ませば'}] },
+                id: { title: 'Dunia Milik Bapa', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Dunia ini milik Bapa'}] },
+                es: { title: 'El Mundo Es De Mi Padre', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'El mundo es de mi Padre'}] },
+                ru: { title: 'Это Мир Моего Отца', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Это мир моего Отца'}] },
+                fr: { title: 'C\'est Le Monde De Mon Père', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'C\'est le monde de mon Père'}] },
+                musical: { key: 'D', tempo: 'Andante', timeSignature: '6/8' }
+            },
+            '105': {
+                ko: { title: '온 천하 만물 우러러', subtitle: 'All Creatures of Our God and King', composer: 'Geistliche Kirchengesäng', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '온 천하 만물 우러러 다 주를 찬양하여라\n할렐루야 할렐루야\n해와 달 아름답게 비치고 밝은 별들도 찬양해\n찬양해 찬양해 할렐루야 할렐루야 할렐루야'}] },
+                en: { title: 'All Creatures of Our God and King', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'All creatures of our God and King\nLift up your voice and with us sing\nAlleluia Alleluia'}] },
+                zh: { title: '万物称颂主', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '万物同颂赞主\n高举声音齐唱'}] },
+                ja: { title: '神の造りしすべてのもの', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '神の造りしすべてのものよ'}] },
+                id: { title: 'Segala Makhluk Tuhan', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Segala makhluk Allah'}] },
+                es: { title: 'Criaturas Del Señor', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'Criaturas del Señor'}] },
+                ru: { title: 'Все Создания Бога', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Все создания Бога нашего'}] },
+                fr: { title: 'Créatures Du Seigneur', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'Créatures de notre Dieu'}] },
+                musical: { key: 'F', tempo: 'Maestoso', timeSignature: '3/4' }
+            },
+            '301': {
+                ko: { title: '지금까지 지내온 것', subtitle: 'Wonderful Grace of Jesus', composer: 'Haldor Lillenas', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '지금까지 지내온 것 주의 크신 은혜라\n한이 없는 주의 사랑 어찌 다 측량하랴\n주님 크신 은혜가 나를 구원하셨네\n나 같은 죄인도 구원하신 주 은혜 놀라와'}] },
+                en: { title: 'Wonderful Grace of Jesus', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'Wonderful grace of Jesus\nGreater than all my sin'}] },
+                zh: { title: '主恩典何等奇妙', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '主恩典何等奇妙'}] },
+                ja: { title: '主の恵み素晴らしき', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '主の恵み素晴らしき'}] },
+                id: { title: 'Anugerah Yesus Ajaib', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Anugerah Yesus ajaib'}] },
+                es: { title: 'Maravillosa Gracia', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'Maravillosa gracia de Jesús'}] },
+                ru: { title: 'Чудесная Благодать', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Чудесная благодать Иисуса'}] },
+                fr: { title: 'Merveilleuse Grâce', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'Merveilleuse grâce de Jésus'}] },
+                musical: { key: 'Ab', tempo: 'Moderato', timeSignature: '4/4' }
+            },
+            '187': {
+                ko: { title: '주 예수 이름 높이어', subtitle: 'All Hail the Power of Jesus\' Name', composer: 'Oliver Holden', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '주 예수 이름 높이어 다 찬양하여라\n천사들아 엎드려서 면류관 드리어라'}] },
+                en: { title: 'All Hail the Power of Jesus\' Name', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'All hail the power of Jesus\' name\nLet angels prostrate fall'}] },
+                zh: { title: '万口欢唱', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '万口欢唱救主耶稣'}] },
+                ja: { title: '主イエスの御名をたたえよ', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '主イエスの御名をたたえよ'}] },
+                musical: { key: 'G', tempo: 'Maestoso', timeSignature: '4/4' }
+            },
+            '435': {
+                ko: { title: '나의 갈 길 다 가도록', subtitle: 'All the Way My Savior Leads Me', composer: 'Robert Lowry', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '나의 갈 길 다 가도록 예수 인도하시니\n내가 어찌 주를 앙모하지 않을 수 있으랴'}] },
+                en: { title: 'All the Way My Savior Leads Me', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'All the way my Savior leads me\nWhat have I to ask beside'}] },
+                zh: { title: '一路引导', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '一路有救主同行'}] },
+                ja: { title: '主イエスがすべての道を', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '主イエスがすべての道を'}] },
+                musical: { key: 'G', tempo: 'Andante', timeSignature: '4/4' }
+            }
+        };
+        const hymns = hymnData; // 하위 호환성
+
+        // 성경 API 설정 (선택적 외부 API 연동)
+        const BIBLE_API_ENABLED = false;  // 외부 API 사용 시 true로 변경
+        const BIBLE_API_URL = '/api/bible/';  // 백엔드 API 엔드포인트
+
+        // 성경 구절 파싱 (예: "요한복음 3:16", "창세기 1:1-3")
+        function parseBibleReference(ref) {
+            if (!ref) return null;
+            const match = ref.match(/([가-힣]+)\s*(\d+)[장]?\s*[:절]\s*(\d+)(?:\s*[-~]\s*(\d+))?/);
+            if (match) {
+                return {
+                    book: match[1],
+                    chapter: parseInt(match[2]),
+                    verseStart: parseInt(match[3]),
+                    verseEnd: match[4] ? parseInt(match[4]) : parseInt(match[3])
+                };
+            }
+            return null;
+        }
+
+        // 성경 모달 열기 (다국어 지원)
+        function openBibleModal(verseKey) {
+            const verseData = bibleVerses[verseKey];
+            const modal = document.getElementById('bibleModal');
+            const titleEl = document.getElementById('bibleModalTitle');
+            const contentEl = document.getElementById('bibleModalContent');
+
+            if (verseData) {
+                // 현재 언어 -> 영어 -> 한국어 폴백
+                const verse = verseData[currentLanguage] || verseData['en'] || verseData['ko'];
+                titleEl.textContent = '📖 ' + verse.title;
+
+                if (BIBLE_API_ENABLED && verse.title) {
+                    // API에서 성경 구절 불러오기
+                    contentEl.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">📖 성경 구절을 불러오는 중...</p>';
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+
+                    fetchBibleVerse(verse.title).then(text => {
+                        contentEl.innerHTML = `<div class="bible-verse-text" style="line-height: 2;">${text}</div>`;
+                    }).catch(err => {
+                        contentEl.innerHTML = verse.content || '<p>성경 구절을 불러올 수 없습니다.</p>';
+                    });
+                } else {
+                    // 로컬 데이터 사용
+                    contentEl.innerHTML = '<div class="bible-verse-text" style="line-height: 2;">' + verse.content + '</div>';
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        }
+
+        // 성경 구절 API 호출
+        async function fetchBibleVerse(reference) {
+            try {
+                const parsed = parseBibleReference(reference);
+                if (!parsed) {
+                    throw new Error('Invalid reference');
+                }
+                const response = await fetch(`${BIBLE_API_URL}${encodeURIComponent(reference)}`);
+                if (!response.ok) throw new Error('API error');
+                const data = await response.json();
+                return data.text || data.content || reference;
+            } catch (error) {
+                console.log('Bible API not available, using local data');
+                return '성경 본문이 표시됩니다.<br><small style="color: var(--text-secondary);">(외부 API 연동 시 실제 구절이 표시됩니다)</small>';
+            }
+        }
+
+        // 성경 구절 직접 열기 (참조 문자열로)
+        function openBibleVerseByRef(reference) {
+            const modal = document.getElementById('bibleModal');
+            const titleEl = document.getElementById('bibleModalTitle');
+            const contentEl = document.getElementById('bibleModalContent');
+
+            titleEl.textContent = '📖 ' + reference;
+            contentEl.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">📖 성경 구절을 불러오는 중...</p>';
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            if (BIBLE_API_ENABLED) {
+                fetchBibleVerse(reference).then(text => {
+                    contentEl.innerHTML = `<div class="bible-verse-text" style="line-height: 2;">${text}</div>`;
+                });
+            } else {
+                contentEl.innerHTML = '<div class="bible-verse-text" style="line-height: 2;">성경 본문이 표시됩니다.<br><small style="color: var(--text-secondary);">(외부 API 연동 시 실제 구절이 표시됩니다)</small></div>';
+            }
+        }
+
+        function openHymnModal(hymnNum) {
+            const hymnDataItem = hymnData[hymnNum];
+            const modal = document.getElementById('hymnModal');
+            const titleEl = document.getElementById('hymnModalTitle');
+            const contentEl = document.getElementById('hymnModalContent');
+
+            if (hymnDataItem) {
+                // 현재 언어 -> 영어 -> 한국어 폴백
+                const hymn = hymnDataItem[currentLanguage] || hymnDataItem['en'] || hymnDataItem['ko'];
+                const musical = hymnDataItem.musical || {};
+                const hymnLabel = hymn.hymnLabel || '찬송가';
+                const verseLabel = hymn.verseLabel || '';
+
+                titleEl.textContent = '🎵 ' + hymnLabel + ' ' + hymnNum + verseLabel;
+                let lyricsHtml = hymn.lyrics ? hymn.lyrics.map(v =>
+                    '<div class="hymn-verse"><span class="verse-number">' + v.verse + '</span>' + v.text.replace(/\n/g, '<br>') + '</div>'
+                ).join('') : '<p style="text-align: center; color: var(--text-gray);">가사가 준비 중입니다.</p>';
+
+                contentEl.innerHTML = `
+                    <div class="hymn-sheet">
+                        <div class="hymn-info">
+                            <div class="hymn-number">${hymnNum}${verseLabel}</div>
+                            <div class="hymn-title">${hymn.title}</div>
+                            <div style="font-size: 0.85em; color: var(--text-gray); margin-top: 8px;">${musical.key || ''} | ${musical.tempo || ''}</div>
+                        </div>
+                        <div class="hymn-lyrics">${lyricsHtml}</div>
+                    </div>
+                `;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                // 찬송가 데이터가 없는 경우
+                const hymnLabels = { ko: '찬송가', en: 'Hymn', zh: '赞美诗', ja: '讃美歌', id: 'Kidung', es: 'Himno', ru: 'Гимн', fr: 'Cantique' };
+                const notReadyMsg = {
+                    ko: '이 찬송가의 가사는 준비 중입니다.',
+                    en: 'Lyrics for this hymn are being prepared.',
+                    zh: '此赞美诗的歌词正在准备中。',
+                    ja: 'この讃美歌の歌詞は準備中です。',
+                    id: 'Lirik untuk kidung ini sedang dipersiapkan.',
+                    es: 'La letra de este himno está en preparación.',
+                    ru: 'Текст этого гимна готовится.',
+                    fr: 'Les paroles de ce cantique sont en préparation.'
+                };
+                const label = hymnLabels[currentLanguage] || hymnLabels['ko'];
+                const msg = notReadyMsg[currentLanguage] || notReadyMsg['ko'];
+
+                titleEl.textContent = '🎵 ' + label + ' ' + hymnNum;
+                contentEl.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);"><p>' + msg + '</p></div>';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // ============================================
+        // 아코디언 토글 함수 (명성교회 고도화)
+        // ============================================
+        function toggleAccordion(accordionId) {
+            const accordion = document.getElementById(accordionId);
+            if (accordion) {
+                accordion.classList.toggle('open');
+                const arrow = accordion.querySelector('.accordion-arrow');
+                if (arrow) {
+                    arrow.textContent = accordion.classList.contains('open') ? '▲' : '▼';
+                }
+            }
+        }
+
+        // 생명의 말씀 아코디언 토글
+        function toggleSermonWord(element) {
+            element.classList.toggle('expanded');
+        }
+
+        // 지난주 말씀 모달 열기
+        let lastWeekSermonData = null;
+        function setLastWeekSermonData(title, scripture, preacher, content) {
+            lastWeekSermonData = { title, scripture, preacher, content };
+        }
+
+        function openLastWeekModal() {
+            if (lastWeekSermonData) {
+                const modal = document.getElementById('lastWeekModal');
+                const content = document.getElementById('lastWeekModalContent');
+                content.querySelector('.sermon-title').textContent = lastWeekSermonData.title || '지난주 말씀';
+                content.querySelector('.sermon-ref').textContent =
+                    (lastWeekSermonData.scripture || '') +
+                    (lastWeekSermonData.preacher ? ' | ' + lastWeekSermonData.preacher : '');
+                content.querySelector('.sermon-text').textContent = lastWeekSermonData.content || '';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // 교독문 모달 열기
+        function openResponsiveReading(readingNum) {
+            const title = document.getElementById('responsiveReadingTitle');
+            const content = document.getElementById('responsiveReadingContent');
+            title.textContent = '📜 교독문 ' + readingNum + '번';
+            content.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">교독문 내용을 불러오는 중...</p>';
+            document.getElementById('responsiveReadingModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // TODO: 실제 교독문 데이터 연동
+        }
+
+        // 사도신경 모달 열기
+        function openCreed() {
+            document.getElementById('creedModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 주기도문 모달 열기
+        function openLordsPrayer() {
+            document.getElementById('lordsPrayerModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 오늘의 말씀 아코디언 토글
+        function toggleVerseAccordion(element) {
+            element.classList.toggle('expanded');
+        }
+
+        // 예배 회차별 탭 전환 (명성교회)
+        function switchServiceTab(serviceNum) {
+            // 모든 탭 비활성화
+            document.querySelectorAll('.service-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // 클릭한 탭 활성화
+            event.target.classList.add('active');
+
+            // 회차별 내용 전환
+            document.querySelectorAll('.service-detail').forEach(detail => {
+                detail.style.display = 'none';
+            });
+            const activeDetail = document.getElementById('service-' + serviceNum);
+            if (activeDetail) {
+                activeDetail.style.display = 'block';
+            }
+        }
+
+        // 교우소식 카테고리 아코디언 (명성교회)
+        function toggleMemberNewsCategory(categoryId) {
+            const category = document.getElementById(categoryId);
+            if (category) {
+                category.classList.toggle('open');
+                const arrow = category.querySelector('.category-arrow');
+                if (arrow) {
+                    arrow.textContent = category.classList.contains('open') ? '−' : '+';
+                }
+            }
+        }
+
+        // 오디오 재생 속도 변경
+        let currentSpeed = 1.0;
+        const speeds = [1.0, 1.25, 1.5, 1.75, 2.0, 0.75];
+
+        function changePlaybackRate() {
+            const audio = document.querySelector('.audio-player');
+            const speedLabel = document.getElementById('speedLabel');
+            const currentIndex = speeds.indexOf(currentSpeed);
+            const nextIndex = (currentIndex + 1) % speeds.length;
+            currentSpeed = speeds[nextIndex];
+            audio.playbackRate = currentSpeed;
+            speedLabel.textContent = currentSpeed + 'x';
+        }
+
+        // 설교 음성 다운로드
+        function downloadSermon() {
+            alert('설교 음성 파일이 다운로드됩니다.\n\n실제 운영 시 교회 서버에서 음성 파일을 제공합니다.');
+        }
+
+        // 홈 화면에 추가
+        function saveToHomeScreen() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isAndroid = /Android/.test(navigator.userAgent);
+
+            if (isIOS) {
+                alert('📱 iPhone/iPad에서 저장하기\n\n1. 하단의 공유 버튼(□↑)을 탭하세요\n2. "홈 화면에 추가"를 선택하세요\n3. "추가"를 탭하면 완료!');
+            } else if (isAndroid) {
+                alert('📱 Android에서 저장하기\n\n1. 브라우저 메뉴(⋮)를 탭하세요\n2. "홈 화면에 추가" 또는 "앱 설치"를 선택하세요\n3. 확인을 탭하면 완료!');
+            } else {
+                alert('📱 스마트폰에서 저장하기\n\n브라우저 메뉴에서 "홈 화면에 추가"를 선택하시면\n언제든지 이 주보를 다시 보실 수 있습니다.');
+            }
+        }
+
+        // 다크모드 토글
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.dark-mode-toggle');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // ========== 예배별 탭 전환 ==========
+        const serviceData = {
+            '1bu': {
+                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\'301\')" class="hymn-link">301장</a>(통460장) (다같이)',
+                prayer: '대표기도자',
+                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\'phil-1-3\')" class="bible-link">빌 1:3~8</a> (사회자)',
+                choir: '베다니 찬양대',
+                sermon: '담임목사',
+                offering: '헌금기도자',
+                time: '오전 7:00'
+            },
+            '234bu': {
+                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\'105\')" class="hymn-link">105장</a> (다같이)',
+                prayer: '대표기도자',
+                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\'luke-3-4\')" class="bible-link">눅 3:4~6</a> (사회자)',
+                choir: '베들레헴 찬양대',
+                sermon: '담임목사',
+                offering: '헌금기도자',
+                time: '오전 9:00 / 11:00 / 오후 1:00'
+            },
+            'youth': {
+                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\'105\')" class="hymn-link">105장</a> (다같이)',
+                prayer: '대표기도자',
+                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\'john-1-14\')" class="bible-link">요 1:14</a> (사회자)',
+                choir: '청년 찬양팀',
+                sermon: '청년 담당 목사',
+                offering: '헌금기도자',
+                time: '오후 2:00'
+            },
+            'evening': {
+                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\'94\')" class="hymn-link">94장</a> (다같이)',
+                prayer: '대표기도자',
+                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\'eph-2-4\')" class="bible-link">엡 2:4~8</a> (사회자)',
+                choir: '찬양대',
+                sermon: '담임목사',
+                offering: '헌금기도자',
+                time: '오후 5:00'
+            }
+        };
+
+        function switchService(serviceKey) {
+            // 탭 버튼 활성화 상태 변경
+            document.querySelectorAll('.service-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.service === serviceKey) {
+                    tab.classList.add('active');
+                }
+            });
+
+            // 콘텐츠 업데이트
+            const data = serviceData[serviceKey];
+            if (data) {
+                const hymnEl = document.getElementById('hymn-value');
+                const prayerEl = document.getElementById('prayer-value');
+                const scriptureEl = document.getElementById('scripture-value');
+                const choirEl = document.getElementById('choir-value');
+                const sermonEl = document.getElementById('sermon-value');
+                const offeringEl = document.getElementById('offering-value');
+
+                if (hymnEl) hymnEl.innerHTML = data.hymn;
+                if (prayerEl) prayerEl.textContent = data.prayer;
+                if (scriptureEl) scriptureEl.innerHTML = data.scripture;
+                if (choirEl) choirEl.textContent = data.choir;
+                if (sermonEl) sermonEl.textContent = data.sermon;
+                if (offeringEl) offeringEl.textContent = data.offering;
+            }
+        }
+
+        // 다크모드 설정 불러오기
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.dark-mode-toggle').textContent = '☀️';
+        }
+
+        // 네비게이션 활성화
+        const navTabs = document.querySelectorAll('.nav-tab');
+
+        function setActiveNav(hash) {
+            navTabs.forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('href') === hash);
+            });
+        }
+
+        // 스크롤 시 네비게이션 활성화
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            if (current) {
+                setActiveNav('#' + current);
+            }
+        });
+
+        // 카카오톡 공유
+        function shareKakao() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '여의도순복음교회 주보 - 2025년 12월 14일',
+                    text: '여의도순복음교회 주보',
+                    url: window.location.href
+                });
+            } else {
+                alert('카카오톡 공유는 모바일에서 이용 가능합니다.');
+            }
+        }
+
+        // 링크 복사
+        function shareLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('링크가 복사되었습니다.');
+            });
+        }
+
+        // 계좌번호 복사
+        function copyAccount(accountNum) {
+            navigator.clipboard.writeText(accountNum).then(() => {
+                alert('계좌번호가 복사되었습니다: ' + accountNum);
+            }).catch(() => {
+                // 폴백: 구형 브라우저용
+                const textarea = document.createElement('textarea');
+                textarea.value = accountNum;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('계좌번호가 복사되었습니다: ' + accountNum);
+            });
+        }
+
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerHeight = 60;
+                    const targetPosition = target.offsetTop - headerHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    setActiveNav(this.getAttribute('href'));
+                }
+            });
+        });
+
+        // 스크롤 시 헤더 숨김/표시
+        let lastScrollY = 0;
+        let ticking = false;
+        const header = document.querySelector('.header');
+        const scrollThreshold = 150;
+
+        function updateHeader() {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > scrollThreshold) {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+            lastScrollY = currentScrollY;
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        });
+
+        // ========== 헌금 모달 시스템 (전문가 수준) ==========
+        const offeringData = {
+            bank: {
+                title: '계좌이체 헌금',
+                content: `<div style="padding: 20px;">
+                    <div style="background: var(--primary-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="color: var(--primary); margin-bottom: 16px;">헌금 계좌 안내</h3>
+                        <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px; cursor: pointer;" onclick="copyAccount('060-9191-9191')">
+                            <div style="font-weight: 600; color: var(--primary);">우리은행</div>
+                            <div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">060-9191-9191 📋</div>
+                        </div>
+                        <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px; cursor: pointer;" onclick="copyAccount('816-25-0003-095')">
+                            <div style="font-weight: 600; color: var(--primary);">국민은행</div>
+                            <div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">816-25-0003-095 📋</div>
+                        </div>
+                        <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px; cursor: pointer;" onclick="copyAccount('256-890015-74104')">
+                            <div style="font-weight: 600; color: var(--primary);">하나은행</div>
+                            <div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">256-890015-74104 📋</div>
+                        </div>
+                        <div style="background: white; padding: 16px; border-radius: 8px; cursor: pointer;" onclick="copyAccount('367-01-035287')">
+                            <div style="font-weight: 600; color: var(--primary);">농협</div>
+                            <div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">367-01-035287 📋</div>
+                        </div>
+                        <div style="color: var(--text-gray); font-size: 0.85em; margin-top: 12px; text-align: center;">예금주: 여의도순복음교회</div>
+                    </div>
+                    <div style="font-size: 0.9em; color: var(--text-gray); line-height: 1.6;">
+                        <p>※ 입금자명에 교적번호 또는 이름을 기재해 주세요.</p>
+                    </div>
+                </div>`
+            },
+            kakaopay: {
+                title: '카카오페이 헌금',
+                content: `<div style="padding: 20px; text-align: center;">
+                    <div style="background: #FEE500; color: #3C1E1E; padding: 40px; border-radius: 16px; margin-bottom: 20px;">
+                        <div style="font-size: 3em; margin-bottom: 16px;">💛</div>
+                        <div style="font-size: 1.2em; font-weight: 700;">카카오페이로 헌금하기</div>
+                    </div>
+                    <div style="background: var(--bg-gray); padding: 20px; border-radius: 12px;">
+                        <p style="font-weight: 600; margin-bottom: 12px;">카카오페이 송금 방법</p>
+                        <ol style="text-align: left; line-height: 2; padding-left: 20px; color: var(--text-gray);">
+                            <li>카카오톡 앱을 엽니다</li>
+                            <li>하단 메뉴에서 더보기 선택</li>
+                            <li>카카오페이 > 송금 선택</li>
+                            <li>계좌번호로 송금 선택</li>
+                        </ol>
+                    </div>
+                </div>`
+            },
+            app: {
+                title: '교회 앱 헌금',
+                content: `<div style="padding: 20px; text-align: center;">
+                    <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 20px;">
+                        <div style="font-size: 3em; margin-bottom: 16px;">⛪</div>
+                        <div style="font-size: 1.2em; font-weight: 700;">여의도순복음교회 앱</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                        <a href="#" style="display: block; background: #000; color: white; padding: 16px; border-radius: 10px; text-decoration: none;">
+                            <div style="font-size: 1.5em; margin-bottom: 4px;">🍎</div>
+                            <div style="font-size: 0.85em;">App Store</div>
+                        </a>
+                        <a href="#" style="display: block; background: #3DDC84; color: white; padding: 16px; border-radius: 10px; text-decoration: none;">
+                            <div style="font-size: 1.5em; margin-bottom: 4px;">🤖</div>
+                            <div style="font-size: 0.85em;">Google Play</div>
+                        </a>
+                    </div>
+                </div>`
+            }
+        };
+
+        function openOfferingModal(type) {
+            const data = offeringData[type];
+            const modal = document.getElementById('offeringModal');
+            document.getElementById('offeringModalTitle').textContent = data.title;
+            document.getElementById('offeringModalBody').innerHTML = data.content;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOfferingModal(event) {
+            if (event && event.target !== event.currentTarget && !event.target.classList.contains('modal-close')) return;
+            document.getElementById('offeringModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ESC 키로 모든 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal('bibleModal');
+                closeModal('hymnModal');
+                closeModal('lastWeekModal');
+                closeOfferingModal();
+            }
+        });
+    </script>
+</body>
+</html>

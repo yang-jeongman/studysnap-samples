@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>손안의 주보 서비스 제안서<br>
+ 혈동교회</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f5f5f5;
+            color: #2C1810;
+            line-height: 1.6;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media screen {
+            .page {
+                margin: 20px auto;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            }
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 100%);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .company-name {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .proposal-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .main-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .sub-title {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 50px 40px 30px;
+        }
+
+        /* Vision Section */
+        .vision-section {
+            background: linear-gradient(135deg, #FDF8F0 0%, #FFF8E1 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            border-left: 5px solid #C5A572;
+        }
+
+        .vision-quote {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 18px;
+            color: #5D4037;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .vision-quote em {
+            color: #8B4513;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #8B4513;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, #8B4513 0%, #C5A572 100%);
+            border-radius: 2px;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #E8E0D8;
+            border-radius: 12px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 4px 20px rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #2C1810;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: #8D6E63;
+            line-height: 1.5;
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            margin-bottom: 30px;
+        }
+
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .compare-item {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .compare-before {
+            background: #F5F5F5;
+            border: 2px dashed #BDBDBD;
+        }
+
+        .compare-after {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border: 2px solid #81C784;
+        }
+
+        .compare-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #757575;
+            margin-bottom: 8px;
+        }
+
+        .compare-after .compare-label {
+            color: #388E3C;
+        }
+
+        .compare-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .compare-list {
+            font-size: 12px;
+            color: #666;
+            text-align: left;
+            padding-left: 16px;
+        }
+
+        .compare-list li {
+            margin-bottom: 4px;
+        }
+
+        .compare-arrow {
+            font-size: 28px;
+            color: #8B4513;
+        }
+
+        /* Benefits Row */
+        .benefits-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .benefit-tag {
+            flex: 1;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 14px 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .benefit-number {
+            font-size: 22px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .benefit-label {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            background: #FDF8F0;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .demo-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 16px;
+            color: #8B4513;
+            margin-bottom: 12px;
+        }
+
+        .qr-placeholder {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border: 2px solid #E8E0D8;
+            border-radius: 12px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #8D6E63;
+        }
+
+        .demo-instruction {
+            font-size: 13px;
+            color: #5D4037;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #2C1810 0%, #5D4037 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cta-text h3 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .cta-text p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .cta-offer {
+            text-align: right;
+        }
+
+        .offer-badge {
+            background: #C5A572;
+            color: #2C1810;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .offer-note {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #F5F5F5;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #8D6E63;
+        }
+
+        .footer-contact {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* For Church Name */
+        .target-church {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        @media print {
+            body { background: white; }
+            .page { 
+                margin: 0; 
+                box-shadow: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-icon">📱</div>
+                    <div>
+                        <div class="company-name">모바일 주보 서비스</div>
+                    </div>
+                </div>
+            </div>
+            <h1 class="main-title">손안의 주보</h1>
+            <p class="sub-title">성도님들이 언제 어디서나 말씀과 연결되는 모바일 주보 서비스</p>
+            <div class="target-church">📍 혈동교회</div>
+
+        </header>
+
+        <!-- Content -->
+        <main class="content">
+            <!-- Vision -->
+            <div class="vision-section">
+                <p class="vision-quote">
+                    "주일 예배 후에도 말씀의 은혜가 한 주간 이어질 수 있도록,<br>
+                    스마트폰에서 바로 <em>성경 구절</em>을 펼쳐보고, <em>찬양</em>을 다시 부르며,<br>
+                    <em>설교</em>를 묵상할 수 있는 서비스입니다."
+                </p>
+            </div>
+
+            <!-- Features -->
+            <h2 class="section-title">주요 기능</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <div class="feature-title">성경 본문 연결</div>
+                    <div class="feature-desc">터치 한 번으로<br>오늘 말씀 전체를<br>바로 읽을 수 있습니다</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <div class="feature-title">찬송가 재생</div>
+                    <div class="feature-desc">가정예배 때<br>틀어놓고 함께<br>찬양할 수 있습니다</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎧</div>
+                    <div class="feature-title">설교 다시듣기</div>
+                    <div class="feature-desc">새가족도 지난<br>설교를 들을 수<br>있습니다</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">모바일 최적화</div>
+                    <div class="feature-desc">어르신도 편하게<br>큰 글씨로<br>볼 수 있습니다</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <div class="feature-title">교회 소식</div>
+                    <div class="feature-desc">중요한 교우 소식을<br>놓치지 않게<br>됩니다</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📤</div>
+                    <div class="feature-title">간편 공유</div>
+                    <div class="feature-desc">카카오톡으로<br>주보를 쉽게<br>나눌 수 있습니다</div>
+                </div>
+            </div>
+
+            <!-- Comparison -->
+            <h2 class="section-title">기존 주보와 비교</h2>
+            <div class="comparison-section">
+                <div class="comparison-box">
+                    <div class="compare-item compare-before">
+                        <div class="compare-label">기존 PDF 주보</div>
+                        <div class="compare-title">📄 확대해야 보임</div>
+                        <ul class="compare-list">
+                            <li>글씨가 작아 확대 필수</li>
+                            <li>성경 찾으려면 앱 별도 실행</li>
+                            <li>찬송가 듣기 어려움</li>
+                            <li>설교 다시듣기 링크 없음</li>
+                        </ul>
+                    </div>
+                    <div class="compare-arrow">→</div>
+                    <div class="compare-item compare-after">
+                        <div class="compare-label">손안의 주보</div>
+                        <div class="compare-title">📱 바로 보고 듣기</div>
+                        <ul class="compare-list">
+                            <li>모바일에 최적화된 글씨</li>
+                            <li>터치하면 바로 성경 열림</li>
+                            <li>찬송가 바로 재생</li>
+                            <li>설교 다시듣기 원클릭</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="benefits-row">
+                <div class="benefit-tag">
+                    <span class="benefit-number">↑ 3배</span>
+                    <span class="benefit-label">주보 열람률 증가</span>
+                </div>
+                <div class="benefit-tag">
+                    <span class="benefit-number">5분</span>
+                    <span class="benefit-label">주간 변환 소요시간</span>
+                </div>
+                <div class="benefit-tag">
+                    <span class="benefit-number">0원</span>
+                    <span class="benefit-label">앱 설치 비용</span>
+                </div>
+                <div class="benefit-tag">
+                    <span class="benefit-number">100%</span>
+                    <span class="benefit-label">기존 주보 호환</span>
+                </div>
+            </div>
+
+            <!-- Demo -->
+            <div class="demo-section">
+                <h3 class="demo-title">📱 지금 바로 체험해보세요</h3>
+                <div class="qr-placeholder">QR코드<br>삽입 위치</div>
+                <p class="demo-instruction">스마트폰 카메라로 스캔하시면<br><strong>혈동교회 6월 15일 주보</strong>를 모바일로 체험하실 수 있습니다</p>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-section">
+                <div class="cta-text">
+                    <h3>저희도 신앙인으로서,</h3>
+                    <p>기술이 사역에 도움이 되길 바라는 마음으로 준비했습니다</p>
+                </div>
+                <div class="cta-offer">
+                    <div class="offer-badge">2주 무료 체험</div>
+                    <div class="offer-note">부담 없이 먼저 사용해보세요</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div>© 2025 손안의 주보 서비스</div>
+            <div class="footer-contact">
+                <span>📧 contact@example.com</span>
+                <span>📞 010-0000-0000</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

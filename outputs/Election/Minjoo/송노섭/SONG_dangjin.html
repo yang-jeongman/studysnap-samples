@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="송노섭 - 당진시장 후보">
+    <title>송노섭 - 당진시장 후보</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --party-color: #004EA2;
+            --party-color-light: #DBEAFE;
+            --party-color-dark: #1E3A8A;
+            --party-gradient: linear-gradient(135deg, #004EA2 0%, #1E3A8A 100%);
+            --party-accent: #3B82F6;
+            --text-on-primary: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar .candidate-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .nav-bar .party-badge {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .hero-section {
+            margin-top: 60px;
+            background: var(--party-gradient);
+            color: var(--text-on-primary);
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-slogan {
+            font-size: 1.8em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-name {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin: 15px 0;
+        }
+
+        .hero-position {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-top: 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 0.9em;
+            opacity: 0.85;
+            margin-top: 5px;
+        }
+
+        .vision-section {
+            background: white;
+            margin: 0;
+            padding: 25px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .vision-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--party-color);
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--party-color-light);
+            border-radius: 10px;
+        }
+
+        .quick-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 25px 20px;
+            background: white;
+        }
+
+        .highlight-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: var(--party-color-light);
+            border: 2px solid var(--party-color);
+            gap: 15px;
+        }
+
+        .highlight-card .icon {
+            font-size: 2em;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .highlight-card .content {
+            flex: 1;
+        }
+
+        .highlight-card .number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .highlight-card .label {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section {
+            background: white;
+            margin: 15px 0;
+            padding: 25px 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--party-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--party-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+
+        .promise-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .promise-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .promise-card.expanded {
+            border-color: var(--party-color);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .promise-header {
+            padding: 20px;
+            background: var(--party-color-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .promise-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--party-color);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .promise-header-text {
+            flex: 1;
+        }
+
+        .promise-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .promise-details {
+            padding: 20px;
+            display: none;
+            background: #f8f9fa;
+        }
+
+        .promise-card.expanded .promise-details {
+            display: block;
+        }
+
+        .promise-details ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .promise-details li {
+            padding: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .promise-details li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--party-color);
+            font-weight: bold;
+        }
+
+        .promise-details li:last-child {
+            border-bottom: none;
+        }
+
+        .expand-btn {
+            text-align: center;
+            color: var(--party-color);
+            font-weight: 600;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .expand-btn::after {
+            content: ' ▼';
+        }
+
+        .promise-card.expanded .expand-btn::after {
+            content: ' ▲';
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--party-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background: var(--party-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--party-color);
+        }
+
+        .timeline-year {
+            font-size: 0.85em;
+            color: var(--party-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .page-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--party-color);
+        }
+
+        .page-content h4 {
+            color: var(--party-color);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .page-content p {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .contact-link.phone {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+        }
+
+        .contact-link.email {
+            background: #10B981;
+            color: white;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.75em;
+            padding: 5px 15px;
+            transition: all 0.3s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--party-color);
+        }
+
+        .bottom-nav .nav-icon {
+            font-size: 1.5em;
+            margin-bottom: 3px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .footer a {
+            color: var(--party-color);
+            text-decoration: none;
+        }
+
+        .special-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin: 10px 5px;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <span class="candidate-name">송노섭</span>
+        <span class="party-badge">더불어민주당</span>
+    </nav>
+
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <h1 class="hero-name">송노섭</h1>
+            <p class="hero-slogan">당진의 미래를 책임지겠습니다</p>
+            <p class="hero-position">당진시장 후보</p>
+            <p class="hero-subtitle">경영학박사 · 전 국회의원 보좌관 · 단국대 초빙교수</p>
+            <div style="margin-top: 15px;">
+                <span class="special-badge">🏃 마라톤 풀코스 30회 완주</span>
+                <span class="special-badge">💪 뚝심과 끈기의 리더</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="vision-section" id="vision">
+        <div class="vision-title">당진경제를 속 시원하게 살려내겠습니다<br>화끈한 리더! 시원한 정치!!</div>
+    </section>
+
+    <div class="quick-highlights">
+        <div class="highlight-card">
+            <span class="icon">🎯</span>
+            <div class="content">
+                <span class="number">6대</span>
+                <div class="label">핵심 공약</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">📋</span>
+            <div class="content">
+                <span class="number">10년</span>
+                <div class="label">정치·경영 경력</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">🏛️</span>
+            <div class="content">
+                <span class="number">당진땅 수호</span>
+                <div class="label">범시민대책위 조직위원장</div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section" id="pledges">
+        <h2 class="section-title"><span class="icon">📋</span> 핵심 공약</h2>
+
+        <div style="text-align: center; margin-bottom: 25px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px;">
+            <div style="font-size: 1.5em; font-weight: 900; color: var(--party-color); margin-bottom: 8px;">
+                준비된 리더, 당진의 미래를 여는 6대 약속
+            </div>
+            <div style="font-size: 1em; color: #666;">
+                송노섭이 한다면 반드시 해냅니다
+            </div>
+        </div>
+
+        <div class="promise-list">
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">1</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #E53935;">경제는 활기차게 - 산업과 일자리</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            석문산업단지 및 송산2산단 활성화로 양질의 일자리 창출
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            제약·바이오산업 유치로 미래 성장동력 확보
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            중소기업 지원 확대 및 소상공인 자영업자 금융지원
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            당진항 운영 공사화 및 4차 항만기본계획 추진
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">2</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #1976D2;">농축수산업 안정화 - 1차산업 육성</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            쌀값 안정 대책 마련 및 농업의 식량안보산업화
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            FTA 대비 농업정책 수립 및 농산물물류센터 건립
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            신선채소단지 조성 및 바다목장 육성
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            친환경 농업 확대 및 스마트팜 기술 도입 지원
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">3</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #388E3C;">복지는 따뜻하게 - 촘촘한 사회안전망</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            노인복지공동체 형성 및 공립노인요양시설 확충
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            시니어 일자리 창출 및 노인일자리보호법 제정 추진
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            장애인 복지센터 건립 및 복지시설 종사자 처우개선
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            청년실업 해결 및 공정임금제 실시
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">4</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #7B1FA2;">교육은 희망차게 - 미래인재 양성</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            산학융합형 특성화 학과 신설 및 특성화고교 양성
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            공공보육시설 확충 및 무상보육 실시
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            산업인력 전문교육기관 설립 및 교육특화지구 지정
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            고교 무상교육 실시 및 장학금 지원 확대
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">5</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #F57C00;">환경은 쾌적하게 - 지속가능한 당진</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            대기환경 개선 특별지구 선정 및 미세먼지 저감
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            삽교호·석문호·대호호 수질개선 사업 추진
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            철탑 및 송전선로 강력대응 및 주민 보상법 개정
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            신재생에너지 확대 및 친환경 도시 조성
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">6</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #C62828;">주민은 편안하게 - 인프라 확충</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            천안-당진간 고속도로 건설 및 당진-대전간 고속도로 연장
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            석문공단 산업철도 연결 및 도로 확포장
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            종합병원 유치 및 의료공공성 강화
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            문화예술공간 마련 및 정크아트공원 건설
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="career">
+        <h2 class="section-title"><span class="icon">📜</span> 주요 경력</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">학력</div>
+                <div class="timeline-content">
+                    • 면천초등학교·면천중학교·공주영명고등학교 졸업<br>
+                    • 단국대학교 법학 학사<br>
+                    • 단국대학교 경영학 석사 (한미 FTA 제약산업 경쟁력)<br>
+                    • 단국대학교 경영학 박사 (브랜드경험과 관계형성)
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">정치 경력</div>
+                <div class="timeline-content">
+                    • 송영진 국회의원 보좌관<br>
+                    • 안희정 도지사·김홍장 시장 선대본부장<br>
+                    • 더불어민주당 당진시 지역위원장<br>
+                    • 더불어민주당 중앙당 부대변인
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">기업 경력</div>
+                <div class="timeline-content">
+                    • 일양약품(주) 대전지점장<br>
+                    • 일양약품(주) 충남사업본부장
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">학계 활동</div>
+                <div class="timeline-content">
+                    • 단국대학교 경영공학부 초빙교수<br>
+                    • 한국국제농업개발학회 농업정책위원장
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">지역 활동</div>
+                <div class="timeline-content">
+                    • 충남도계 및 당진땅 수호 범시민대책위원회 조직위원장<br>
+                    • 당진JC 활동<br>
+                    • 당진로타리클럽 이사<br>
+                    • 당진번영회 이사<br>
+                    • 당진청년회의소 특우회장<br>
+                    • 문화날개 장애인 자립생활센터 운영위원
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">기타</div>
+                <div class="timeline-content">
+                    • 마라톤 풀코스(42.195km) 30회 이상 완주<br>
+                    • 하프코스 200회 이상 완주<br>
+                    • 2015 위대한 한국인 100인 정치발전분야 대상 수상
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="vision">
+        <h2 class="section-title"><span class="icon">💡</span> 송노섭의 약속</h2>
+
+        <div class="page-content">
+            <h4>🎯 뭔가 특별한 것이 있습니다</h4>
+            <p>
+                <strong>✓ 준비된 사람이 당진의 미래를 책임질 수 있습니다</strong><br>
+                국회의원 보좌관을 하면서 정치를 익혔고, 제약회사에서 근무하면서 마케팅과 리더십을 공부했으며,
+                지역사회 활동을 하면서 봉사를 알았고, 대학에서 법과 경영에 대한 지식을 쌓았습니다.
+            </p>
+            <p>
+                <strong>✓ 뚝심과 끈기로 당진의 현안문제를 반드시 해결하겠습니다</strong><br>
+                마라톤 풀코스를 30회 이상 완주하고 하프코스를 200회 이상 달린 뚝심과 끈기가 있습니다.
+                송노섭은 한다면 반드시 해내고야 맙니다.
+            </p>
+            <p>
+                <strong>✓ 당진을 사랑하는 사람만이 당진시민의 마음을 압니다</strong><br>
+                당진JC·로타리·번영회·환경운동연합 등 지역사회단체 활동을 하면서
+                '중부권 특정 폐기물 처리장' 건립을 무산시키는데 힘이 되었고,
+                현재는 '충남도계 및 당진땅 수호 범시민대책위원회' 조직위원장으로
+                당진땅 수호에 앞장서고 있습니다.
+            </p>
+        </div>
+
+        <div class="page-content">
+            <h4>💪 당진땅 수호 활동</h4>
+            <p>
+                엄동설한 추위에도 당진땅 수호를 위한 대법원 앞 1인 시위를 한 달 동안 했습니다.
+                혹한의 날씨도 저의 의지는 막지 못했으며, 당진땅을 되찾을 수 있다는 희망을 보았습니다.
+            </p>
+            <p>
+                <strong>송노섭만이 당진땅을 되찾아올 수 있습니다.</strong>
+            </p>
+        </div>
+
+        <div class="page-content">
+            <h4>🤝 서민을 위한 정치</h4>
+            <p>
+                송노섭은 서민을 위한 따뜻한 정치, 낮은 자세로 소통하는 정치,
+                '상식'과 '원칙'을 바로세우는 정치를 하겠습니다.
+            </p>
+            <p>
+                당진시민 여러분과 함께 담대한 변화를 시작하겠습니다.
+                모두 공평하고, 함께 발전하고, 자유롭고 정의로운 당진을 만들겠습니다.
+            </p>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <h2 class="section-title"><span class="icon">📞</span> 연락처</h2>
+        <div class="contact-links">
+            <div class="contact-link phone" style="width: 100%; justify-content: center;">
+                📞 선거사무소 연락처 및 주소
+            </div>
+            <div class="contact-link email" style="width: 100%; justify-content: center;">
+                ✉️ 이메일 문의
+            </div>
+        </div>
+        <div style="margin-top:15px; padding:15px; background:#f8f9fa; border-radius:10px; line-height:1.8;">
+            <strong>더불어민주당 송노섭 후보</strong><br>
+            충남 당진시<br><br>
+            <em>※ 본 공보물은 가상으로 제작된 샘플입니다</em>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>본 페이지는 가상 선거공보물 샘플로 자동 생성되었습니다.</p>
+        <p style="margin-top: 10px;"><a href="https://studysnap.kr" target="_blank">StudySnap</a> | AI 기반 선거공보물 변환 시스템</p>
+    </footer>
+
+    <nav class="bottom-nav">
+        <a href="#home" class="active">
+            <span class="nav-icon">🏠</span>
+            홈
+        </a>
+        <a href="#pledges">
+            <span class="nav-icon">📋</span>
+            공약
+        </a>
+        <a href="#career">
+            <span class="nav-icon">📜</span>
+            경력
+        </a>
+        <a href="#vision">
+            <span class="nav-icon">💡</span>
+            약속
+        </a>
+    </nav>
+
+    <script>
+        document.querySelectorAll('.promise-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+        });
+
+        const sections = ['home', 'pledges', 'career', 'vision'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {
+                    current = id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

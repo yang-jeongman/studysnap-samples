@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>완전 자동화 선거공보물 변환기</title>
+    <title>완전 자동화 문서 변환기 - StudySnap</title>
     <style>
         * {
             margin: 0;
@@ -573,26 +573,265 @@
             color: white;
             border-color: #667eea;
         }
+
+        /* ==================== 모드 선택 탭 ==================== */
+        .mode-tabs {
+            display: flex;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 5px;
+            margin-bottom: 20px;
+            gap: 5px;
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .mode-tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .mode-tab.active {
+            background: white;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .mode-tab.active.election { color: #667eea; }
+        .mode-tab.active.church { color: #8B4513; }
+
+        .mode-badge {
+            font-size: 0.7em;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: currentColor;
+            color: white;
+        }
+
+        .mode-tab.active .mode-badge {
+            background: currentColor;
+        }
+
+        /* 모드별 테마 */
+        body.church-mode {
+            background: linear-gradient(135deg, #8B4513 0%, #5D3A1A 100%);
+        }
+
+        body.church-mode .convert-btn.ready {
+            background: linear-gradient(135deg, #8B4513 0%, #5D3A1A 100%);
+        }
+
+        body.church-mode .status-bar {
+            background: #FDF8F0;
+        }
+
+        body.church-mode .progress-fill {
+            background: linear-gradient(90deg, #8B4513, #C5A572);
+        }
+
+        body.church-mode .result-success {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+        }
+
+        /* 교회 전용 UI */
+        .church-options {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #FDF8F0;
+            border-radius: 12px;
+            border: 1px solid #E8DCC8;
+        }
+
+        .church-options.show { display: block; }
+
+        .church-options-title {
+            font-weight: 600;
+            color: #8B4513;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .church-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .church-preset {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #E8DCC8;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .church-preset:hover {
+            border-color: #C5A572;
+            background: #FFFEF9;
+        }
+
+        .church-preset.selected {
+            border-color: #8B4513;
+            background: #FDF8F0;
+        }
+
+        .church-preset-name {
+            font-weight: 600;
+            color: #5D3A1A;
+            margin-bottom: 4px;
+        }
+
+        .church-preset-style {
+            font-size: 0.75em;
+            color: #8D6E63;
+        }
+
+        .theme-select-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .theme-option {
+            padding: 10px;
+            border: 2px solid #E8DCC8;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .theme-option:hover { border-color: #C5A572; }
+        .theme-option.selected { border-color: #8B4513; background: #FDF8F0; }
+
+        .theme-option-icon { font-size: 1.5em; margin-bottom: 4px; }
+        .theme-option-name { font-size: 0.8em; font-weight: 500; color: #5D3A1A; }
+
+        .church-folder-input {
+            margin-top: 15px;
+        }
+
+        .church-folder-input label {
+            display: block;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #5D3A1A;
+            margin-bottom: 6px;
+        }
+
+        .church-folder-input input,
+        .church-folder-input select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #E8DCC8;
+            border-radius: 8px;
+            font-size: 0.95em;
+            background: white;
+        }
+
+        .church-folder-input input:focus,
+        .church-folder-input select:focus {
+            outline: none;
+            border-color: #C5A572;
+        }
+
+        .church-folder-preview {
+            margin-top: 12px;
+            padding: 12px;
+            background: #E8F5E9;
+            border-radius: 8px;
+            font-size: 0.85em;
+        }
+
+        .church-folder-preview .path {
+            font-family: monospace;
+            color: #2E7D32;
+            margin-top: 4px;
+        }
+
+        /* 교회 기능 리스트 */
+        .church-features-list {
+            display: none;
+        }
+
+        body.church-mode .election-features-list { display: none; }
+        body.church-mode .church-features-list { display: grid; }
     </style>
 </head>
 <body>
-    <!-- 네비게이션 바 -->
-    <nav style="max-width: 900px; margin: 0 auto 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-        <a href="/static/explorer.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #1e3c72; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">🗂️ 탐색기</a>
-        <a href="/static/files.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #667eea; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">📁 파일</a>
-        <a href="/static/editor.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #E11D48; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">✏️ 에디터</a>
-        <a href="/static/server-manager.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #28a745; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">🖥️ 서버</a>
-        <a href="/static/terminal.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #6f42c1; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">💻 터미널</a>
+    <!-- 카테고리별 변환기 네비게이션 -->
+    <nav style="max-width: 900px; margin: 0 auto 10px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+        <a href="/static/auto-converter.html" style="padding: 8px 16px; background: white; color: #667eea; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9em; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">All</a>
+        <a href="/static/election-converter.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #667eea; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">Election</a>
+        <a href="/static/church-converter.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #8B4513; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">Church</a>
+        <a href="/static/lecture-converter.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #2563eb; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">Lecture</a>
+        <a href="/static/newsletter-converter.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #059669; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">Newsletter</a>
+        <a href="/static/catalog-converter.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #dc2626; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">Catalog</a>
+        <a href="/static/explorer.html" style="padding: 8px 16px; background: rgba(255,255,255,0.95); color: #1e3c72; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9em;">Explorer</a>
     </nav>
 
     <div class="container">
         <header class="header">
             <h1>
                 <span class="auto-badge">AUTO</span>
-                선거공보물 완전 자동 변환기
+                <span id="headerTitle">PDF 업로드만 하면 자동으로 모바일 최적화 페이지 생성</span>
             </h1>
-            <p>PDF 업로드만 하면 자동으로 모바일 최적화 페이지 생성</p>
         </header>
+
+        <!-- 언어 선택 -->
+        <div style="text-align: right; margin-bottom: 10px;">
+            <select id="languageSelect" onchange="changeLanguage(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); font-size: 0.85em; cursor: pointer;">
+                <option value="ko" selected>🇰🇷 한국어</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="id">🇮🇩 Bahasa Indonesia</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="fr">🇫🇷 Français</option>
+            </select>
+        </div>
+
+        <!-- 모드 선택 탭 -->
+        <div class="mode-tabs" style="flex-wrap: wrap;">
+            <button class="mode-tab active election" data-mode="election" onclick="switchMode('election')">
+                🗳️ <span data-i18n="election">선거 공보물</span>
+            </button>
+            <button class="mode-tab church" data-mode="church" onclick="switchMode('church')">
+                ⛪ <span data-i18n="church">교회 주보</span>
+            </button>
+            <button class="mode-tab lecture" data-mode="lecture" onclick="switchMode('lecture')" style="color: rgba(255,255,255,0.8);">
+                📚 <span data-i18n="lecture">강의 교재</span>
+            </button>
+            <button class="mode-tab newsletter" data-mode="newsletter" onclick="switchMode('newsletter')" style="color: rgba(255,255,255,0.8);">
+                📰 <span data-i18n="newsletter">소식지</span>
+            </button>
+            <button class="mode-tab catalog" data-mode="catalog" onclick="switchMode('catalog')" style="color: rgba(255,255,255,0.8);">
+                📦 <span data-i18n="catalog">카탈로그</span>
+            </button>
+        </div>
 
         <!-- Status Bar -->
         <div class="status-bar">
@@ -613,8 +852,8 @@
             </div>
 
             <div class="upload-area" id="uploadArea">
-                <div class="upload-icon">📄</div>
-                <h3>선거공보물 PDF를 여기에 드래그하세요</h3>
+                <div class="upload-icon" id="uploadIcon">📄</div>
+                <h3 id="uploadTitle">선거공보물 PDF를 여기에 드래그하세요</h3>
                 <p>또는 클릭하여 파일 선택</p>
                 <input type="file" id="fileInput" class="file-input" accept=".pdf" multiple>
             </div>
@@ -670,12 +909,86 @@
                     </div>
                 </div>
 
-                <!-- 기존 폴더 목록 -->
+                <!-- 기존 폴더 목록 (선거용) -->
                 <div class="existing-folders" id="existingFolders">
                     <div class="existing-folders-title">📂 기존 폴더 선택:</div>
                     <div class="existing-folders-list" id="existingFoldersList">
                         <span style="color: #999; font-size: 0.9em;">로딩 중...</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- ==================== 교회 주보 전용 옵션 ==================== -->
+            <div class="church-options" id="churchOptions">
+                <div class="church-options-title">⛪ 교회 주보 설정</div>
+
+                <!-- 교회 선택/입력 -->
+                <div class="church-folder-input">
+                    <label>📍 교회명</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <select id="churchSelect" onchange="onChurchSelect()" style="flex: 1;">
+                            <option value="">-- 교회 선택 또는 새로 입력 --</option>
+                            <option value="new">➕ 새 교회 추가</option>
+                        </select>
+                    </div>
+                    <input type="text" id="newChurchName" placeholder="새 교회명 입력 (예: 명성교회)" style="display: none; margin-top: 10px;">
+                </div>
+
+                <!-- 기존 교회 목록 -->
+                <div id="existingChurches" style="margin-top: 15px;">
+                    <div style="font-size: 0.85em; color: #8D6E63; margin-bottom: 8px;">📂 기존 교회:</div>
+                    <div id="existingChurchList" class="church-preset-grid">
+                        <span style="color: #999; font-size: 0.85em;">로딩 중...</span>
+                    </div>
+                </div>
+
+                <!-- 주보 날짜 -->
+                <div class="church-folder-input">
+                    <label>📅 주보 날짜</label>
+                    <input type="date" id="bulletinDate" onchange="updateChurchPreview()">
+                </div>
+
+                <!-- 절기 테마 선택 -->
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 0.85em; font-weight: 600; color: #5D3A1A; margin-bottom: 10px;">
+                        🎄 절기 테마 (선택)
+                    </div>
+                    <div class="theme-select-grid" id="churchThemeGrid">
+                        <div class="theme-option selected" data-theme="default" onclick="selectChurchTheme('default')">
+                            <div class="theme-option-icon">📖</div>
+                            <div class="theme-option-name">일반</div>
+                        </div>
+                        <div class="theme-option" data-theme="advent" onclick="selectChurchTheme('advent')">
+                            <div class="theme-option-icon">🕯️</div>
+                            <div class="theme-option-name">대림절</div>
+                        </div>
+                        <div class="theme-option" data-theme="christmas" onclick="selectChurchTheme('christmas')">
+                            <div class="theme-option-icon">🎄</div>
+                            <div class="theme-option-name">성탄절</div>
+                        </div>
+                        <div class="theme-option" data-theme="lent" onclick="selectChurchTheme('lent')">
+                            <div class="theme-option-icon">✝️</div>
+                            <div class="theme-option-name">사순절</div>
+                        </div>
+                        <div class="theme-option" data-theme="easter" onclick="selectChurchTheme('easter')">
+                            <div class="theme-option-icon">🌸</div>
+                            <div class="theme-option-name">부활절</div>
+                        </div>
+                        <div class="theme-option" data-theme="pentecost" onclick="selectChurchTheme('pentecost')">
+                            <div class="theme-option-icon">🔥</div>
+                            <div class="theme-option-name">성령강림</div>
+                        </div>
+                        <div class="theme-option" data-theme="harvest" onclick="selectChurchTheme('harvest')">
+                            <div class="theme-option-icon">🌾</div>
+                            <div class="theme-option-name">추수감사</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 저장 경로 미리보기 -->
+                <div class="church-folder-preview" id="churchFolderPreview" style="display: none;">
+                    <div style="color: #2E7D32; font-weight: 500;">✅ 저장 경로:</div>
+                    <div class="path" id="churchPathPreview">outputs/Church/교회명/YYYY-MM-DD.html</div>
                 </div>
             </div>
 
@@ -709,8 +1022,10 @@
 
         <!-- Features Card -->
         <div class="card">
-            <h2 class="card-title">자동화 기능</h2>
-            <div class="features-list">
+            <h2 class="card-title" id="featuresTitle">🗳️ 자동화 기능</h2>
+
+            <!-- 선거 공보물 기능 -->
+            <div class="features-list election-features-list">
                 <div class="feature-item">
                     <span class="icon">🎨</span>
                     <span class="text">정당별 테마 자동 적용</span>
@@ -737,8 +1052,70 @@
                 </div>
             </div>
 
-            <h3 style="margin-top: 25px; margin-bottom: 10px; color: #666;">지원 정당</h3>
-            <div class="party-colors" id="partyColors"></div>
+            <!-- 교회 주보 기능 -->
+            <div class="features-list church-features-list">
+                <div class="feature-item">
+                    <span class="icon">📖</span>
+                    <span class="text">예배 순서 자동 추출</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🎵</span>
+                    <span class="text">찬송가 유튜브 연결</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">✝️</span>
+                    <span class="text">성경 구절 자동 링크</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📱</span>
+                    <span class="text">모바일 최적화 디자인</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🎄</span>
+                    <span class="text">절기별 테마 자동 적용</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🌙</span>
+                    <span class="text">다크모드 지원</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">📢</span>
+                    <span class="text">교회 소식 자동 구조화</span>
+                </div>
+                <div class="feature-item">
+                    <span class="icon">🔗</span>
+                    <span class="text">공유하기 기능 내장</span>
+                </div>
+            </div>
+
+            <!-- 선거 - 지원 정당 -->
+            <div id="partySection">
+                <h3 style="margin-top: 25px; margin-bottom: 10px; color: #666;">지원 정당</h3>
+                <div class="party-colors" id="partyColors"></div>
+            </div>
+
+            <!-- 교회 - 지원 교단/스타일 -->
+            <div id="churchStyleSection" style="display: none;">
+                <h3 style="margin-top: 25px; margin-bottom: 10px; color: #666;">지원 스타일</h3>
+                <div class="party-colors">
+                    <div class="party-chip" style="background: #5B4B9E20; color: #5B4B9E;">
+                        <span class="dot" style="background: #5B4B9E;"></span>
+                        모던 스타일
+                    </div>
+                    <div class="party-chip" style="background: #8B451320; color: #8B4513;">
+                        <span class="dot" style="background: #8B4513;"></span>
+                        전통 스타일
+                    </div>
+                    <div class="party-chip" style="background: #1E3A5F20; color: #1E3A5F;">
+                        <span class="dot" style="background: #1E3A5F;"></span>
+                        대형교회
+                    </div>
+                    <div class="party-chip" style="background: #C5A57220; color: #8B6914;">
+                        <span class="dot" style="background: #C5A572;"></span>
+                        소형교회
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -756,6 +1133,298 @@
 
         let selectedFiles = [];
         let selectedSaveFolder = '';  // 저장할 하위 폴더
+
+        // ==================== 다국어 지원 ====================
+        const translations = {
+            ko: {
+                election: '선거 공보물', church: '교회 주보', lecture: '강의 교재',
+                newsletter: '소식지', catalog: '카탈로그',
+                headerElection: 'PDF 업로드만 하면 자동으로 모바일 최적화 페이지 생성',
+                headerChurch: 'PDF 업로드만 하면 자동으로 모바일 최적화 페이지 생성',
+                uploadElection: '선거공보물 PDF를 여기에 드래그하세요',
+                uploadChurch: '교회 주보 PDF를 여기에 드래그하세요',
+                systemReady: '시스템 준비됨', converting: '변환 중...',
+                complete: '변환 완료!', selectPdf: 'PDF를 선택해주세요',
+                featuresElection: '🗳️ 자동화 기능', featuresChurch: '⛪ 주보 변환 기능'
+            },
+            en: {
+                election: 'Election', church: 'Church Bulletin', lecture: 'Lecture',
+                newsletter: 'Newsletter', catalog: 'Catalog',
+                headerElection: 'Upload PDF to auto-generate mobile-optimized pages',
+                headerChurch: 'Upload PDF to auto-generate mobile-optimized pages',
+                uploadElection: 'Drag election PDF here',
+                uploadChurch: 'Drag church bulletin PDF here',
+                systemReady: 'System Ready', converting: 'Converting...',
+                complete: 'Complete!', selectPdf: 'Please select PDF',
+                featuresElection: '🗳️ Features', featuresChurch: '⛪ Bulletin Features'
+            },
+            zh: {
+                election: '选举公报', church: '教会周报', lecture: '讲义教材',
+                newsletter: '通讯', catalog: '目录',
+                headerElection: '上传PDF自动生成移动优化页面',
+                headerChurch: '上传PDF自动生成移动优化页面',
+                uploadElection: '将选举PDF拖到这里',
+                uploadChurch: '将教会周报PDF拖到这里',
+                systemReady: '系统就绪', converting: '转换中...',
+                complete: '完成!', selectPdf: '请选择PDF',
+                featuresElection: '🗳️ 功能', featuresChurch: '⛪ 周报功能'
+            },
+            ja: {
+                election: '選挙公報', church: '教会週報', lecture: '講義資料',
+                newsletter: 'ニュースレター', catalog: 'カタログ',
+                headerElection: 'PDFをアップロードしてモバイル最適化ページを自動生成',
+                headerChurch: 'PDFをアップロードしてモバイル最適化ページを自動生成',
+                uploadElection: '選挙PDFをここにドラッグ',
+                uploadChurch: '教会週報PDFをここにドラッグ',
+                systemReady: 'システム準備完了', converting: '変換中...',
+                complete: '完了!', selectPdf: 'PDFを選択してください',
+                featuresElection: '🗳️ 機能', featuresChurch: '⛪ 週報機能'
+            },
+            id: {
+                election: 'Brosur Pemilu', church: 'Buletin Gereja', lecture: 'Materi Kuliah',
+                newsletter: 'Buletin', catalog: 'Katalog',
+                headerElection: 'Unggah PDF untuk membuat halaman mobile-optimized',
+                headerChurch: 'Unggah PDF untuk membuat halaman mobile-optimized',
+                uploadElection: 'Seret PDF pemilu ke sini',
+                uploadChurch: 'Seret PDF buletin gereja ke sini',
+                systemReady: 'Sistem Siap', converting: 'Mengonversi...',
+                complete: 'Selesai!', selectPdf: 'Pilih PDF',
+                featuresElection: '🗳️ Fitur', featuresChurch: '⛪ Fitur Buletin'
+            },
+            es: {
+                election: 'Folleto Electoral', church: 'Boletín de Iglesia', lecture: 'Material de Clase',
+                newsletter: 'Boletín', catalog: 'Catálogo',
+                headerElection: 'Sube PDF para generar páginas optimizadas para móviles',
+                headerChurch: 'Sube PDF para generar páginas optimizadas para móviles',
+                uploadElection: 'Arrastra el PDF electoral aquí',
+                uploadChurch: 'Arrastra el PDF del boletín aquí',
+                systemReady: 'Sistema Listo', converting: 'Convirtiendo...',
+                complete: '¡Completado!', selectPdf: 'Selecciona PDF',
+                featuresElection: '🗳️ Funciones', featuresChurch: '⛪ Funciones del Boletín'
+            },
+            ru: {
+                election: 'Избирательная брошюра', church: 'Церковный бюллетень', lecture: 'Учебные материалы',
+                newsletter: 'Информационный бюллетень', catalog: 'Каталог',
+                headerElection: 'Загрузите PDF для автоматического создания мобильных страниц',
+                headerChurch: 'Загрузите PDF для автоматического создания мобильных страниц',
+                uploadElection: 'Перетащите PDF сюда',
+                uploadChurch: 'Перетащите PDF бюллетеня сюда',
+                systemReady: 'Система готова', converting: 'Конвертация...',
+                complete: 'Готово!', selectPdf: 'Выберите PDF',
+                featuresElection: '🗳️ Функции', featuresChurch: '⛪ Функции бюллетеня'
+            },
+            fr: {
+                election: 'Brochure Électorale', church: 'Bulletin d\'Église', lecture: 'Matériel de Cours',
+                newsletter: 'Bulletin', catalog: 'Catalogue',
+                headerElection: 'Téléchargez un PDF pour générer des pages optimisées mobile',
+                headerChurch: 'Téléchargez un PDF pour générer des pages optimisées mobile',
+                uploadElection: 'Glissez le PDF électoral ici',
+                uploadChurch: 'Glissez le PDF du bulletin ici',
+                systemReady: 'Système Prêt', converting: 'Conversion...',
+                complete: 'Terminé!', selectPdf: 'Sélectionnez PDF',
+                featuresElection: '🗳️ Fonctionnalités', featuresChurch: '⛪ Fonctionnalités du Bulletin'
+            }
+        };
+
+        let currentLanguage = 'ko';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('preferredLanguage', lang);
+            applyTranslations();
+        }
+
+        function applyTranslations() {
+            const t = translations[currentLanguage];
+            // 모드 버튼 텍스트
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (t[key]) el.textContent = t[key];
+            });
+            // 헤더
+            const headerKey = currentMode === 'church' ? 'headerChurch' : 'headerElection';
+            document.getElementById('headerTitle').textContent = t[headerKey];
+            // 업로드 타이틀
+            const uploadKey = currentMode === 'church' ? 'uploadChurch' : 'uploadElection';
+            document.getElementById('uploadTitle').textContent = t[uploadKey];
+            // 상태
+            document.getElementById('statusText').textContent = t.systemReady;
+            // 기능 타이틀
+            const featKey = currentMode === 'church' ? 'featuresChurch' : 'featuresElection';
+            document.getElementById('featuresTitle').textContent = t[featKey];
+        }
+
+        // 저장된 언어 불러오기
+        const savedLang = localStorage.getItem('preferredLanguage');
+        if (savedLang) {
+            currentLanguage = savedLang;
+            document.getElementById('languageSelect').value = savedLang;
+            applyTranslations();
+        }
+
+        // ==================== 모드 관리 ====================
+        let currentMode = 'election';  // 'election' 또는 'church'
+        let selectedChurch = '';
+        let selectedChurchTheme = 'default';
+        let bulletinDate = '';
+
+        function switchMode(mode) {
+            // 전용 페이지로 리다이렉트
+            if (mode === 'lecture') {
+                window.location.href = '/static/lecture-converter.html';
+                return;
+            }
+            if (mode === 'newsletter') {
+                window.location.href = '/static/newsletter-converter.html';
+                return;
+            }
+            if (mode === 'catalog') {
+                window.location.href = '/static/catalog-converter.html';
+                return;
+            }
+
+            currentMode = mode;
+
+            // 탭 활성화
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.mode === mode) {
+                    tab.classList.add('active');
+                }
+            });
+
+            // Body 클래스 전환
+            document.body.classList.toggle('church-mode', mode === 'church');
+
+            // 텍스트 업데이트
+            const t = translations[currentLanguage];
+            if (mode === 'church') {
+                document.getElementById('headerTitle').textContent = t.headerChurch;
+                document.getElementById('uploadIcon').textContent = '⛪';
+                document.getElementById('uploadTitle').textContent = t.uploadChurch;
+                document.getElementById('featuresTitle').textContent = t.featuresChurch;
+            } else {
+                document.getElementById('headerTitle').textContent = t.headerElection;
+                document.getElementById('uploadIcon').textContent = '📄';
+                document.getElementById('uploadTitle').textContent = t.uploadElection;
+                document.getElementById('featuresTitle').textContent = t.featuresElection;
+            }
+
+            // 선거/교회 전용 UI 토글
+            document.querySelector('.save-path-section').style.display = mode === 'election' ? 'block' : 'none';
+            document.getElementById('churchOptions').classList.toggle('show', mode === 'church');
+            document.getElementById('partySection').style.display = mode === 'election' ? 'block' : 'none';
+            document.getElementById('churchStyleSection').style.display = mode === 'church' ? 'block' : 'none';
+
+            // 파일 초기화
+            selectedFiles = [];
+            renderFileList();
+            updateConvertButton();
+
+            // 교회 모드일 때 교회 목록 로드
+            if (mode === 'church') {
+                loadExistingChurches();
+                // 오늘 날짜를 기본값으로
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('bulletinDate').value = today;
+                bulletinDate = today;
+            }
+        }
+
+        // ==================== 교회 관련 함수 ====================
+        async function loadExistingChurches() {
+            try {
+                const response = await fetch('/api/files/outputs/Church');
+                const data = await response.json();
+
+                const churchList = document.getElementById('existingChurchList');
+                const churchSelect = document.getElementById('churchSelect');
+
+                if (data.success && data.folders && data.folders.length > 0) {
+                    // 교회 목록 그리드
+                    churchList.innerHTML = data.folders.map(folder => `
+                        <div class="church-preset" data-church="${folder.name}" onclick="selectChurchPreset('${folder.name}')">
+                            <div class="church-preset-name">⛪ ${folder.name}</div>
+                            <div class="church-preset-style">${folder.file_count}개 주보</div>
+                        </div>
+                    `).join('');
+
+                    // 셀렉트 박스 옵션 추가
+                    churchSelect.innerHTML = `
+                        <option value="">-- 교회 선택 또는 새로 입력 --</option>
+                        ${data.folders.map(f => `<option value="${f.name}">${f.name}</option>`).join('')}
+                        <option value="new">➕ 새 교회 추가</option>
+                    `;
+                } else {
+                    churchList.innerHTML = '<span style="color: #999; font-size: 0.85em;">아직 등록된 교회가 없습니다</span>';
+                }
+            } catch (e) {
+                console.error('교회 목록 로드 실패:', e);
+                document.getElementById('existingChurchList').innerHTML = '<span style="color: #999;">로드 실패</span>';
+            }
+        }
+
+        function onChurchSelect() {
+            const value = document.getElementById('churchSelect').value;
+            const newChurchInput = document.getElementById('newChurchName');
+
+            if (value === 'new') {
+                newChurchInput.style.display = 'block';
+                newChurchInput.focus();
+                selectedChurch = '';
+            } else {
+                newChurchInput.style.display = 'none';
+                selectedChurch = value;
+            }
+
+            // 프리셋 선택 해제
+            document.querySelectorAll('.church-preset').forEach(p => p.classList.remove('selected'));
+
+            updateChurchPreview();
+        }
+
+        function selectChurchPreset(churchName) {
+            selectedChurch = churchName;
+            document.getElementById('churchSelect').value = churchName;
+            document.getElementById('newChurchName').style.display = 'none';
+
+            // UI 선택 표시
+            document.querySelectorAll('.church-preset').forEach(p => {
+                p.classList.toggle('selected', p.dataset.church === churchName);
+            });
+
+            updateChurchPreview();
+        }
+
+        function selectChurchTheme(theme) {
+            selectedChurchTheme = theme;
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.theme === theme);
+            });
+        }
+
+        function updateChurchPreview() {
+            const newChurchInput = document.getElementById('newChurchName');
+            const churchName = document.getElementById('churchSelect').value === 'new'
+                ? newChurchInput.value.trim()
+                : selectedChurch;
+
+            const dateValue = document.getElementById('bulletinDate').value;
+            bulletinDate = dateValue;
+
+            const preview = document.getElementById('churchFolderPreview');
+            const pathPreview = document.getElementById('churchPathPreview');
+
+            if (churchName && dateValue) {
+                preview.style.display = 'block';
+                pathPreview.textContent = `outputs/Church/${churchName}/${dateValue}.html`;
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        // 새 교회명 입력 시
+        document.getElementById('newChurchName')?.addEventListener('input', updateChurchPreview);
 
         // 폴더 선택 이벤트
         document.querySelectorAll('.folder-option').forEach(option => {
@@ -999,12 +1668,34 @@
             if (selectedFiles.length > 0) {
                 convertBtn.disabled = false;
                 convertBtn.className = 'convert-btn ready';
-                convertBtn.innerHTML = `<span>🚀 ${selectedFiles.length}개 파일 자동 변환 시작</span>`;
+                if (currentMode === 'church') {
+                    convertBtn.innerHTML = `<span>⛪ 주보 자동 변환 시작</span>`;
+                } else {
+                    convertBtn.innerHTML = `<span>🚀 ${selectedFiles.length}개 파일 자동 변환 시작</span>`;
+                }
             } else {
                 convertBtn.disabled = true;
                 convertBtn.className = 'convert-btn disabled';
-                convertBtn.innerHTML = '<span>📄 PDF를 선택해주세요</span>';
+                if (currentMode === 'church') {
+                    convertBtn.innerHTML = '<span>⛪ 주보 PDF를 선택해주세요</span>';
+                } else {
+                    convertBtn.innerHTML = '<span>📄 PDF를 선택해주세요</span>';
+                }
             }
+        }
+
+        // 절기 테마 이름 반환
+        function getThemeName(theme) {
+            const themeNames = {
+                'default': '일반',
+                'advent': '🕯️ 대림절',
+                'christmas': '🎄 성탄절',
+                'lent': '✝️ 사순절',
+                'easter': '🌸 부활절',
+                'pentecost': '🔥 성령강림절',
+                'harvest': '🌾 추수감사절'
+            };
+            return themeNames[theme] || theme || '일반';
         }
 
         function formatFileSize(bytes) {
@@ -1039,11 +1730,14 @@
             try {
                 let result;
 
-                if (selectedFiles.length === 1) {
-                    // 단일 파일 변환
+                if (currentMode === 'church') {
+                    // 교회 주보 변환
+                    result = await convertChurchBulletin(selectedFiles[0]);
+                } else if (selectedFiles.length === 1) {
+                    // 단일 파일 변환 (선거)
                     result = await convertSingle(selectedFiles[0]);
                 } else {
-                    // 일괄 변환
+                    // 일괄 변환 (선거)
                     result = await convertBatch(selectedFiles);
                 }
 
@@ -1061,6 +1755,50 @@
                 updateConvertButton();
             }
         });
+
+        // 교회 주보 변환 함수
+        async function convertChurchBulletin(file) {
+            const newChurchInput = document.getElementById('newChurchName');
+            const churchName = document.getElementById('churchSelect').value === 'new'
+                ? newChurchInput.value.trim()
+                : selectedChurch;
+
+            if (!churchName) {
+                throw new Error('교회명을 선택하거나 입력해주세요.');
+            }
+
+            if (!bulletinDate) {
+                throw new Error('주보 날짜를 선택해주세요.');
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('church_name', churchName);
+            formData.append('bulletin_date', bulletinDate);
+            formData.append('theme', selectedChurchTheme);
+
+            progressFill.style.width = '30%';
+            progressText.textContent = '주보 내용 분석 중...';
+
+            await new Promise(r => setTimeout(r, 500));
+            progressFill.style.width = '50%';
+            progressText.textContent = '예배 순서 추출 중...';
+
+            const response = await fetch('/api/church-convert', {
+                method: 'POST',
+                body: formData
+            });
+
+            progressFill.style.width = '80%';
+            progressText.textContent = 'HTML 생성 중...';
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || '주보 변환 실패');
+            }
+
+            return await response.json();
+        }
 
         async function convertSingle(file) {
             const formData = new FormData();
@@ -1129,8 +1867,34 @@
             const downloadBtn = document.getElementById('downloadBtn');
             const downloadFolderBtn = document.getElementById('downloadFolderBtn');
 
-            if (data.result) {
-                // 단일 파일 결과
+            // 교회 주보 결과
+            if (data.church_name || data.bulletin_date) {
+                resultInfo.innerHTML = `
+                    <div class="result-item">
+                        <div class="label">교회</div>
+                        <div class="value">⛪ ${data.church_name || '변환됨'}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">날짜</div>
+                        <div class="value">${data.bulletin_date || ''}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">절기</div>
+                        <div class="value">${getThemeName(data.theme) || '일반'}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">페이지</div>
+                        <div class="value">${data.page_count || 0}페이지</div>
+                    </div>
+                `;
+
+                previewBtn.href = data.url;
+                downloadBtn.href = data.url;
+                downloadBtn.download = data.filename;
+                downloadFolderBtn.style.display = 'none';
+            }
+            // 선거 단일 파일 결과
+            else if (data.result) {
                 const result = data.result;
                 resultInfo.innerHTML = `
                     <div class="result-item">

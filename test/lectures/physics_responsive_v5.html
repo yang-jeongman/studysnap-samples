@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#0EA5E9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>플래시카드 버튼 수정 v5 | StudySnap</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    
+    
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0EA5E9;
+            --secondary: #38BDF8;
+            --accent: #BAE6FD;
+            --gradient: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%);
+            --bg-color: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --border-color: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        .dark-mode {
+            --bg-color: #0F172A;
+            --bg-secondary: #1E293B;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --border-color: #334155;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.8;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+
+        /* ========== 진행률 바 ========== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--gradient);
+            width: 0%;
+            z-index: 1001;
+            transition: width 0.15s ease-out;
+        }
+
+        /* ========== 고정 네비게이션 바 ========== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--primary);
+        }
+
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ========== 그라디언트 헤더 ========== */
+        .hero-header {
+            background: var(--gradient);
+            padding: 80px 20px 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.95em;
+            opacity: 0.95;
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ========== 퀵 액션 버튼 ========== */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 20px;
+            max-width: 800px;
+            margin: -30px auto 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .action-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .action-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 1.3em;
+        }
+
+        .action-label {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ========== 메인 컨테이너 ========== */
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ========== 접이식 목차 ========== */
+        .toc-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .toc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toc-header:hover {
+            background: rgba(0,0,0,0.02);
+        }
+
+        .toc-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toc-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .toc-title {
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+
+        .toc-count {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        .toc-toggle {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+
+        .toc-section.collapsed .toc-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .toc-content {
+            max-height: 400px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .toc-section.collapsed .toc-content {
+            max-height: 0;
+        }
+
+        .toc-list {
+            padding: 0 20px 20px;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            background: var(--bg-color);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .toc-item:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .toc-item-number {
+            width: 28px;
+            height: 28px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .toc-item-title {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        /* ========== 챕터 섹션 ========== */
+        .chapter-section {
+            background: var(--bg-color);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .chapter-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chapter-number {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .chapter-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .bookmark-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-secondary);
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bookmark-btn:hover, .bookmark-btn.active {
+            background: #FEF3C7;
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        .chapter-content {
+            padding: 16px 20px;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        .content-text {
+            line-height: 1.9;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: keep-all;
+            color: var(--text-primary);
+        }
+
+        .content-text p {
+            margin-bottom: 16px;
+        }
+
+        /* ========== 리스트 스타일 ========== */
+        .content-list {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .content-list li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+            position: relative;
+        }
+
+        ul.content-list {
+            list-style: none;
+        }
+
+        ul.content-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: -18px;
+        }
+
+        ol.content-list {
+            list-style: decimal;
+        }
+
+        ol.content-list li::marker {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ========== 블록 인용문 스타일 ========== */
+        .quote-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .quote-box p {
+            margin: 0;
+        }
+
+        /* ========== 특별 박스 스타일 ========== */
+        .info-box {
+            border-radius: 14px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .key-concept-box {
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            border-left: 4px solid #6366F1;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+            border-left: 4px solid #10B981;
+        }
+
+        .important-box {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid #F59E0B;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            border-left: 4px solid #EF4444;
+        }
+
+        .box-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ========== 수식 스타일 ========== */
+        .equation-block {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* MathJax 수식 오버플로우 방지 */
+        .MathJax {
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            max-width: 100% !important;
+        }
+
+        mjx-container {
+            overflow-x: auto !important;
+            max-width: 100% !important;
+            padding: 4px 0;
+        }
+
+        /* ========== 코드 블록 ========== */
+        .code-block {
+            margin: 20px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #1E293B;
+        }
+
+        .code-header {
+            background: #334155;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-lang {
+            color: #94A3B8;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background: rgba(255,255,255,0.1);
+            color: #E2E8F0;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #E2E8F0;
+        }
+
+        /* ========== 표 스타일 ========== */
+        .table-container {
+            margin: 24px 0;
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        .data-table th {
+            background: var(--gradient);
+            color: white;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-color);
+        }
+
+        .data-table tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        /* ========== 이미지 ========== */
+        .image-container {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 14px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .image-caption {
+            margin-top: 12px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* ========== 핵심 개념 태그 ========== */
+        .key-concepts-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .concepts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .concept-tag {
+            background: var(--bg-color);
+            color: var(--primary);
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .concept-tag:hover {
+            background: var(--accent);
+            border-color: var(--primary);
+        }
+
+        /* ========== 플래시카드 ========== */
+        .flashcards-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .flashcards-container {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scroll-snap-type: x mandatory;
+        }
+
+        .flashcard {
+            min-width: 300px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            scroll-snap-align: center;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .flashcard-front {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .flashcard-back {
+            background: var(--bg-color);
+            border: 2px solid var(--primary);
+            color: var(--text-primary);
+            transform: rotateY(180deg);
+        }
+
+        .card-content {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .card-hint {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-top: 12px;
+        }
+
+        .flashcard-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.2s;
+            min-width: 60px;
+            white-space: nowrap;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .card-counter {
+            font-weight: 700;
+            font-size: 1em;
+            color: var(--text-secondary);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        /* ========== 퀴즈 ========== */
+        .quiz-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-question {
+            background: var(--bg-color);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .question-text {
+            font-size: 1.05em;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .q-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .answer-input {
+            display: flex;
+            gap: 12px;
+        }
+
+        .quiz-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1em;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+
+        .quiz-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .check-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .result-text {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .result-text.correct {
+            background: #ECFDF5;
+            color: #059669;
+        }
+
+        .result-text.incorrect {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        /* ========== 하단 고정 네비게이션 ========== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: var(--bg-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .bottom-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.75em;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .bottom-nav-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--primary);
+        }
+
+        .bottom-nav-btn .icon {
+            font-size: 1.5em;
+        }
+
+        /* ========== 푸터 ========== */
+        .lecture-footer {
+            text-align: center;
+            padding: 40px 20px 100px;
+            color: var(--text-secondary);
+        }
+
+        .footer-logo {
+            font-size: 1.4em;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .footer-tagline {
+            font-size: 0.9em;
+            margin-bottom: 16px;
+        }
+
+        .footer-meta {
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+
+        /* ========== PC 최적화 (1024px 이상) ========== */
+        @media (min-width: 1024px) {
+            .main-container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 24px 40px;
+            }
+
+            .chapter-section {
+                margin-bottom: 20px;
+            }
+
+            .chapter-header {
+                padding: 14px 24px;
+            }
+
+            .chapter-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1.15em;
+            }
+
+            .chapter-title {
+                font-size: 1.15em;
+            }
+
+            .flashcard-container {
+                gap: 20px;
+            }
+
+            .flashcard {
+                min-width: 320px;
+                height: 220px;
+            }
+
+            .flashcard-controls {
+                gap: 24px;
+                margin-top: 16px;
+            }
+
+            .control-btn {
+                padding: 12px 28px;
+                font-size: 1em;
+            }
+
+            .quiz-question {
+                padding: 24px;
+            }
+        }
+
+        /* ========== 태블릿 (768px ~ 1023px) ========== */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .main-container {
+                padding: 20px 24px;
+            }
+
+            .flashcard {
+                min-width: 280px;
+                height: 200px;
+            }
+        }
+
+        /* ========== 모바일 (768px 미만) ========== */
+        @media (max-width: 767px) {
+            .hero-header {
+                padding: 60px 16px 24px;
+            }
+
+            .hero-title {
+                font-size: 1.4em;
+            }
+
+            .hero-meta {
+                font-size: 0.85em;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 12px;
+                margin-top: -16px;
+                gap: 8px;
+            }
+
+            .action-btn {
+                padding: 12px 8px;
+            }
+
+            .action-icon {
+                font-size: 1.3em;
+            }
+
+            .action-label {
+                font-size: 0.8em;
+            }
+
+            .main-container {
+                padding: 12px;
+            }
+
+            .chapter-section {
+                border-radius: 12px;
+                margin-bottom: 12px;
+            }
+
+            .chapter-header {
+                padding: 10px 14px;
+            }
+
+            .chapter-header-left {
+                gap: 10px;
+            }
+
+            .chapter-number {
+                width: 32px;
+                height: 32px;
+                font-size: 1em;
+                border-radius: 8px;
+            }
+
+            .chapter-title {
+                font-size: 1em;
+            }
+
+            .bookmark-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9em;
+            }
+
+            .chapter-content {
+                padding: 14px;
+            }
+
+            .content-text {
+                font-size: 0.95em;
+                line-height: 1.8;
+            }
+
+            .flashcard-container {
+                gap: 12px;
+            }
+
+            .flashcard {
+                min-width: 240px;
+                height: 160px;
+            }
+
+            .card-content {
+                font-size: 1em;
+            }
+
+            .flashcard-controls {
+                gap: 12px;
+                margin-top: 10px;
+            }
+
+            .control-btn {
+                padding: 8px 16px;
+                font-size: 0.9em;
+                min-width: 50px;
+            }
+
+            .card-counter {
+                font-size: 0.9em;
+            }
+
+            .quiz-section {
+                padding: 14px;
+                border-radius: 12px;
+            }
+
+            .quiz-question {
+                padding: 14px;
+                border-radius: 10px;
+            }
+
+            .question-text {
+                font-size: 0.95em;
+            }
+
+            .quiz-input {
+                padding: 12px 14px;
+                font-size: 0.95em;
+            }
+
+            .answer-input {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .info-box {
+                padding: 14px;
+                margin: 14px 0;
+            }
+
+            .equation-block {
+                padding: 14px;
+                margin: 14px 0;
+            }
+
+            .code-block {
+                margin: 14px 0;
+                border-radius: 10px;
+            }
+
+            .toc-section {
+                border-radius: 12px;
+            }
+
+            .toc-header {
+                padding: 14px 16px;
+            }
+
+            .toc-content {
+                padding: 12px;
+            }
+
+            /* 테이블 반응형 - 모바일 */
+            .table-container {
+                margin: 12px 0;
+                border-radius: 10px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .data-table {
+                min-width: 100%;
+                font-size: 0.85em;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px 12px;
+                white-space: nowrap;
+            }
+
+            /* 작은 화면에서 테이블 세로 배치 옵션 */
+            .table-responsive-stack .data-table,
+            .table-responsive-stack .data-table thead,
+            .table-responsive-stack .data-table tbody,
+            .table-responsive-stack .data-table th,
+            .table-responsive-stack .data-table td,
+            .table-responsive-stack .data-table tr {
+                display: block;
+            }
+
+            .table-responsive-stack .data-table thead {
+                display: none;
+            }
+
+            .table-responsive-stack .data-table tr {
+                margin-bottom: 12px;
+                border: 1px solid var(--border-color);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .table-responsive-stack .data-table td {
+                text-align: left;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border-color);
+                position: relative;
+            }
+
+            .table-responsive-stack .data-table td:before {
+                content: attr(data-label);
+                font-weight: 700;
+                color: var(--primary);
+                display: block;
+                margin-bottom: 4px;
+                font-size: 0.85em;
+            }
+
+            .table-responsive-stack .data-table td:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* ========== 작은 모바일 (480px 미만) ========== */
+        @media (max-width: 479px) {
+            .hero-header {
+                padding: 55px 12px 20px;
+            }
+
+            .hero-title {
+                font-size: 1.25em;
+            }
+
+            .quick-actions {
+                padding: 10px;
+            }
+
+            .main-container {
+                padding: 10px;
+            }
+
+            .chapter-header {
+                padding: 8px 12px;
+            }
+
+            .chapter-number {
+                width: 28px;
+                height: 28px;
+                font-size: 0.9em;
+            }
+
+            .chapter-title {
+                font-size: 0.95em;
+            }
+
+            .chapter-content {
+                padding: 12px;
+            }
+
+            .flashcard {
+                min-width: 200px;
+                height: 140px;
+            }
+
+            .control-btn {
+                padding: 7px 14px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 진행률 바 -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- 상단 고정 네비게이션 -->
+    <nav class="top-nav">
+        <div class="nav-logo">
+            <div class="nav-logo-icon">⚛️</div>
+            <span>StudySnap</span>
+        </div>
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="changeFontSize(-1)" title="글자 작게">A-</button>
+            <button class="nav-btn" onclick="changeFontSize(1)" title="글자 크게">A+</button>
+            <button class="nav-btn" onclick="toggleDarkMode()" title="다크모드" id="darkModeBtn">🌙</button>
+            <button class="nav-btn" onclick="sharePage()" title="공유">📤</button>
+        </div>
+    </nav>
+
+    <!-- 그라디언트 헤더 -->
+    <header class="hero-header">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>⚛️</span>
+                <span>물리학</span>
+            </div>
+            <h1 class="hero-title">플래시카드 버튼 수정 v5</h1>
+            <div class="hero-meta">
+                <span class="hero-meta-item">📄 2페이지</span>
+                <span class="hero-meta-item">📚 4섹션</span>
+                
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- 퀵 액션 버튼 -->
+    <div class="quick-actions">
+        <div class="action-btn" onclick="scrollToTOC()">
+            <div class="action-icon">📋</div>
+            <div class="action-label">목차</div>
+        </div>
+        <div class="action-btn" onclick="scrollToFlashcards()">
+            <div class="action-icon">📇</div>
+            <div class="action-label">플래시카드</div>
+        </div>
+        <div class="action-btn" onclick="scrollToQuiz()">
+            <div class="action-icon">📝</div>
+            <div class="action-label">퀴즈</div>
+        </div>
+        <div class="action-btn" onclick="printPage()">
+            <div class="action-icon">🖨️</div>
+            <div class="action-label">인쇄</div>
+        </div>
+    </div>
+
+    <!-- 메인 컨테이너 -->
+    <main class="main-container">
+        <!-- 접이식 목차 -->
+        
+        <div class="toc-section" id="tocSection">
+            <div class="toc-header" onclick="toggleTOCContent()">
+                <div class="toc-header-left">
+                    <div class="toc-icon">📋</div>
+                    <div>
+                        <div class="toc-title">목차</div>
+                        <div class="toc-count">4개 섹션</div>
+                    </div>
+                </div>
+                <div class="toc-toggle" id="tocToggle">▼</div>
+            </div>
+            <div class="toc-content" id="tocContent">
+                <div class="toc-list">
+                    
+                    <a href="#chapter-0" class="toc-item">
+                        <div class="toc-item-number">1</div>
+                        <div class="toc-item-title">제1장: 뉴턴의 운동법칙</div>
+                    </a>
+                
+
+                    <a href="#chapter-1" class="toc-item">
+                        <div class="toc-item-number">2</div>
+                        <div class="toc-item-title">1.1 제1법칙 (관성의 법칙)</div>
+                    </a>
+                
+
+                    <a href="#chapter-2" class="toc-item">
+                        <div class="toc-item-number">3</div>
+                        <div class="toc-item-title">제2장: 에너지</div>
+                    </a>
+                
+
+                    <a href="#chapter-3" class="toc-item">
+                        <div class="toc-item-number">4</div>
+                        <div class="toc-item-title">2.1 일(Work)의 정의</div>
+                    </a>
+                
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- 핵심 개념 -->
+        
+        <div class="key-concepts-section">
+            <h3 class="section-header">💡 핵심 개념</h3>
+            <div class="concepts-container">
+                <span class="concept-tag">🔑 핵심 개념:</span>
+            </div>
+        </div>
+        
+
+        <!-- 메인 콘텐츠 (챕터들) -->
+        
+                <section class="chapter-section" id="chapter-0" data-chapter="0">
+                    <div class="chapter-header">
+                        <div class="chapter-header-left">
+                            <div class="chapter-number">1</div>
+                            <div class="chapter-title">제1장: 뉴턴의 운동법칙</div>
+                        </div>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 0)" title="북마크">🔖</button>
+                    </div>
+                    <div class="chapter-content">
+                        <div class="content-text">
+                            
+                        </div>
+                    </div>
+                </section>
+                
+
+                <section class="chapter-section sub-chapter" id="chapter-1" data-chapter="1">
+                    <div class="chapter-header">
+                        <div class="chapter-header-left">
+                            <div class="chapter-number" style="font-size: 1em; width: 40px; height: 40px;">1.1</div>
+                            <div class="chapter-title" style="font-size: 1.1em;">1.1 제1법칙 (관성의 법칙)</div>
+                        </div>
+                    </div>
+                    <div class="chapter-content">
+                        <div class="content-text">
+                            <p>**핵심 개념:**</p>
+<ul class="content-list"><li>관성: 물체가 현재 운동 상태를 유지하려는 성질</li><li>관성 기준계: 뉴턴의 법칙이 성립하는 좌표계</li></ul>
+<div class="table-container"><table class="data-table"><thead><tr><th>작용</th><th>반작용</th><th>적용 대상</th></tr></thead><tbody><tr><td>지구가 사과를 당김</td><td>사과가 지구를 당김</td><td>중력</td></tr><tr><td>책상이 책을 밂</td><td>책이 책상을 누름</td><td>수직항력</td></tr></tbody></table></div>
+                        </div>
+                    </div>
+                </section>
+                
+
+                <section class="chapter-section" id="chapter-2" data-chapter="2">
+                    <div class="chapter-header">
+                        <div class="chapter-header-left">
+                            <div class="chapter-number">2</div>
+                            <div class="chapter-title">제2장: 에너지</div>
+                        </div>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 2)" title="북마크">🔖</button>
+                    </div>
+                    <div class="chapter-content">
+                        <div class="content-text">
+                            
+                        </div>
+                    </div>
+                </section>
+                
+
+                <section class="chapter-section sub-chapter" id="chapter-3" data-chapter="3">
+                    <div class="chapter-header">
+                        <div class="chapter-header-left">
+                            <div class="chapter-number" style="font-size: 1em; width: 40px; height: 40px;">2.1</div>
+                            <div class="chapter-title" style="font-size: 1.1em;">2.1 일(Work)의 정의</div>
+                        </div>
+                    </div>
+                    <div class="chapter-content">
+                        <div class="content-text">
+                            <div class="table-container"><table class="data-table"><thead><tr><th>구분</th><th>예시</th><th>특징</th></tr></thead><tbody><tr><td>보존력</td><td>중력</td><td>에너지 보존</td></tr><tr><td>비보존력</td><td>마찰력</td><td>에너지 손실</td></tr></tbody></table></div>
+                        </div>
+                    </div>
+                </section>
+                
+
+        <!-- 표 -->
+        <div class="table-container"><table class="data-table"><thead><tr><th>작용</th><th>반작용</th><th>적용 대상</th></tr></thead><tbody><tr><td>지구가 사과를 당김</td><td>사과가 지구를 당김</td><td>중력</td></tr><tr><td>책상이 책을 밂</td><td>책이 책상을 누름</td><td>수직항력</td></tr></tbody></table></div><div class="table-container"><table class="data-table"><thead><tr><th>구분</th><th>예시</th><th>특징</th></tr></thead><tbody><tr><td>보존력</td><td>중력</td><td>에너지 보존</td></tr><tr><td>비보존력</td><td>마찰력</td><td>에너지 손실</td></tr></tbody></table></div>
+
+        <!-- 이미지 -->
+        
+
+        <!-- 플래시카드 -->
+        
+        <div class="flashcards-section">
+            <h3 class="section-header">📇 플래시카드 (5개)</h3>
+            <div class="flashcards-container">
+                
+                <div class="flashcard" data-index="0" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="card-content">'핵심 개념:'의 의미는?</div>
+                            <div class="card-hint">클릭하여 뒤집기</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-content">이 강의의 핵심 개념입니다.</div>
+                        </div>
+                    </div>
+                </div>
+             
+                <div class="flashcard" data-index="1" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="card-content">'제1장: 뉴턴의 운동법칙' 섹션의 핵심은?</div>
+                            <div class="card-hint">클릭하여 뒤집기</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-content">해당 섹션의 주요 내용을 복습하세요.</div>
+                        </div>
+                    </div>
+                </div>
+             
+                <div class="flashcard" data-index="2" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="card-content">'1.1 제1법칙 (관성의 법칙)' 섹션의 핵심은?</div>
+                            <div class="card-hint">클릭하여 뒤집기</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-content">해당 섹션의 주요 내용을 복습하세요.</div>
+                        </div>
+                    </div>
+                </div>
+             
+                <div class="flashcard" data-index="3" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="card-content">'제2장: 에너지' 섹션의 핵심은?</div>
+                            <div class="card-hint">클릭하여 뒤집기</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-content">해당 섹션의 주요 내용을 복습하세요.</div>
+                        </div>
+                    </div>
+                </div>
+             
+                <div class="flashcard" data-index="4" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="card-content">'2.1 일(Work)의 정의' 섹션의 핵심은?</div>
+                            <div class="card-hint">클릭하여 뒤집기</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="card-content">해당 섹션의 주요 내용을 복습하세요.</div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            <div class="flashcard-controls">
+                <button onclick="prevCard()" class="nav-btn">◀ 이전</button>
+                <span class="card-counter">1 / 5</span>
+                <button onclick="nextCard()" class="nav-btn">다음 ▶</button>
+            </div>
+        </div>
+        
+
+        <!-- 퀴즈 -->
+        
+        <div class="quiz-section">
+            <h3 class="section-header">📝 퀴즈 (4문제)</h3>
+            <div class="quiz-container">
+                
+                <div class="quiz-question" data-id="1" data-answer="O">
+                    <div class="question-text">
+                        <span class="q-number">Q1.</span>
+                        '핵심 개념:'은(는) 이 강의의 핵심 개념이다. (O/X)
+                    </div>
+                    <div class="answer-input">
+                        <input type="text" placeholder="답을 입력하세요" class="quiz-input">
+                        <button onclick="checkAnswer(this)" class="check-btn">확인</button>
+                    </div>
+                    <div class="hint-text" style="display: none;">힌트: 핵심 개념...</div>
+                    <div class="result-text"></div>
+                </div>
+             
+                <div class="quiz-question" data-id="2" data-answer="제1장: 뉴턴의 운동법칙">
+                    <div class="question-text">
+                        <span class="q-number">Q2.</span>
+                        '제1장: 뉴턴의 운동법칙' 섹션의 주요 내용을 한 문장으로 요약하시오.
+                    </div>
+                    <div class="answer-input">
+                        <input type="text" placeholder="답을 입력하세요" class="quiz-input">
+                        <button onclick="checkAnswer(this)" class="check-btn">확인</button>
+                    </div>
+                    <div class="hint-text" style="display: none;">힌트: 제1장: 뉴턴의 운동법칙에 대해...</div>
+                    <div class="result-text"></div>
+                </div>
+             
+                <div class="quiz-question" data-id="3" data-answer="1.1 제1법칙 (관성의 법칙)">
+                    <div class="question-text">
+                        <span class="q-number">Q3.</span>
+                        '1.1 제1법칙 (관성의 법칙)' 섹션의 주요 내용을 한 문장으로 요약하시오.
+                    </div>
+                    <div class="answer-input">
+                        <input type="text" placeholder="답을 입력하세요" class="quiz-input">
+                        <button onclick="checkAnswer(this)" class="check-btn">확인</button>
+                    </div>
+                    <div class="hint-text" style="display: none;">힌트: 1.1 제1법칙 (관성의 법칙)에 대해...</div>
+                    <div class="result-text"></div>
+                </div>
+             
+                <div class="quiz-question" data-id="4" data-answer="제2장: 에너지">
+                    <div class="question-text">
+                        <span class="q-number">Q4.</span>
+                        '제2장: 에너지' 섹션의 주요 내용을 한 문장으로 요약하시오.
+                    </div>
+                    <div class="answer-input">
+                        <input type="text" placeholder="답을 입력하세요" class="quiz-input">
+                        <button onclick="checkAnswer(this)" class="check-btn">확인</button>
+                    </div>
+                    <div class="hint-text" style="display: none;">힌트: 제2장: 에너지에 대해...</div>
+                    <div class="result-text"></div>
+                </div>
+            
+            </div>
+            <div class="quiz-summary" style="display: none;">
+                <div class="score">점수: <span id="quiz-score">0</span> / 4</div>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="lecture-footer">
+        <div class="footer-logo">📖 StudySnap</div>
+        <p class="footer-tagline">AI 기반 스마트 학습 문서 변환</p>
+        <p class="footer-meta">Generated at 2025-12-12 14:28</p>
+    </footer>
+
+    <!-- 하단 고정 네비게이션 -->
+    <nav class="bottom-nav">
+        <button class="bottom-nav-btn" onclick="navigateChapter(-1)">
+            <span class="icon">◀</span>
+            <span>이전</span>
+        </button>
+        <button class="bottom-nav-btn" onclick="scrollToTOC()">
+            <span class="icon">📋</span>
+            <span>목차</span>
+        </button>
+        <button class="bottom-nav-btn" onclick="scrollToTop()">
+            <span class="icon">⬆️</span>
+            <span>맨위</span>
+        </button>
+        <button class="bottom-nav-btn" onclick="navigateChapter(1)">
+            <span class="icon">▶</span>
+            <span>다음</span>
+        </button>
+    </nav>
+
+    <script>
+        // ========== 진행률 바 ==========
+        function updateProgressBar() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = Math.min((scrollTop / docHeight) * 100, 100);
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) progressBar.style.width = progress + '%';
+        }
+        window.addEventListener('scroll', updateProgressBar);
+
+        // ========== 스크롤 함수들 ==========
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToTOC() {
+            const toc = document.getElementById('tocSection');
+            if (toc) {
+                toc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToFlashcards() {
+            const section = document.querySelector('.flashcards-section');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToQuiz() {
+            const section = document.querySelector('.quiz-section');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // ========== 목차 토글 ==========
+        function toggleTOCContent() {
+            const section = document.getElementById('tocSection');
+            const toggle = document.getElementById('tocToggle');
+            if (section.classList.contains('collapsed')) {
+                section.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                section.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // ========== 글자 크기 조절 ==========
+        let currentFontSize = 100;
+        function changeFontSize(delta) {
+            currentFontSize = Math.max(80, Math.min(140, currentFontSize + delta * 10));
+            document.body.style.fontSize = currentFontSize + '%';
+            localStorage.setItem('fontSize', currentFontSize);
+        }
+
+        // ========== 다크 모드 ==========
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+
+            const btn = document.getElementById('darkModeBtn');
+            if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+
+            // Highlight.js 스타일 토글
+            const lightStyle = document.getElementById('hljs-light');
+            const darkStyle = document.getElementById('hljs-dark');
+            if (lightStyle && darkStyle) {
+                lightStyle.disabled = isDark;
+                darkStyle.disabled = !isDark;
+            }
+        }
+
+        // ========== 공유 ==========
+        function sharePage() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('링크가 복사되었습니다!');
+                });
+            }
+        }
+
+        // ========== 인쇄 ==========
+        function printPage() {
+            window.print();
+        }
+
+        // ========== 챕터 네비게이션 ==========
+        let currentChapter = 0;
+        const chapters = document.querySelectorAll('.chapter-section');
+
+        function navigateChapter(delta) {
+            if (chapters.length === 0) return;
+            currentChapter = Math.max(0, Math.min(chapters.length - 1, currentChapter + delta));
+            chapters[currentChapter].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 현재 보이는 챕터 감지
+        function updateCurrentChapter() {
+            const scrollPos = window.scrollY + 200;
+            chapters.forEach((chapter, index) => {
+                const rect = chapter.getBoundingClientRect();
+                if (rect.top + window.scrollY <= scrollPos) {
+                    currentChapter = index;
+                }
+            });
+        }
+        window.addEventListener('scroll', updateCurrentChapter);
+
+        // ========== 북마크 ==========
+        function toggleBookmark(btn, chapterId) {
+            btn.classList.toggle('active');
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            if (btn.classList.contains('active')) {
+                if (!bookmarks.includes(chapterId)) bookmarks.push(chapterId);
+            } else {
+                const idx = bookmarks.indexOf(chapterId);
+                if (idx > -1) bookmarks.splice(idx, 1);
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+
+        // ========== 코드 복사 ==========
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block').querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = '✅ 복사됨!';
+                setTimeout(() => { btn.textContent = originalText; }, 2000);
+            });
+        }
+
+        // ========== 플래시카드 ==========
+        let currentCard = 0;
+        const flashcards = document.querySelectorAll('.flashcard');
+
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        function showCard(index) {
+            flashcards.forEach((card, i) => {
+                card.style.display = i === index ? 'block' : 'none';
+                card.classList.remove('flipped');
+            });
+            const counter = document.querySelector('.card-counter');
+            if (counter) counter.textContent = `${index + 1} / ${flashcards.length}`;
+        }
+
+        function nextCard() {
+            if (flashcards.length > 0) {
+                currentCard = (currentCard + 1) % flashcards.length;
+                showCard(currentCard);
+            }
+        }
+
+        function prevCard() {
+            if (flashcards.length > 0) {
+                currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+                showCard(currentCard);
+            }
+        }
+
+        // ========== 퀴즈 ==========
+        let quizScore = 0;
+        const totalQuestions = document.querySelectorAll('.quiz-question').length;
+
+        function checkAnswer(btn) {
+            const question = btn.closest('.quiz-question');
+            const input = question.querySelector('.quiz-input');
+            const answer = question.dataset.answer;
+            const result = question.querySelector('.result-text');
+
+            const isCorrect = input.value.trim().toLowerCase() === answer.toLowerCase();
+
+            if (isCorrect) {
+                result.textContent = '✅ 정답입니다!';
+                result.className = 'result-text correct';
+                quizScore++;
+            } else {
+                result.textContent = `❌ 오답입니다. 정답: ${answer}`;
+                result.className = 'result-text incorrect';
+            }
+            result.style.display = 'block';
+
+            input.disabled = true;
+            btn.disabled = true;
+
+            // 점수 업데이트
+            const scoreEl = document.getElementById('quiz-score');
+            if (scoreEl) scoreEl.textContent = `${quizScore} / ${totalQuestions}`;
+        }
+
+        // ========== 초기화 ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // 저장된 설정 복원
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+                currentFontSize = parseInt(savedFontSize);
+                document.body.style.fontSize = currentFontSize + '%';
+            }
+
+            const savedDarkMode = localStorage.getItem('darkMode');
+            if (savedDarkMode === 'true') {
+                document.body.classList.add('dark-mode');
+                const btn = document.getElementById('darkModeBtn');
+                if (btn) btn.textContent = '☀️';
+            }
+
+            // 저장된 북마크 복원
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            bookmarks.forEach(id => {
+                const btn = document.querySelector(`[data-chapter="${id}"] .bookmark-btn`);
+                if (btn) btn.classList.add('active');
+            });
+
+            // 플래시카드 초기화
+            if (flashcards.length > 0) {
+                showCard(0);
+            }
+
+            // 진행률 바 초기화
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>

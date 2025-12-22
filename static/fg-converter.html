@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FG Church Bulletin Converter</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #5B2C6F 0%, #4A235A 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .header .church-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #F5D0A9;
+            margin-top: 8px;
+        }
+
+        .trial-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #F39C12, #E67E22);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #5B2C6F;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-area {
+            border: 3px dashed #9B59B6;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #F8F4FC;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #5B2C6F;
+            background: #F0E6F6;
+        }
+
+        .upload-area.has-file {
+            border-color: #27AE60;
+            background: #F0FFF4;
+        }
+
+        .upload-icon { font-size: 4em; margin-bottom: 15px; }
+        .upload-area h3 { font-size: 1.3em; color: #5B2C6F; margin-bottom: 10px; }
+        .upload-area p { color: #7D3C98; font-size: 0.95em; }
+
+        .file-input { display: none; }
+
+        .file-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid #27AE60;
+        }
+
+        .file-info .icon { font-size: 2em; }
+        .file-info .details { flex: 1; text-align: left; }
+        .file-info .name { font-weight: 600; color: #5B2C6F; }
+        .file-info .size { color: #7D3C98; font-size: 0.9em; }
+
+        .file-info .remove {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .settings-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #F8F4FC;
+            border-radius: 12px;
+            border: 1px solid #E8D4F0;
+        }
+
+        .settings-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .settings-row:last-child { margin-bottom: 0; }
+
+        .settings-label {
+            font-weight: 600;
+            color: #5B2C6F;
+            min-width: 100px;
+        }
+
+        .settings-value {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #E8D4F0;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+        }
+
+        .settings-value.fixed {
+            background: #F0E6F6;
+            color: #5B2C6F;
+            font-weight: 600;
+            border-color: #9B59B6;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .theme-option {
+            padding: 12px 8px;
+            border: 2px solid #E8D4F0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .theme-option:hover { border-color: #9B59B6; }
+        .theme-option.selected {
+            border-color: #5B2C6F;
+            background: #F0E6F6;
+        }
+
+        .theme-option .icon { font-size: 1.5em; margin-bottom: 5px; }
+        .theme-option .name { font-size: 0.85em; font-weight: 600; color: #5B2C6F; }
+
+        .convert-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .convert-btn.ready {
+            background: linear-gradient(135deg, #5B2C6F 0%, #9B59B6 100%);
+            color: white;
+        }
+
+        .convert-btn.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(91, 44, 111, 0.4);
+        }
+
+        .convert-btn.disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .convert-btn.loading {
+            background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
+            color: white;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-container.show { display: block; }
+
+        .progress-bar {
+            height: 12px;
+            background: #E8D4F0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5B2C6F, #9B59B6, #5B2C6F);
+            background-size: 200% 100%;
+            animation: progressShine 2s linear infinite;
+            width: 0%;
+            transition: width 0.5s ease-out;
+        }
+
+        @keyframes progressShine {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 12px;
+            color: #5B2C6F;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        .progress-timer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #7D3C98;
+        }
+
+        .progress-timer .elapsed {
+            font-weight: 600;
+        }
+
+        .progress-timer .remaining {
+            font-weight: 500;
+            color: #27AE60;
+        }
+
+        .result-container {
+            display: none;
+        }
+
+        .result-container.show { display: block; }
+
+        .result-success {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .result-success h3 { margin-bottom: 10px; }
+
+        .result-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .result-item .label { font-size: 0.8em; opacity: 0.8; }
+        .result-item .value { font-weight: 600; }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .result-actions a, .result-actions button {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .btn-preview {
+            background: #5B2C6F;
+            color: white;
+        }
+
+        .btn-download {
+            background: #27AE60;
+            color: white;
+        }
+
+        .btn-reset {
+            background: #6c757d;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-clear {
+            background: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .error-container {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error-container.show { display: block; }
+
+        .cache-warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cache-warning h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .cache-warning p {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .cache-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cache-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .license-info {
+            background: linear-gradient(135deg, #E8F8F5 0%, #D5F5E3 100%);
+            border: 2px solid #27AE60;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .license-info .left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .license-info .icon { font-size: 1.5em; }
+        .license-info .text { color: #1E8449; font-weight: 600; }
+        .license-info .days {
+            background: #27AE60;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .theme-grid { grid-template-columns: repeat(2, 1fr); }
+            .result-info { grid-template-columns: 1fr; }
+            .settings-row { flex-direction: column; align-items: stretch; }
+            .settings-label { min-width: auto; margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>FG Church Bulletin Converter</h1>
+            <div class="subtitle">PDF to Interactive Mobile HTML</div>
+            <div class="church-name">Yoido Full Gospel Church</div>
+            <div class="trial-badge">15-Day Trial</div>
+        </div>
+
+        <div class="license-info" id="licenseInfo">
+            <div class="left">
+                <span class="icon">🔑</span>
+                <span class="text">체험판 라이선스</span>
+            </div>
+            <span class="days" id="remainingDays">로딩중...</span>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">📄 주보 PDF 업로드</h2>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📤</div>
+                <h3>여의도순복음교회 주보 PDF를 업로드하세요</h3>
+                <p>클릭하거나 파일을 끌어다 놓으세요</p>
+                <input type="file" class="file-input" id="fileInput" accept=".pdf">
+                <div id="fileList"></div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-row">
+                    <span class="settings-label">⛪ 교회명</span>
+                    <input type="text" class="settings-value fixed" id="churchName" value="여의도순복음교회" readonly>
+                </div>
+                <div class="settings-row">
+                    <span class="settings-label">📅 주보 날짜</span>
+                    <input type="date" class="settings-value" id="bulletinDate">
+                </div>
+                <div>
+                    <span class="settings-label">🎄 절기 테마</span>
+                    <div class="theme-grid" id="themeGrid">
+                        <div class="theme-option selected" data-theme="default" onclick="selectTheme('default')">
+                            <div class="icon">📖</div>
+                            <div class="name">일반</div>
+                        </div>
+                        <div class="theme-option" data-theme="advent" onclick="selectTheme('advent')">
+                            <div class="icon">🕯️</div>
+                            <div class="name">대림절</div>
+                        </div>
+                        <div class="theme-option" data-theme="christmas" onclick="selectTheme('christmas')">
+                            <div class="icon">🎄</div>
+                            <div class="name">성탄절</div>
+                        </div>
+                        <div class="theme-option" data-theme="lent" onclick="selectTheme('lent')">
+                            <div class="icon">✝️</div>
+                            <div class="name">사순절</div>
+                        </div>
+                        <div class="theme-option" data-theme="easter" onclick="selectTheme('easter')">
+                            <div class="icon">🐣</div>
+                            <div class="name">부활절</div>
+                        </div>
+                        <div class="theme-option" data-theme="pentecost" onclick="selectTheme('pentecost')">
+                            <div class="icon">🔥</div>
+                            <div class="name">성령강림</div>
+                        </div>
+                        <div class="theme-option" data-theme="harvest" onclick="selectTheme('harvest')">
+                            <div class="icon">🌾</div>
+                            <div class="name">추수감사</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="convert-btn disabled" id="convertBtn" disabled>
+                <span>PDF를 선택하세요</span>
+            </button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">변환 중...</div>
+                <div class="progress-timer">
+                    <span class="elapsed">⏱️ 경과: <span id="elapsedTime">0:00</span></span>
+                    <span class="remaining">📍 예상 남은 시간: <span id="remainingTime">약 6분</span></span>
+                </div>
+            </div>
+
+            <div class="error-container" id="errorContainer"></div>
+        </div>
+
+        <div class="card result-container" id="resultContainer">
+            <div class="result-success">
+                <h3>✅ 변환 완료!</h3>
+                <div class="result-info" id="resultInfo"></div>
+            </div>
+            <div class="result-actions">
+                <a href="#" class="btn-preview" id="previewBtn" target="_blank">미리보기</a>
+                <a href="#" class="btn-download" id="downloadBtn" download>HTML 다운로드</a>
+                <button class="btn-verify" id="verifyBtn" style="background: linear-gradient(135deg, #3498DB, #2980B9); color: white;">🔍 검증하기</button>
+                <button class="btn-reset" id="resetBtn">새로 변환</button>
+                <button class="btn-clear" id="clearCacheBtn">🗑️ 캐시 삭제</button>
+            </div>
+
+            <!-- 검증 결과 섹션 -->
+            <div class="verify-result" id="verifyResult" style="display: none; margin-top: 20px; padding: 20px; background: #F0F8FF; border-radius: 12px; border: 2px solid #3498DB;">
+                <h4 style="color: #2980B9; margin-bottom: 15px;">🔍 검증 결과</h4>
+                <div class="verify-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;">
+                    <div class="stat-box" style="text-align: center; padding: 15px; background: white; border-radius: 10px;">
+                        <div class="stat-value" id="verifyAccuracy" style="font-size: 2em; font-weight: 700; color: #27AE60;">--%</div>
+                        <div class="stat-label" style="color: #666; font-size: 0.9em;">정확도</div>
+                    </div>
+                    <div class="stat-box" style="text-align: center; padding: 15px; background: white; border-radius: 10px;">
+                        <div class="stat-value" id="verifyErrors" style="font-size: 2em; font-weight: 700; color: #E74C3C;">--</div>
+                        <div class="stat-label" style="color: #666; font-size: 0.9em;">오류</div>
+                    </div>
+                    <div class="stat-box" style="text-align: center; padding: 15px; background: white; border-radius: 10px;">
+                        <div class="stat-value" id="verifyWarnings" style="font-size: 2em; font-weight: 700; color: #F39C12;">--</div>
+                        <div class="stat-label" style="color: #666; font-size: 0.9em;">경고</div>
+                    </div>
+                </div>
+                <div id="verifyDetails" style="max-height: 200px; overflow-y: auto; background: white; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 0.85em;"></div>
+                <div id="verifyCorrections" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+
+        <div class="cache-warning">
+            <h3>⚠️ 변환 문제 발생 시</h3>
+            <p>이전 PDF 데이터가 남아있어 잘못된 결과가 나올 경우, 캐시를 완전히 삭제 후 다시 변환하세요.</p>
+            <div class="cache-buttons">
+                <button id="fullClearBtn" style="background: #dc3545; color: white;">🗑️ 전체 캐시 삭제</button>
+                <button id="hardRefreshBtn" style="background: #fd7e14; color: white;">🔄 강력 새로고침</button>
+            </div>
+            <p id="cacheStatus" style="margin-top: 10px; font-size: 0.85em;"></p>
+        </div>
+    </div>
+
+    <script>
+        // 상수
+        const CHURCH_NAME = '여의도순복음교회';
+        const CHURCH_ID = 'fgfc';
+
+        // 요소
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const convertBtn = document.getElementById('convertBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const elapsedTimeEl = document.getElementById('elapsedTime');
+        const remainingTimeEl = document.getElementById('remainingTime');
+        const resultContainer = document.getElementById('resultContainer');
+        const errorContainer = document.getElementById('errorContainer');
+
+        let selectedFile = null;
+        let selectedTheme = 'default';
+        let licenseKey = null;
+        let timerInterval = null;
+        let conversionStartTime = null;
+        const ESTIMATED_TOTAL_TIME = 180; // 3분 = 180초 (1.6MB 기준)
+
+        // 오늘 날짜 설정
+        function setTodayDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('bulletinDate').value = `${year}-${month}-${day}`;
+        }
+        setTodayDate();
+
+        // 라이선스 초기화
+        async function initLicense() {
+            try {
+                // 먼저 캐시 삭제 (다른 교회 데이터 격리)
+                await fetch('/api/cache/clear', { method: 'POST' });
+
+                const response = await fetch('/api/license/fgfc-trial', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.success) {
+                    licenseKey = data.license.license_key;
+                    document.getElementById('remainingDays').textContent = `${data.license.remaining_days}일 남음`;
+
+                    if (data.license.remaining_days <= 3) {
+                        document.getElementById('licenseInfo').style.borderColor = '#E74C3C';
+                        document.getElementById('remainingDays').style.background = '#E74C3C';
+                    }
+                } else {
+                    document.getElementById('remainingDays').textContent = '오류';
+                }
+            } catch (e) {
+                console.error('라이선스 초기화 실패:', e);
+                document.getElementById('remainingDays').textContent = '연결 오류';
+            }
+        }
+        initLicense();
+
+        // 타이머 함수
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            conversionStartTime = Date.now();
+            elapsedTimeEl.textContent = '0:00';
+            remainingTimeEl.textContent = '약 3분';
+
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - conversionStartTime) / 1000);
+                elapsedTimeEl.textContent = formatTime(elapsed);
+
+                // 파일 크기 기반 예상 시간 (1.6MB = 360초 기준)
+                const fileSize = selectedFile ? selectedFile.size / (1024 * 1024) : 1.6;
+                const estimatedTotal = Math.max(60, Math.round(ESTIMATED_TOTAL_TIME * (fileSize / 1.6)));
+                const remaining = Math.max(0, estimatedTotal - elapsed);
+
+                if (remaining > 60) {
+                    remainingTimeEl.textContent = `약 ${Math.ceil(remaining / 60)}분`;
+                } else if (remaining > 0) {
+                    remainingTimeEl.textContent = `약 ${remaining}초`;
+                } else {
+                    remainingTimeEl.textContent = '거의 완료...';
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // 테마 선택
+        function selectTheme(theme) {
+            selectedTheme = theme;
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.theme === theme);
+            });
+        }
+
+        // 파일 업로드
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+        function handleFile(file) {
+            if (!file || !file.name.toLowerCase().endsWith('.pdf')) {
+                showError('PDF 파일만 업로드 가능합니다.');
+                return;
+            }
+            selectedFile = file;
+            renderFileList();
+            updateConvertButton();
+        }
+
+        function renderFileList() {
+            if (!selectedFile) {
+                fileList.innerHTML = '';
+                uploadArea.classList.remove('has-file');
+                return;
+            }
+
+            uploadArea.classList.add('has-file');
+            fileList.innerHTML = `
+                <div class="file-info">
+                    <span class="icon">📄</span>
+                    <div class="details">
+                        <div class="name">${selectedFile.name}</div>
+                        <div class="size">${formatFileSize(selectedFile.size)}</div>
+                    </div>
+                    <button class="remove" onclick="removeFile()">삭제</button>
+                </div>
+            `;
+        }
+
+        function removeFile() {
+            selectedFile = null;
+            renderFileList();
+            updateConvertButton();
+            fileInput.value = '';
+        }
+
+        function updateConvertButton() {
+            if (selectedFile) {
+                convertBtn.disabled = false;
+                convertBtn.className = 'convert-btn ready';
+                convertBtn.innerHTML = '<span>🤖 AI 변환 시작</span>';
+            } else {
+                convertBtn.disabled = true;
+                convertBtn.className = 'convert-btn disabled';
+                convertBtn.innerHTML = '<span>PDF를 선택하세요</span>';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function showError(message) {
+            errorContainer.textContent = message;
+            errorContainer.classList.add('show');
+            setTimeout(() => errorContainer.classList.remove('show'), 5000);
+        }
+
+        function getThemeName(theme) {
+            const names = {
+                'default': '일반', 'advent': '대림절', 'christmas': '성탄절',
+                'lent': '사순절', 'easter': '부활절', 'pentecost': '성령강림절', 'harvest': '추수감사절'
+            };
+            return names[theme] || theme;
+        }
+
+        // 변환 실행
+        convertBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            const bulletinDate = document.getElementById('bulletinDate').value;
+            if (!bulletinDate) {
+                showError('주보 날짜를 선택해주세요.');
+                return;
+            }
+
+            errorContainer.classList.remove('show');
+            resultContainer.classList.remove('show');
+
+            convertBtn.disabled = true;
+            convertBtn.className = 'convert-btn loading';
+            convertBtn.innerHTML = '<span>🔄 변환 중...</span>';
+
+            progressContainer.classList.add('show');
+            progressFill.style.width = '5%';
+            progressText.textContent = '📤 PDF 업로드 중...';
+
+            // 타이머 시작
+            startTimer();
+
+            // 진행 상황 메시지 (실제 서버 작업 기준 약 3분)
+            const progressSteps = [
+                { percent: 5, text: '📄 PDF 업로드 완료, 분석 준비 중...', delay: 1000 },
+                { percent: 10, text: '🤖 페이지 1/6 AI 분석 중...', delay: 3000 },
+                { percent: 18, text: '✅ 페이지 1/6 추출 성공', delay: 10000 },
+                { percent: 22, text: '🤖 페이지 2/6 AI 분석 중...', delay: 12000 },
+                { percent: 30, text: '✅ 페이지 2/6 추출 성공', delay: 25000 },
+                { percent: 35, text: '🤖 페이지 3/6 AI 분석 중... (예배순서)', delay: 27000 },
+                { percent: 45, text: '✅ 페이지 3/6 추출 성공', delay: 50000 },
+                { percent: 50, text: '🤖 페이지 4/6 AI 분석 중... (오늘의 말씀)', delay: 52000 },
+                { percent: 60, text: '✅ 페이지 4/6 추출 성공', delay: 85000 },
+                { percent: 65, text: '🤖 페이지 5/6 AI 분석 중... (교회소식)', delay: 87000 },
+                { percent: 73, text: '✅ 페이지 5/6 추출 성공', delay: 112000 },
+                { percent: 78, text: '🤖 페이지 6/6 AI 분석 중... (오늘의 양식)', delay: 114000 },
+                { percent: 83, text: '✅ 페이지 6/6 추출 성공', delay: 132000 },
+                { percent: 88, text: '🌐 다국어 번역 중 (8개국어)...', delay: 135000 },
+                { percent: 95, text: '📝 HTML 생성 및 파일 저장 중...', delay: 165000 },
+                { percent: 98, text: '✅ 거의 완료...', delay: 175000 }
+            ];
+
+            // 진행 상황 타이머 설정
+            const timers = progressSteps.map(step =>
+                setTimeout(() => {
+                    progressFill.style.width = step.percent + '%';
+                    progressText.textContent = step.text;
+                }, step.delay)
+            );
+
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('church_name', CHURCH_NAME);
+                formData.append('bulletin_date', bulletinDate);
+                formData.append('theme', selectedTheme);
+                if (licenseKey) {
+                    formData.append('license_key', licenseKey);
+                }
+
+                const startTime = Date.now();
+                const response = await fetch('/api/church-convert-ai', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // 타이머 정리
+                timers.forEach(t => clearTimeout(t));
+                stopTimer();
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                const elapsedMinSec = formatTime(Math.floor((Date.now() - startTime) / 1000));
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || '변환 실패');
+                }
+
+                const result = await response.json();
+
+                progressFill.style.width = '100%';
+                progressText.textContent = `✅ 완료!`;
+                elapsedTimeEl.textContent = elapsedMinSec;
+                remainingTimeEl.textContent = '완료됨';
+
+                setTimeout(() => {
+                    progressContainer.classList.remove('show');
+                    showResult(result);
+                }, 1500);
+
+            } catch (error) {
+                // 타이머 정리
+                timers.forEach(t => clearTimeout(t));
+                stopTimer();
+                progressContainer.classList.remove('show');
+                showError(error.message);
+                updateConvertButton();
+            }
+        });
+
+        function showResult(data) {
+            resultContainer.classList.add('show');
+
+            const resultInfo = document.getElementById('resultInfo');
+            resultInfo.innerHTML = `
+                <div class="result-item">
+                    <div class="label">교회</div>
+                    <div class="value">${data.church_name || CHURCH_NAME}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">날짜</div>
+                    <div class="value">${data.bulletin_date || ''}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">테마</div>
+                    <div class="value">${getThemeName(data.theme)}</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">변환방식</div>
+                    <div class="value">🤖 AI Powered</div>
+                </div>
+            `;
+
+            document.getElementById('previewBtn').href = data.url;
+            document.getElementById('downloadBtn').href = data.url;
+            document.getElementById('downloadBtn').download = data.filename;
+
+            convertBtn.innerHTML = '<span>✅ 완료!</span>';
+            convertBtn.className = 'convert-btn ready';
+        }
+
+        // 리셋
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            selectedFile = null;
+            renderFileList();
+            updateConvertButton();
+            resultContainer.classList.remove('show');
+            document.getElementById('verifyResult').style.display = 'none';
+            fileInput.value = '';
+        });
+
+        // 검증 버튼 핸들러
+        let lastConversionData = null;
+        document.getElementById('verifyBtn').addEventListener('click', async () => {
+            const verifyBtn = document.getElementById('verifyBtn');
+            const verifyResult = document.getElementById('verifyResult');
+
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '🔄 검증 중...';
+
+            try {
+                // HTML 경로 가져오기
+                const htmlPath = document.getElementById('previewBtn').href;
+                const urlParts = htmlPath.split('/outputs/');
+                const relativePath = urlParts.length > 1 ? urlParts[1] : '';
+
+                // 검증 API 호출
+                const formData = new FormData();
+                formData.append('html_path', relativePath);
+
+                const response = await fetch('/api/fgfc/verify', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // 결과 표시
+                    verifyResult.style.display = 'block';
+
+                    // 정확도
+                    const accuracy = data.overall_accuracy || 0;
+                    document.getElementById('verifyAccuracy').textContent = accuracy.toFixed(1) + '%';
+                    document.getElementById('verifyAccuracy').style.color =
+                        accuracy >= 95 ? '#27AE60' : accuracy >= 80 ? '#F39C12' : '#E74C3C';
+
+                    // 오류/경고 수
+                    const ocr = data.ocr_validation || {};
+                    document.getElementById('verifyErrors').textContent = (ocr.errors || []).length;
+                    document.getElementById('verifyWarnings').textContent = (ocr.warnings || []).length;
+
+                    // 상세 내용
+                    let detailsHtml = '';
+                    if (ocr.errors && ocr.errors.length > 0) {
+                        detailsHtml += '<div style="color: #E74C3C; margin-bottom: 10px;"><strong>❌ 오류:</strong></div>';
+                        ocr.errors.forEach(err => {
+                            detailsHtml += `<div style="padding: 5px 0; border-bottom: 1px solid #eee;">
+                                [${err.field}] ${err.actual} → 예상: ${err.expected}
+                                ${err.suggestion ? '<br><span style="color: #3498DB;">💡 ' + err.suggestion + '</span>' : ''}
+                            </div>`;
+                        });
+                    }
+
+                    if (ocr.warnings && ocr.warnings.length > 0) {
+                        detailsHtml += '<div style="color: #F39C12; margin-top: 10px;"><strong>⚠️ 경고:</strong></div>';
+                        ocr.warnings.forEach(warn => {
+                            detailsHtml += `<div style="padding: 5px 0;">[${warn.field}] ${warn.actual}</div>`;
+                        });
+                    }
+
+                    if (!detailsHtml) {
+                        detailsHtml = '<div style="color: #27AE60; text-align: center; padding: 20px;">✅ 모든 검증을 통과했습니다!</div>';
+                    }
+
+                    document.getElementById('verifyDetails').innerHTML = detailsHtml;
+
+                    // 자동 교정 제안
+                    if (data.auto_corrections && data.auto_corrections.length > 0) {
+                        let correctionsHtml = '<div style="background: #FFFBEB; padding: 15px; border-radius: 10px; border: 1px solid #F39C12;">';
+                        correctionsHtml += '<strong style="color: #B7791F;">✨ 자동 교정 제안:</strong><ul style="margin: 10px 0 0 20px;">';
+                        data.auto_corrections.forEach(c => {
+                            correctionsHtml += `<li>${c}</li>`;
+                        });
+                        correctionsHtml += '</ul></div>';
+                        document.getElementById('verifyCorrections').innerHTML = correctionsHtml;
+                    } else {
+                        document.getElementById('verifyCorrections').innerHTML = '';
+                    }
+
+                } else {
+                    verifyResult.style.display = 'block';
+                    document.getElementById('verifyDetails').innerHTML =
+                        `<div style="color: #E74C3C;">❌ 검증 실패: ${data.error || '알 수 없는 오류'}</div>`;
+                }
+
+            } catch (e) {
+                console.error('검증 오류:', e);
+                verifyResult.style.display = 'block';
+                document.getElementById('verifyDetails').innerHTML =
+                    `<div style="color: #E74C3C;">❌ 네트워크 오류: ${e.message}</div>`;
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '🔍 검증하기';
+            }
+        });
+
+        // 캐시 삭제
+        document.getElementById('clearCacheBtn').addEventListener('click', clearCache);
+        document.getElementById('fullClearBtn').addEventListener('click', clearCache);
+
+        async function clearCache() {
+            const statusEl = document.getElementById('cacheStatus');
+            statusEl.textContent = '삭제 중...';
+
+            try {
+                const response = await fetch('/api/cache/clear', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    statusEl.textContent = '✅ 캐시가 삭제되었습니다. 페이지를 새로고침합니다.';
+                    statusEl.style.color = '#27AE60';
+                    setTimeout(() => location.reload(true), 1000);
+                } else {
+                    statusEl.textContent = '❌ 오류: ' + result.error;
+                    statusEl.style.color = '#dc3545';
+                }
+            } catch (e) {
+                statusEl.textContent = '❌ 네트워크 오류';
+                statusEl.style.color = '#dc3545';
+            }
+        }
+
+        // 강력 새로고침
+        document.getElementById('hardRefreshBtn').addEventListener('click', () => {
+            localStorage.clear();
+            sessionStorage.clear();
+            if ('caches' in window) {
+                caches.keys().then(names => names.forEach(name => caches.delete(name)));
+            }
+            location.href = location.href.split('?')[0] + '?nocache=' + Date.now();
+        });
+
+        // 페이지 로드 시 타임스탬프
+        document.getElementById('cacheStatus').textContent = `마지막 로드: ${new Date().toLocaleString('ko-KR')}`;
+    </script>
+</body>
+</html>

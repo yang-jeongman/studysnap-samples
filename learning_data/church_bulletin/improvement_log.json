@@ -1,0 +1,296 @@
+{
+  "project": "교회 주보 변환 시스템",
+  "version": "2.0.0",
+  "last_updated": "2025-12-13",
+  "development_phases": [
+    {
+      "phase": "초기 개발",
+      "date": "2025-12-07",
+      "issues": [
+        "자동 변환 시 명성교회 고유 스타일 미적용",
+        "여의도순복음교회 템플릿 색상(#5B4B9E)이 모든 교회에 적용됨"
+      ],
+      "solutions": [
+        "CHURCH_PRESETS 딕셔너리 도입",
+        "교회명 기반 자동 프리셋 선택 로직 구현"
+      ],
+      "result": "각 교회별 고유 색상, 폰트, letter-spacing 적용 성공"
+    },
+    {
+      "phase": "환각 방지 및 원본 충실도 향상",
+      "date": "2025-12-13",
+      "issues": [
+        "교회 소식 섹션에서 일부 카테고리를 임의로 생성 (청년부, 교육부, 선교부 등)",
+        "PDF 원본에 없는 내용을 상상으로 채워넣음 (Hallucination)",
+        "원본 PDF의 정확한 카테고리명 미반영 (성찬식, 임 명, 문화선교학교 등)"
+      ],
+      "solutions": [
+        "반드시 PDF 원본 텍스트 추출 후 내용 확인",
+        "PyMuPDF (fitz)로 텍스트 추출 → 실제 카테고리 및 내용 파악",
+        "섹션별 내용이 비어있으면 절대 임의로 채우지 않고 원본에서 추출",
+        "카테고리 제목도 원본 그대로 사용 (대림절, 성찬식, 임 명, 문화선교학교, 알 림 등)"
+      ],
+      "result": "교회 소식 6개 섹션 모두 PDF 원본 내용으로 정확하게 채움",
+      "learning_notes": [
+        "절대 원본 PDF 내용 확인 없이 섹션 내용을 생성하지 말 것",
+        "OCR 추출 결과와 대조하여 누락/환각 검증 필수",
+        "카테고리명도 원본 그대로 (청년부, 교육부 같은 일반적 이름 사용 금지)",
+        "명성교회 2025-12-07 주보 기준 교회소식 카테고리: 대림절, Love In 축제, 성찬식, 임 명, 문화선교학교, 알 림"
+      ]
+    },
+    {
+      "phase": "교우소식 정확도 고도화",
+      "date": "2025-12-13",
+      "issues": [
+        "축하 인원 3명으로 표시됨 (실제: 10명)",
+        "결혼 2쌍으로 표시됨 (실제: 13쌍)",
+        "새가족등록 5명으로 표시됨 (실제: 22명)",
+        "PDF 원본과 숫자 불일치"
+      ],
+      "solutions": [
+        "PyMuPDF로 PDF 텍스트 직접 추출하여 정확한 데이터 확보",
+        "축하 섹션 10명 개별 축하 이벤트로 완전 재구성",
+        "결혼 섹션 13쌍 모든 신랑신부 이름 및 상세정보 표시",
+        "새가족등록 22명 그리드 레이아웃으로 전체 표시"
+      ],
+      "result": "PDF 원본과 100% 일치하는 정확한 데이터 표시",
+      "code_changes": {
+        "file": "outputs/Church/명성교회/2025-12-07.html",
+        "sections_updated": ["축하", "결혼", "새가족등록"],
+        "data_source": "uploads/ba606d93_20251213_134105.pdf"
+      }
+    },
+    {
+      "phase": "지난주 말씀 아코디언 UI",
+      "date": "2025-12-13",
+      "issues": [
+        "지난주 설교 전문이 항상 펼쳐져 있어 스크롤 불편",
+        "설교 제목, 성경구절, 목사님 정보가 명확히 보이지 않음"
+      ],
+      "solutions": [
+        "아코디언 카드 디자인 도입",
+        "헤더에 제목, 성경구절, 목사 이름 표시",
+        "toggleLastWeekSermon() 함수로 펼침/접힘 기능",
+        "max-height CSS 애니메이션으로 부드러운 전환"
+      ],
+      "result": "지난주 말씀을 깔끔하게 접었다 펼 수 있는 아코디언 UI",
+      "code_pattern": {
+        "function_name": "toggleLastWeekSermon",
+        "css_animation": "max-height 0.4s ease",
+        "arrow_indicator": "▼ / ▲",
+        "hint_text": "탭하여 말씀 전문 보기 / 탭하여 접기"
+      }
+    },
+    {
+      "phase": "네비게이션 탭 개선",
+      "date": "2025-12-13",
+      "issues": [
+        "새벽 탭이 '새벽'으로만 표시되어 의미 불명확"
+      ],
+      "solutions": [
+        "'새벽' → '새벽기도회'로 변경"
+      ],
+      "result": "명확한 예배 구분 표시"
+    }
+  ],
+  "church_presets": {
+    "명성교회": {
+      "primary": "#1E3A5F",
+      "primary_dark": "#152A45",
+      "primary_light": "#E8EEF4",
+      "accent": "#C9A857",
+      "accent_light": "#F5EED8",
+      "font_style": "serif",
+      "letter_spacing": "8px",
+      "name_en": "MYUNGSUNG CHURCH",
+      "style": "elegant",
+      "notes": "네이비 색상 + 격식있는 세리프 폰트, 넓은 자간",
+      "address": "서울특별시 강동구 올림픽로 780",
+      "phone": "02-440-9000",
+      "fax": "02-440-9099",
+      "website": "http://www.myungsung.com",
+      "sns": {
+        "youtube": "https://www.youtube.com/@MyungsungCh"
+      },
+      "mobile_offering": {
+        "enabled": true,
+        "bank_accounts": [
+          {"bank": "국민은행", "account": "099-21-0211-791", "holder": "명성교회"},
+          {"bank": "신한은행", "account": "100-022-853853", "holder": "명성교회"}
+        ]
+      }
+    },
+    "여의도순복음교회": {
+      "primary": "#5B4B9E",
+      "primary_dark": "#4A3D82",
+      "primary_light": "#E8E4F4",
+      "accent": "#C9A857",
+      "font_style": "sans-serif",
+      "letter_spacing": "2px",
+      "name_en": "YOIDO FULL GOSPEL CHURCH",
+      "style": "modern",
+      "notes": "보라색 + 현대적인 산세리프 폰트"
+    },
+    "혈동교회": {
+      "primary": "#8B4513",
+      "primary_dark": "#5D3A1A",
+      "primary_light": "#FDF8F0",
+      "accent": "#C5A572",
+      "font_style": "serif",
+      "letter_spacing": "4px",
+      "name_en": "HYULDONG CHURCH",
+      "style": "traditional",
+      "notes": "갈색 + 전통적인 세리프 폰트"
+    }
+  },
+  "theme_colors": {
+    "default": "교회 프리셋 기본 색상 사용",
+    "advent": "#4A0D67 (대림절 - 보라색)",
+    "christmas": "#C41E3A (성탄절 - 빨강+초록)",
+    "lent": "#4A0D67 (사순절 - 보라색)",
+    "easter": "#9370DB (부활절 - 연보라+금색)",
+    "pentecost": "#DC143C (성령강림절 - 빨강)",
+    "harvest": "#8B6914 (추수감사절 - 황금색)"
+  },
+  "essential_features": [
+    "성경 구절 모달 팝업",
+    "찬송가 가사 모달 팝업",
+    "모바일 헌금 안내 섹션",
+    "다크 모드 토글",
+    "공유하기 버튼 (카카오톡, 복사)",
+    "예배 안내 탭 네비게이션",
+    "PWA 지원 (전체화면 모드)",
+    "지난주 말씀 아코디언",
+    "교우소식 2단계 아코디언 (결혼 상세정보)"
+  ],
+  "ui_components": {
+    "accordion_pattern": {
+      "description": "max-height 기반 CSS 아코디언",
+      "css": "max-height: 0; overflow: hidden; transition: max-height 0.4s ease;",
+      "expand": "element.style.maxHeight = element.scrollHeight + 50 + 'px';",
+      "collapse": "element.style.maxHeight = '0px';",
+      "arrow_toggle": "▼ <-> ▲",
+      "usage": ["지난주 말씀", "결혼 상세정보", "예배순서 상세"]
+    },
+    "member_news_layout": {
+      "birth": "배지 스타일",
+      "passing": "회색 톤 카드",
+      "congratulation": "녹색 톤 카드 리스트",
+      "wedding": "핑크 톤 + 2단계 아코디언",
+      "new_members": "파란 톤 그리드 레이아웃"
+    },
+    "navigation_tabs": {
+      "tabs": ["1부", "2부", "3부", "찬양", "새벽기도회", "주중"],
+      "sticky": true,
+      "scroll_behavior": "smooth"
+    }
+  },
+  "data_extraction": {
+    "pdf_tool": "PyMuPDF (fitz)",
+    "verification_class": "ChurchBulletinVerifier",
+    "key_patterns": {
+      "date": "\\d{4}년\\s*\\d{1,2}월\\s*\\d{1,2}일",
+      "volume_issue": "(\\d+)\\s*권\\s*(\\d+)\\s*호",
+      "pastor": "([가-힣]{2,4})\\s*(담임목사|원로목사)",
+      "hymn": "(찬송가|찬송)\\s*(\\d+)장",
+      "bible_verse": "([가-힣]+)\\s*(\\d+)장\\s*(\\d+)[-~](\\d+)절"
+    },
+    "hallucination_prevention": [
+      "PDF 텍스트 먼저 추출",
+      "추출된 내용만 사용",
+      "빈 섹션은 비워두기",
+      "카테고리명 원본 그대로 사용"
+    ]
+  },
+  "testing_checklist": [
+    {
+      "item": "명성교회 PDF 변환 테스트",
+      "expected": "Navy #1E3A5F 색상, Noto Serif KR 폰트, 8px letter-spacing",
+      "status": "완료",
+      "notes": "2025-12-07 주보 성공적으로 변환"
+    },
+    {
+      "item": "교우소식 정확도 테스트",
+      "expected": "축하 10명, 결혼 13쌍, 새가족 22명",
+      "status": "완료",
+      "notes": "PDF 원본과 100% 일치"
+    },
+    {
+      "item": "지난주 말씀 아코디언 테스트",
+      "expected": "탭 시 부드러운 펼침/접힘",
+      "status": "완료",
+      "notes": "max-height 애니메이션 적용"
+    },
+    {
+      "item": "여의도순복음교회 PDF 변환 테스트",
+      "expected": "Purple #5B4B9E 색상, Noto Sans KR 폰트, 2px letter-spacing",
+      "status": "대기중"
+    },
+    {
+      "item": "대림절 테마 적용 테스트",
+      "expected": "보라색 #4A0D67 테마 배지 표시",
+      "status": "완료",
+      "notes": "명성교회 주보에 대림절 배지 표시"
+    },
+    {
+      "item": "성경 모달 팝업 동작 테스트",
+      "expected": "클릭 시 성경 구절 모달 표시",
+      "status": "완료"
+    },
+    {
+      "item": "찬송가 모달 팝업 동작 테스트",
+      "expected": "클릭 시 찬송가 가사 모달 표시",
+      "status": "완료"
+    },
+    {
+      "item": "다크 모드 토글 테스트",
+      "expected": "버튼 클릭 시 다크/라이트 모드 전환",
+      "status": "완료"
+    },
+    {
+      "item": "모바일 반응형 테스트",
+      "expected": "320px~768px 화면에서 정상 표시",
+      "status": "완료"
+    }
+  ],
+  "improvement_ideas": [
+    "OCR 정확도 향상을 위한 Vision API 프롬프트 개선",
+    "설교 본문 자동 섹션 분리 알고리즘 개선",
+    "교회별 SNS 링크 자동 연동",
+    "주보 아카이브 페이지 자동 생성",
+    "모바일 헌금 페이지 실제 연동",
+    "교우소식 자동 인원 카운팅",
+    "성경/찬송가 API 연동으로 실시간 가사 표시"
+  ],
+  "ai_learning_notes": {
+    "critical_rules": [
+      "PDF 원본 텍스트 추출 후 작업 시작",
+      "환각(Hallucination) 절대 금지 - 원본에 없는 내용 생성 금지",
+      "카테고리명, 인원수, 이름 등 모든 데이터는 원본 그대로",
+      "빈 섹션은 임의로 채우지 않음"
+    ],
+    "code_patterns": {
+      "accordion_toggle": "function toggleSection(header) { const body = header.nextElementSibling; if (body.style.maxHeight) { body.style.maxHeight = null; } else { body.style.maxHeight = body.scrollHeight + 'px'; } }",
+      "pdf_text_extract": "import fitz; doc = fitz.open(pdf_path); text = ''.join([page.get_text() for page in doc])",
+      "church_preset_apply": "preset = CHURCH_PRESETS.get(church_name, CHURCH_PRESETS['여의도순복음교회'])"
+    },
+    "myungsung_church_specifics": {
+      "date_example": "2025-12-07",
+      "theme": "대림절 제2주",
+      "volume_issue": "46권 49호",
+      "news_categories": ["대림절", "Love In 축제", "성찬식", "임 명", "문화선교학교", "알 림"],
+      "member_news": {
+        "birth": 1,
+        "passing": 10,
+        "congratulation": 10,
+        "wedding": 13,
+        "new_members": 22
+      },
+      "last_week_sermon": {
+        "title": "예수님 잘 믿는 기회를 반드시 성취하십시오",
+        "scripture": "마태복음 11장 11-14절",
+        "preacher": "김삼환 원로목사"
+      }
+    }
+  }
+}

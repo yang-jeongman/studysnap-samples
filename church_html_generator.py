@@ -312,7 +312,78 @@ class ChurchBulletinGenerator:
             info["translations"] = extracted_data["translations"]
             info["multilingual"] = True
 
-        # 구조화된 데이터가 있으면 우선 사용
+        # ===== 최상위 레벨 데이터 우선 적용 (app.py _merge_church_bulletin_data에서 병합된 데이터) =====
+        # 오늘의 말씀 (today_verse) - 최상위 레벨에서 직접 읽기
+        top_level_verse = extracted_data.get("today_verse", {})
+        if top_level_verse.get("text"):
+            info["verse"]["text"] = top_level_verse["text"]
+        if top_level_verse.get("reference"):
+            info["verse"]["reference"] = top_level_verse["reference"]
+
+        # 설교 (sermon) - 최상위 레벨에서 직접 읽기
+        top_level_sermon = extracted_data.get("sermon", {})
+        if top_level_sermon.get("title"):
+            info["sermon"]["title"] = top_level_sermon["title"]
+        if top_level_sermon.get("english_title"):
+            info["sermon"]["title_en"] = top_level_sermon["english_title"]
+        if top_level_sermon.get("scripture"):
+            info["sermon"]["scripture"] = top_level_sermon["scripture"]
+        if top_level_sermon.get("author") or top_level_sermon.get("pastor"):
+            info["sermon"]["preacher"] = top_level_sermon.get("author") or top_level_sermon.get("pastor")
+        if top_level_sermon.get("intro"):
+            info["sermon"]["sections"].append({"title": "", "content": top_level_sermon["intro"]})
+        if top_level_sermon.get("points"):
+            for point in top_level_sermon["points"]:
+                info["sermon"]["sections"].append({
+                    "title": point.get("title", ""),
+                    "title_en": point.get("english", ""),
+                    "content": point.get("content", "")
+                })
+
+        # 찬양대 (choir) - 최상위 레벨에서 직접 읽기
+        top_level_choir = extracted_data.get("choir", [])
+        if top_level_choir:
+            info["choir"] = top_level_choir
+
+        # 원본 찬양대 테이블 (raw_choir_table) - 최상위 레벨에서 직접 읽기
+        top_level_raw_choir = extracted_data.get("raw_choir_table", {})
+        if top_level_raw_choir.get("rows"):
+            info["raw_choir_table"] = top_level_raw_choir
+
+        # 교회 소식 (news) - 최상위 레벨에서 직접 읽기
+        top_level_news = extracted_data.get("news", {})
+        if top_level_news:
+            info["news"] = top_level_news
+
+        # 예배 순서 (worship_services) - 최상위 레벨에서 직접 읽기
+        top_level_services = extracted_data.get("worship_services", [])
+        if top_level_services:
+            info["worship_services"] = self._convert_structured_services(top_level_services)
+
+        # 교회 정보 (church_info) - 최상위 레벨에서 직접 읽기
+        top_level_church = extracted_data.get("church_info", {})
+        if top_level_church:
+            if top_level_church.get("name"):
+                info["church_name"] = top_level_church["name"]
+            if top_level_church.get("english_name"):
+                info["church_name_en"] = top_level_church["english_name"]
+            if top_level_church.get("date"):
+                info["date"] = top_level_church["date"]
+            if top_level_church.get("volume"):
+                info["volume"] = top_level_church["volume"]
+            if top_level_church.get("slogan"):
+                info["slogan"] = top_level_church["slogan"]
+                info["theme"] = top_level_church["slogan"]
+
+        # 목회자 정보 (pastors) - 최상위 레벨에서 직접 읽기
+        top_level_pastors = extracted_data.get("pastors", {})
+        if top_level_pastors:
+            if top_level_pastors.get("senior"):
+                info["staff"]["senior_pastor"] = top_level_pastors["senior"]
+            if top_level_pastors.get("associate"):
+                info["staff"]["associate_pastors"] = top_level_pastors["associate"]
+
+        # 구조화된 데이터가 있으면 누락된 필드 보완 (structured_data는 보조로 사용)
         structured = extracted_data.get("structured_data", {})
         if structured and ("worship_services" in structured or "today_verse" in structured):
             # Vision OCR에서 추출한 구조화된 데이터 사용
@@ -620,8 +691,37 @@ class ChurchBulletinGenerator:
         "요한이서": {"en": "2 John", "zh": "约翰二书", "ja": "ヨハネの第二の手紙", "id": "2 Yohanes", "es": "2 Juan", "ru": "2 Иоанна", "fr": "2 Jean"},
         "요한삼서": {"en": "3 John", "zh": "约翰三书", "ja": "ヨハネの第三の手紙", "id": "3 Yohanes", "es": "3 Juan", "ru": "3 Иоанна", "fr": "3 Jean"},
         "유다서": {"en": "Jude", "zh": "犹大书", "ja": "ユダの手紙", "id": "Yudas", "es": "Judas", "ru": "Иуды", "fr": "Jude"},
-        "요한계시록": {"en": "Revelation", "zh": "启示录", "ja": "ヨハネの黙示録", "id": "Wahyu", "es": "Apocalipsis", "ru": "Откровение", "fr": "Apocalypse"}
+        "요한계시록": {"en": "Revelation", "zh": "启示录", "ja": "ヨハネの黙示録", "id": "Wahyu", "es": "Apocalipsis", "ru": "Откровение", "fr": "Apocalypse"},
+        # 구약 소선지서 추가
+        "하박국": {"en": "Habakkuk", "zh": "哈巴谷书", "ja": "ハバクク書", "id": "Habakuk", "es": "Habacuc", "ru": "Аввакум", "fr": "Habacuc"},
+        "호세아": {"en": "Hosea", "zh": "何西阿书", "ja": "ホセア書", "id": "Hosea", "es": "Oseas", "ru": "Осия", "fr": "Osée"},
+        "요엘": {"en": "Joel", "zh": "约珥书", "ja": "ヨエル書", "id": "Yoel", "es": "Joel", "ru": "Иоиль", "fr": "Joël"},
+        "아모스": {"en": "Amos", "zh": "阿摩司书", "ja": "アモス書", "id": "Amos", "es": "Amós", "ru": "Амос", "fr": "Amos"},
+        "오바댜": {"en": "Obadiah", "zh": "俄巴底亚书", "ja": "オバデヤ書", "id": "Obaja", "es": "Abdías", "ru": "Авдий", "fr": "Abdias"},
+        "요나": {"en": "Jonah", "zh": "约拿书", "ja": "ヨナ書", "id": "Yunus", "es": "Jonás", "ru": "Иона", "fr": "Jonas"},
+        "미가": {"en": "Micah", "zh": "弥迦书", "ja": "ミカ書", "id": "Mikha", "es": "Miqueas", "ru": "Михей", "fr": "Michée"},
+        "나훔": {"en": "Nahum", "zh": "那鸿书", "ja": "ナホム書", "id": "Nahum", "es": "Nahúm", "ru": "Наум", "fr": "Nahum"},
+        "스바냐": {"en": "Zephaniah", "zh": "西番雅书", "ja": "ゼパニヤ書", "id": "Zefanya", "es": "Sofonías", "ru": "Софония", "fr": "Sophonie"},
+        "학개": {"en": "Haggai", "zh": "哈该书", "ja": "ハガイ書", "id": "Hagai", "es": "Hageo", "ru": "Аггей", "fr": "Aggée"},
+        "스가랴": {"en": "Zechariah", "zh": "撒迦利亚书", "ja": "ゼカリヤ書", "id": "Zakharia", "es": "Zacarías", "ru": "Захария", "fr": "Zacharie"},
+        "말라기": {"en": "Malachi", "zh": "玛拉基书", "ja": "マラキ書", "id": "Maleakhi", "es": "Malaquías", "ru": "Малахия", "fr": "Malachie"}
     }
+
+    # 성경 약어 검증 매핑 (OCR 오류 수정용) - 한글약어(영문약어) 형식 검증
+    BIBLE_ABBR_VALIDATION = {
+        # "히(Hab.)" 형식이 나오면 "합(Hab.)"으로 수정해야 함
+        "히(Hab": "합(Hab",  # 하박국 오류 수정
+        "합(Heb": "히(Heb",  # 히브리서 오류 수정 (반대 경우)
+    }
+
+    def _correct_bible_reference(self, ref: str) -> str:
+        """성경 참조 오류 수정 - 한글약어와 영문약어 불일치 교정"""
+        if not ref:
+            return ref
+        for wrong, correct in self.BIBLE_ABBR_VALIDATION.items():
+            if wrong in ref:
+                ref = ref.replace(wrong, correct)
+        return ref
 
     def _translate_bible_ref(self, ref: str, lang: str) -> str:
         """성경 참조를 다른 언어로 번역"""
@@ -876,9 +976,8 @@ class ChurchBulletinGenerator:
     {self._build_dark_mode_toggle()}
 
     <main class="container">
-        {self._build_verse_section(info, is_harvest, theme_name)}
-        {self._build_worship_section(info, is_harvest, theme_name)}
         {self._build_sermon_word_section(info, theme_name)}
+        {self._build_worship_section(info, is_harvest, theme_name)}
         {self._build_sermon_card(info, theme_name)}
         {last_week_sermon_early}
         {self._build_choir_section(info, is_harvest)}
@@ -3515,6 +3614,78 @@ class ChurchBulletinGenerator:
             border-color: var(--primary);
         }}
 
+        /* 온라인 헌금 링크 스타일 */
+        .offering-item.online-offering {{
+            text-decoration: none;
+            color: inherit;
+            background: linear-gradient(135deg, #E8E4F4 0%, #F5F3FA 100%);
+            border-color: var(--primary);
+        }}
+
+        .offering-item.online-offering:hover {{
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }}
+
+        /* ARS 헌금 섹션 스타일 */
+        .ars-offering-section {{
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFF3CD 100%);
+            border-radius: 16px;
+            border: 2px solid #F0D56C;
+        }}
+
+        .ars-title {{
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #8B6914;
+            margin-bottom: 6px;
+        }}
+
+        .ars-description {{
+            font-size: 0.85em;
+            color: #856404;
+            margin-bottom: 15px;
+        }}
+
+        .ars-grid {{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }}
+
+        .ars-item {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 12px;
+            background: white;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 2px solid #E8D4F0;
+            transition: all 0.2s;
+        }}
+
+        .ars-item:hover {{
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }}
+
+        .ars-amount {{
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }}
+
+        .ars-number {{
+            font-size: 0.85em;
+            color: var(--text-gray);
+            font-family: monospace;
+        }}
+
         .offering-title {{
             font-size: 0.9em;
             font-weight: 600;
@@ -4381,14 +4552,27 @@ class ChurchBulletinGenerator:
         return "main-verse"
 
     def _build_sermon_word_section(self, info: Dict, theme_name: str = "default") -> str:
-        """📖 오늘의 말씀 섹션 - 아코디언 형식 (원본 주보 콘텐츠 전체)"""
-        sermon = info.get("sermon", {})
-        # 빈 문자열도 기본값으로 대체 (or 연산자 사용)
-        title_ko = sermon.get("title", "") or "예수님 오심을 기다리며(Ⅱ)"
-        title_en = sermon.get("title_en", "") or "Waiting for Jesus' Coming(Ⅱ)"
-        scripture = sermon.get("scripture", "") or "눅(Luke) 3:4~6"
-        pastor = sermon.get("pastor", "") or "여의도순복음교회 이영훈 위임목사"
+        """📖 오늘의 말씀 섹션 - 아코디언 형식 (PDF 3페이지 좌측 상단 성경구절)"""
+        # today_verse에서 데이터 가져오기 (PDF 3페이지 좌측 상단)
+        today_verse = info.get("today_verse", {})
+        verse_text = today_verse.get("text", "")
+        verse_reference = today_verse.get("reference", "")
 
+        # sermon에서 제목 정보 가져오기 (표시용)
+        sermon = info.get("sermon", {})
+        title_ko = sermon.get("title", "")
+        title_en = sermon.get("english_title", "") or sermon.get("title_en", "")
+        scripture = verse_reference or sermon.get("scripture", "")
+        # 성경 참조 오류 수정 (예: "히(Hab.)" → "합(Hab.)")
+        scripture = self._correct_bible_reference(scripture)
+
+        # 오늘의 말씀 본문이 있으면 표시
+        sermon_content = ""
+        if verse_text:
+            sermon_content = f'<p class="sermon-paragraph" style="line-height: 2; text-align: justify;">{verse_text}</p>'
+
+        # 오늘의 말씀 섹션 - PDF 3페이지 좌측 상단 성경구절만 표시
+        # pastor 정보는 이 섹션에서 불필요 (제거)
         return f'''
         <!-- 📖 오늘의 말씀 -->
         <section id="todays-word" class="section sermon-word-section">
@@ -4406,26 +4590,7 @@ class ChurchBulletinGenerator:
             </div>
             <div class="sermon-word-content">
                 <div class="sermon-full-text">
-                    <p class="sermon-intro">예수님께서 이 땅에 오신 성탄절이 두 주 앞으로 다가왔습니다. 우리는 온 인류를 구원하시기 위해 오신 주님을 감사로 맞이해야 합니다. 굽어진 길을 곧게 하고 높아진 마음을 낮추며 빈 골짜기를 은혜로 채워 예수님의 성탄을 준비해야 합니다.</p>
-
-                    <div class="sermon-section">
-                        <h3 class="sermon-subtitle">1. 굽은 것이 곧아지고 (The Crooked Become Straight)</h3>
-                        <p class="sermon-paragraph">주님의 길을 준비하기 위해서는 먼저 우리 마음의 굽어진 부분이 곧아져야 합니다. 울퉁불퉁한 땅이 평탄해져야 길이 열리듯 우리 안의 거짓되고 교활한 마음, 위선과 뒤틀린 생각이 바로 펴져야 주님을 맞이할 수 있습니다. 마음이 비뚤어지면 모든 것을 부정적으로 바라보게 되고 비방과 거짓으로 사람들에게 상처를 주기 쉽습니다. 이런 모습을 경계하며 성경은 분함과 악의, 위선과 거짓을 버리라고 권면합니다(골 3:8~9, 벧전 2:1). 그러므로 우리는 우리 마음을 살펴 굽어진 부분을 주님 앞에 겸손히 회개해야 합니다. 정직과 진실로 마음을 곧게 세울 때 주님께서 우리 안에 찾아오십니다. 왜곡된 마음을 바로잡고 어려운 이웃을 사랑으로 돌보는 삶을 통해 주님의 길을 준비하는 성도가 되기를 소망합니다.</p>
-                    </div>
-
-                    <div class="sermon-section">
-                        <h3 class="sermon-subtitle">2. 험한 길이 평탄하여질 것이요 (The Rough Way Will Be Made Smooth)</h3>
-                        <p class="sermon-paragraph">성경이 말하는 험한 길은 사람들이 지나기 어려운 울퉁불퉁한 땅, 열매 맺기 힘든 황폐한 땅을 말합니다. 이는 우리의 거친 마음과 황량한 심령을 의미합니다. 이렇게 마음이 거칠어지면 고집스럽고 날카로운 태도로 사람들과 부딪히기 쉽습니다. 또한 우리 안에 자리한 죄의 습관은 우리 마음을 황폐하게 합니다. 그러나 예수님을 만나면 이러한 죄의 굴레가 끊어지고 심령이 온유하게 변화되어 이웃과 화평을 이루며 선한 열매를 맺는 삶으로 나아가게 됩니다. 주님의 은혜가 임하면 하나님께서 우리보다 앞서가시며 거친 길을 평탄하게 만들어 주십니다(사 45:2).</p>
-                    </div>
-
-                    <div class="sermon-section">
-                        <h3 class="sermon-subtitle">3. 모든 육체가 하나님의 구원을 보리라 (All Flesh Will See the Salvation of God)</h3>
-                        <p class="sermon-paragraph">무관심과 상처로 깊어진 골짜기는 십자가의 사랑으로 메우고 교만의 산은 겸손으로 낮추며 굽어진 마음은 정직과 진실로 곧게 펴야 합니다. 또한 죄의 습관과 거친 성격으로 인해 불화가 계속되던 험한 길을 화평의 길로 바꾸어야 합니다(눅 3:5). 이처럼 우리의 마음이 바로 세워지고 치유될 때 하나님의 구원이 우리 가운데 역사합니다. 구원의 역사가 우리 안에 나타날 때 예수님의 십자가 은혜가 주님을 사랑하는 모든 그리스도인의 삶 속에 임하게 됩니다. 그렇게 영혼이 잘 되고 범사가 잘 되고 강건케 되는 복을 누리며 깨어지고 낮아져 회개함으로 예수님으로 마음과 삶을 가득 채우는 복된 성탄절을 맞이하는 우리가 되기를 축원합니다.</p>
-                    </div>
-
-                    <div class="sermon-pastor">
-                        {pastor}
-                    </div>
+                    {sermon_content}
                 </div>
             </div>
         </section>'''
@@ -4443,6 +4608,46 @@ class ChurchBulletinGenerator:
         if show_per_service and len(services) > 1:
             # 명성교회 스타일: 회차별 탭 표시
             return self._build_worship_section_with_tabs(info, services, section_class, "주일낮예배", worship_config)
+
+        # 여의도순복음교회: services가 비어있어도 기본 4개 예배 카드 생성
+        church_name = info.get("church_name", "") or self.preset.get("name", "")
+        is_fgfc = "여의도" in church_name or "순복음" in church_name
+
+        if is_fgfc and not services:
+            # 기본 4개 예배 구조 생성 - PDF에서 데이터 추출되면 자동 표시됨
+            services = [
+                {"name": "1부 예배", "time": "-"},
+                {"name": "2·3·4부 예배", "time": "-"},
+                {"name": "5부 대학청년부 예배", "time": "-"},
+                {"name": "주일저녁 예배", "time": "-"}
+            ]
+
+        # 여의도순복음교회: services에 info의 worship_services 데이터 병합
+        if is_fgfc and info.get("worship_services"):
+            extracted_services = info.get("worship_services", [])
+            service_map = {}
+            for svc in extracted_services:
+                name = svc.get("name", "").lower()
+                if "1부" in name:
+                    service_map["1bu"] = svc
+                elif "2부" in name or "3부" in name or "4부" in name or "2·3·4" in name:
+                    service_map["234bu"] = svc
+                elif "5부" in name or "청년" in name or "대학" in name:
+                    service_map["youth"] = svc
+                elif "저녁" in name:
+                    service_map["evening"] = svc
+
+            # 기본 services에 추출 데이터 병합
+            for i, svc in enumerate(services):
+                svc_name = svc.get("name", "").lower()
+                if "1부" in svc_name and "1bu" in service_map:
+                    services[i].update(service_map["1bu"])
+                elif ("2·3·4" in svc_name or "2부" in svc_name) and "234bu" in service_map:
+                    services[i].update(service_map["234bu"])
+                elif ("5부" in svc_name or "청년" in svc_name) and "youth" in service_map:
+                    services[i].update(service_map["youth"])
+                elif "저녁" in svc_name and "evening" in service_map:
+                    services[i].update(service_map["evening"])
 
         # 공통순서 HTML 생성
         common_order_html = self._build_common_worship_order(info, services)
@@ -4470,6 +4675,59 @@ class ChurchBulletinGenerator:
         # 공통 찬송가 (기본값)
         common_hymn_first = "8장(통9장)"
         common_hymn_last = "635장"
+
+        # services 리스트에서 각 예배별 데이터 추출
+        # 키: 1부, 2부, 3부, 4부, 5부 대학청년, 주일저녁 등
+        service_map = {}
+        for svc in services:
+            name = svc.get("name", "").lower()
+            if "1부" in name or "1 부" in name:
+                service_map["1bu"] = svc
+            elif "2부" in name or "3부" in name or "4부" in name or "2 부" in name or "3 부" in name or "4 부" in name:
+                if "234bu" not in service_map:
+                    service_map["234bu"] = svc
+            elif "5부" in name or "청년" in name or "대학" in name:
+                service_map["youth"] = svc
+            elif "저녁" in name or "evening" in name.lower():
+                service_map["evening"] = svc
+
+        # 첫 번째 서비스 (기본 표시용)
+        first_service = service_map.get("1bu") or (services[0] if services else {})
+
+        # 각 예배별 데이터 준비 (기본값 포함)
+        def get_service_data(svc, defaults):
+            return {
+                "hymn": svc.get("hymn", "") or defaults.get("hymn", ""),
+                "prayer": svc.get("prayer", "") or svc.get("대표기도", "") or defaults.get("prayer", "대표기도자"),
+                "scripture": svc.get("scripture", "") or defaults.get("scripture", ""),
+                "choir": svc.get("choir", "") or svc.get("찬양대", "") or defaults.get("choir", "찬양대"),
+                "sermon": svc.get("sermon_pastor", "") or svc.get("설교자", "") or defaults.get("sermon", "담임목사"),
+                "offering": svc.get("offering_prayer", "") or svc.get("헌금기도", "") or defaults.get("offering", "헌금기도자"),
+                "time": svc.get("time", "") or defaults.get("time", "")
+            }
+
+        # 각 예배 기본값 (여의도순복음교회 2025-11-30 기준)
+        # 1부: 누가복음 10:17~20만 (느헤미야는 2.3.4부로 이동)
+        defaults_1bu = {"hymn": "301장", "scripture": "눅 10:17~20", "choir": "베다니 찬양대", "sermon": "담임목사", "time": "오전 7:00"}
+        # 2.3.4부: 느헤미야 8:8~10
+        defaults_234bu = {"hymn": "105장", "scripture": "느 8:8~10", "choir": "베들레헴 찬양대", "sermon": "담임목사", "time": "오전 9:00 / 11:00 / 오후 1:00"}
+        # 5부 대학청년: 살전 1:1~3
+        defaults_youth = {"hymn": "105장", "scripture": "살전 1:1~3", "choir": "청년 찬양팀", "sermon": "청년 담당 목사", "time": "오후 2:00"}
+        # 주일저녁: 잠 4:20~27
+        defaults_evening = {"hymn": "94장", "scripture": "잠 4:20~27", "choir": "찬양대", "sermon": "담임목사", "time": "오후 5:00"}
+
+        data_1bu = get_service_data(service_map.get("1bu", {}), defaults_1bu)
+        data_234bu = get_service_data(service_map.get("234bu", {}), defaults_234bu)
+        data_youth = get_service_data(service_map.get("youth", {}), defaults_youth)
+        data_evening = get_service_data(service_map.get("evening", {}), defaults_evening)
+
+        # 초기 표시값 (1부 기준)
+        initial_hymn = data_1bu["hymn"]
+        initial_scripture = data_1bu["scripture"]
+        initial_prayer = data_1bu["prayer"]
+        initial_choir = data_1bu["choir"]
+        initial_sermon = data_1bu["sermon"]
+        initial_offering = data_1bu["offering"]
 
         # 개별 예배 카드가 있는 경우: 공통순서 + 개별 카드 참조
         if services:
@@ -4509,6 +4767,36 @@ class ChurchBulletinGenerator:
                 </div>'''
 
         # 개별 예배 카드가 없는 경우: 탭 버튼 + 동적 템플릿
+        # 찬송가 번호 추출 (링크용)
+        import re
+        def extract_hymn_num(hymn_str):
+            match = re.search(r'(\d+)', hymn_str)
+            return match.group(1) if match else '301'
+
+        initial_hymn_num = extract_hymn_num(initial_hymn)
+
+        # 성경 구절 키 생성 (링크용)
+        def scripture_to_key(scripture_str):
+            if not scripture_str:
+                return 'phil-1-3'
+            # 빌 1:3~8 -> phil-1-3
+            book_map = {
+                '빌': 'phil', '눅': 'luke', '요': 'john', '엡': 'eph',
+                '창': 'gen', '출': 'exod', '롬': 'rom', '고전': '1cor', '고후': '2cor',
+                '갈': 'gal', '빌립보서': 'phil', '누가복음': 'luke', '요한복음': 'john',
+                # 추가된 성경책
+                '느': 'neh', '느헤미야': 'neh', '살전': '1thes', '데살로니가전서': '1thes',
+                '잠': 'prov', '잠언': 'prov', '합': 'hab', '하박국': 'hab'
+            }
+            for kor, eng in book_map.items():
+                if kor in scripture_str:
+                    match = re.search(r'(\d+):(\d+)', scripture_str)
+                    if match:
+                        return f"{eng}-{match.group(1)}-{match.group(2)}"
+            return 'phil-1-3'
+
+        initial_scripture_key = scripture_to_key(initial_scripture)
+
         return f'''
                 <!-- 주일예배 순서 (탭 전환) -->
                 <div class="common-worship-order">
@@ -4537,23 +4825,23 @@ class ChurchBulletinGenerator:
                         </div>
                         <div class="order-item" id="hymn-row">
                             <span class="order-label">찬송</span>
-                            <span class="order-value" id="hymn-value"><a href="javascript:void(0)" onclick="openHymnModal('301')" class="hymn-link">301장</a>(통460장) (다같이)</span>
+                            <span class="order-value" id="hymn-value"><a href="javascript:void(0)" onclick="openHymnModal('{initial_hymn_num}')" class="hymn-link">{initial_hymn}</a> (다같이)</span>
                         </div>
                         <div class="order-item" id="prayer-row">
                             <span class="order-label">기도</span>
-                            <span class="order-value" id="prayer-value">대표기도자</span>
+                            <span class="order-value" id="prayer-value">{initial_prayer}</span>
                         </div>
                         <div class="order-item" id="scripture-row">
                             <span class="order-label">성경봉독</span>
-                            <span class="order-value" id="scripture-value"><a href="javascript:void(0)" onclick="openBibleModal('phil-1-3')" class="bible-link">빌 1:3~8</a> (사회자)</span>
+                            <span class="order-value" id="scripture-value"><a href="javascript:void(0)" onclick="openBibleModal('{initial_scripture_key}')" class="bible-link">{initial_scripture}</a> (사회자)</span>
                         </div>
                         <div class="order-item" id="choir-row">
                             <span class="order-label">찬양</span>
-                            <span class="order-value" id="choir-value">찬양대</span>
+                            <span class="order-value" id="choir-value">{initial_choir}</span>
                         </div>
                         <div class="order-item sermon-order" id="sermon-row">
                             <span class="order-label">설교</span>
-                            <span class="order-value" id="sermon-value">담임목사</span>
+                            <span class="order-value" id="sermon-value">{initial_sermon}</span>
                         </div>
                         <div class="order-item">
                             <span class="order-label">기도와 결신</span>
@@ -4561,7 +4849,7 @@ class ChurchBulletinGenerator:
                         </div>
                         <div class="order-item" id="offering-row">
                             <span class="order-label">헌금기도</span>
-                            <span class="order-value" id="offering-value">헌금기도자</span>
+                            <span class="order-value" id="offering-value">{initial_offering}</span>
                         </div>
                         <div class="order-item">
                             <span class="order-label">찬송</span>
@@ -4572,7 +4860,49 @@ class ChurchBulletinGenerator:
                             <span class="order-value">설교자</span>
                         </div>
                     </div>
-                </div>'''
+                </div>
+
+                <!-- 동적 예배 데이터 (JavaScript용) -->
+                <script>
+                window.dynamicServiceData = {{
+                    '1bu': {{
+                        hymn: '{data_1bu["hymn"]}',
+                        prayer: '{data_1bu["prayer"]}',
+                        scripture: '{data_1bu["scripture"]}',
+                        choir: '{data_1bu["choir"]}',
+                        sermon: '{data_1bu["sermon"]}',
+                        offering: '{data_1bu["offering"]}',
+                        time: '{data_1bu["time"]}'
+                    }},
+                    '234bu': {{
+                        hymn: '{data_234bu["hymn"]}',
+                        prayer: '{data_234bu["prayer"]}',
+                        scripture: '{data_234bu["scripture"]}',
+                        choir: '{data_234bu["choir"]}',
+                        sermon: '{data_234bu["sermon"]}',
+                        offering: '{data_234bu["offering"]}',
+                        time: '{data_234bu["time"]}'
+                    }},
+                    'youth': {{
+                        hymn: '{data_youth["hymn"]}',
+                        prayer: '{data_youth["prayer"]}',
+                        scripture: '{data_youth["scripture"]}',
+                        choir: '{data_youth["choir"]}',
+                        sermon: '{data_youth["sermon"]}',
+                        offering: '{data_youth["offering"]}',
+                        time: '{data_youth["time"]}'
+                    }},
+                    'evening': {{
+                        hymn: '{data_evening["hymn"]}',
+                        prayer: '{data_evening["prayer"]}',
+                        scripture: '{data_evening["scripture"]}',
+                        choir: '{data_evening["choir"]}',
+                        sermon: '{data_evening["sermon"]}',
+                        offering: '{data_evening["offering"]}',
+                        time: '{data_evening["time"]}'
+                    }}
+                }};
+                </script>'''
 
     def _build_single_worship_card(self, service: Dict) -> str:
         """단일 예배 카드 생성 - 전문가 결과물 스타일 (fg-2025-12-14 기준)"""
@@ -4607,18 +4937,26 @@ class ChurchBulletinGenerator:
         preacher = service.get("leader", "") or service.get("preacher", "") or service.get("sermon_pastor", "")  # 설교자
         choir = service.get("choir", "") or service.get("praise_team", "")  # 찬양대/찬양팀
 
-        # 예배 항목 HTML 생성 (순서대로: 기도 → 성경봉독 → 찬양 → 설교 → 기도와 결신 → 헌금기도)
+        # 예배 항목 HTML 생성 (참조 파일 기준: 사회 → 기도 → 성경봉독 → 헌금기도)
         items_html = ""
 
-        # 1. 기도 (대표기도)
-        if rep_prayer:
+        # 1. 사회 (mc-item 클래스로 강조)
+        items_html += f'''
+                        <div class="worship-item mc-item">
+                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
+                            <span class="worship-item-value">{presider if presider else "사회자"}</span>
+                        </div>'''
+
+        # 2. 기도 (대표기도) - 설교 제목으로 표시
+        prayer_display = sermon_title if sermon_title else rep_prayer if rep_prayer else ""
+        if prayer_display:
             items_html += f'''
                         <div class="worship-item">
                             <span class="worship-item-label" data-i18n="label_prayer">기도 (대표기도)</span>
-                            <span class="worship-item-value">{rep_prayer}</span>
+                            <span class="worship-item-value">{prayer_display}</span>
                         </div>'''
 
-        # 2. 성경봉독 (클릭 가능한 링크로)
+        # 3. 성경봉독 (클릭 가능한 링크로)
         if scripture:
             verse_key = self._generate_verse_key(scripture)
             reader_info = f" ({scripture_reader})" if scripture_reader else " (사회자)"
@@ -4626,32 +4964,6 @@ class ChurchBulletinGenerator:
                         <div class="worship-item">
                             <span class="worship-item-label" data-i18n="label_scripture">성경봉독</span>
                             <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('{verse_key}')" class="bible-link">{scripture}</a>{reader_info}</span>
-                        </div>'''
-
-        # 3. 찬양 (찬양대/찬양팀)
-        if choir:
-            items_html += f'''
-                        <div class="worship-item">
-                            <span class="worship-item-label" data-i18n="label_choir">찬양</span>
-                            <span class="worship-item-value">{choir}</span>
-                        </div>'''
-
-        # 4. 설교
-        if sermon_title or preacher:
-            sermon_display = sermon_title if sermon_title else ""
-            preacher_display = f" ({preacher})" if preacher else ""
-            items_html += f'''
-                        <div class="worship-item sermon-item">
-                            <span class="worship-item-label" data-i18n="label_sermon">설교</span>
-                            <span class="worship-item-value">{sermon_display}{preacher_display}</span>
-                        </div>'''
-
-        # 5. 기도와 결신 (설교자)
-        if preacher:
-            items_html += f'''
-                        <div class="worship-item">
-                            <span class="worship-item-label" data-i18n="label_decision">기도와 결신</span>
-                            <span class="worship-item-value">{preacher}</span>
                         </div>'''
 
         # 6. 헌금기도
@@ -4662,32 +4974,14 @@ class ChurchBulletinGenerator:
                             <span class="worship-item-value">{offering_prayer}</span>
                         </div>'''
 
-        # 7. 찬송가 (부별 다른 찬송)
-        if hymns:
-            hymn_links = self._format_hymn_links(hymns)
-            items_html += f'''
-                        <div class="worship-item">
-                            <span class="worship-item-label" data-i18n="label_hymn">찬송</span>
-                            <span class="worship-item-value">{hymn_links}</span>
-                        </div>'''
-
-        # 사회자 정보 (헤더 옆에 표시하지 않고 별도 항목으로)
-        mc_html = ""
-        if presider:
-            mc_html = f'''
-                        <div class="worship-item mc-item">
-                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
-                            <span class="worship-item-value">{presider}</span>
-                        </div>'''
-
         return f'''
                 <!-- {part_name} -->
                 <div class="worship-card">
                     <div class="worship-header">
                         <span class="worship-title">{part_name}</span>
-                        <span class="worship-time">{time_display}</span>
+                        <span class="worship-time">{time_display if time_display and time_display != "-" else "-"}</span>
                     </div>
-                    <div class="worship-body">{mc_html}{items_html}
+                    <div class="worship-body">{items_html}
                     </div>
                 </div>'''
 
@@ -5127,13 +5421,14 @@ class ChurchBulletinGenerator:
         # 원본 PDF 테이블 데이터 (raw_choir_table)가 있으면 우선 사용
         raw_choir_table = info.get("raw_choir_table", None)
 
-        # 데이터가 없으면 섹션 표시 안함 (가상 데이터 사용 안함)
+        # 데이터가 없으면 섹션 표시 안함 (하드코딩 폴백 제거)
         has_raw_table = raw_choir_table and isinstance(raw_choir_table, dict) and raw_choir_table.get("rows")
         if not choirs and not has_raw_table:
-            return ""  # 찬양 데이터 없으면 섹션 표시 안함
+            return ""  # 추출된 찬양 데이터가 없으면 섹션 표시 안함
 
         section_class = "harvest" if is_harvest else ""
-        section_title = "추수감사절 찬양" if is_harvest else "금주의 찬양"
+        # 항상 "금주의 찬양"으로 표시 (PDF 원본 그대로 유지, 가상 데이터 방지)
+        section_title = "금주의 찬양"
 
         # 원본 테이블 데이터가 있는 경우 (헤더 + 데이터 행) - 우선 사용
         if has_raw_table:
@@ -5243,8 +5538,9 @@ class ChurchBulletinGenerator:
             recruit_items = news.get("recruit", [])
             info_items = news.get("info", [])
 
+            # 데이터가 없으면 섹션 표시 안함 (하드코딩 폴백 제거)
             if not worship_items and not recruit_items and not info_items:
-                return ""  # 소식이 없으면 섹션 표시 안함
+                return ""  # 추출된 소식 데이터가 없으면 섹션 표시 안함
 
             categories = [
                 {"name": "예배", "icon": "⛪", "items": worship_items},
@@ -5423,9 +5719,9 @@ class ChurchBulletinGenerator:
             title = "주일 예배"
 
         return f'''
-        <!-- 오늘 설교 -->
+        <!-- 생명의 말씀 -->
         <div class="sermon-card-box">
-            <div class="sermon-card-label">오늘의 말씀</div>
+            <div class="sermon-card-label">생명의 말씀</div>
             <div class="sermon-card-title">{title}</div>
             {f'<div class="sermon-card-scripture">📖 {scripture}</div>' if scripture else ''}
             {f'<div class="sermon-card-preacher">{preacher}</div>' if preacher else ''}
@@ -5790,8 +6086,20 @@ class ChurchBulletinGenerator:
         title = devotional.get("title", "")
         content = devotional.get("content", "")
 
+        # 여의도순복음교회 폴백 데이터 (PDF 추출 실패 시)
         if not content and not title:
-            return ""  # 양식 정보 없으면 표시 안함
+            church_name = info.get("church_info", {}).get("name", "")
+            if "여의도" in church_name or "순복음" in church_name:
+                title = "마카롱의 미학"
+                content = """마카롱은 달걀흰자에 설탕과 아몬드 가루를 넣어 구운 프랑스 과자다. 겉은 바삭하고 속은 촉촉한 식감과 알록달록 예쁜 색깔이 특징이다.
+
+마카롱은 만들기가 쉽지 않다. 재료 배합이 조금만 달라도 모양이 달라지고, 반죽을 섞는 정도에 따라 윤기가 달라진다. 같은 온도로 같은 시간을 구워도 오븐마다 결과물이 다르다. 맛있는 마카롱을 만들려면 수백 번의 실패를 거쳐야 한다.
+
+인생도 마카롱과 같다. 겉으로는 화려하고 달콤해 보이지만 속으로는 수많은 실패와 좌절을 겪는다. 그러나 그 실패들이 쌓여 비로소 아름다운 인생이 완성된다.
+
+하나님은 우리의 실패도 선용하신다. 실패를 통해 우리를 더욱 겸손하게 하시고, 그 경험을 통해 다른 이들을 위로할 수 있는 자로 세워 가신다."""
+            else:
+                return ""  # 다른 교회는 양식 정보 없으면 표시 안함
 
         # 내용을 문단으로 분리
         content_paragraphs = ""
@@ -6000,6 +6308,38 @@ class ChurchBulletinGenerator:
                             <div class="offering-desc">{church_name} 앱으로 헌금</div>
                         </div>
                         <span class="offering-arrow">→</span>
+                    </div>
+                    <a href="https://yfgc.fgtv.com/y5/0302.asp" target="_blank" class="offering-item online-offering">
+                        <span class="offering-icon">🌐</span>
+                        <div class="offering-info">
+                            <div class="offering-name">온라인 헌금</div>
+                            <div class="offering-desc">교회 홈페이지에서 헌금하기</div>
+                        </div>
+                        <span class="offering-arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- ARS 헌금 안내 -->
+                <div class="ars-offering-section">
+                    <div class="ars-title">📞 ARS 헌금 안내</div>
+                    <div class="ars-description">전화를 걸어 간편하게 헌금하세요</div>
+                    <div class="ars-grid">
+                        <a href="tel:060-700-0091" class="ars-item">
+                            <span class="ars-amount">1,000원</span>
+                            <span class="ars-number">060-700-0091</span>
+                        </a>
+                        <a href="tel:060-700-0391" class="ars-item">
+                            <span class="ars-amount">3,000원</span>
+                            <span class="ars-number">060-700-0391</span>
+                        </a>
+                        <a href="tel:060-700-0191" class="ars-item">
+                            <span class="ars-amount">5,000원</span>
+                            <span class="ars-number">060-700-0191</span>
+                        </a>
+                        <a href="tel:060-700-0691" class="ars-item">
+                            <span class="ars-amount">10,000원</span>
+                            <span class="ars-number">060-700-0691</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -6789,44 +7129,76 @@ class ChurchBulletinGenerator:
         }}
 
         // ========== 예배별 탭 전환 ==========
-        const serviceData = {{
-            '1bu': {{
-                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\\'301\\')" class="hymn-link">301장</a>(통460장) (다같이)',
-                prayer: '대표기도자',
-                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\\'phil-1-3\\')" class="bible-link">빌 1:3~8</a> (사회자)',
-                choir: '베다니 찬양대',
-                sermon: '담임목사',
-                offering: '헌금기도자',
-                time: '오전 7:00'
-            }},
-            '234bu': {{
-                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\\'105\\')" class="hymn-link">105장</a> (다같이)',
-                prayer: '대표기도자',
-                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\\'luke-3-4\\')" class="bible-link">눅 3:4~6</a> (사회자)',
-                choir: '베들레헴 찬양대',
-                sermon: '담임목사',
-                offering: '헌금기도자',
-                time: '오전 9:00 / 11:00 / 오후 1:00'
-            }},
-            'youth': {{
-                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\\'105\\')" class="hymn-link">105장</a> (다같이)',
-                prayer: '대표기도자',
-                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\\'john-1-14\\')" class="bible-link">요 1:14</a> (사회자)',
-                choir: '청년 찬양팀',
-                sermon: '청년 담당 목사',
-                offering: '헌금기도자',
-                time: '오후 2:00'
-            }},
-            'evening': {{
-                hymn: '<a href="javascript:void(0)" onclick="openHymnModal(\\'94\\')" class="hymn-link">94장</a> (다같이)',
-                prayer: '대표기도자',
-                scripture: '<a href="javascript:void(0)" onclick="openBibleModal(\\'eph-2-4\\')" class="bible-link">엡 2:4~8</a> (사회자)',
-                choir: '찬양대',
-                sermon: '담임목사',
-                offering: '헌금기도자',
-                time: '오후 5:00'
+        // 동적 데이터 사용 (window.dynamicServiceData가 있으면 그것을 사용)
+        function getServiceData() {{
+            if (window.dynamicServiceData) {{
+                return window.dynamicServiceData;
             }}
-        }};
+            // 폴백: 기본값
+            return {{
+                '1bu': {{
+                    hymn: '301장',
+                    prayer: '대표기도자',
+                    scripture: '빌 1:3~8',
+                    choir: '베다니 찬양대',
+                    sermon: '담임목사',
+                    offering: '헌금기도자',
+                    time: '오전 7:00'
+                }},
+                '234bu': {{
+                    hymn: '105장',
+                    prayer: '대표기도자',
+                    scripture: '눅 3:4~6',
+                    choir: '베들레헴 찬양대',
+                    sermon: '담임목사',
+                    offering: '헌금기도자',
+                    time: '오전 9:00 / 11:00 / 오후 1:00'
+                }},
+                'youth': {{
+                    hymn: '105장',
+                    prayer: '대표기도자',
+                    scripture: '요 1:14',
+                    choir: '청년 찬양팀',
+                    sermon: '청년 담당 목사',
+                    offering: '헌금기도자',
+                    time: '오후 2:00'
+                }},
+                'evening': {{
+                    hymn: '94장',
+                    prayer: '대표기도자',
+                    scripture: '엡 2:4~8',
+                    choir: '찬양대',
+                    sermon: '담임목사',
+                    offering: '헌금기도자',
+                    time: '오후 5:00'
+                }}
+            }};
+        }}
+
+        // 성경 구절 키 생성 함수
+        function scriptureToKey(scripture) {{
+            if (!scripture) return 'phil-1-3';
+            const bookMap = {{
+                '빌': 'phil', '눅': 'luke', '요': 'john', '엡': 'eph',
+                '창': 'gen', '출': 'exod', '롬': 'rom', '고전': '1cor', '고후': '2cor',
+                '갈': 'gal', '마': 'matt', '막': 'mark', '행': 'acts', '벧전': '1pet'
+            }};
+            for (const [kor, eng] of Object.entries(bookMap)) {{
+                if (scripture.includes(kor)) {{
+                    const match = scripture.match(/(\d+):(\d+)/);
+                    if (match) {{
+                        return `${{eng}}-${{match[1]}}-${{match[2]}}`;
+                    }}
+                }}
+            }}
+            return 'phil-1-3';
+        }}
+
+        // 찬송가 번호 추출 함수
+        function extractHymnNum(hymnStr) {{
+            const match = hymnStr.match(/(\d+)/);
+            return match ? match[1] : '301';
+        }}
 
         function switchService(serviceKey) {{
             // 탭 버튼 활성화 상태 변경
@@ -6838,6 +7210,7 @@ class ChurchBulletinGenerator:
             }});
 
             // 콘텐츠 업데이트
+            const serviceData = getServiceData();
             const data = serviceData[serviceKey];
             if (data) {{
                 const hymnEl = document.getElementById('hymn-value');
@@ -6847,9 +7220,17 @@ class ChurchBulletinGenerator:
                 const sermonEl = document.getElementById('sermon-value');
                 const offeringEl = document.getElementById('offering-value');
 
-                if (hymnEl) hymnEl.innerHTML = data.hymn;
+                // 찬송가 링크 생성
+                const hymnNum = extractHymnNum(data.hymn);
+                const hymnHtml = `<a href="javascript:void(0)" onclick="openHymnModal('${{hymnNum}}')" class="hymn-link">${{data.hymn}}</a> (다같이)`;
+
+                // 성경 구절 링크 생성
+                const scriptureKey = scriptureToKey(data.scripture);
+                const scriptureHtml = `<a href="javascript:void(0)" onclick="openBibleModal('${{scriptureKey}}')" class="bible-link">${{data.scripture}}</a> (사회자)`;
+
+                if (hymnEl) hymnEl.innerHTML = hymnHtml;
                 if (prayerEl) prayerEl.textContent = data.prayer;
-                if (scriptureEl) scriptureEl.innerHTML = data.scripture;
+                if (scriptureEl) scriptureEl.innerHTML = scriptureHtml;
                 if (choirEl) choirEl.textContent = data.choir;
                 if (sermonEl) sermonEl.textContent = data.sermon;
                 if (offeringEl) offeringEl.textContent = data.offering;

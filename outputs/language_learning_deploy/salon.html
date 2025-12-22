@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>미용실 서비스 외국어 학습</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; overflow-x: hidden; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%);
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+        .container { max-width: 500px; margin: 0 auto; }
+
+        .license-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .license-box { background: white; border-radius: 20px; padding: 30px; max-width: 350px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .license-logo { font-size: 50px; margin-bottom: 15px; }
+        .license-title { font-size: 1.3em; color: #333; margin-bottom: 5px; }
+        .license-subtitle { font-size: 0.85em; color: #666; margin-bottom: 20px; }
+        .license-input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.1em; text-align: center; letter-spacing: 3px; margin-bottom: 15px; }
+        .license-input:focus { outline: none; border-color: #ee9ca7; }
+        .license-input.error { border-color: #e74c3c; animation: shake 0.5s ease; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .license-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #ee9ca7, #ffdde1); color: #333; border: none; border-radius: 10px; font-size: 1em; font-weight: bold; cursor: pointer; }
+        .license-error { color: #e74c3c; font-size: 0.85em; margin-top: 10px; display: none; }
+        .license-info { margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; font-size: 0.75em; color: #999; }
+
+        .expired-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        .expired-box { background: white; border-radius: 20px; padding: 40px 30px; max-width: 350px; width: 90%; text-align: center; }
+        .expired-icon { font-size: 60px; margin-bottom: 15px; }
+        .expired-title { font-size: 1.3em; color: #e74c3c; margin-bottom: 10px; }
+
+        .main-content { display: none; }
+        .main-content.unlocked { display: block; }
+
+        header { text-align: center; color: #333; padding: 20px 10px; }
+        header h1 { font-size: 1.5em; margin-bottom: 5px; }
+        header p { font-size: 0.9em; opacity: 0.8; }
+
+        .license-badge { background: rgba(255,255,255,0.5); padding: 8px 15px; border-radius: 20px; font-size: 0.75em; color: #666; text-align: center; margin-bottom: 15px; }
+
+        .speed-control { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.3); border-radius: 10px; }
+        .speed-control label { color: #333; font-size: 0.85em; }
+        .speed-slider { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.5); }
+        .speed-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .speed-value { color: #333; font-size: 0.85em; min-width: 40px; }
+
+        .progress-container { background: rgba(255,255,255,0.4); border-radius: 15px; padding: 15px; margin: 15px 0; }
+        .progress-bar { background: rgba(255,255,255,0.5); border-radius: 10px; height: 12px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #ff6b6b, #ee5a5a); height: 100%; width: 0%; transition: width 0.5s ease; border-radius: 10px; }
+        .progress-text { color: #333; text-align: center; margin-top: 8px; font-size: 0.85em; }
+
+        .day-scroll { overflow-x: auto; white-space: nowrap; padding: 10px 0; margin: 10px -15px; padding-left: 15px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .day-scroll::-webkit-scrollbar { display: none; }
+        .day-btn { display: inline-block; background: rgba(255,255,255,0.5); color: #333; border: 2px solid rgba(255,255,255,0.8); padding: 10px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 8px; }
+        .day-btn.active { background: white; color: #ee9ca7; border-color: white; }
+        .day-btn.completed { background: #ff6b6b; border-color: #ff6b6b; color: white; }
+        .day-btn.completed::after { content: ' ✓'; }
+
+        .lesson-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); display: none; }
+        .lesson-card.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .lesson-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #eee; }
+        .day-badge { background: linear-gradient(135deg, #ee9ca7, #ffdde1); color: #333; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .lesson-theme { color: #333; font-size: 1.1em; font-weight: 600; }
+
+        .comic-panel { background: linear-gradient(180deg, #fff5f5 0%, #ffe4e6 100%); border-radius: 15px; padding: 15px; margin-bottom: 20px; border: 3px solid #333; }
+        .comic-scene { display: flex; justify-content: space-around; align-items: flex-end; min-height: 150px; }
+        .character { display: flex; flex-direction: column; align-items: center; max-width: 45%; }
+        .speech-bubble { background: white; border: 2px solid #333; border-radius: 15px; padding: 10px 12px; margin-bottom: 8px; font-size: 0.85em; text-align: center; position: relative; box-shadow: 2px 2px 0 #333; }
+        .speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); border-width: 10px 8px 0; border-style: solid; border-color: #333 transparent transparent; }
+        .avatar { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; border: 3px solid #333; box-shadow: 2px 2px 0 #333; }
+        .stylist .avatar { background: linear-gradient(135deg, #ee9ca7, #ffdde1); }
+        .customer .avatar { background: linear-gradient(135deg, #a8e6cf, #dcedc1); }
+        .role-label { font-size: 10px; color: #666; margin-top: 4px; }
+
+        .listen-all-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #ff6b6b, #ee5a5a); color: white; border: none; border-radius: 25px; font-size: 1em; font-weight: 600; cursor: pointer; margin-bottom: 15px; }
+
+        .phrase-card { background: linear-gradient(135deg, #fff5f5 0%, #ffe4e6 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 2px solid #ee9ca7; }
+        .phrase-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .phrase-number { background: #ee9ca7; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9em; }
+        .korean-phrase { font-size: 1.2em; font-weight: bold; color: #333; }
+
+        .lang-box { background: white; border-radius: 12px; padding: 12px; margin-bottom: 10px; border-left: 4px solid; }
+        .lang-box.english { border-color: #2196f3; }
+        .lang-box.japanese { border-color: #e91e63; }
+        .lang-box.chinese { border-color: #ff9800; }
+        .lang-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .lang-label { font-size: 11px; color: #666; }
+        .lang-text { font-size: 1em; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+        .pronunciation { background: #f5f5f5; padding: 8px 12px; border-radius: 20px; font-size: 0.9em; color: #e91e63; display: inline-block; }
+
+        .speak-btn { background: linear-gradient(135deg, #ee9ca7, #ffdde1); color: #333; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(238, 156, 167, 0.4); }
+
+        .tip-box { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px dashed #4caf50; }
+        .tip-box h4 { color: #2e7d32; margin-bottom: 10px; font-size: 0.95em; }
+        .tip-box ul { list-style: none; font-size: 0.9em; }
+        .tip-box li { padding: 4px 0 4px 20px; position: relative; }
+        .tip-box li::before { content: '✓'; position: absolute; left: 0; color: #4caf50; }
+
+        .practice-section { background: #fff5f5; border-radius: 15px; padding: 15px; margin-top: 15px; }
+        .practice-section h4 { color: #ee9ca7; margin-bottom: 12px; font-size: 0.95em; }
+        .practice-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px dashed #ffdde1; font-size: 0.9em; }
+        .practice-item:last-child { border-bottom: none; }
+        .checkbox { width: 24px; height: 24px; min-width: 24px; border: 2px solid #ee9ca7; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .checkbox.checked { background: #ee9ca7; color: white; }
+
+        .complete-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #ee9ca7, #ffdde1); color: #333; border: none; border-radius: 25px; font-size: 1em; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 20px rgba(238, 156, 167, 0.4); }
+
+        .review-card { background: linear-gradient(135deg, #e1bee7, #ce93d8); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .review-card h4 { color: #4a148c; margin-bottom: 8px; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: white; border-radius: 20px; padding: 30px; text-align: center; max-width: 300px; animation: bounceIn 0.5s ease; }
+        @keyframes bounceIn { 0% { transform: scale(0); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .modal-emoji { font-size: 50px; margin-bottom: 15px; }
+        .modal-content h2 { font-size: 1.3em; margin-bottom: 10px; }
+        .modal-content p { color: #666; margin-bottom: 20px; }
+        .modal-btn { padding: 12px 30px; border-radius: 25px; border: none; background: linear-gradient(135deg, #ee9ca7, #ffdde1); color: #333; font-size: 1em; font-weight: 600; cursor: pointer; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 10px 20px; display: none; justify-content: space-around; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 100; }
+        .bottom-nav.show { display: flex; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; color: #999; font-size: 10px; cursor: pointer; padding: 5px 15px; }
+        .nav-btn.active { color: #ee9ca7; }
+        .nav-btn span:first-child { font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div class="license-screen" id="licenseScreen">
+        <div class="license-box">
+            <div class="license-logo">💇‍♀️🔐</div>
+            <h2 class="license-title">미용실 서비스 외국어 학습</h2>
+            <p class="license-subtitle">라이선스 인증이 필요합니다</p>
+            <input type="password" class="license-input" id="passwordInput" placeholder="비밀번호 입력" maxlength="20" autocomplete="off">
+            <button class="license-btn" onclick="verifyLicense()">인증하기</button>
+            <p class="license-error" id="licenseError">비밀번호가 올바르지 않습니다</p>
+            <div class="license-info"><p>© 2024 더소통. All rights reserved.</p></div>
+        </div>
+    </div>
+
+    <div class="expired-screen" id="expiredScreen">
+        <div class="expired-box">
+            <div class="expired-icon">⏰</div>
+            <h2 class="expired-title">라이선스가 만료되었습니다</h2>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <header>
+                <h1>💇‍♀️ 미용실 서비스 외국어</h1>
+                <p>하루 10분, 2주 완성!</p>
+            </header>
+
+            <div class="license-badge" id="licenseBadge">라이선스: <span id="expiryDisplay">-</span>까지 유효</div>
+
+            <div class="speed-control">
+                <label>🔊 발음 속도</label>
+                <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="1.2" step="0.1" value="0.8">
+                <span class="speed-value" id="speedValue">0.8x</span>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="progress-text" id="progressText">0 / 14일 완료</div>
+            </div>
+
+            <div class="day-scroll" id="dayScroll"></div>
+
+            <!-- Day 1 -->
+            <div class="lesson-card active" id="day1">
+                <div class="lesson-header">
+                    <span class="day-badge">Day 1</span>
+                    <span class="lesson-theme">👋 접수/인사</span>
+                </div>
+                <div class="comic-panel">
+                    <div class="comic-scene">
+                        <div class="character customer"><div class="speech-bubble">안녕하세요~</div><div class="avatar">👩</div><span class="role-label">고객</span></div>
+                        <div class="character stylist"><div class="speech-bubble">어서오세요!</div><div class="avatar">💇‍♀️</div><span class="role-label">헤어디자이너</span></div>
+                    </div>
+                </div>
+                <button class="listen-all-btn" onclick="playAllPhrases(1)">🔊 오늘의 표현 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">어서오세요, 예약하셨나요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸 English</span><button class="speak-btn" onclick="speak('Welcome! Do you have an appointment?', 'en-US')">🔊</button></div><div class="lang-text">Welcome! Do you have an appointment?</div><div class="pronunciation">웰컴! 두 유 해브 언 어포인트먼트?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵 日本語</span><button class="speak-btn" onclick="speak('いらっしゃいませ、ご予約はありますか', 'ja-JP')">🔊</button></div><div class="lang-text">いらっしゃいませ、ご予約はありますか？</div><div class="pronunciation">이랏샤이마세, 고요야쿠와 아리마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳 中文</span><button class="speak-btn" onclick="speak('欢迎光临，请问有预约吗', 'zh-CN')">🔊</button></div><div class="lang-text">欢迎光临，请问有预约吗？</div><div class="pronunciation">환잉 광린, 칭원 요우 위위에 마?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">오늘 어떤 스타일을 원하세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸 English</span><button class="speak-btn" onclick="speak('What style would you like today?', 'en-US')">🔊</button></div><div class="lang-text">What style would you like today?</div><div class="pronunciation">왓 스타일 우쥬 라이크 투데이?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵 日本語</span><button class="speak-btn" onclick="speak('今日はどんなスタイルにしますか', 'ja-JP')">🔊</button></div><div class="lang-text">今日はどんなスタイルにしますか？</div><div class="pronunciation">쿄와 돈나 스타이루니 시마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳 中文</span><button class="speak-btn" onclick="speak('今天想要什么样的发型', 'zh-CN')">🔊</button></div><div class="lang-text">今天想要什么样的发型？</div><div class="pronunciation">진티엔 샹야오 션머양더 파싱?</div></div>
+                </div>
+                <div class="tip-box"><h4>💡 오늘의 팁</h4><ul><li><strong>appointment</strong> = 예약</li><li><strong>style</strong> = 스타일, 헤어스타일</li><li>일본어 <strong>いらっしゃいませ</strong> = 어서오세요</li></ul></div>
+                <div class="practice-section"><h4>✏️ 오늘의 연습</h4><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>영어 3번 따라 말하기</span></div><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>일본어 3번 따라 말하기</span></div><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>중국어 3번 따라 말하기</span></div></div>
+                <button class="complete-btn" onclick="completeDay(1)">Day 1 완료! 🎉</button>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="lesson-card" id="day2">
+                <div class="lesson-header"><span class="day-badge">Day 2</span><span class="lesson-theme">✂️ 커트 상담</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character stylist"><div class="speech-bubble">얼마나 자를까요?</div><div class="avatar">💇‍♀️</div></div><div class="character customer"><div class="speech-bubble">조금만요~</div><div class="avatar">👩</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(2)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">얼마나 자를까요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('How much would you like me to cut?', 'en-US')">🔊</button></div><div class="lang-text">How much would you like me to cut?</div><div class="pronunciation">하우 머치 우쥬 라이크 미 투 컷?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('どのくらい切りますか', 'ja-JP')">🔊</button></div><div class="lang-text">どのくらい切りますか？</div><div class="pronunciation">도노쿠라이 키리마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('要剪多少', 'zh-CN')">🔊</button></div><div class="lang-text">要剪多少？</div><div class="pronunciation">야오 지엔 뚜오샤오?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">앞머리도 자를까요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Would you like me to trim your bangs too?', 'en-US')">🔊</button></div><div class="lang-text">Would you like me to trim your bangs too?</div><div class="pronunciation">우쥬 라이크 미 투 트림 유어 뱅스 투?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('前髪も切りますか', 'ja-JP')">🔊</button></div><div class="lang-text">前髪も切りますか？</div><div class="pronunciation">마에가미모 키리마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('刘海也要剪吗', 'zh-CN')">🔊</button></div><div class="lang-text">刘海也要剪吗？</div><div class="pronunciation">리우하이 예 야오 지엔 마?</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(2)">Day 2 완료! 🎉</button>
+            </div>
+
+            <!-- Day 3 -->
+            <div class="lesson-card" id="day3">
+                <div class="lesson-header"><span class="day-badge">Day 3</span><span class="lesson-theme">🎨 염색 상담</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character customer"><div class="speech-bubble">염색하고 싶어요</div><div class="avatar">👩</div></div><div class="character stylist"><div class="speech-bubble">어떤 색이요?</div><div class="avatar">💇‍♀️</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(3)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">어떤 색으로 염색하시겠어요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('What color would you like?', 'en-US')">🔊</button></div><div class="lang-text">What color would you like?</div><div class="pronunciation">왓 컬러 우쥬 라이크?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('どんな色に染めますか', 'ja-JP')">🔊</button></div><div class="lang-text">どんな色に染めますか？</div><div class="pronunciation">돈나 이로니 소메마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('您想染什么颜色', 'zh-CN')">🔊</button></div><div class="lang-text">您想染什么颜色？</div><div class="pronunciation">닌 샹 란 션머 옌써?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">이 색은 어떠세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('How about this color?', 'en-US')">🔊</button></div><div class="lang-text">How about this color?</div><div class="pronunciation">하우 어바웃 디스 컬러?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('この色はいかがですか', 'ja-JP')">🔊</button></div><div class="lang-text">この色はいかがですか？</div><div class="pronunciation">코노 이로와 이카가 데스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('这个颜色怎么样', 'zh-CN')">🔊</button></div><div class="lang-text">这个颜色怎么样？</div><div class="pronunciation">쩌거 옌써 전머양?</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(3)">Day 3 완료! 🎉</button>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="lesson-card" id="day4">
+                <div class="lesson-header"><span class="day-badge">Day 4</span><span class="lesson-theme">💆 펌 상담</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character stylist"><div class="speech-bubble">펌 하시겠어요?</div><div class="avatar">💇‍♀️</div></div><div class="character customer"><div class="speech-bubble">자연스러운 웨이브요</div><div class="avatar">👩</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(4)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">어떤 펌 스타일을 원하세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('What kind of perm would you like?', 'en-US')">🔊</button></div><div class="lang-text">What kind of perm would you like?</div><div class="pronunciation">왓 카인드 오브 펌 우쥬 라이크?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('どんなパーマにしますか', 'ja-JP')">🔊</button></div><div class="lang-text">どんなパーマにしますか？</div><div class="pronunciation">돈나 파마니 시마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('您想烫什么样的发型', 'zh-CN')">🔊</button></div><div class="lang-text">您想烫什么样的发型？</div><div class="pronunciation">닌 샹 탕 션머양더 파싱?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">약 2시간 정도 걸려요</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('It will take about 2 hours', 'en-US')">🔊</button></div><div class="lang-text">It will take about 2 hours</div><div class="pronunciation">잇 윌 테이크 어바웃 투 아워즈</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('約2時間かかります', 'ja-JP')">🔊</button></div><div class="lang-text">約2時間かかります</div><div class="pronunciation">야쿠 니지칸 카카리마스</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('大约需要2个小时', 'zh-CN')">🔊</button></div><div class="lang-text">大约需要2个小时</div><div class="pronunciation">다웨 쉬야오 량거 샤오스</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(4)">Day 4 완료! 🎉</button>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="lesson-card" id="day5">
+                <div class="lesson-header"><span class="day-badge">Day 5</span><span class="lesson-theme">🧴 샴푸/케어</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character stylist"><div class="speech-bubble">물 온도 괜찮으세요?</div><div class="avatar">💇‍♀️</div></div><div class="character customer"><div class="speech-bubble">네, 좋아요</div><div class="avatar">👩</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(5)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">물 온도 괜찮으세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Is the water temperature okay?', 'en-US')">🔊</button></div><div class="lang-text">Is the water temperature okay?</div><div class="pronunciation">이즈 더 워터 템퍼러쳐 오케이?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('お湯の温度は大丈夫ですか', 'ja-JP')">🔊</button></div><div class="lang-text">お湯の温度は大丈夫ですか？</div><div class="pronunciation">오유노 온도와 다이죠부 데스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('水温可以吗', 'zh-CN')">🔊</button></div><div class="lang-text">水温可以吗？</div><div class="pronunciation">슈이원 커이 마?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">가려운 데 없으세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Is there anywhere itchy?', 'en-US')">🔊</button></div><div class="lang-text">Is there anywhere itchy?</div><div class="pronunciation">이즈 데어 애니웨어 이치?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('かゆいところはありませんか', 'ja-JP')">🔊</button></div><div class="lang-text">かゆいところはありませんか？</div><div class="pronunciation">카유이 토코로와 아리마센카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('有没有痒的地方', 'zh-CN')">🔊</button></div><div class="lang-text">有没有痒的地方？</div><div class="pronunciation">요우메이요우 양더 디팡?</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(5)">Day 5 완료! 🎉</button>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="lesson-card" id="day6">
+                <div class="lesson-header"><span class="day-badge">Day 6</span><span class="lesson-theme">💅 네일 서비스</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character customer"><div class="speech-bubble">네일 하고 싶어요</div><div class="avatar">👩</div></div><div class="character stylist"><div class="speech-bubble">어떤 디자인이요?</div><div class="avatar">💅</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(6)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">어떤 디자인을 원하세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('What design would you like?', 'en-US')">🔊</button></div><div class="lang-text">What design would you like?</div><div class="pronunciation">왓 디자인 우쥬 라이크?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('どんなデザインにしますか', 'ja-JP')">🔊</button></div><div class="lang-text">どんなデザインにしますか？</div><div class="pronunciation">돈나 데자인니 시마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('您想要什么样的图案', 'zh-CN')">🔊</button></div><div class="lang-text">您想要什么样的图案？</div><div class="pronunciation">닌 샹야오 션머양더 투안?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">젤네일 하시겠어요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Would you like gel nails?', 'en-US')">🔊</button></div><div class="lang-text">Would you like gel nails?</div><div class="pronunciation">우쥬 라이크 젤 네일즈?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('ジェルネイルにしますか', 'ja-JP')">🔊</button></div><div class="lang-text">ジェルネイルにしますか？</div><div class="pronunciation">제루 네이루니 시마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('您要做光疗甲吗', 'zh-CN')">🔊</button></div><div class="lang-text">您要做光疗甲吗？</div><div class="pronunciation">닌 야오 쭤 광랴오지아 마?</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(6)">Day 6 완료! 🎉</button>
+            </div>
+
+            <!-- Day 7 -->
+            <div class="lesson-card" id="day7">
+                <div class="lesson-header"><span class="day-badge">Day 7</span><span class="lesson-theme">✨ 스타일링</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character stylist"><div class="speech-bubble">드라이 해드릴까요?</div><div class="avatar">💇‍♀️</div></div><div class="character customer"><div class="speech-bubble">네, 부탁해요</div><div class="avatar">👩</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(7)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">드라이 해드릴까요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Would you like me to blow dry your hair?', 'en-US')">🔊</button></div><div class="lang-text">Would you like me to blow dry your hair?</div><div class="pronunciation">우쥬 라이크 미 투 블로우 드라이 유어 헤어?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('ブローしますか', 'ja-JP')">🔊</button></div><div class="lang-text">ブローしますか？</div><div class="pronunciation">부로 시마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('需要吹头发吗', 'zh-CN')">🔊</button></div><div class="lang-text">需要吹头发吗？</div><div class="pronunciation">쉬야오 추이 토우파 마?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">스타일링 제품 바르시겠어요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Would you like some styling product?', 'en-US')">🔊</button></div><div class="lang-text">Would you like some styling product?</div><div class="pronunciation">우쥬 라이크 썸 스타일링 프로덕트?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('スタイリング剤をつけますか', 'ja-JP')">🔊</button></div><div class="lang-text">スタイリング剤をつけますか？</div><div class="pronunciation">스타이링자이오 츠게마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('需要涂定型产品吗', 'zh-CN')">🔊</button></div><div class="lang-text">需要涂定型产品吗？</div><div class="pronunciation">쉬야오 투 딩싱 찬핀 마?</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(7)">Day 7 완료! 🎉</button>
+            </div>
+
+            <!-- Day 8 -->
+            <div class="lesson-card" id="day8">
+                <div class="lesson-header"><span class="day-badge">Day 8</span><span class="lesson-theme">💬 확인/수정</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character stylist"><div class="speech-bubble">길이 괜찮으세요?</div><div class="avatar">💇‍♀️</div></div><div class="character customer"><div class="speech-bubble">조금만 더 짧게요</div><div class="avatar">👩</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(8)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">길이 괜찮으세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Is the length okay?', 'en-US')">🔊</button></div><div class="lang-text">Is the length okay?</div><div class="pronunciation">이즈 더 렝스 오케이?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('長さは大丈夫ですか', 'ja-JP')">🔊</button></div><div class="lang-text">長さは大丈夫ですか？</div><div class="pronunciation">나가사와 다이죠부 데스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('长度可以吗', 'zh-CN')">🔊</button></div><div class="lang-text">长度可以吗？</div><div class="pronunciation">창두 커이 마?</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">더 짧게 해드릴까요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Would you like it shorter?', 'en-US')">🔊</button></div><div class="lang-text">Would you like it shorter?</div><div class="pronunciation">우쥬 라이크 잇 쇼터?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('もう少し短くしますか', 'ja-JP')">🔊</button></div><div class="lang-text">もう少し短くしますか？</div><div class="pronunciation">모스코시 미지카쿠 시마스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('要再剪短一点吗', 'zh-CN')">🔊</button></div><div class="lang-text">要再剪短一点吗？</div><div class="pronunciation">야오 짜이 지엔단 이디엔 마?</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(8)">Day 8 완료! 🎉</button>
+            </div>
+
+            <!-- Day 9 -->
+            <div class="lesson-card" id="day9">
+                <div class="lesson-header"><span class="day-badge">Day 9</span><span class="lesson-theme">💳 결제</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character stylist"><div class="speech-bubble">총 8만원입니다</div><div class="avatar">💇‍♀️</div></div><div class="character customer"><div class="speech-bubble">카드로 할게요</div><div class="avatar">👩</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(9)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">총 8만원입니다</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('The total is 80,000 won', 'en-US')">🔊</button></div><div class="lang-text">The total is 80,000 won</div><div class="pronunciation">더 토탈 이즈 에이티 사우전드 원</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('合計で8万ウォンになります', 'ja-JP')">🔊</button></div><div class="lang-text">合計で8万ウォンになります</div><div class="pronunciation">고게이데 하치만 원니 나리마스</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('总共是8万韩元', 'zh-CN')">🔊</button></div><div class="lang-text">总共是8万韩元</div><div class="pronunciation">종공 스 바완 한위안</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">현금이세요, 카드세요?</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Cash or card?', 'en-US')">🔊</button></div><div class="lang-text">Cash or card?</div><div class="pronunciation">캐시 오어 카드?</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('現金ですか、カードですか', 'ja-JP')">🔊</button></div><div class="lang-text">現金ですか、カードですか？</div><div class="pronunciation">겐킨 데스카, 카도 데스카?</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('现金还是刷卡', 'zh-CN')">🔊</button></div><div class="lang-text">现金还是刷卡？</div><div class="pronunciation">시엔진 하이스 슈아카?</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(9)">Day 9 완료! 🎉</button>
+            </div>
+
+            <!-- Day 10 -->
+            <div class="lesson-card" id="day10">
+                <div class="lesson-header"><span class="day-badge">Day 10</span><span class="lesson-theme">👋 마무리</span></div>
+                <div class="comic-panel"><div class="comic-scene"><div class="character stylist"><div class="speech-bubble">감사합니다! 또 오세요</div><div class="avatar">💇‍♀️</div></div><div class="character customer"><div class="speech-bubble">마음에 들어요!</div><div class="avatar">👩</div></div></div></div>
+                <button class="listen-all-btn" onclick="playAllPhrases(10)">🔊 전체 듣기</button>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">1</div><div class="korean-phrase">마음에 드셨으면 좋겠어요</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('I hope you like it', 'en-US')">🔊</button></div><div class="lang-text">I hope you like it</div><div class="pronunciation">아이 호프 유 라이크 잇</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('気に入っていただければ嬉しいです', 'ja-JP')">🔊</button></div><div class="lang-text">気に入っていただければ嬉しいです</div><div class="pronunciation">키니잇테 이타다게레바 우레시 데스</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('希望您喜欢', 'zh-CN')">🔊</button></div><div class="lang-text">希望您喜欢</div><div class="pronunciation">시왕 닌 시환</div></div>
+                </div>
+                <div class="phrase-card">
+                    <div class="phrase-header"><div class="phrase-number">2</div><div class="korean-phrase">또 방문해 주세요!</div></div>
+                    <div class="lang-box english"><div class="lang-header"><span class="lang-label">🇺🇸</span><button class="speak-btn" onclick="speak('Please visit us again!', 'en-US')">🔊</button></div><div class="lang-text">Please visit us again!</div><div class="pronunciation">플리즈 비짓 어스 어겐!</div></div>
+                    <div class="lang-box japanese"><div class="lang-header"><span class="lang-label">🇯🇵</span><button class="speak-btn" onclick="speak('またのご来店をお待ちしております', 'ja-JP')">🔊</button></div><div class="lang-text">またのご来店をお待ちしております</div><div class="pronunciation">마타노 고라이텐오 오마치시테 오리마스</div></div>
+                    <div class="lang-box chinese"><div class="lang-header"><span class="lang-label">🇨🇳</span><button class="speak-btn" onclick="speak('欢迎下次再来', 'zh-CN')">🔊</button></div><div class="lang-text">欢迎下次再来!</div><div class="pronunciation">환잉 샤츠 짜이라이!</div></div>
+                </div>
+                <button class="complete-btn" onclick="completeDay(10)">Day 10 완료! 🎉</button>
+            </div>
+
+            <!-- Day 11-14 복습 -->
+            <div class="lesson-card" id="day11"><div class="lesson-header"><span class="day-badge">Day 11</span><span class="lesson-theme">📖 복습 (1-3일차)</span></div><div class="review-card"><h4>✂️ 접수 & 커트 & 염색 복습</h4><p>Day 1-3 표현을 복습하세요!</p></div><div class="practice-section"><h4>✏️ 복습</h4><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>접수 표현 복습</span></div><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>커트/염색 상담 복습</span></div></div><button class="complete-btn" onclick="completeDay(11)">Day 11 완료! 🎉</button></div>
+
+            <div class="lesson-card" id="day12"><div class="lesson-header"><span class="day-badge">Day 12</span><span class="lesson-theme">📖 복습 (4-6일차)</span></div><div class="review-card"><h4>💆 펌 & 샴푸 & 네일 복습</h4><p>Day 4-6 표현을 복습하세요!</p></div><div class="practice-section"><h4>✏️ 복습</h4><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>펌/케어 표현 복습</span></div><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>네일 서비스 복습</span></div></div><button class="complete-btn" onclick="completeDay(12)">Day 12 완료! 🎉</button></div>
+
+            <div class="lesson-card" id="day13"><div class="lesson-header"><span class="day-badge">Day 13</span><span class="lesson-theme">📖 복습 (7-9일차)</span></div><div class="review-card"><h4>✨ 스타일링 & 결제 복습</h4><p>Day 7-9 표현을 복습하세요!</p></div><div class="practice-section"><h4>✏️ 복습</h4><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>스타일링 표현 복습</span></div><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>결제 표현 복습</span></div></div><button class="complete-btn" onclick="completeDay(13)">Day 13 완료! 🎉</button></div>
+
+            <div class="lesson-card" id="day14"><div class="lesson-header"><span class="day-badge">Day 14</span><span class="lesson-theme">🏆 최종 테스트</span></div><div class="review-card" style="background: linear-gradient(135deg, #fce4ec, #f8bbd9);"><h4>🎓 2주 과정 완료!</h4><p>축하합니다! 이제 외국인 고객과 자신있게 대화하세요!</p></div><div class="practice-section"><h4>🎯 최종 미션</h4><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>동료와 역할극 해보기</span></div><div class="practice-item"><div class="checkbox" onclick="toggleCheck(this)"></div><span>실제 외국인 고객에게 사용하기</span></div></div><button class="complete-btn" onclick="completeDay(14)">🏆 2주 과정 완료! 🏆</button></div>
+
+            <div class="modal-overlay" id="modal">
+                <div class="modal-content">
+                    <div class="modal-emoji" id="modalEmoji">🎉</div>
+                    <h2 id="modalTitle">축하합니다!</h2>
+                    <p id="modalText">오늘의 학습을 완료했어요!</p>
+                    <button class="modal-btn" onclick="closeModal()">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav" id="bottomNav">
+        <button class="nav-btn active" onclick="showHome()"><span>🏠</span><span>홈</span></button>
+        <button class="nav-btn" onclick="resetProgress()"><span>🔄</span><span>초기화</span></button>
+        <button class="nav-btn" onclick="logout()"><span>🚪</span><span>로그아웃</span></button>
+    </div>
+
+    <script>
+        const LICENSE_CONFIG = { password: 'beauty2024', expiryDate: '2026-11-30', company: '더소통', contact: 'contact@thesotong.com' };
+        let completedDays = [], currentDay = 1, speechRate = 0.8;
+
+        window.onload = function() { checkExpiry(); checkSavedSession(); };
+        function checkExpiry() { const today = new Date(), expiry = new Date(LICENSE_CONFIG.expiryDate); if (today > expiry) { document.getElementById('licenseScreen').style.display = 'none'; document.getElementById('expiredScreen').style.display = 'flex'; return false; } return true; }
+        function checkSavedSession() { if (sessionStorage.getItem('beautyLangAuth') === 'true' && checkExpiry()) unlockContent(); }
+        function verifyLicense() { const input = document.getElementById('passwordInput'), errorMsg = document.getElementById('licenseError'); if (!checkExpiry()) return; if (input.value === LICENSE_CONFIG.password) { sessionStorage.setItem('beautyLangAuth', 'true'); unlockContent(); } else { input.classList.add('error'); errorMsg.style.display = 'block'; setTimeout(() => input.classList.remove('error'), 500); } }
+        document.addEventListener('DOMContentLoaded', function() { const input = document.getElementById('passwordInput'); if (input) input.addEventListener('keypress', function(e) { if (e.key === 'Enter') verifyLicense(); }); });
+        function unlockContent() { document.getElementById('licenseScreen').style.display = 'none'; document.getElementById('mainContent').classList.add('unlocked'); document.getElementById('bottomNav').classList.add('show'); const expiry = new Date(LICENSE_CONFIG.expiryDate); document.getElementById('expiryDisplay').textContent = `${expiry.getFullYear()}.${String(expiry.getMonth()+1).padStart(2,'0')}.${String(expiry.getDate()).padStart(2,'0')}`; initApp(); }
+        function logout() { if (confirm('로그아웃 하시겠습니까?')) { sessionStorage.removeItem('beautyLangAuth'); location.reload(); } }
+        function initApp() { completedDays = JSON.parse(localStorage.getItem('beautyLangProgress') || '[]'); createDayButtons(); updateProgress(); showDay(1); const slider = document.getElementById('speedSlider'); if (slider) slider.addEventListener('input', function() { speechRate = parseFloat(this.value); document.getElementById('speedValue').textContent = speechRate + 'x'; }); }
+        function createDayButtons() { const scroll = document.getElementById('dayScroll'); scroll.innerHTML = ''; for (let i = 1; i <= 14; i++) { const btn = document.createElement('button'); btn.className = 'day-btn'; btn.textContent = `Day ${i}`; btn.onclick = () => showDay(i); if (completedDays.includes(i)) btn.classList.add('completed'); scroll.appendChild(btn); } }
+        function showDay(day) { currentDay = day; document.querySelectorAll('.lesson-card').forEach(card => card.classList.remove('active')); document.getElementById(`day${day}`).classList.add('active'); document.querySelectorAll('.day-btn').forEach((btn, i) => { btn.classList.remove('active'); if (i + 1 === day) btn.classList.add('active'); }); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function speak(text, lang) { if ('speechSynthesis' in window) { speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = lang; utterance.rate = speechRate; speechSynthesis.speak(utterance); } }
+
+        const dayPhrases = {
+            1: [{text:'Welcome! Do you have an appointment?',lang:'en-US'},{text:'いらっしゃいませ、ご予約はありますか',lang:'ja-JP'},{text:'欢迎光临，请问有预约吗',lang:'zh-CN'},{text:'What style would you like today?',lang:'en-US'},{text:'今日はどんなスタイルにしますか',lang:'ja-JP'},{text:'今天想要什么样的发型',lang:'zh-CN'}],
+            2: [{text:'How much would you like me to cut?',lang:'en-US'},{text:'どのくらい切りますか',lang:'ja-JP'},{text:'要剪多少',lang:'zh-CN'},{text:'Would you like me to trim your bangs too?',lang:'en-US'},{text:'前髪も切りますか',lang:'ja-JP'},{text:'刘海也要剪吗',lang:'zh-CN'}],
+            3: [{text:'What color would you like?',lang:'en-US'},{text:'どんな色に染めますか',lang:'ja-JP'},{text:'您想染什么颜色',lang:'zh-CN'},{text:'How about this color?',lang:'en-US'},{text:'この色はいかがですか',lang:'ja-JP'},{text:'这个颜色怎么样',lang:'zh-CN'}],
+            4: [{text:'What kind of perm would you like?',lang:'en-US'},{text:'どんなパーマにしますか',lang:'ja-JP'},{text:'您想烫什么样的发型',lang:'zh-CN'},{text:'It will take about 2 hours',lang:'en-US'},{text:'約2時間かかります',lang:'ja-JP'},{text:'大约需要2个小时',lang:'zh-CN'}],
+            5: [{text:'Is the water temperature okay?',lang:'en-US'},{text:'お湯の温度は大丈夫ですか',lang:'ja-JP'},{text:'水温可以吗',lang:'zh-CN'},{text:'Is there anywhere itchy?',lang:'en-US'},{text:'かゆいところはありませんか',lang:'ja-JP'},{text:'有没有痒的地方',lang:'zh-CN'}],
+            6: [{text:'What design would you like?',lang:'en-US'},{text:'どんなデザインにしますか',lang:'ja-JP'},{text:'您想要什么样的图案',lang:'zh-CN'},{text:'Would you like gel nails?',lang:'en-US'},{text:'ジェルネイルにしますか',lang:'ja-JP'},{text:'您要做光疗甲吗',lang:'zh-CN'}],
+            7: [{text:'Would you like me to blow dry your hair?',lang:'en-US'},{text:'ブローしますか',lang:'ja-JP'},{text:'需要吹头发吗',lang:'zh-CN'},{text:'Would you like some styling product?',lang:'en-US'},{text:'スタイリング剤をつけますか',lang:'ja-JP'},{text:'需要涂定型产品吗',lang:'zh-CN'}],
+            8: [{text:'Is the length okay?',lang:'en-US'},{text:'長さは大丈夫ですか',lang:'ja-JP'},{text:'长度可以吗',lang:'zh-CN'},{text:'Would you like it shorter?',lang:'en-US'},{text:'もう少し短くしますか',lang:'ja-JP'},{text:'要再剪短一点吗',lang:'zh-CN'}],
+            9: [{text:'The total is 80,000 won',lang:'en-US'},{text:'合計で8万ウォンになります',lang:'ja-JP'},{text:'总共是8万韩元',lang:'zh-CN'},{text:'Cash or card?',lang:'en-US'},{text:'現金ですか、カードですか',lang:'ja-JP'},{text:'现金还是刷卡',lang:'zh-CN'}],
+            10: [{text:'I hope you like it',lang:'en-US'},{text:'気に入っていただければ嬉しいです',lang:'ja-JP'},{text:'希望您喜欢',lang:'zh-CN'},{text:'Please visit us again!',lang:'en-US'},{text:'またのご来店をお待ちしております',lang:'ja-JP'},{text:'欢迎下次再来',lang:'zh-CN'}]
+        };
+
+        function playAllPhrases(day) { const phrases = dayPhrases[day]; if (!phrases) return; let index = 0; function playNext() { if (index >= phrases.length) return; const phrase = phrases[index], utterance = new SpeechSynthesisUtterance(phrase.text); utterance.lang = phrase.lang; utterance.rate = speechRate; utterance.onend = () => { index++; setTimeout(playNext, 500); }; speechSynthesis.speak(utterance); } speechSynthesis.cancel(); playNext(); }
+        function toggleCheck(el) { el.classList.toggle('checked'); el.innerHTML = el.classList.contains('checked') ? '✓' : ''; }
+        function completeDay(day) { if (!completedDays.includes(day)) { completedDays.push(day); localStorage.setItem('beautyLangProgress', JSON.stringify(completedDays)); updateProgress(); document.querySelectorAll('.day-btn')[day - 1].classList.add('completed'); } showModal(day); if (day < 14) setTimeout(() => showDay(day + 1), 1500); }
+        function updateProgress() { const pct = (completedDays.length / 14) * 100; document.getElementById('progressFill').style.width = pct + '%'; document.getElementById('progressText').textContent = `${completedDays.length} / 14일 완료`; }
+        function showModal(day) { document.getElementById('modal').style.display = 'flex'; document.getElementById('modalEmoji').textContent = day === 14 ? '🏆🎉🏆' : '🎉'; document.getElementById('modalTitle').textContent = day === 14 ? '과정 완료!' : `Day ${day} 완료!`; document.getElementById('modalText').textContent = day === 14 ? '2주 과정을 모두 마쳤습니다!' : '내일도 화이팅! 💪'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        function showHome() { showDay(currentDay); }
+        function resetProgress() { if (confirm('초기화하시겠습니까?')) { completedDays = []; localStorage.removeItem('beautyLangProgress'); location.reload(); } }
+    </script>
+</body>
+</html>

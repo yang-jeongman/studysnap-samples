@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>여의도순복음교회 주보 - 2025.12.14</title>
+    <meta name="description" content="여의도순복음교회 2025년 12월 14일 주보 - 예수님 오심을 기다리며(II)">
+    <!-- PWA 전체화면 지원 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="여의도순복음교회">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛪</text></svg>">
+    <meta name="theme-color" content="#5B4B9E">
+    <style>
+        :root {
+            --primary: #5B4B9E;
+            --primary-dark: #4A3D82;
+            --primary-light: #E8E4F4;
+            --accent: #C9A857;
+            --text-dark: #1a1a2e;
+            --text-gray: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-gray: #F5F3FA;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            padding-top: env(safe-area-inset-top, 20px);
+            position: relative;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(91, 75, 158, 0.3);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .church-name {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .church-name-en {
+            font-size: 0.7em;
+            font-weight: 400;
+            opacity: 0.9;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .jubo-date {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-top: 8px;
+        }
+
+        .theme-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .nav-tabs {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-tabs::-webkit-scrollbar { display: none; }
+
+        .nav-tabs-inner {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 8px;
+            justify-content: space-around;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .nav-tab.active, .nav-tab:hover {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+            padding-bottom: 30px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon { font-size: 1.5em; }
+
+        .section-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .section-body { padding: 20px; }
+
+        .verse-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .verse-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+
+        .verse-text {
+            font-size: 1.05em;
+            line-height: 1.8;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .verse-ref {
+            font-size: 0.95em;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+
+        .worship-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .worship-header {
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .worship-title { font-weight: 700; font-size: 1em; }
+        .worship-time { font-size: 0.9em; opacity: 0.9; }
+        .worship-body { padding: 16px; }
+
+        .worship-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .worship-item:last-child { border-bottom: none; }
+        .worship-item-label { color: var(--text-gray); font-size: 0.9em; }
+
+        .worship-item-value {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+            text-align: right;
+        }
+
+        .sermon-highlight {
+            background: var(--primary-light);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+
+        .sermon-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .sermon-preacher { font-size: 0.9em; color: var(--text-gray); }
+
+        .sermon-content {
+            line-height: 1.9;
+            font-size: 1em;
+            color: var(--text-dark);
+        }
+
+        .sermon-content h3 {
+            font-size: 1.1em;
+            color: var(--primary);
+            margin: 24px 0 12px 0;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .sermon-content p {
+            margin-bottom: 16px;
+            text-align: justify;
+            word-break: keep-all;
+        }
+
+        .sermon-author {
+            text-align: right;
+            margin-top: 24px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .news-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .news-item:last-child { border-bottom: none; }
+
+        .news-category {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .news-category.worship { background: var(--primary); }
+        .news-category.recruit { background: var(--success); }
+        .news-category.info { background: var(--warning); }
+
+        .news-title {
+            font-weight: 700;
+            font-size: 1em;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .news-content {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .choir-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .choir-item {
+            background: var(--bg-gray);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .choir-service {
+            font-size: 0.8em;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .choir-name {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .choir-song {
+            font-size: 0.75em;
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+
+        .choir-conductor {
+            font-size: 0.7em;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .devotional-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .devotional-content {
+            font-size: 0.95em;
+            line-height: 1.9;
+            color: var(--text-dark);
+            text-align: justify;
+            word-break: keep-all;
+        }
+
+        .devotional-content p {
+            margin-bottom: 16px;
+            text-indent: 1em;
+        }
+
+        .contact-grid { display: grid; gap: 12px; }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+        }
+
+        .contact-icon { font-size: 1.2em; }
+        .contact-info { flex: 1; }
+        .contact-label { font-size: 0.8em; color: var(--text-gray); }
+        .contact-value { font-weight: 600; color: var(--text-dark); }
+        .contact-value a { color: var(--primary); text-decoration: none; }
+
+        .bible-link, .hymn-link {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary);
+            transition: all 0.2s;
+        }
+
+        .bible-link:hover, .hymn-link:hover {
+            background: var(--primary-light);
+            border-bottom-style: solid;
+        }
+
+        .sns-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .sns-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 8px;
+            background: var(--bg-gray);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .sns-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .sns-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .sns-name {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .sns-item.youtube { background: linear-gradient(135deg, #FFE5E5 0%, #FFF 100%); }
+        .sns-item.youtube:hover { background: #FFE5E5; }
+        .sns-item.instagram { background: linear-gradient(135deg, #FCE4EC 0%, #FFF 100%); }
+        .sns-item.instagram:hover { background: #FCE4EC; }
+        .sns-item.facebook { background: linear-gradient(135deg, #E3F2FD 0%, #FFF 100%); }
+        .sns-item.facebook:hover { background: #E3F2FD; }
+        .sns-item.website { background: linear-gradient(135deg, #E8F5E9 0%, #FFF 100%); }
+        .sns-item.website:hover { background: #E8F5E9; }
+
+        .offering-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .offering-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .offering-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(91, 75, 158, 0.15);
+        }
+
+        .offering-icon {
+            font-size: 2em;
+            margin-right: 16px;
+        }
+
+        .offering-info {
+            flex: 1;
+        }
+
+        .offering-name {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .offering-desc {
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        .offering-arrow {
+            color: var(--primary);
+            font-size: 1.2em;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 90%;
+            max-height: 85vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+
+        .hymn-sheet {
+            background: #FFFEF5;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .hymn-info {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .hymn-number {
+            font-size: 2em;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .hymn-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 8px 0;
+        }
+
+        .hymn-subtitle {
+            font-size: 0.9em;
+            color: var(--text-gray);
+        }
+
+        .hymn-staff {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .staff-line {
+            border-bottom: 1px solid #333;
+            height: 8px;
+            margin-bottom: 8px;
+        }
+
+        .hymn-lyrics {
+            line-height: 2;
+            font-size: 1em;
+        }
+
+        .hymn-verse {
+            margin-bottom: 20px;
+        }
+
+        .verse-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .verse-ref a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(255,255,255,0.5);
+        }
+
+        .verse-ref a:hover { border-bottom-style: solid; }
+
+        .footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-logo { font-size: 1.2em; font-weight: 700; margin-bottom: 8px; }
+        .footer-address { font-size: 0.85em; opacity: 0.9; margin-bottom: 16px; }
+        .footer-copyright { font-size: 0.75em; opacity: 0.7; }
+
+        /* 상단 컨트롤 영역 */
+        .top-controls {
+            position: fixed;
+            top: 80px;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 998;
+        }
+
+        /* 언어 선택 */
+        .language-selector {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.85em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .language-selector:hover {
+            border-color: var(--primary);
+        }
+
+        /* 다크모드 토글 */
+        .dark-mode-toggle {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode {
+            --bg-gray: #1a1a2e;
+            --bg-white: #252540;
+            --text-dark: #ffffff;
+            --text-gray: #a0a0b0;
+            --border: #3a3a50;
+            --primary-light: #3a3a50;
+        }
+
+        body.dark-mode .section,
+        body.dark-mode .worship-card,
+        body.dark-mode .nav-tabs { background: var(--bg-white); }
+
+        body.dark-mode .dark-mode-toggle,
+        body.dark-mode .language-selector {
+            background: var(--bg-white);
+            color: var(--text-dark);
+            border-color: var(--border);
+        }
+
+        @media (max-width: 375px) {
+            .church-name { font-size: 1.4em; }
+            .nav-tab { padding: 12px 12px; font-size: 0.85em; }
+            .choir-grid { grid-template-columns: 1fr; }
+            .sns-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="church-name">
+                여의도순복음교회
+                <span class="church-name-en">YOIDO FULL GOSPEL CHURCH</span>
+            </h1>
+            <div class="jubo-date">2025년 12월 14일 주일</div>
+            <div class="theme-badge">2025 표어: 오직 말씀으로</div>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <div class="nav-tabs-inner">
+            <a href="#verse" class="nav-tab active" data-i18n="nav_verse">말씀</a>
+            <a href="#worship" class="nav-tab" data-i18n="nav_worship">예배</a>
+            <a href="#sermon" class="nav-tab" data-i18n="nav_sermon">설교</a>
+            <a href="#choir" class="nav-tab" data-i18n="nav_choir">찬양</a>
+            <a href="#news" class="nav-tab" data-i18n="nav_news">소식</a>
+            <a href="#devotional" class="nav-tab" data-i18n="nav_devotional">양식</a>
+            <a href="#sns" class="nav-tab">SNS</a>
+            <a href="#offering" class="nav-tab" data-i18n="nav_offering">헌금</a>
+        </div>
+    </nav>
+
+    <!-- 우측 상단 컨트롤 -->
+    <div class="top-controls">
+        <!-- 언어 선택 -->
+        <select class="language-selector" onchange="changeLanguage(this.value)" title="언어 선택">
+            <option value="ko" selected>한국어</option>
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="es">Español</option>
+            <option value="ru">Русский</option>
+            <option value="fr">Français</option>
+        </select>
+        <!-- 다크모드 -->
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="다크모드">🌙</button>
+    </div>
+
+    <main class="container">
+        <section id="verse" class="verse-card">
+            <div class="verse-label" data-i18n="section_verse">오늘의 말씀</div>
+            <p class="verse-text" data-i18n="verse_text">"선지자 이사야의 책에 쓴 바 광야에서 외치는 자의 소리가 있어 이르되 너희는 주의 길을 준비하라 그의 오실 길을 곧게 하라 모든 골짜기가 메워지고 모든 산과 작은 산이 낮아지고 굽은 것이 곧아지고 험한 길이 평탄하여질 것이요 모든 육체가 하나님의 구원하심을 보리라 하였느니라"</p>
+            <span class="verse-ref"><a href="javascript:void(0)" onclick="openBibleModal('luke-3-4')" data-i18n="verse_ref">누가복음 3:4~6</a></span>
+        </section>
+
+        <section id="worship" class="section">
+            <div class="section-header">
+                <span class="section-icon">⛪</span>
+                <h2 class="section-title" data-i18n="section_worship">주일예배 안내</h2>
+            </div>
+            <div class="section-body">
+                <!-- 1부 예배 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title" data-i18n="worship_1st">1부 예배</span>
+                        <span class="worship-time">07:00 AM</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
+                            <span class="worship-item-value">신효영 <span data-i18n="title_pastor">목사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_scripture">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('phil-1-3')" class="bible-link" data-i18n="bible_phil_1_3">빌립보서 1:3~8</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_prayer">대표기도</span>
+                            <span class="worship-item-value">김재경 <span data-i18n="title_elder">장로</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_offering_prayer">헌금기도</span>
+                            <span class="worship-item-value">이재우 <span data-i18n="title_ordained_deacon">안수집사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_hymn">찬송</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8</a>, <a href="javascript:void(0)" onclick="openHymnModal('301')" class="hymn-link">301</a></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title" data-i18n="sermon_title_1st">감사를 끼치는 삶</div>
+                            <div class="sermon-preacher">엄태욱 <span data-i18n="title_pastor">목사</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2부 예배 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title" data-i18n="worship_2nd">2부 예배</span>
+                        <span class="worship-time">09:00 AM</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
+                            <span class="worship-item-value">김형건 <span data-i18n="title_pastor">목사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_scripture">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('luke-3-4')" class="bible-link" data-i18n="verse_ref">누가복음 3:4~6</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_prayer">대표기도</span>
+                            <span class="worship-item-value">윤찬여 <span data-i18n="title_elder">장로</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_offering_prayer">헌금기도</span>
+                            <span class="worship-item-value">소병준 <span data-i18n="title_ordained_deacon">안수집사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_hymn">찬송</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8</a>, <a href="javascript:void(0)" onclick="openHymnModal('105')" class="hymn-link">105</a></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title" data-i18n="sermon_main_title">예수님 오심을 기다리며(II)</div>
+                            <div class="sermon-preacher">이영훈 <span data-i18n="title_pastor">목사</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3부 예배 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title" data-i18n="worship_3rd">3부 예배</span>
+                        <span class="worship-time">11:00 AM</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
+                            <span class="worship-item-value">성영목 <span data-i18n="title_pastor">목사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_scripture">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('luke-3-4')" class="bible-link" data-i18n="verse_ref">누가복음 3:4~6</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_prayer">대표기도</span>
+                            <span class="worship-item-value">이순열 <span data-i18n="title_elder">장로</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_offering_prayer">헌금기도</span>
+                            <span class="worship-item-value">최병환 <span data-i18n="title_ordained_deacon">안수집사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_hymn">찬송</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8</a>, <a href="javascript:void(0)" onclick="openHymnModal('105')" class="hymn-link">105</a></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title" data-i18n="sermon_main_title">예수님 오심을 기다리며(II)</div>
+                            <div class="sermon-preacher">이영훈 <span data-i18n="title_pastor">목사</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4부 예배 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title" data-i18n="worship_4th">4부 예배</span>
+                        <span class="worship-time">01:00 PM</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
+                            <span class="worship-item-value">이승준A <span data-i18n="title_pastor">목사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_scripture">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('luke-3-4')" class="bible-link" data-i18n="verse_ref">누가복음 3:4~6</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_prayer">대표기도</span>
+                            <span class="worship-item-value">김성석 <span data-i18n="title_elder">장로</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_offering_prayer">헌금기도</span>
+                            <span class="worship-item-value">김영대 <span data-i18n="title_ordained_deacon">안수집사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_hymn">찬송</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8</a>, <a href="javascript:void(0)" onclick="openHymnModal('105')" class="hymn-link">105</a></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title" data-i18n="sermon_main_title">예수님 오심을 기다리며(II)</div>
+                            <div class="sermon-preacher">이영훈 <span data-i18n="title_pastor">목사</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5부 대학청년 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title" data-i18n="worship_5th">5부 대학청년</span>
+                        <span class="worship-time">02:30 PM</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
+                            <span class="worship-item-value">이지영B <span data-i18n="title_pastor">목사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_scripture">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('john-1-14')" class="bible-link" data-i18n="bible_john_1_14">요한복음 1:14</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_prayer">대표기도</span>
+                            <span class="worship-item-value">변국찬 <span data-i18n="title_elder">장로</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_offering_prayer">헌금기도</span>
+                            <span class="worship-item-value">김다혜 <span data-i18n="title_member">성도</span></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title" data-i18n="sermon_title_5th">말씀이 육신이 되어</div>
+                            <div class="sermon-preacher">오수황 <span data-i18n="title_pastor">목사</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 주일저녁 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title" data-i18n="worship_evening">주일저녁 예배</span>
+                        <span class="worship-time">05:00 PM</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_mc">사회</span>
+                            <span class="worship-item-value">이원일B <span data-i18n="title_pastor">목사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_scripture">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('eph-2-4')" class="bible-link" data-i18n="bible_eph_2_4">에베소서 2:4~8</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_prayer">대표기도</span>
+                            <span class="worship-item-value">김순현 <span data-i18n="title_elder">장로</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_offering_prayer">헌금기도</span>
+                            <span class="worship-item-value">김판규 <span data-i18n="title_ordained_deacon">안수집사</span></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label" data-i18n="label_hymn">찬송</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8</a>, <a href="javascript:void(0)" onclick="openHymnModal('94')" class="hymn-link">94</a></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title" data-i18n="sermon_title_evening">하나님의 선물이라</div>
+                            <div class="sermon-preacher">윤호근 <span data-i18n="title_pastor">목사</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 설교 말씀 -->
+        <section id="sermon" class="section">
+            <div class="section-header">
+                <span class="section-icon">📖</span>
+                <h2 class="section-title" data-i18n="section_sermon">생명의 말씀</h2>
+            </div>
+            <div class="section-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 1.3em; font-weight: 700; color: var(--primary);" data-i18n="sermon_main_title">예수님 오심을 기다리며(II)</div>
+                    <div style="font-size: 0.9em; color: var(--text-gray); margin-top: 4px;" data-i18n="sermon_main_title_en">Waiting for Jesus' Coming(II)</div>
+                    <div style="font-size: 0.9em; color: var(--text-gray); margin-top: 8px;"><a href="javascript:void(0)" onclick="openBibleModal('luke-3-4')" class="bible-link" data-i18n="verse_ref">누가복음 3:4~6</a></div>
+                </div>
+                <div class="sermon-content">
+                    <p data-i18n="sermon_intro">예수님께서 이 땅에 오신 성탄절이 두 주 앞으로 다가왔습니다. 우리는 온 인류를 구원하시기 위해 오신 주님을 감사로 맞이해야 합니다. 굽어진 길을 곧게 하고 높아진 마음을 낮추며 빈 골짜기를 은혜로 채워 예수님의 성탄을 준비해야 합니다.</p>
+
+                    <h3 data-i18n="sermon_point1_title">1. 굽은 것이 곧아지고 (The Crooked Become Straight)</h3>
+                    <p data-i18n="sermon_point1_content">주님의 길을 준비하기 위해서는 먼저 우리 마음의 굽어진 부분이 곧아져야 합니다. 울퉁불퉁한 땅이 평탄해져야 길이 열리듯 우리 안의 거짓되고 교활한 마음, 위선과 뒤틀린 생각이 바로 펴져야 주님을 맞이할 수 있습니다. 마음이 비뚤어지면 모든 것을 부정적으로 바라보게 되고 비방과 거짓으로 사람들에게 상처를 주기 쉽습니다. 이런 모습을 경계하며 성경은 분함과 악의, 위선과 거짓을 버리라고 권면합니다(골 3:8~9, 벧전 2:1). 그러므로 우리는 우리 마음을 살펴 굽어진 부분을 주님 앞에 겸손히 회개해야 합니다. 정직과 진실로 마음을 곧게 세울 때 주님께서 우리 안에 찾아오십니다. 왜곡된 마음을 바로잡고 어려운 이웃을 사랑으로 돌보는 삶을 통해 주님의 길을 준비하는 성도가 되기를 소망합니다.</p>
+
+                    <h3 data-i18n="sermon_point2_title">2. 험한 길이 평탄하여질 것이요 (The Rough Way Will Be Made Smooth)</h3>
+                    <p data-i18n="sermon_point2_content">성경이 말하는 험한 길은 사람들이 지나기 어려운 울퉁불퉁한 땅, 열매 맺기 힘든 황폐한 땅을 말합니다. 이는 우리의 거친 마음과 황량한 심령을 의미합니다. 이렇게 마음이 거칠어지면 고집스럽고 날카로운 태도로 사람들과 부딪히기 쉽습니다. 또한 우리 안에 자리한 죄의 습관은 우리 마음을 황폐하게 합니다. 그러나 예수님을 만나면 이러한 죄의 굴레가 끊어지고 심령이 온유하게 변화되어 이웃과 화평을 이루며 선한 열매를 맺는 삶으로 나아가게 됩니다. 주님의 은혜가 임하면 하나님께서 우리보다 앞서가시며 거친 길을 평탄하게 만들어 주십니다(사 45:2).</p>
+
+                    <h3 data-i18n="sermon_point3_title">3. 모든 육체가 하나님의 구원을 보리라 (All Flesh Will See the Salvation of God)</h3>
+                    <p data-i18n="sermon_point3_content">무관심과 상처로 깊어진 골짜기는 십자가의 사랑으로 메우고 교만의 산은 겸손으로 낮추며 굽어진 마음은 정직과 진실로 곧게 펴야 합니다. 또한 죄의 습관과 거친 성격으로 인해 불화가 계속되던 험한 길을 화평의 길로 바꾸어야 합니다(눅 3:5). 이처럼 우리의 마음이 바로 세워지고 치유될 때 하나님의 구원이 우리 가운데 역사합니다. 구원의 역사가 우리 안에 나타날 때 예수님의 십자가 은혜가 주님을 사랑하는 모든 그리스도인의 삶 속에 임하게 됩니다. 그렇게 영혼이 잘 되고 범사가 잘 되고 강건케 되는 복을 누리며 깨어지고 낮아져 회개함으로 예수님으로 마음과 삶을 가득 채우는 복된 성탄절을 맞이하는 우리가 되기를 축원합니다.</p>
+
+                    <div class="sermon-author" data-i18n="sermon_author">여의도순복음교회 이영훈 위임목사</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 금주의 찬양 -->
+        <section id="choir" class="section">
+            <div class="section-header">
+                <span class="section-icon">🎵</span>
+                <h2 class="section-title" data-i18n="section_choir">금주의 찬양</h2>
+            </div>
+            <div class="section-body">
+                <div class="choir-grid">
+                    <div class="choir-item">
+                        <div class="choir-service">주일 1부</div>
+                        <div class="choir-name">베다니 찬양대</div>
+                        <div class="choir-song">온 땅이여 찬양하라</div>
+                        <div class="choir-conductor">지휘: 강내우</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 2부</div>
+                        <div class="choir-name">베들레헴 찬양대</div>
+                        <div class="choir-song">주께 영광</div>
+                        <div class="choir-conductor">지휘: 데이비드 이</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 3부</div>
+                        <div class="choir-name">예루살렘 찬양대</div>
+                        <div class="choir-song">다 찬양하여라</div>
+                        <div class="choir-conductor">지휘: 함신익(임시)</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 4부</div>
+                        <div class="choir-name">나사렛 찬양대</div>
+                        <div class="choir-song">기뻐하라 주 오신다</div>
+                        <div class="choir-conductor">지휘: 이종진</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">5부 대학청년</div>
+                        <div class="choir-name">임마누엘 찬양대</div>
+                        <div class="choir-song">아멘 아멘 아멘</div>
+                        <div class="choir-conductor">지휘: 이수범</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 저녁</div>
+                        <div class="choir-name">에벤에셀 찬양대</div>
+                        <div class="choir-song">저 천국 음악소리</div>
+                        <div class="choir-conductor">지휘: 김영준</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 교회 소식 -->
+        <section id="news" class="section">
+            <div class="section-header">
+                <span class="section-icon">📢</span>
+                <h2 class="section-title" data-i18n="section_news">교회 소식</h2>
+            </div>
+            <div class="section-body">
+                <div class="news-item">
+                    <span class="news-category worship">예배</span>
+                    <div class="news-title">12월 둘째 주 새벽예배</div>
+                    <div class="news-content">
+                        일시: 12월 15일(월)~20일(토) 새벽 5시 30분 (토요일은 새벽 6시 30분)<br>
+                        장소: 대성전<br>
+                        설교: 이영훈 목사(16일 제직특화), 정용훈 목사(17일~19일), 홍승원 목사(15일, 20일)
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category worship">예배</span>
+                    <div class="news-title">남선교회 12월 헌신예배</div>
+                    <div class="news-content">
+                        일시: 12월 17일(수) 오후 7시 30분<br>
+                        장소: 바울성전 / 설교: 한상인 목사
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category worship">예배</span>
+                    <div class="news-title">순복음선교연합회 2025년 송년감사예배</div>
+                    <div class="news-content">
+                        일시: 12월 19일(금) 오후 5시<br>
+                        장소: 바울성전 / 설교: 이영훈 목사
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category worship">예배</span>
+                    <div class="news-title">여선교회 정기 월례예배</div>
+                    <div class="news-content">
+                        일시: 12월 21일(주일) 오후 3시<br>
+                        장소: 베들레헴성전 / 설교: 김진태 목사
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category recruit">모집</span>
+                    <div class="news-title">ITS 신학대학원 2026년 겨울학기 신입생 모집</div>
+                    <div class="news-content">
+                        국제사역국 미국 ITS 신학대학원(ATS인준) 한국어 오순절 온라인 과정<br>
+                        모집일자: 12월 31일(수)까지<br>
+                        과정: MA, M.Div, D.Min, DICS<br>
+                        문의: itsonlinekorea@gmail.com
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">새가족 환영회</div>
+                    <div class="news-content">
+                        오늘 결신한 분들을 위한 새가족 환영회가 베들레헴성전에서 있습니다.<br>
+                        온라인 새가족분들은 교회 홈페이지와 모바일 앱으로 등록 및 교육에 참여하실 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">권사회 2025년 제9회 사랑의 쌀 나눔 행사</div>
+                    <div class="news-content">
+                        일시: 12월 17일(수) 수요예배 직후<br>
+                        장소: 베다니홀 / 강사: 이영훈 목사
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">2025 크리스마스 칸타타</div>
+                    <div class="news-content">
+                        일시: 12월 19일(금) 오후 8시 30분<br>
+                        장소: 대성전
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">장년국 제13회 송년의 밤</div>
+                    <div class="news-content">
+                        일시: 12월 20일(토) 오후 3시<br>
+                        장소: 바울성전
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">안수집사회 2025년 4분기 보수교육</div>
+                    <div class="news-content">
+                        일시: 12월 21일(주일) 오후 3시<br>
+                        장소: 안수집사회실(세계선교센터 3층) / 강사: 김정은 목사
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">출산·육아용품 나눔 행사</div>
+                    <div class="news-content">
+                        복지사업국 온가족행복지원연구소<br>
+                        일시: 12월 25일(목) 오전 9시~오후 4시<br>
+                        장소: 베다니홀 / 문의: 02-6181-7710, 6503
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">굿피플 2025년 연말모금 캠페인</div>
+                    <div class="news-content">
+                        일자: 12월 21일(주일)까지 매주 주일<br>
+                        장소: 베다니 광장, 십자가탑 앞 등
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">국세청 전자기부금영수증 의무발급 제도 시행</div>
+                    <div class="news-content">
+                        신청기간: 12월 1일(월)부터<br>
+                        접수: 교회 홈페이지(www.fgtv.com) 휴대폰 실명확인 인증 필수<br>
+                        문의: 02-6181-5730 (재정국)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 오늘의 양식 -->
+        <section id="devotional" class="section">
+            <div class="section-header">
+                <span class="section-icon">🌿</span>
+                <h2 class="section-title" data-i18n="section_devotional">오늘의 양식</h2>
+            </div>
+            <div class="section-body">
+                <div class="devotional-title" data-i18n="devotional_title">마카롱의 미학</div>
+                <div class="devotional-content">
+                    <p data-i18n="devotional_p1">마카롱은 반짝이는 표면과 둥근 곡선으로 시선을 사로잡습니다. 하지만 이 작은 디저트를 특별하게 만드는 것은 겉모습이 아니라 속재료입니다. 같은 색과 모양이라도 속에 무엇이 들어 있느냐에 따라 맛은 완전히 달라집니다. 라즈베리는 상큼함을, 초콜릿은 진한 풍미를, 바닐라는 부드러움을 더합니다.</p>
+
+                    <p data-i18n="devotional_p2">마카롱의 진가는 껍질을 깨물기 전엔 알 수 없습니다. 아무리 화려해 보여도 맛이 평범하면 금세 잊히고, 모양이 수수해도 속이 특별하면 다시 기억됩니다. 결국 마카롱의 가치는 보이지 않는 속에서 결정됩니다. '진짜 중요한 것은 눈에 보이지 않는다'는 오래된 지혜가 이 작은 과자에도 담겨 있습니다.</p>
+
+                    <p data-i18n="devotional_p3">우리 삶도 다르지 않습니다. 스펙이나 조건보다 중요한 건 마음을 무엇으로 채우느냐입니다. 어떤 생각과 가치를 품고 사느냐가 그 사람만의 향기를 만듭니다. 겉보기엔 비슷해 보여도, 우리는 각자의 방식으로 삶을 채워갑니다. 누군가는 성실함으로, 누군가는 따뜻함으로, 또 누군가는 열정으로 자신만의 맛을 빚어냅니다. 시간이 흐를수록 겉치레는 사라지고, 그 사람의 진짜 맛이 드러납니다. 그때 비로소 진정한 만남이 시작됩니다.</p>
+
+                    <p data-i18n="devotional_p4">지금 당신의 내면은 무엇으로 채워져 있나요? 타인의 시선이나 기준에 흔들리지 마세요. 당신이 선택한 가치가 진실하다면 그것으로 충분합니다. 오늘도 포장보다 본질을, 겉모습보다 알맹이를 소중히 여기는 당신을 응원합니다. 이번 한 주도 당신만의 깊은 맛으로 채워가시길 바랍니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 연락처 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📞</span>
+                <h2 class="section-title" data-i18n="section_contact">교회 연락처</h2>
+            </div>
+            <div class="section-body">
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div class="contact-info">
+                            <div class="contact-label">주소</div>
+                            <div class="contact-value">서울특별시 영등포구 국회대로76길 15</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <div class="contact-info">
+                            <div class="contact-label">대표전화 (주간)</div>
+                            <div class="contact-value"><a href="tel:02-6181-9191">02-6181-9191</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <div class="contact-info">
+                            <div class="contact-label">대표전화 (야간)</div>
+                            <div class="contact-value"><a href="tel:02-6181-9000">02-6181-9000~3</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">💐</span>
+                        <div class="contact-info">
+                            <div class="contact-label">의례팀 (장례 상담 및 조화 신청)</div>
+                            <div class="contact-value"><a href="tel:02-6181-6533">02-6181-6533</a> (07:00~20:00)</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌐</span>
+                        <div class="contact-info">
+                            <div class="contact-label">홈페이지</div>
+                            <div class="contact-value"><a href="https://www.fgtv.com" target="_blank">www.fgtv.com</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SNS 링크 -->
+        <section id="sns" class="section">
+            <div class="section-header">
+                <span class="section-icon">📱</span>
+                <h2 class="section-title" data-i18n="section_sns">SNS 채널</h2>
+            </div>
+            <div class="section-body">
+                <div class="sns-grid">
+                    <a href="https://www.youtube.com/@fgtv" target="_blank" class="sns-item youtube">
+                        <span class="sns-icon">▶️</span>
+                        <span class="sns-name">YouTube</span>
+                    </a>
+                    <a href="https://www.instagram.com/yfgc_official" target="_blank" class="sns-item instagram">
+                        <span class="sns-icon">📷</span>
+                        <span class="sns-name">Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/fgtv" target="_blank" class="sns-item facebook">
+                        <span class="sns-icon">👍</span>
+                        <span class="sns-name">Facebook</span>
+                    </a>
+                    <a href="https://www.fgtv.com" target="_blank" class="sns-item website">
+                        <span class="sns-icon">🌐</span>
+                        <span class="sns-name">홈페이지</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 모바일 헌금 -->
+        <section id="offering" class="section">
+            <div class="section-header">
+                <span class="section-icon">💝</span>
+                <h2 class="section-title" data-i18n="section_offering">모바일 헌금</h2>
+            </div>
+            <div class="section-body">
+                <div class="offering-grid">
+                    <div class="offering-item" onclick="openOfferingModal('bank')">
+                        <span class="offering-icon">🏦</span>
+                        <div class="offering-info">
+                            <div class="offering-name">계좌이체 헌금</div>
+                            <div class="offering-desc">은행 계좌로 헌금하기</div>
+                        </div>
+                        <span class="offering-arrow">→</span>
+                    </div>
+                    <div class="offering-item" onclick="openOfferingModal('kakaopay')">
+                        <span class="offering-icon">💛</span>
+                        <div class="offering-info">
+                            <div class="offering-name">카카오페이 헌금</div>
+                            <div class="offering-desc">간편하게 헌금하기</div>
+                        </div>
+                        <span class="offering-arrow">→</span>
+                    </div>
+                    <div class="offering-item" onclick="openOfferingModal('app')">
+                        <span class="offering-icon">📲</span>
+                        <div class="offering-info">
+                            <div class="offering-name">교회 앱 헌금</div>
+                            <div class="offering-desc">여의도순복음교회 앱으로 헌금</div>
+                        </div>
+                        <span class="offering-arrow">→</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 찬송가 모달 -->
+    <div class="modal-overlay" id="hymnModal" onclick="closeHymnModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="hymnModalTitle">찬송가</span>
+                <button class="modal-close" onclick="closeHymnModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="hymnModalBody"></div>
+        </div>
+    </div>
+
+    <!-- 헌금 안내 모달 -->
+    <div class="modal-overlay" id="offeringModal" onclick="closeOfferingModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="offeringModalTitle">헌금 안내</span>
+                <button class="modal-close" onclick="closeOfferingModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="offeringModalBody"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-logo">여의도순복음교회</div>
+        <div class="footer-address">
+            서울특별시 영등포구 국회대로76길 15<br>
+            1958년 5월 18일 창립 (설립자 조용기 목사)
+        </div>
+        <div class="footer-copyright">© 2025 여의도순복음교회. All rights reserved.</div>
+    </footer>
+
+    <script>
+        // ========== 다국어 번역 시스템 ==========
+        const translations = {
+            ko: {
+                // Navigation
+                nav_verse: "말씀", nav_worship: "예배", nav_sermon: "설교", nav_choir: "찬양",
+                nav_news: "소식", nav_devotional: "양식", nav_offering: "헌금",
+                // Sections
+                section_verse: "오늘의 말씀", section_worship: "주일예배 안내", section_sermon: "생명의 말씀",
+                section_choir: "금주의 찬양", section_news: "교회 소식", section_devotional: "오늘의 양식",
+                section_contact: "교회 연락처", section_sns: "SNS 채널", section_offering: "모바일 헌금",
+                // Verse
+                verse_text: '"선지자 이사야의 책에 쓴 바 광야에서 외치는 자의 소리가 있어 이르되 너희는 주의 길을 준비하라 그의 오실 길을 곧게 하라 모든 골짜기가 메워지고 모든 산과 작은 산이 낮아지고 굽은 것이 곧아지고 험한 길이 평탄하여질 것이요 모든 육체가 하나님의 구원하심을 보리라 하였느니라"',
+                verse_ref: "누가복음 3:4~6",
+                // Worship labels
+                worship_1st: "1부 예배", worship_2nd: "2부 예배", worship_3rd: "3부 예배",
+                worship_4th: "4부 예배", worship_5th: "5부 대학청년", worship_evening: "주일저녁 예배",
+                label_mc: "사회", label_scripture: "성경봉독", label_prayer: "대표기도",
+                label_offering_prayer: "헌금기도", label_hymn: "찬송",
+                // Titles
+                title_pastor: "목사", title_elder: "장로", title_ordained_deacon: "안수집사", title_member: "성도",
+                // Bible references
+                bible_phil_1_3: "빌립보서 1:3~8", bible_john_1_14: "요한복음 1:14", bible_eph_2_4: "에베소서 2:4~8",
+                // Sermon titles
+                sermon_title_1st: "감사를 끼치는 삶", sermon_main_title: "예수님 오심을 기다리며(II)",
+                sermon_title_5th: "말씀이 육신이 되어", sermon_title_evening: "하나님의 선물이라",
+                sermon_main_title_en: "Waiting for Jesus' Coming(II)",
+                // Sermon content
+                sermon_intro: "예수님께서 이 땅에 오신 성탄절이 두 주 앞으로 다가왔습니다. 우리는 온 인류를 구원하시기 위해 오신 주님을 감사로 맞이해야 합니다. 굽어진 길을 곧게 하고 높아진 마음을 낮추며 빈 골짜기를 은혜로 채워 예수님의 성탄을 준비해야 합니다.",
+                sermon_point1_title: "1. 굽은 것이 곧아지고 (The Crooked Become Straight)",
+                sermon_point1_content: "주님의 길을 준비하기 위해서는 먼저 우리 마음의 굽어진 부분이 곧아져야 합니다. 울퉁불퉁한 땅이 평탄해져야 길이 열리듯 우리 안의 거짓되고 교활한 마음, 위선과 뒤틀린 생각이 바로 펴져야 주님을 맞이할 수 있습니다.",
+                sermon_point2_title: "2. 험한 길이 평탄하여질 것이요 (The Rough Way Will Be Made Smooth)",
+                sermon_point2_content: "성경이 말하는 험한 길은 사람들이 지나기 어려운 울퉁불퉁한 땅, 열매 맺기 힘든 황폐한 땅을 말합니다. 이는 우리의 거친 마음과 황량한 심령을 의미합니다.",
+                sermon_point3_title: "3. 모든 육체가 하나님의 구원을 보리라 (All Flesh Will See the Salvation of God)",
+                sermon_point3_content: "무관심과 상처로 깊어진 골짜기는 십자가의 사랑으로 메우고 교만의 산은 겸손으로 낮추며 굽어진 마음은 정직과 진실로 곧게 펴야 합니다.",
+                sermon_author: "여의도순복음교회 이영훈 위임목사",
+                // Devotional
+                devotional_title: "마카롱의 미학",
+                devotional_p1: "마카롱은 반짝이는 표면과 둥근 곡선으로 시선을 사로잡습니다. 하지만 이 작은 디저트를 특별하게 만드는 것은 겉모습이 아니라 속재료입니다.",
+                devotional_p2: "마카롱의 진가는 껍질을 깨물기 전엔 알 수 없습니다. 아무리 화려해 보여도 맛이 평범하면 금세 잊히고, 모양이 수수해도 속이 특별하면 다시 기억됩니다.",
+                devotional_p3: "우리 삶도 다르지 않습니다. 스펙이나 조건보다 중요한 건 마음을 무엇으로 채우느냐입니다.",
+                devotional_p4: "지금 당신의 내면은 무엇으로 채워져 있나요? 타인의 시선이나 기준에 흔들리지 마세요. 당신이 선택한 가치가 진실하다면 그것으로 충분합니다."
+            },
+            en: {
+                nav_verse: "Word", nav_worship: "Worship", nav_sermon: "Sermon", nav_choir: "Praise",
+                nav_news: "News", nav_devotional: "Devotion", nav_offering: "Offering",
+                section_verse: "Today's Word", section_worship: "Sunday Worship", section_sermon: "Word of Life",
+                section_choir: "This Week's Praise", section_news: "Church News", section_devotional: "Daily Bread",
+                section_contact: "Contact Info", section_sns: "SNS Channels", section_offering: "Mobile Offering",
+                verse_text: '"As it is written in the book of the words of Isaiah the prophet: A voice of one calling in the wilderness, Prepare the way for the Lord, make straight paths for him. Every valley shall be filled in, every mountain and hill made low. The crooked roads shall become straight, the rough ways smooth. And all people will see God\'s salvation."',
+                verse_ref: "Luke 3:4-6",
+                worship_1st: "1st Service", worship_2nd: "2nd Service", worship_3rd: "3rd Service",
+                worship_4th: "4th Service", worship_5th: "5th College & Youth", worship_evening: "Evening Service",
+                label_mc: "MC", label_scripture: "Scripture Reading", label_prayer: "Prayer",
+                label_offering_prayer: "Offering Prayer", label_hymn: "Hymn",
+                title_pastor: "Pastor", title_elder: "Elder", title_ordained_deacon: "Ordained Deacon", title_member: "Member",
+                bible_phil_1_3: "Philippians 1:3-8", bible_john_1_14: "John 1:14", bible_eph_2_4: "Ephesians 2:4-8",
+                sermon_title_1st: "A Life of Spreading Gratitude", sermon_main_title: "Waiting for Jesus' Coming (II)",
+                sermon_title_5th: "The Word Became Flesh", sermon_title_evening: "It is the Gift of God",
+                sermon_main_title_en: "Waiting for Jesus' Coming (II)",
+                sermon_intro: "Christmas, the day when Jesus came to this world, is just two weeks away. We must welcome the Lord who came to save all humanity with gratitude. We must prepare for Christmas by straightening the crooked paths, lowering our prideful hearts, and filling the empty valleys with grace.",
+                sermon_point1_title: "1. The Crooked Become Straight",
+                sermon_point1_content: "To prepare the way for the Lord, the crooked parts of our hearts must first become straight. Just as a road can only be opened when bumpy ground becomes level, we can only welcome the Lord when our deceitful and cunning hearts, hypocrisy, and twisted thoughts are straightened out.",
+                sermon_point2_title: "2. The Rough Way Will Be Made Smooth",
+                sermon_point2_content: "The rough way that the Bible speaks of refers to bumpy ground that is difficult for people to pass through, and barren land where it is hard to bear fruit. This signifies our rough hearts and desolate spirits.",
+                sermon_point3_title: "3. All Flesh Will See the Salvation of God",
+                sermon_point3_content: "Valleys deepened by indifference and wounds must be filled with the love of the cross, mountains of pride must be lowered with humility, and crooked hearts must be straightened with honesty and truth.",
+                sermon_author: "Senior Pastor Younghoon Lee, Yoido Full Gospel Church",
+                devotional_title: "The Aesthetics of Macarons",
+                devotional_p1: "Macarons capture attention with their shiny surface and round curves. But what makes this small dessert special is not its appearance but its filling. Even with the same color and shape, the taste is completely different depending on what's inside.",
+                devotional_p2: "The true value of a macaron cannot be known until you bite through the shell. No matter how fancy it looks, if the taste is ordinary, it is quickly forgotten; but if the inside is special despite a plain appearance, it is remembered.",
+                devotional_p3: "Our lives are no different. More important than specs or conditions is what we fill our hearts with.",
+                devotional_p4: "What fills your inner self right now? Don't be swayed by others' eyes or standards. If the values you choose are true, that is enough."
+            },
+            zh: {
+                nav_verse: "经文", nav_worship: "礼拜", nav_sermon: "讲道", nav_choir: "赞美",
+                nav_news: "消息", nav_devotional: "灵粮", nav_offering: "奉献",
+                section_verse: "今日经文", section_worship: "主日礼拜", section_sermon: "生命之道",
+                section_choir: "本周赞美", section_news: "教会新闻", section_devotional: "每日灵粮",
+                section_contact: "联系方式", section_sns: "社交媒体", section_offering: "移动奉献",
+                verse_text: '"正如先知以赛亚书上所记的话，说：在旷野有人声喊着说：预备主的道，修直他的路！一切山洼都要填满；大小山冈都要削平！弯弯曲曲的地方要改为正直；高高低低的道路要改为平坦！凡有血气的，都要见神的救恩！"',
+                verse_ref: "路加福音 3:4-6",
+                worship_1st: "第一场礼拜", worship_2nd: "第二场礼拜", worship_3rd: "第三场礼拜",
+                worship_4th: "第四场礼拜", worship_5th: "第五场 大学青年", worship_evening: "主日晚间礼拜",
+                label_mc: "主持", label_scripture: "读经", label_prayer: "代祷",
+                label_offering_prayer: "奉献祷告", label_hymn: "赞美诗",
+                title_pastor: "牧师", title_elder: "长老", title_ordained_deacon: "按手执事", title_member: "信徒",
+                bible_phil_1_3: "腓立比书 1:3-8", bible_john_1_14: "约翰福音 1:14", bible_eph_2_4: "以弗所书 2:4-8",
+                sermon_title_1st: "传播感恩的生命", sermon_main_title: "等候耶稣的降临(II)",
+                sermon_title_5th: "道成了肉身", sermon_title_evening: "这是神的恩赐",
+                sermon_main_title_en: "Waiting for Jesus' Coming (II)",
+                sermon_intro: "耶稣降临这地的圣诞节还有两周就要到来。我们必须以感恩的心迎接为拯救全人类而来的主。我们要把弯曲的路修直，把骄傲的心降卑，用恩典填满空虚的山谷，预备迎接耶稣的圣诞。",
+                sermon_point1_title: "1. 弯曲的要变直 (The Crooked Become Straight)",
+                sermon_point1_content: "为了预备主的道路，我们心中弯曲的部分首先要变直。正如崎岖的地面需要平坦才能开路，我们内心虚伪狡诈的心、伪善和扭曲的思想需要被纠正，才能迎接主。",
+                sermon_point2_title: "2. 崎岖的路要变平坦 (The Rough Way Will Be Made Smooth)",
+                sermon_point2_content: "圣经所说的崎岖之路，是指人们难以通过的坑洼之地，是难以结果的荒芜之地。这象征着我们粗糙的心和荒凉的灵魂。",
+                sermon_point3_title: "3. 凡有血气的都要见神的救恩 (All Flesh Will See the Salvation of God)",
+                sermon_point3_content: "因冷漠和伤害而加深的山谷，需要用十字架的爱来填满；骄傲的高山需要用谦卑来降低；弯曲的心需要用诚实和真理来改正。",
+                sermon_author: "汝矣岛纯福音教会 李永勋 主任牧师",
+                devotional_title: "马卡龙的美学",
+                devotional_p1: "马卡龙以其闪亮的表面和圆润的曲线吸引着人们的目光。但让这个小甜点与众不同的不是外表，而是馅料。即使颜色和形状相同，味道也会因内馅不同而完全不同。",
+                devotional_p2: "马卡龙的真正价值在咬开外壳之前是无法知道的。无论看起来多么华丽，如果味道平凡，很快就会被遗忘；但即使外表朴素，如果内在特别，就会被记住。",
+                devotional_p3: "我们的生活也是如此。比条件或规格更重要的是我们用什么来填充内心。",
+                devotional_p4: "你的内心现在充满了什么？不要被他人的眼光或标准所动摇。如果你选择的价值是真实的，那就足够了。"
+            },
+            ja: {
+                nav_verse: "みことば", nav_worship: "礼拝", nav_sermon: "説教", nav_choir: "賛美",
+                nav_news: "お知らせ", nav_devotional: "糧", nav_offering: "献金",
+                section_verse: "今日のみことば", section_worship: "日曜礼拝", section_sermon: "いのちのみことば",
+                section_choir: "今週の賛美", section_news: "教会ニュース", section_devotional: "日々の糧",
+                section_contact: "お問い合わせ", section_sns: "SNSチャンネル", section_offering: "モバイル献金",
+                verse_text: '"預言者イザヤの書に書いてあるとおりである。「荒野で叫ぶ者の声がする。主の道を用意し、主の通られる道をまっすぐにせよ。すべての谷は埋められ、すべての山と丘とは低くされ、曲がった所はまっすぐになり、でこぼこ道は平らになる。こうして、すべての肉なる者が、神の救いを見るであろう」"',
+                verse_ref: "ルカによる福音書 3:4-6",
+                worship_1st: "第1部礼拝", worship_2nd: "第2部礼拝", worship_3rd: "第3部礼拝",
+                worship_4th: "第4部礼拝", worship_5th: "第5部 大学青年", worship_evening: "日曜夕拝",
+                label_mc: "司会", label_scripture: "聖書朗読", label_prayer: "代表祈祷",
+                label_offering_prayer: "献金祈祷", label_hymn: "賛美歌",
+                title_pastor: "牧師", title_elder: "長老", title_ordained_deacon: "按手執事", title_member: "信徒",
+                bible_phil_1_3: "ピリピ人への手紙 1:3-8", bible_john_1_14: "ヨハネによる福音書 1:14", bible_eph_2_4: "エペソ人への手紙 2:4-8",
+                sermon_title_1st: "感謝を広げる人生", sermon_main_title: "イエス様の来臨を待ちながら(II)",
+                sermon_title_5th: "みことばは肉となって", sermon_title_evening: "神の賜物である",
+                sermon_main_title_en: "Waiting for Jesus' Coming (II)",
+                sermon_intro: "イエス様がこの地に来られたクリスマスまであと2週間となりました。私たちは全人類を救うために来られた主を感謝をもってお迎えしなければなりません。曲がった道をまっすぐにし、高ぶった心を低くし、空の谷を恵みで満たして、イエス様のクリスマスを準備しましょう。",
+                sermon_point1_title: "1. 曲がったところはまっすぐになる (The Crooked Become Straight)",
+                sermon_point1_content: "主の道を備えるためには、まず私たちの心の曲がった部分がまっすぐにならなければなりません。でこぼこの地面が平らになって初めて道が開けるように、私たちの中の偽りと狡猾な心、偽善と歪んだ考えがまっすぐにされて初めて主をお迎えできます。",
+                sermon_point2_title: "2. でこぼこ道は平らになる (The Rough Way Will Be Made Smooth)",
+                sermon_point2_content: "聖書が言うでこぼこ道とは、人々が通りにくいでこぼこの地面、実を結びにくい荒れた土地を指します。これは私たちの荒々しい心と荒涼とした霊魂を意味します。",
+                sermon_point3_title: "3. すべての肉なる者が神の救いを見る (All Flesh Will See the Salvation of God)",
+                sermon_point3_content: "無関心と傷で深くなった谷は十字架の愛で埋め、高慢の山は謙遜で低くし、曲がった心は正直と真実でまっすぐにしなければなりません。",
+                sermon_author: "汝矣島純福音教会 李永勲 主任牧師",
+                devotional_title: "マカロンの美学",
+                devotional_p1: "マカロンは輝く表面と丸い曲線で目を引きます。しかし、この小さなデザートを特別にするのは見た目ではなく中身です。同じ色と形でも、中に何が入っているかによって味は全く違います。",
+                devotional_p2: "マカロンの真価は殻を噛むまでわかりません。どんなに華やかに見えても、味が平凡ならすぐ忘れられ、見た目が地味でも中身が特別なら記憶に残ります。",
+                devotional_p3: "私たちの人生も同じです。スペックや条件より大切なのは、心を何で満たすかです。",
+                devotional_p4: "今、あなたの内面は何で満たされていますか？他人の目や基準に揺れないでください。あなたが選んだ価値が真実なら、それで十分です。"
+            },
+            id: {
+                nav_verse: "Firman", nav_worship: "Ibadah", nav_sermon: "Khotbah", nav_choir: "Pujian",
+                nav_news: "Berita", nav_devotional: "Renungan", nav_offering: "Persembahan",
+                section_verse: "Firman Hari Ini", section_worship: "Ibadah Minggu", section_sermon: "Firman Kehidupan",
+                section_choir: "Pujian Minggu Ini", section_news: "Berita Gereja", section_devotional: "Renungan Harian",
+                section_contact: "Kontak", section_sns: "Media Sosial", section_offering: "Persembahan Mobile",
+                verse_text: '"Seperti ada tertulis dalam kitab nubuat-nubuat Yesaya: Ada suara yang berseru-seru di padang gurun: Persiapkanlah jalan untuk Tuhan, luruskanlah jalan bagi-Nya. Setiap lembah akan ditimbun dan setiap gunung dan bukit akan menjadi rata, yang berliku-liku akan diluruskan, yang berlekuk-lekuk akan diratakan, dan semua orang akan melihat keselamatan yang dari Allah."',
+                verse_ref: "Lukas 3:4-6",
+                worship_1st: "Ibadah Ke-1", worship_2nd: "Ibadah Ke-2", worship_3rd: "Ibadah Ke-3",
+                worship_4th: "Ibadah Ke-4", worship_5th: "Ibadah Ke-5 Pemuda", worship_evening: "Ibadah Malam Minggu",
+                label_mc: "Pemimpin", label_scripture: "Pembacaan Alkitab", label_prayer: "Doa",
+                label_offering_prayer: "Doa Persembahan", label_hymn: "Nyanyian",
+                title_pastor: "Pendeta", title_elder: "Penatua", title_ordained_deacon: "Diaken", title_member: "Jemaat",
+                bible_phil_1_3: "Filipi 1:3-8", bible_john_1_14: "Yohanes 1:14", bible_eph_2_4: "Efesus 2:4-8",
+                sermon_title_1st: "Hidup yang Menyebarkan Syukur", sermon_main_title: "Menantikan Kedatangan Yesus (II)",
+                sermon_title_5th: "Firman Menjadi Manusia", sermon_title_evening: "Itu adalah Karunia Allah",
+                sermon_main_title_en: "Waiting for Jesus' Coming (II)",
+                sermon_intro: "Natal, hari ketika Yesus datang ke dunia ini, tinggal dua minggu lagi. Kita harus menyambut Tuhan yang datang untuk menyelamatkan seluruh umat manusia dengan ucapan syukur. Kita harus mempersiapkan Natal dengan meluruskan jalan yang berliku, merendahkan hati yang sombong, dan mengisi lembah yang kosong dengan kasih karunia.",
+                sermon_point1_title: "1. Yang Bengkok Menjadi Lurus (The Crooked Become Straight)",
+                sermon_point1_content: "Untuk mempersiapkan jalan bagi Tuhan, bagian hati kita yang bengkok harus diluruskan terlebih dahulu. Seperti jalan yang hanya dapat dibuka ketika tanah yang tidak rata menjadi datar, kita hanya dapat menyambut Tuhan ketika hati kita yang penuh tipu daya dan licik, kemunafikan, dan pikiran yang menyimpang diluruskan.",
+                sermon_point2_title: "2. Jalan yang Kasar Akan Menjadi Rata (The Rough Way Will Be Made Smooth)",
+                sermon_point2_content: "Jalan kasar yang disebutkan dalam Alkitab mengacu pada tanah yang tidak rata yang sulit dilalui orang, dan tanah tandus di mana sulit untuk menghasilkan buah. Ini melambangkan hati kita yang kasar dan jiwa yang gersang.",
+                sermon_point3_title: "3. Semua Manusia Akan Melihat Keselamatan Allah (All Flesh Will See the Salvation of God)",
+                sermon_point3_content: "Lembah yang diperdalam oleh ketidakpedulian dan luka harus diisi dengan kasih salib, gunung kesombongan harus direndahkan dengan kerendahan hati, dan hati yang bengkok harus diluruskan dengan kejujuran dan kebenaran.",
+                sermon_author: "Pendeta Senior Younghoon Lee, Gereja Injili Penuh Yoido",
+                devotional_title: "Estetika Macaron",
+                devotional_p1: "Macaron menarik perhatian dengan permukaan mengkilap dan lekukan bulatnya. Tapi yang membuat makanan penutup kecil ini istimewa bukan penampilannya melainkan isiannya. Bahkan dengan warna dan bentuk yang sama, rasanya sama sekali berbeda tergantung apa yang ada di dalamnya.",
+                devotional_p2: "Nilai sejati macaron tidak dapat diketahui sampai Anda menggigit cangkangnya. Tidak peduli seberapa mewah tampilannya, jika rasanya biasa, ia akan cepat dilupakan; tetapi jika bagian dalamnya istimewa meskipun penampilannya sederhana, ia akan diingat.",
+                devotional_p3: "Hidup kita tidak berbeda. Yang lebih penting dari spesifikasi atau kondisi adalah apa yang kita isi dalam hati kita.",
+                devotional_p4: "Apa yang mengisi batin Anda sekarang? Jangan terpengaruh oleh pandangan atau standar orang lain. Jika nilai yang Anda pilih itu benar, itu sudah cukup."
+            },
+            es: {
+                nav_verse: "Palabra", nav_worship: "Culto", nav_sermon: "Sermón", nav_choir: "Alabanza",
+                nav_news: "Noticias", nav_devotional: "Devoción", nav_offering: "Ofrenda",
+                section_verse: "Palabra de Hoy", section_worship: "Culto Dominical", section_sermon: "Palabra de Vida",
+                section_choir: "Alabanza de la Semana", section_news: "Noticias de la Iglesia", section_devotional: "Devocional Diario",
+                section_contact: "Contacto", section_sns: "Redes Sociales", section_offering: "Ofrenda Móvil",
+                verse_text: '"Como está escrito en el libro de las palabras del profeta Isaías: Voz del que clama en el desierto: Preparad el camino del Señor; Enderezad sus sendas. Todo valle se rellenará, Y se bajará todo monte y collado; Los caminos torcidos serán enderezados, Y los caminos ásperos allanados; Y verá toda carne la salvación de Dios."',
+                verse_ref: "Lucas 3:4-6",
+                worship_1st: "1er Servicio", worship_2nd: "2do Servicio", worship_3rd: "3er Servicio",
+                worship_4th: "4to Servicio", worship_5th: "5to Jóvenes", worship_evening: "Servicio Vespertino",
+                label_mc: "Director", label_scripture: "Lectura Bíblica", label_prayer: "Oración",
+                label_offering_prayer: "Oración de Ofrenda", label_hymn: "Himno",
+                title_pastor: "Pastor", title_elder: "Anciano", title_ordained_deacon: "Diácono", title_member: "Miembro",
+                bible_phil_1_3: "Filipenses 1:3-8", bible_john_1_14: "Juan 1:14", bible_eph_2_4: "Efesios 2:4-8",
+                sermon_title_1st: "Una Vida que Difunde Gratitud", sermon_main_title: "Esperando la Venida de Jesús (II)",
+                sermon_title_5th: "El Verbo se Hizo Carne", sermon_title_evening: "Es Don de Dios",
+                sermon_main_title_en: "Waiting for Jesus' Coming (II)",
+                sermon_intro: "La Navidad, el día en que Jesús vino a este mundo, está a solo dos semanas. Debemos recibir al Señor que vino a salvar a toda la humanidad con gratitud. Debemos prepararnos para la Navidad enderezando los caminos torcidos, humillando nuestros corazones orgullosos y llenando los valles vacíos con gracia.",
+                sermon_point1_title: "1. Lo Torcido se Enderezará (The Crooked Become Straight)",
+                sermon_point1_content: "Para preparar el camino del Señor, las partes torcidas de nuestro corazón primero deben enderezarse. Así como un camino solo puede abrirse cuando el terreno irregular se vuelve plano, solo podemos recibir al Señor cuando nuestros corazones engañosos y astutos, la hipocresía y los pensamientos retorcidos se enderecen.",
+                sermon_point2_title: "2. Lo Áspero se Hará Llano (The Rough Way Will Be Made Smooth)",
+                sermon_point2_content: "El camino áspero del que habla la Biblia se refiere al terreno irregular difícil de atravesar y a la tierra estéril donde es difícil dar fruto. Esto significa nuestros corazones ásperos y espíritus desolados.",
+                sermon_point3_title: "3. Toda Carne Verá la Salvación de Dios (All Flesh Will See the Salvation of God)",
+                sermon_point3_content: "Los valles profundizados por la indiferencia y las heridas deben llenarse con el amor de la cruz, las montañas de orgullo deben reducirse con humildad, y los corazones torcidos deben enderezarse con honestidad y verdad.",
+                sermon_author: "Pastor Principal Younghoon Lee, Iglesia del Evangelio Completo de Yoido",
+                devotional_title: "La Estética del Macaron",
+                devotional_p1: "Los macarons capturan la atención con su superficie brillante y curvas redondas. Pero lo que hace especial a este pequeño postre no es su apariencia sino su relleno. Incluso con el mismo color y forma, el sabor es completamente diferente dependiendo de lo que hay dentro.",
+                devotional_p2: "El verdadero valor de un macaron no se puede conocer hasta que muerde la cáscara. No importa cuán elegante se vea, si el sabor es ordinario, se olvida rápidamente; pero si el interior es especial a pesar de una apariencia simple, se recuerda.",
+                devotional_p3: "Nuestras vidas no son diferentes. Más importante que las especificaciones o condiciones es con qué llenamos nuestros corazones.",
+                devotional_p4: "¿Qué llena tu interior ahora mismo? No te dejes influir por los ojos o estándares de los demás. Si los valores que eliges son verdaderos, eso es suficiente."
+            },
+            ru: {
+                nav_verse: "Слово", nav_worship: "Служение", nav_sermon: "Проповедь", nav_choir: "Хвала",
+                nav_news: "Новости", nav_devotional: "Размышление", nav_offering: "Пожертвование",
+                section_verse: "Слово на сегодня", section_worship: "Воскресное служение", section_sermon: "Слово жизни",
+                section_choir: "Хвала этой недели", section_news: "Новости церкви", section_devotional: "Ежедневное размышление",
+                section_contact: "Контакты", section_sns: "Социальные сети", section_offering: "Мобильное пожертвование",
+                verse_text: '"Как написано в книге слов пророка Исаии: глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему; всякий дол да наполнится, и всякая гора и холм да понизятся, кривизны выпрямятся и неровные пути сделаются гладкими; и узрит всякая плоть спасение Божие."',
+                verse_ref: "Луки 3:4-6",
+                worship_1st: "1-е Служение", worship_2nd: "2-е Служение", worship_3rd: "3-е Служение",
+                worship_4th: "4-е Служение", worship_5th: "5-е Молодежь", worship_evening: "Вечернее Служение",
+                sermon_main_title: "Ожидая Пришествия Иисуса (II)", sermon_main_title_en: "Waiting for Jesus' Coming (II)",
+                devotional_title: "Эстетика Макарон"
+            },
+            fr: {
+                nav_verse: "Parole", nav_worship: "Culte", nav_sermon: "Sermon", nav_choir: "Louange",
+                nav_news: "Actualités", nav_devotional: "Méditation", nav_offering: "Offrande",
+                section_verse: "Parole du Jour", section_worship: "Culte Dominical", section_sermon: "Parole de Vie",
+                section_choir: "Louange de la Semaine", section_news: "Nouvelles de l'Église", section_devotional: "Méditation Quotidienne",
+                section_contact: "Coordonnées", section_sns: "Réseaux Sociaux", section_offering: "Offrande Mobile",
+                verse_text: '"Selon ce qui est écrit dans le livre des paroles du prophète Ésaïe: C\'est la voix de celui qui crie dans le désert: Préparez le chemin du Seigneur, Aplanissez ses sentiers. Toute vallée sera comblée, Toute montagne et toute colline seront abaissées; Ce qui est tortueux sera redressé, Et les chemins raboteux seront aplanis. Et toute chair verra le salut de Dieu."',
+                verse_ref: "Luc 3:4-6",
+                worship_1st: "1er Service", worship_2nd: "2ème Service", worship_3rd: "3ème Service",
+                worship_4th: "4ème Service", worship_5th: "5ème Jeunes", worship_evening: "Service du Soir",
+                sermon_main_title: "En Attendant la Venue de Jésus (II)", sermon_main_title_en: "Waiting for Jesus' Coming (II)",
+                devotional_title: "L'Esthétique du Macaron"
+            }
+        };
+
+        let currentLanguage = 'ko';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                // 선택한 언어 -> 영어 -> 한국어 순으로 폴백
+                const text = (translations[lang] && translations[lang][key])
+                    || (translations['en'] && translations['en'][key])
+                    || (translations['ko'] && translations['ko'][key])
+                    || el.textContent;
+                el.textContent = text;
+            });
+            localStorage.setItem('church_bulletin_lang', lang);
+        }
+
+        // 페이지 로드 시 저장된 언어 복원
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('church_bulletin_lang');
+            if (savedLang && translations[savedLang]) {
+                document.querySelector('.language-selector').value = savedLang;
+                changeLanguage(savedLang);
+            }
+        });
+
+        // ========== 성경 구절 데이터 (다국어) ==========
+        const bibleVerses = {
+            'luke-3-4': {
+                ko: { title: '누가복음 3:4~6', content: '선지자 이사야의 책에 쓴 바 광야에서 외치는 자의 소리가 있어 이르되 너희는 주의 길을 준비하라 그의 오실 길을 곧게 하라 모든 골짜기가 메워지고 모든 산과 작은 산이 낮아지고 굽은 것이 곧아지고 험한 길이 평탄하여질 것이요 모든 육체가 하나님의 구원하심을 보리라 하였느니라' },
+                en: { title: 'Luke 3:4-6', content: 'As it is written in the book of the words of Isaiah the prophet: "A voice of one calling in the wilderness, Prepare the way for the Lord, make straight paths for him. Every valley shall be filled in, every mountain and hill made low. The crooked roads shall become straight, the rough ways smooth. And all people will see God\'s salvation."' },
+                zh: { title: '路加福音 3:4-6', content: '正如先知以赛亚书上所记的话，说：在旷野有人声喊着说：预备主的道，修直他的路！一切山洼都要填满；大小山冈都要削平！弯弯曲曲的地方要改为正直；高高低低的道路要改为平坦！凡有血气的，都要见神的救恩！' },
+                ja: { title: 'ルカ 3:4-6', content: '預言者イザヤの書に書いてあるとおりである。「荒野で叫ぶ者の声がする。『主の道を用意し、その道筋をまっすぐにせよ。すべての谷は埋められ、すべての山と丘は低くされる。曲がった道はまっすぐになり、でこぼこ道は平らになる。こうして、すべての肉なる者が神の救いを見る。』」' },
+                id: { title: 'Lukas 3:4-6', content: 'seperti ada tertulis dalam kitab nubuat-nubuat Yesaya: Ada suara yang berseru-seru di padang gurun: Persiapkanlah jalan untuk Tuhan, luruskanlah jalan bagi-Nya. Setiap lembah akan ditimbun dan setiap gunung dan bukit akan menjadi rata, yang berliku-liku akan diluruskan, yang berlekak-lekuk akan diratakan, dan semua orang akan melihat keselamatan yang dari Allah.' },
+                es: { title: 'Lucas 3:4-6', content: 'como está escrito en el libro de las palabras del profeta Isaías: Voz del que clama en el desierto: Preparad el camino del Señor, enderezad sus sendas. Todo valle será rellenado, y todo monte y collado será bajado; los caminos torcidos serán enderezados, y los caminos ásperos allanados; y verá toda carne la salvación de Dios.' },
+                ru: { title: 'Луки 3:4-6', content: 'как написано в книге слов пророка Исаии: глас вопиющего в пустыне: приготовьте путь Господу, прямыми сделайте стези Ему; всякий дол да наполнится, и всякая гора и холм да понизятся, кривизны выпрямятся и неровные пути сделаются гладкими; и узрит всякая плоть спасение Божие.' },
+                fr: { title: 'Luc 3:4-6', content: 'selon ce qui est écrit dans le livre des paroles du prophète Ésaïe: C\'est la voix de celui qui crie dans le désert: Préparez le chemin du Seigneur, Aplanissez ses sentiers. Toute vallée sera comblée, Toute montagne et toute colline seront abaissées; Ce qui est tortueux sera redressé, Et les chemins raboteux seront aplanis. Et toute chair verra le salut de Dieu.' }
+            },
+            'phil-1-3': {
+                ko: { title: '빌립보서 1:3~8', content: '내가 너희를 생각할 때마다 나의 하나님께 감사하며 간구할 때마다 너희 모든 사람을 위하여 기쁨으로 항상 간구함은 첫날부터 이제까지 복음을 위한 너희의 교제로 말미암음이라 너희 안에서 착한 일을 시작하신 이가 그리스도 예수의 날까지 이루실 줄을 우리는 확신하노라' },
+                en: { title: 'Philippians 1:3-8', content: 'I thank my God every time I remember you. In all my prayers for all of you, I always pray with joy because of your partnership in the gospel from the first day until now, being confident of this, that he who began a good work in you will carry it on to completion until the day of Christ Jesus.' },
+                zh: { title: '腓立比书 1:3-8', content: '我每逢想念你们，就感谢我的神；每逢为你们众人祈求的时候，常是欢欢喜喜地祈求。因为从头一天直到如今，你们是同心合意地兴旺福音。我深信那在你们心里动了善工的，必成全这工，直到耶稣基督的日子。' },
+                ja: { title: 'ピリピ 1:3-8', content: '私は、あなたがたのことを思うごとに私の神に感謝しています。あなたがたすべてのために祈るごとに、いつも喜びをもって祈り、最初の日から今日まで、福音を広めることにあなたがたが参加してきたことを感謝しています。' },
+                id: { title: 'Filipi 1:3-8', content: 'Aku mengucap syukur kepada Allahku setiap kali aku mengingat kamu. Dan setiap kali aku berdoa untuk kamu semua, aku selalu berdoa dengan sukacita. Aku mengucap syukur karena persekutuanmu dalam Berita Injil mulai dari hari pertama sampai sekarang ini.' },
+                es: { title: 'Filipenses 1:3-8', content: 'Doy gracias a mi Dios siempre que me acuerdo de vosotros, siempre en todas mis oraciones rogando con gozo por todos vosotros, por vuestra comunión en el evangelio, desde el primer día hasta ahora.' },
+                ru: { title: 'Филиппийцам 1:3-8', content: 'Благодарю Бога моего при всяком воспоминании о вас, всегда во всякой молитве моей за всех вас принося с радостью молитву мою, за ваше участие в благовествовании от первого дня даже доныне.' },
+                fr: { title: 'Philippiens 1:3-8', content: 'Je rends grâces à mon Dieu de tout le souvenir que je garde de vous, ne cessant, dans toutes mes prières pour vous tous, de manifester ma joie au sujet de la part que vous prenez à l\'Évangile, depuis le premier jour jusqu\'à maintenant.' }
+            },
+            'john-1-14': {
+                ko: { title: '요한복음 1:14', content: '말씀이 육신이 되어 우리 가운데 거하시매 우리가 그의 영광을 보니 아버지의 독생자의 영광이요 은혜와 진리가 충만하더라' },
+                en: { title: 'John 1:14', content: 'The Word became flesh and made his dwelling among us. We have seen his glory, the glory of the one and only Son, who came from the Father, full of grace and truth.' },
+                zh: { title: '约翰福音 1:14', content: '道成了肉身，住在我们中间，充充满满地有恩典有真理。我们也见过他的荣光，正是父独生子的荣光。' },
+                ja: { title: 'ヨハネ 1:14', content: 'ことばは人となって、私たちの間に住まわれた。私たちはこの方の栄光を見た。父のひとり子としての栄光である。この方は恵みとまことに満ちておられた。' },
+                id: { title: 'Yohanes 1:14', content: 'Firman itu telah menjadi manusia, dan diam di antara kita, dan kita telah melihat kemuliaan-Nya, yaitu kemuliaan yang diberikan kepada-Nya sebagai Anak Tunggal Bapa, penuh kasih karunia dan kebenaran.' },
+                es: { title: 'Juan 1:14', content: 'Y aquel Verbo fue hecho carne, y habitó entre nosotros, y vimos su gloria, gloria como del unigénito del Padre, lleno de gracia y de verdad.' },
+                ru: { title: 'Иоанна 1:14', content: 'И Слово стало плотию, и обитало с нами, полное благодати и истины; и мы видели славу Его, славу, как Единородного от Отца.' },
+                fr: { title: 'Jean 1:14', content: 'Et la parole a été faite chair, et elle a habité parmi nous, pleine de grâce et de vérité; et nous avons contemplé sa gloire, une gloire comme la gloire du Fils unique venu du Père.' }
+            },
+            'eph-2-4': {
+                ko: { title: '에베소서 2:4~8', content: '긍휼이 풍성하신 하나님이 우리를 사랑하신 그 큰 사랑을 인하여 허물로 죽은 우리를 그리스도와 함께 살리셨고 너희는 은혜로 구원을 받은 것이라 또 함께 일으키사 그리스도 예수 안에서 함께 하늘에 앉히시니' },
+                en: { title: 'Ephesians 2:4-8', content: 'But because of his great love for us, God, who is rich in mercy, made us alive with Christ even when we were dead in transgressions—it is by grace you have been saved. And God raised us up with Christ and seated us with him in the heavenly realms in Christ Jesus.' },
+                zh: { title: '以弗所书 2:4-8', content: '然而，神既有丰富的怜悯，因他爱我们的大爱，当我们死在过犯中的时候，便叫我们与基督一同活过来。你们得救是本乎恩。他又叫我们与基督耶稣一同复活，一同坐在天上。' },
+                ja: { title: 'エペソ 2:4-8', content: 'しかし、あわれみ豊かな神は、私たちを愛してくださったその大きな愛のゆえに、背きの中に死んでいた私たちを、キリストとともに生かしてくださいました。あなたがたが救われたのは恵みによるのです。' },
+                id: { title: 'Efesus 2:4-8', content: 'Tetapi Allah yang kaya dengan rahmat, oleh karena kasih-Nya yang besar, yang dilimpahkan-Nya kepada kita, telah menghidupkan kita bersama-sama dengan Kristus, sekalipun kita telah mati oleh kesalahan-kesalahan kita -- oleh kasih karunia kamu diselamatkan.' },
+                es: { title: 'Efesios 2:4-8', content: 'Pero Dios, que es rico en misericordia, por su gran amor con que nos amó, aun estando nosotros muertos en pecados, nos dio vida juntamente con Cristo; por gracia sois salvos.' },
+                ru: { title: 'Ефесянам 2:4-8', content: 'Бог, богатый милостью, по Своей великой любви, которою возлюбил нас, и нас, мертвых по преступлениям, оживотворил со Христом, — благодатью вы спасены.' },
+                fr: { title: 'Éphésiens 2:4-8', content: 'Mais Dieu, qui est riche en miséricorde, à cause du grand amour dont il nous a aimés, nous qui étions morts par nos offenses, nous a rendus à la vie avec Christ; c\'est par grâce que vous êtes sauvés.' }
+            }
+        };
+
+        function openBibleModal(verseKey) {
+            const verseData = bibleVerses[verseKey];
+            if (verseData) {
+                // 현재 언어 -> 영어 -> 한국어 폴백
+                const verse = verseData[currentLanguage] || verseData['en'] || verseData['ko'];
+                alert(verse.title + '\n\n' + verse.content);
+            }
+        }
+
+        // ========== 찬송가 데이터 (다국어) ==========
+        const hymnData = {
+            '8': {
+                ko: { title: '기뻐하며 경배하세', subtitle: 'Joyful, Joyful, We Adore Thee', composer: '베토벤 작곡', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '기뻐하며 경배하세 영광의 주 하나님\n주의 얼굴 빛 같으니 모든 근심 물러가네\n죄와 슬픔 다 사라지고 의심 구름 걷히나니\n영원하신 기쁨 되어 주의 빛 안에 살리라'}, {verse: 2, text: '주는 만물 다스리며 만유의 주 되시니\n들의 꽃과 산과 강도 다 주를 찬양하도다\n주의 손이 펼쳐 있어 온 세상에 복 주시고\n사랑으로 덮으셨네 우리 찬양 받으소서'}] },
+                en: { title: 'Joyful, Joyful, We Adore Thee', subtitle: 'Hymn to Joy', composer: 'Beethoven', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'Joyful, joyful, we adore Thee\nGod of glory, Lord of love\nHearts unfold like flowers before Thee\nOpening to the sun above'}, {verse: 2, text: 'All Thy works with joy surround Thee\nEarth and heaven reflect Thy rays\nStars and angels sing around Thee\nCenter of unbroken praise'}] },
+                zh: { title: '欢乐颂', subtitle: '欢欣崇拜', composer: '贝多芬 作曲', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '欢欣敬拜荣耀主\n天父上帝慈爱深\n心如花朵向主开放\n迎向阳光灿烂新'}] },
+                ja: { title: '喜びの歌', subtitle: '喜び喜び主を崇めん', composer: 'ベートーヴェン作曲', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '喜び喜び主を崇めん\n栄光の神 愛の主\n心は花のように開く\n太陽に向かって'}] },
+                id: { title: 'Sukacita, Sukacita', subtitle: 'Bersuka Menyembah', composer: 'Beethoven', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Sukacita sukacita\nKita sembah Tuhan mulia\nHati kita bagai bunga mekar\nMenghadap sang surya'}] },
+                es: { title: 'Jubilosos, Te Adoramos', subtitle: 'Himno a la Alegría', composer: 'Beethoven', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'Jubilosos te adoramos\nDios de gloria, Dios de amor\nCorazones se abren como flores\nAnte Ti, Señor'}] },
+                ru: { title: 'Радостно, Радостно', subtitle: 'Ода к Радости', composer: 'Бетховен', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Радостно, радостно поклоняемся\nБогу славы, Богу любви\nСердца раскрываются как цветы\nК солнцу обращены'}] },
+                fr: { title: 'Joyeux, Joyeux, Nous T\'adorons', subtitle: 'Hymne à la Joie', composer: 'Beethoven', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'Joyeux, joyeux, nous t\'adorons\nDieu de gloire, Seigneur d\'amour\nNos cœurs s\'ouvrent comme des fleurs\nVers le soleil levant'}] },
+                musical: { key: 'G', tempo: 'Allegro maestoso', timeSignature: '4/4' }
+            },
+            '94': {
+                ko: { title: '저 높고 푸른 하늘과', subtitle: 'This Is My Father\'s World', composer: 'Franklin L. Sheppard', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '저 높고 푸른 하늘과 그 아래 푸른 들\n산과 나무와 꽃과 새 모두가 주 지으신 것\n주님의 솜씨 온 세상에 깃들어 있나니\n바람 소리 들리는 곳 주 음성이 들리네'}] },
+                en: { title: 'This Is My Father\'s World', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'This is my Father\'s world\nAnd to my listening ears\nAll nature sings and round me rings\nThe music of the spheres'}] },
+                zh: { title: '这是天父世界', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '这是天父世界\n我要侧耳细听\n万物歌唱环绕我旁\n天籁声声不停'}] },
+                ja: { title: 'この世は父の世界', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: 'この世は父の世界\n耳を澄ませば\n自然の歌声聞こえてくる\n天の音楽が'}] },
+                id: { title: 'Dunia Milik Bapa', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Dunia ini milik Bapa\nTelinga mendengar\nAlam bernyanyi di sekelilingku\nMusik surgawi'}] },
+                es: { title: 'El Mundo Es De Mi Padre', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'El mundo es de mi Padre\nMis oídos escuchan\nLa naturaleza canta alrededor\nLa música celestial'}] },
+                ru: { title: 'Это Мир Моего Отца', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Это мир моего Отца\nЯ слушаю внимательно\nПрирода поет вокруг меня\nНебесная музыка'}] },
+                fr: { title: 'C\'est Le Monde De Mon Père', subtitle: '', composer: 'Franklin L. Sheppard', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'C\'est le monde de mon Père\nÀ mes oreilles attentives\nLa nature chante autour de moi\nLa musique des cieux'}] },
+                musical: { key: 'D', tempo: 'Andante', timeSignature: '6/8' }
+            },
+            '105': {
+                ko: { title: '온 천하 만물 우러러', subtitle: 'All Creatures of Our God and King', composer: 'Geistliche Kirchengesäng', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '온 천하 만물 우러러 다 주를 찬양하여라\n할렐루야 할렐루야\n해와 달 아름답게 비치고 밝은 별들도 찬양해\n찬양해 찬양해 할렐루야 할렐루야 할렐루야'}] },
+                en: { title: 'All Creatures of Our God and King', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'All creatures of our God and King\nLift up your voice and with us sing\nAlleluia Alleluia\nThou burning sun with golden beam\nThou silver moon with softer gleam'}] },
+                zh: { title: '万物称颂主', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '万物同颂赞主\n高举声音齐唱\n哈利路亚 哈利路亚\n太阳月亮发光辉\n明星闪耀同赞美'}] },
+                ja: { title: '神の造りしすべてのもの', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '神の造りしすべてのものよ\n声を上げて共に歌え\nハレルヤ ハレルヤ\n輝く太陽 月の光\n星々も共に讃えよ'}] },
+                id: { title: 'Segala Makhluk Tuhan', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Segala makhluk Allah dan Raja\nAngkat suaramu bernyanyi bersama\nHaleluya Haleluya\nMatahari bersinar terang\nBulan dan bintang bercahaya'}] },
+                es: { title: 'Criaturas Del Señor', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'Criaturas del Señor\nAlzad vuestra voz y cantad\nAleluya Aleluya\nSol ardiente con rayos de oro\nLuna suave con brillo gentil'}] },
+                ru: { title: 'Все Создания Бога', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Все создания Бога нашего\nВозвысьте голос и пойте с нами\nАллилуйя Аллилуйя\nСолнце горящее с золотым лучом\nЛуна серебряная мягко сияет'}] },
+                fr: { title: 'Créatures Du Seigneur', subtitle: '', composer: 'Geistliche Kirchengesäng', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'Créatures de notre Dieu et Roi\nÉlevez vos voix et chantez\nAlléluia Alléluia\nSoleil brûlant aux rayons d\'or\nDouce lune à l\'éclat argenté'}] },
+                musical: { key: 'F', tempo: 'Maestoso', timeSignature: '3/4' }
+            },
+            '301': {
+                ko: { title: '지금까지 지내온 것', subtitle: 'Wonderful Grace of Jesus', composer: 'Haldor Lillenas', hymnLabel: '찬송가', verseLabel: '장', lyrics: [{verse: 1, text: '지금까지 지내온 것 주의 크신 은혜라\n한이 없는 주의 사랑 어찌 다 측량하랴\n주님 크신 은혜가 나를 구원하셨네\n나 같은 죄인도 구원하신 주 은혜 놀라와'}] },
+                en: { title: 'Wonderful Grace of Jesus', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: 'Hymn', verseLabel: '', lyrics: [{verse: 1, text: 'Wonderful grace of Jesus\nGreater than all my sin\nHow shall my tongue describe it\nWhere shall its praise begin'}] },
+                zh: { title: '主恩典何等奇妙', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: '赞美诗', verseLabel: '章', lyrics: [{verse: 1, text: '主恩典何等奇妙\n胜过我一切罪愆\n舌头怎能述说尽\n从何处开始颂赞'}] },
+                ja: { title: '主の恵み素晴らしき', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: '讃美歌', verseLabel: '番', lyrics: [{verse: 1, text: '主の恵み素晴らしき\nすべての罪に勝る\nどう言葉で表そうか\nどこから賛美しよう'}] },
+                id: { title: 'Anugerah Yesus Ajaib', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: 'Kidung', verseLabel: '', lyrics: [{verse: 1, text: 'Anugerah Yesus ajaib\nLebih besar dari dosaku\nBagaimana lidah mengatakannya\nDari mana memulai pujian'}] },
+                es: { title: 'Maravillosa Gracia', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: 'Himno', verseLabel: '', lyrics: [{verse: 1, text: 'Maravillosa gracia de Jesús\nMás grande que todo mi pecado\nCómo podré describirla\nDónde comenzar su alabanza'}] },
+                ru: { title: 'Чудесная Благодать Иисуса', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: 'Гимн', verseLabel: '', lyrics: [{verse: 1, text: 'Чудесная благодать Иисуса\nБольше всех моих грехов\nКак описать её словами\nГде начать восхваление'}] },
+                fr: { title: 'Merveilleuse Grâce De Jésus', subtitle: '', composer: 'Haldor Lillenas', hymnLabel: 'Cantique', verseLabel: '', lyrics: [{verse: 1, text: 'Merveilleuse grâce de Jésus\nPlus grande que tous mes péchés\nComment ma langue la décrira\nOù commencer sa louange'}] },
+                musical: { key: 'Ab', tempo: 'Moderato', timeSignature: '4/4' }
+            }
+        };
+
+        function openHymnModal(hymnNum) {
+            const hymnDataItem = hymnData[hymnNum];
+            const modal = document.getElementById('hymnModal');
+            const titleEl = document.getElementById('hymnModalTitle');
+            const body = document.getElementById('hymnModalBody');
+
+            if (hymnDataItem) {
+                // 현재 언어 -> 영어 -> 한국어 폴백
+                const hymn = hymnDataItem[currentLanguage] || hymnDataItem['en'] || hymnDataItem['ko'];
+                const musical = hymnDataItem.musical;
+                const hymnLabel = hymn.hymnLabel || '찬송가';
+                const verseLabel = hymn.verseLabel || '';
+
+                titleEl.textContent = hymnLabel + ' ' + hymnNum + verseLabel;
+                let lyricsHtml = hymn.lyrics.map(v => '<div class="hymn-verse"><span class="verse-number">' + v.verse + '</span>' + v.text.replace(/\n/g, '<br>') + '</div>').join('');
+                body.innerHTML = '<div class="hymn-sheet"><div class="hymn-info"><div class="hymn-number">' + hymnNum + verseLabel + '</div><div class="hymn-title">' + hymn.title + '</div><div class="hymn-subtitle">' + (hymn.subtitle || '') + '</div><div style="font-size: 0.85em; color: var(--text-gray); margin-top: 8px;">' + hymn.composer + ' | ' + musical.key + ' | ' + musical.tempo + '</div></div><div class="hymn-lyrics">' + lyricsHtml + '</div></div>';
+            } else {
+                // 준비 중 메시지 (다국어)
+                const notReadyMsg = {
+                    ko: '이 찬송가의 가사는 준비 중입니다.',
+                    en: 'Lyrics for this hymn are being prepared.',
+                    zh: '此赞美诗的歌词正在准备中。',
+                    ja: 'この讃美歌の歌詞は準備中です。',
+                    id: 'Lirik untuk kidung ini sedang dipersiapkan.',
+                    es: 'La letra de este himno está en preparación.',
+                    ru: 'Текст этого гимна готовится.',
+                    fr: 'Les paroles de ce cantique sont en préparation.'
+                };
+                const hymnLabels = { ko: '찬송가', en: 'Hymn', zh: '赞美诗', ja: '讃美歌', id: 'Kidung', es: 'Himno', ru: 'Гимн', fr: 'Cantique' };
+                const verseLabels = { ko: '장', en: '', zh: '章', ja: '番', id: '', es: '', ru: '', fr: '' };
+                const label = hymnLabels[currentLanguage] || hymnLabels['ko'];
+                const vLabel = verseLabels[currentLanguage] || '';
+                const msg = notReadyMsg[currentLanguage] || notReadyMsg['en'] || notReadyMsg['ko'];
+
+                titleEl.textContent = label + ' ' + hymnNum + vLabel;
+                body.innerHTML = '<div class="hymn-sheet"><div class="hymn-info"><div class="hymn-number">' + hymnNum + vLabel + '</div></div><div style="text-align: center; padding: 40px; color: var(--text-gray);"><p>' + msg + '</p></div></div>';
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHymnModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('hymnModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        const offeringData = {
+            bank: {
+                title: '계좌이체 헌금',
+                content: '<div style="padding: 20px;"><div style="background: var(--primary-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;"><h3 style="color: var(--primary); margin-bottom: 16px;">헌금 계좌 안내</h3><div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px;"><div style="font-weight: 600; color: var(--primary);">우리은행</div><div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">060-9191-9191</div></div><div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px;"><div style="font-weight: 600; color: var(--primary);">기업은행</div><div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">060-9191-9191</div></div><div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px;"><div style="font-weight: 600; color: var(--primary);">신한은행</div><div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">060-9191-9191</div></div><div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px;"><div style="font-weight: 600; color: var(--primary);">국민은행</div><div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">816-25-0003-095</div></div><div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 8px;"><div style="font-weight: 600; color: var(--primary);">하나은행</div><div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">256-890015-74104</div></div><div style="background: white; padding: 16px; border-radius: 8px;"><div style="font-weight: 600; color: var(--primary);">농협</div><div style="font-size: 1.1em; font-weight: 700; margin: 6px 0;">367-01-035287</div></div><div style="color: var(--text-gray); font-size: 0.85em; margin-top: 12px; text-align: center;">예금주: 여의도순복음교회</div></div><div style="font-size: 0.9em; color: var(--text-gray); line-height: 1.6;"><p>※ 입금자명에 교적번호 또는 이름을 기재해 주세요.</p></div></div>'
+            },
+            kakaopay: {
+                title: '카카오페이 헌금',
+                content: '<div style="padding: 20px; text-align: center;"><div style="background: #FEE500; color: #3C1E1E; padding: 40px; border-radius: 16px; margin-bottom: 20px;"><div style="font-size: 3em; margin-bottom: 16px;">💛</div><div style="font-size: 1.2em; font-weight: 700;">카카오페이로 헌금하기</div></div><div style="background: var(--bg-gray); padding: 20px; border-radius: 12px;"><p style="font-weight: 600; margin-bottom: 12px;">카카오페이 송금 방법</p><ol style="text-align: left; line-height: 2; padding-left: 20px; color: var(--text-gray);"><li>카카오톡 앱을 엽니다</li><li>하단 메뉴에서 더보기 선택</li><li>카카오페이 > 송금 선택</li><li>계좌번호로 송금 선택</li></ol></div></div>'
+            },
+            app: {
+                title: '교회 앱 헌금',
+                content: '<div style="padding: 20px; text-align: center;"><div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 20px;"><div style="font-size: 3em; margin-bottom: 16px;">⛪</div><div style="font-size: 1.2em; font-weight: 700;">여의도순복음교회 앱</div></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;"><a href="#" style="display: block; background: #000; color: white; padding: 16px; border-radius: 10px; text-decoration: none;"><div style="font-size: 1.5em; margin-bottom: 4px;">🍎</div><div style="font-size: 0.85em;">App Store</div></a><a href="#" style="display: block; background: #3DDC84; color: white; padding: 16px; border-radius: 10px; text-decoration: none;"><div style="font-size: 1.5em; margin-bottom: 4px;">🤖</div><div style="font-size: 0.85em;">Google Play</div></a></div></div>'
+            }
+        };
+
+        function openOfferingModal(type) {
+            const data = offeringData[type];
+            const modal = document.getElementById('offeringModal');
+            document.getElementById('offeringModalTitle').textContent = data.title;
+            document.getElementById('offeringModalBody').innerHTML = data.content;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOfferingModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('offeringModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeHymnModal();
+                closeOfferingModal();
+            }
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.querySelector('.dark-mode-toggle').textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const sections = ['verse', 'worship', 'sermon', 'choir', 'news', 'devotional', 'sns', 'offering'];
+            let current = '';
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        current = section;
+                    }
+                }
+            });
+            if (current) {
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.getAttribute('href') === '#' + current) {
+                        tab.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

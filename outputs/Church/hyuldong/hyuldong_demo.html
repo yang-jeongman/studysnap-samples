@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>혈동교회 주보 | 2025년 6월 15일</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B4513;
+            --primary-light: #D2691E;
+            --gold: #C5A572;
+            --cream: #FDF8F0;
+            --warm-white: #FFFEF9;
+            --text-dark: #2C1810;
+            --text-medium: #5D4037;
+            --text-light: #8D6E63;
+            --accent-red: #A0522D;
+            --shadow-soft: 0 2px 12px rgba(139, 69, 19, 0.08);
+            --shadow-medium: 0 4px 20px rgba(139, 69, 19, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--warm-white) 100%);
+            color: var(--text-dark);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 24px 20px 28px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30l15-15v30l-15-15zm0 0l-15 15V15l15 15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .church-name {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header-meta {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header-date {
+            font-size: 15px;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .sunday-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: white;
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-light);
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 20px 16px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .section-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--gold) 100%);
+            border-radius: 2px;
+        }
+
+        /* Worship Order */
+        .worship-item {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.08);
+            align-items: flex-start;
+        }
+
+        .worship-item:last-child {
+            border-bottom: none;
+        }
+
+        .worship-phase {
+            width: 60px;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: var(--gold);
+            font-weight: 600;
+            padding-top: 2px;
+        }
+
+        .worship-content {
+            flex: 1;
+        }
+
+        .worship-title {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .worship-detail {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Interactive Links */
+        .bible-link, .hymn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .bible-link {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            color: #2E7D32;
+        }
+
+        .bible-link:hover, .bible-link:active {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+        }
+
+        .hymn-link {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            color: #1565C0;
+        }
+
+        .hymn-link:hover, .hymn-link:active {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.2);
+        }
+
+        .link-icon {
+            font-size: 16px;
+        }
+
+        /* Scripture Box */
+        .scripture-box {
+            background: linear-gradient(135deg, var(--cream) 0%, #FFF8E1 100%);
+            border-left: 4px solid var(--gold);
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .scripture-ref {
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .scripture-text {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 15px;
+            color: var(--text-medium);
+            line-height: 1.8;
+        }
+
+        /* Prayer Text */
+        .prayer-text {
+            font-size: 14px;
+            color: var(--text-medium);
+            line-height: 1.9;
+            text-align: justify;
+            padding: 12px;
+            background: rgba(139, 69, 19, 0.03);
+            border-radius: 12px;
+        }
+
+        /* News Section */
+        .news-item {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.08);
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .news-badge {
+            background: var(--accent-red);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .news-detail {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Schedule Table */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-table tr {
+            border-bottom: 1px solid rgba(139, 69, 19, 0.08);
+        }
+
+        .schedule-table td {
+            padding: 12px 8px;
+            font-size: 14px;
+        }
+
+        .schedule-table td:first-child {
+            font-weight: 500;
+            color: var(--text-dark);
+            width: 35%;
+        }
+
+        .schedule-table td:nth-child(2) {
+            color: var(--text-light);
+        }
+
+        .schedule-table td:last-child {
+            color: var(--primary);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        /* Staff Section */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .staff-item {
+            text-align: center;
+            padding: 16px 8px;
+            background: rgba(139, 69, 19, 0.03);
+            border-radius: 12px;
+        }
+
+        .staff-role {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .staff-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Offering Card */
+        .offering-card {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .offering-title {
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .offering-names {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        /* Next Week Servers */
+        .next-week-card {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .next-week-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2E7D32;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .server-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .server-role {
+            color: #388E3C;
+        }
+
+        .server-name {
+            font-weight: 500;
+            color: #1B5E20;
+        }
+
+        /* Sermon Listen Button */
+        .sermon-listen-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+            text-decoration: none;
+        }
+
+        .sermon-listen-btn:hover, .sermon-listen-btn:active {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .sermon-listen-btn .icon {
+            font-size: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .footer-church {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 16px;
+            color: var(--text-medium);
+            margin-bottom: 8px;
+        }
+
+        /* Bottom CTA */
+        .bottom-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 12px 16px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .cta-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .cta-btn.secondary {
+            background: var(--cream);
+            color: var(--primary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 340px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .bible-content {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 16px;
+            line-height: 2;
+            color: var(--text-dark);
+        }
+
+        .bible-verse-num {
+            color: var(--primary);
+            font-size: 12px;
+            vertical-align: super;
+            margin-right: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="church-name">혈동교회</h1>
+            <p class="header-meta">제79-24호</p>
+            <p class="header-date">2025년 6월 15일</p>
+            <span class="sunday-label">삼위일체주일 · 성령강림 후 제1주</span>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="worship">예배순서</button>
+        <button class="nav-tab" data-tab="scripture">말씀</button>
+        <button class="nav-tab" data-tab="news">소식</button>
+        <button class="nav-tab" data-tab="info">안내</button>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+        <!-- 예배순서 탭 -->
+        <div id="worship" class="tab-content active">
+            <div class="section-card">
+                <h2 class="section-title">주일예배 오전 11시</h2>
+                
+                <div class="worship-item">
+                    <span class="worship-phase">나아옴</span>
+                    <div class="worship-content">
+                        <div class="worship-title">예배로의 부름</div>
+                        <div class="worship-detail">요한1서 5:6-8</div>
+                        <a href="#" class="bible-link" onclick="showBible('1john5')">
+                            <span class="link-icon">📖</span> 성경 본문 보기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">찬송</div>
+                        <div class="worship-detail">21장 다 찬양하여라</div>
+                        <a href="https://www.youtube.com/results?search_query=새찬송가+21장+다+찬양하여라" target="_blank" class="hymn-link">
+                            <span class="link-icon">🎵</span> 찬송 듣기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">고백의 기도</div>
+                        <div class="prayer-text">
+                            전능하신 하나님 아버지! 인간의 감각과 경험은 불완전하여, 누구도 완전한 하나님의 지식에 이를 수 없음을 압니다. 인간의 통찰은 하나님의 신비를 이해할 수 없고, 어떤 말로도 하나님의 오묘하심을 표현할 수 없음을 또한 압니다. 그러나 자기 자신조차 모르는 인간인 우리가 때때로 하나님을 다 아는 것처럼 주장하는 오만에 빠지기도 합니다. 우리가 믿는 신조나 교리 안으로 무한한 하나님을 제한하는 독단을 주장하기도 합니다. 우리는 단지 피조물일 뿐임을 아는 지혜로움을 주옵소서. 측량할 수 없는 주님의 신비 앞에 떨림으로 예배할 겸손한 마음을 얻게 하옵소서. 예수님의 이름으로 이 고백의 기도를 드립니다. 아멘.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">교독문 137번</div>
+                        <div class="worship-detail">삼위일체</div>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">오늘의 기도</div>
+                        <div class="worship-detail">서용만 목사</div>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">기도응답송</div>
+                        <div class="worship-detail">635장 하늘에 계신 (주기도문)</div>
+                        <a href="https://www.youtube.com/results?search_query=새찬송가+635장+주기도문" target="_blank" class="hymn-link">
+                            <span class="link-icon">🎵</span> 찬송 듣기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase">말씀선포</span>
+                    <div class="worship-content">
+                        <div class="worship-title">제1독서</div>
+                        <div class="worship-detail">잠언 8:1-4, 22-31 (문충기 목사)</div>
+                        <a href="#" class="bible-link" onclick="showBible('prov8')">
+                            <span class="link-icon">📖</span> 성경 본문 보기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">제2독서</div>
+                        <div class="worship-detail">로마서 5:1-5 (정은지)</div>
+                        <a href="#" class="bible-link" onclick="showBible('rom5')">
+                            <span class="link-icon">📖</span> 성경 본문 보기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">복음서</div>
+                        <div class="worship-detail">요한복음 16:12-15 (문충기 목사)</div>
+                        <a href="#" class="bible-link" onclick="showBible('john16')">
+                            <span class="link-icon">📖</span> 성경 본문 보기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">말씀</div>
+                        <div class="worship-detail">문충기 담임목사</div>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase">응답</span>
+                    <div class="worship-content">
+                        <div class="worship-title">합심기도 · 신앙고백</div>
+                        <div class="worship-detail">사도신경</div>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">봉헌</div>
+                        <div class="worship-detail">218장 네 맘과 정성을 다하여서 (1절)</div>
+                        <a href="https://www.youtube.com/results?search_query=새찬송가+218장+네+맘과+정성을" target="_blank" class="hymn-link">
+                            <span class="link-icon">🎵</span> 찬송 듣기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase">나아감</span>
+                    <div class="worship-content">
+                        <div class="worship-title">찬송</div>
+                        <div class="worship-detail">79장 주 하나님 지으신 모든 세계</div>
+                        <a href="https://www.youtube.com/results?search_query=새찬송가+79장+주+하나님+지으신+모든+세계" target="_blank" class="hymn-link">
+                            <span class="link-icon">🎵</span> 찬송 듣기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">파송의 말씀</div>
+                        <div class="scripture-box">
+                            <p class="scripture-text">"예수께서 하나님 안에, 우리가 예수 안에, 예수가 우리 안에 있는 것을 알게 하고 믿게 하는 성령과 함께 나아갑시다."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="worship-item">
+                    <span class="worship-phase"></span>
+                    <div class="worship-content">
+                        <div class="worship-title">축도</div>
+                        <div class="worship-detail">문충기 담임목사</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 설교 다시듣기 버튼 -->
+            <a href="#" class="sermon-listen-btn" onclick="alert('설교 영상/음성 링크를 연결해드립니다')">
+                <span class="icon">🎧</span>
+                설교 말씀 다시 듣기
+            </a>
+        </div>
+
+        <!-- 말씀 탭 -->
+        <div id="scripture" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">오늘의 말씀</h2>
+
+                <div class="scripture-box" style="margin-bottom: 20px;">
+                    <div class="scripture-ref">📖 제1독서 | 잠언 8:1-4, 22-31</div>
+                    <p class="scripture-text">
+                        지혜가 부르지 아니하느냐 명철이 소리를 높이지 아니하느냐 그가 길 가의 높은 곳과 사거리에 서며 성문 곁과 문 어귀와 여러 출입하는 문에서 불러 이르되 사람들아 내가 너희를 부르며 내가 인자들에게 소리를 높이노라...
+                    </p>
+                    <a href="https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=pro&chap=8" target="_blank" class="bible-link" style="margin-top: 12px;">
+                        <span class="link-icon">📖</span> 전체 본문 읽기
+                    </a>
+                </div>
+
+                <div class="scripture-box" style="margin-bottom: 20px;">
+                    <div class="scripture-ref">📖 제2독서 | 로마서 5:1-5</div>
+                    <p class="scripture-text">
+                        그러므로 우리가 믿음으로 의롭다 하심을 받았으니 우리 주 예수 그리스도로 말미암아 하나님과 화평을 누리자 또한 그로 말미암아 우리가 믿음으로 서 있는 이 은혜에 들어감을 얻었으며 하나님의 영광을 바라고 즐거워하느니라...
+                    </p>
+                    <a href="https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=rom&chap=5" target="_blank" class="bible-link" style="margin-top: 12px;">
+                        <span class="link-icon">📖</span> 전체 본문 읽기
+                    </a>
+                </div>
+
+                <div class="scripture-box">
+                    <div class="scripture-ref">📖 복음서 | 요한복음 16:12-15</div>
+                    <p class="scripture-text">
+                        내가 아직도 너희에게 이를 것이 많으나 지금은 너희가 감당하지 못하리라 그러나 진리의 성령이 오시면 그가 너희를 모든 진리 가운데로 인도하시리니 그가 스스로 말하지 않고 오직 들은 것을 말하며 장래 일을 너희에게 알리시리라...
+                    </p>
+                    <a href="https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=jhn&chap=16" target="_blank" class="bible-link" style="margin-top: 12px;">
+                        <span class="link-icon">📖</span> 전체 본문 읽기
+                    </a>
+                </div>
+            </div>
+
+            <a href="#" class="sermon-listen-btn" onclick="alert('설교 영상/음성 링크를 연결해드립니다')">
+                <span class="icon">🎧</span>
+                설교 말씀 다시 듣기
+            </a>
+        </div>
+
+        <!-- 소식 탭 -->
+        <div id="news" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">교회 소식</h2>
+
+                <div class="news-item">
+                    <div class="news-title">
+                        <span class="news-badge">이번주</span>
+                        춘천 연합 떼제 기도회
+                    </div>
+                    <div class="news-detail">
+                        📅 수요일 오후 7시 30분<br>
+                        📍 팔미교회
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h2 class="section-title">향기로운 예물</h2>
+                <div class="offering-card">
+                    <div class="offering-title">감사헌금</div>
+                    <div class="offering-names">서용만 / 정은지</div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h2 class="section-title">다음 주 예배 섬기는 이</h2>
+                <div class="next-week-card">
+                    <div class="next-week-title">6월 22일 주일</div>
+                    <div class="server-row">
+                        <span class="server-role">오늘의 기도</span>
+                        <span class="server-name">이형구 장로</span>
+                    </div>
+                    <div class="server-row">
+                        <span class="server-role">제1독서 봉독</span>
+                        <span class="server-name">방영숙</span>
+                    </div>
+                    <div class="server-row">
+                        <span class="server-role">제2독서 봉독</span>
+                        <span class="server-name">유희철</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 안내 탭 -->
+        <div id="info" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">예배시간 안내</h2>
+                <table class="schedule-table">
+                    <tr>
+                        <td>주일예배</td>
+                        <td>예배실</td>
+                        <td>오전 11:00</td>
+                    </tr>
+                    <tr>
+                        <td>수요기도회</td>
+                        <td>팔미교회</td>
+                        <td>오후 7:30</td>
+                    </tr>
+                    <tr>
+                        <td>새벽/심야기도회</td>
+                        <td>예배실</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>장애인예배</td>
+                        <td>예배실</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>청소년부예배</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>금요속회</td>
+                        <td>지정장소</td>
+                        <td>상의 후 결정</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2 class="section-title">섬기는 이들</h2>
+                <div class="staff-grid">
+                    <div class="staff-item">
+                        <div class="staff-role">담임목사</div>
+                        <div class="staff-name">문충기</div>
+                    </div>
+                    <div class="staff-item">
+                        <div class="staff-role">협동목사</div>
+                        <div class="staff-name">서용만</div>
+                    </div>
+                    <div class="staff-item">
+                        <div class="staff-role">원로장로</div>
+                        <div class="staff-name">이형구</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-church">혈동교회</p>
+        <p>손안의 주보 서비스</p>
+    </footer>
+
+    <!-- Bottom CTA -->
+    <div class="bottom-cta">
+        <a href="#" class="cta-btn secondary" onclick="alert('PDF 원본 다운로드')">📄 원본 주보</a>
+        <a href="#" class="cta-btn primary" onclick="shareJubo()">📤 공유하기</a>
+    </div>
+
+    <!-- Bible Modal -->
+    <div id="bibleModal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">성경 본문</h3>
+            </div>
+            <div class="bible-content" id="bibleContent">
+                <!-- 성경 내용이 들어갈 곳 -->
+            </div>
+            <button class="cta-btn primary" style="width: 100%; margin-top: 20px;" onclick="closeModal()">닫기</button>
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Bible verses data
+        const bibleVerses = {
+            '1john5': {
+                title: '요한1서 5:6-8',
+                content: `<span class="bible-verse-num">6</span>이는 물과 피로 임하신 이시니 곧 예수 그리스도시라 물로만 아니요 물과 피로 임하셨고 증언하는 이는 성령이시니 성령은 진리니라 <span class="bible-verse-num">7</span>증언하는 이가 셋이니 <span class="bible-verse-num">8</span>성령과 물과 피라 또한 이 셋은 합하여 하나이니라`
+            },
+            'prov8': {
+                title: '잠언 8:1-4, 22-31',
+                content: `<span class="bible-verse-num">1</span>지혜가 부르지 아니하느냐 명철이 소리를 높이지 아니하느냐 <span class="bible-verse-num">2</span>그가 길 가의 높은 곳과 사거리에 서며 <span class="bible-verse-num">3</span>성문 곁과 문 어귀와 여러 출입하는 문에서 불러 이르되 <span class="bible-verse-num">4</span>사람들아 내가 너희를 부르며 내가 인자들에게 소리를 높이노라<br><br><span class="bible-verse-num">22</span>여호와께서 그 조화의 시작 곧 태초에 일하시기 전에 나를 가지셨으며 <span class="bible-verse-num">23</span>만세 전부터, 태초부터, 땅이 생기기 전부터 내가 세움을 받았나니 <span class="bible-verse-num">24</span>아직 바다가 생기지 아니하였고 큰 샘들이 있기 전에 내가 이미 났으며 <span class="bible-verse-num">25</span>산이 세워지기 전에, 언덕이 생기기 전에 내가 이미 났으니 <span class="bible-verse-num">26</span>하나님이 아직 땅도, 들도, 세상 진토의 근원도 짓지 아니하셨을 때에라 <span class="bible-verse-num">27</span>그가 하늘을 지으시며 궁창을 해면에 두르실 때에 내가 거기 있었고 <span class="bible-verse-num">28</span>그가 위로 구름 하늘을 견고하게 하시며 바다의 샘들을 힘 있게 하시며 <span class="bible-verse-num">29</span>바다의 한계를 정하여 물이 명령을 거스르지 못하게 하시며 또 땅의 기초를 정하실 때에 <span class="bible-verse-num">30</span>내가 그 곁에 있어서 창조자가 되어 날마다 그의 기뻐하신 바가 되었으며 항상 그 앞에서 즐거워하였으며 <span class="bible-verse-num">31</span>사람이 거처할 땅에서 즐거워하며 인자들을 기뻐하였느니라`
+            },
+            'rom5': {
+                title: '로마서 5:1-5',
+                content: `<span class="bible-verse-num">1</span>그러므로 우리가 믿음으로 의롭다 하심을 받았으니 우리 주 예수 그리스도로 말미암아 하나님과 화평을 누리자 <span class="bible-verse-num">2</span>또한 그로 말미암아 우리가 믿음으로 서 있는 이 은혜에 들어감을 얻었으며 하나님의 영광을 바라고 즐거워하느니라 <span class="bible-verse-num">3</span>다만 이뿐 아니라 우리가 환난 중에도 즐거워하나니 이는 환난은 인내를, <span class="bible-verse-num">4</span>인내는 연단을, 연단은 소망을 이루는 줄 앎이로다 <span class="bible-verse-num">5</span>소망이 우리를 부끄럽게 하지 아니함은 우리에게 주신 성령으로 말미암아 하나님의 사랑이 우리 마음에 부은 바 됨이니`
+            },
+            'john16': {
+                title: '요한복음 16:12-15',
+                content: `<span class="bible-verse-num">12</span>내가 아직도 너희에게 이를 것이 많으나 지금은 너희가 감당하지 못하리라 <span class="bible-verse-num">13</span>그러나 진리의 성령이 오시면 그가 너희를 모든 진리 가운데로 인도하시리니 그가 스스로 말하지 않고 오직 들은 것을 말하며 장래 일을 너희에게 알리시리라 <span class="bible-verse-num">14</span>그가 내 영광을 나타내리니 내 것을 가지고 너희에게 알리시겠음이라 <span class="bible-verse-num">15</span>무릇 아버지께 있는 것은 다 내 것이라 그러므로 내가 말하기를 그가 내 것을 가지고 너희에게 알리시리라 하였노라`
+            }
+        };
+
+        // Show Bible Modal
+        function showBible(key) {
+            const verse = bibleVerses[key];
+            if (verse) {
+                document.getElementById('modalTitle').textContent = verse.title;
+                document.getElementById('bibleContent').innerHTML = verse.content;
+                document.getElementById('bibleModal').classList.add('active');
+            }
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('bibleModal').classList.remove('active');
+        }
+
+        // Share Function
+        function shareJubo() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '혈동교회 주보 | 2025년 6월 15일',
+                    text: '삼위일체주일 주보입니다.',
+                    url: window.location.href
+                });
+            } else {
+                alert('링크가 복사되었습니다!');
+            }
+        }
+    </script>
+</body>
+</html>

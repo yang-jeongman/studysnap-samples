@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🛍️ 면세점/쇼핑 외국어 학습기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #9c27b0 0%, #6a1b9a 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            padding: 15px;
+            background: #f3e5f5;
+            border-bottom: 1px solid #e1bee7;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e1bee7;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #9c27b0, #7b1fa2);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #7b1fa2;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .day-selector {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px;
+            gap: 8px;
+            background: #fff;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .day-btn {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #e1bee7;
+            background: white;
+            color: #7b1fa2;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .day-btn.active {
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+            color: white;
+            border-color: #9c27b0;
+            transform: scale(1.1);
+        }
+
+        .day-btn.completed {
+            background: #81c784;
+            color: white;
+            border-color: #81c784;
+        }
+
+        .day-btn.locked {
+            background: #f5f5f5;
+            color: #bdbdbd;
+            border-color: #e0e0e0;
+        }
+
+        .content-area {
+            padding: 15px;
+        }
+
+        .day-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .day-title h2 {
+            color: #7b1fa2;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .day-title .situation {
+            display: inline-block;
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .phrase-card {
+            background: linear-gradient(145deg, #ffffff, #f3e5f5);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.15);
+            border: 1px solid #e1bee7;
+        }
+
+        .korean-phrase {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #e1bee7;
+        }
+
+        .language-section {
+            margin-bottom: 18px;
+        }
+
+        .lang-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .lang-flag {
+            font-size: 1.3rem;
+        }
+
+        .lang-name {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .foreign-text {
+            font-size: 1.15rem;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .pronunciation {
+            color: #7b1fa2;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            background: #f3e5f5;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .speak-btn {
+            background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .speak-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+        }
+
+        .speak-btn:active {
+            transform: scale(0.95);
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-top: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .tip-icon {
+            font-size: 1.2rem;
+        }
+
+        .tip-text {
+            color: #4a148c;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .speed-control {
+            padding: 15px;
+            background: #f3e5f5;
+            border-top: 1px solid #e1bee7;
+        }
+
+        .speed-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #7b1fa2;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .speed-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e1bee7;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(156, 39, 176, 0.4);
+        }
+
+        .complete-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #81c784, #66bb6a);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(129, 199, 132, 0.5);
+        }
+
+        .complete-btn:disabled {
+            background: #bdbdbd;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .review-section {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .review-title {
+            font-size: 1.5rem;
+            color: #7b1fa2;
+            margin-bottom: 20px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .review-card {
+            background: #f3e5f5;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #e1bee7;
+        }
+
+        .review-korean {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .review-foreign {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 로그인 화면 */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .login-title {
+            color: #7b1fa2;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1bee7;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .login-input:focus {
+            border-color: #9c27b0;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+        }
+
+        .error-msg {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .expired-notice {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .company-info {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .phrase-card {
+                padding: 15px;
+            }
+
+            .korean-phrase {
+                font-size: 1.1rem;
+            }
+
+            .foreign-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 로그인 화면 -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-icon">🛍️</div>
+            <h2 class="login-title">면세점/쇼핑 외국어 학습기</h2>
+            <p class="login-subtitle">2주 완성 판매 실무 회화</p>
+            <div id="loginForm">
+                <input type="password" class="login-input" id="passwordInput" placeholder="비밀번호를 입력하세요">
+                <button class="login-btn" onclick="checkPassword()">시작하기</button>
+                <p class="error-msg" id="errorMsg">비밀번호가 올바르지 않습니다</p>
+            </div>
+            <div id="expiredNotice" class="expired-notice" style="display: none;">
+                <p><strong>⚠️ 이용 기간이 만료되었습니다</strong></p>
+                <p style="margin-top: 10px;">갱신 문의: contact@thesotong.com</p>
+            </div>
+            <div class="company-info">
+                <p>© 2024 더소통</p>
+                <p>문의: contact@thesotong.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="header">
+            <h1>🛍️ 면세점/쇼핑 외국어 학습기</h1>
+            <p>2주 완성 판매 실무 회화</p>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <p class="progress-text" id="progressText">0 / 14일 완료</p>
+        </div>
+
+        <div class="day-selector" id="daySelector"></div>
+
+        <div class="content-area" id="contentArea"></div>
+
+        <div class="speed-control">
+            <div class="speed-label">
+                <span>🔊 발음 속도</span>
+                <span id="speedValue">1.0x</span>
+            </div>
+            <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="1.2" step="0.1" value="1.0">
+        </div>
+    </div>
+
+    <script>
+        // 라이선스 설정
+        const LICENSE_CONFIG = {
+            password: 'shopping2024',
+            expiryDate: '2026-11-30',
+            company: '더소통',
+            contact: 'contact@thesotong.com'
+        };
+
+        // 학습 데이터 - 면세점/쇼핑 실무 회화
+        const lessonData = [
+            {
+                day: 1,
+                situation: "고객 맞이",
+                phrases: [
+                    {
+                        korean: "어서오세요, 둘러보세요",
+                        english: "Welcome, please look around",
+                        englishPron: "웰컴, 플리즈 룩 어라운드",
+                        japanese: "いらっしゃいませ、ごゆっくりどうぞ",
+                        japanesePron: "이랏샤이마세, 고윳쿠리 도조",
+                        chinese: "欢迎光临，请随便看看",
+                        chinesePron: "환잉 광린, 칭 수이비엔 칸칸",
+                        tip: "'look around'는 둘러보다라는 뜻이에요"
+                    },
+                    {
+                        korean: "도움이 필요하시면 말씀해주세요",
+                        english: "Let me know if you need any help",
+                        englishPron: "렛 미 노 이프 유 니드 애니 헬프",
+                        japanese: "何かありましたらお声がけください",
+                        japanesePron: "나니카 아리마시타라 오코에가케 쿠다사이",
+                        chinese: "如需帮助请告诉我",
+                        chinesePron: "루쉬 방주 칭 가오수 워",
+                        tip: "'Let me know'는 알려주세요라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 2,
+                situation: "상품 안내",
+                phrases: [
+                    {
+                        korean: "찾으시는 상품이 있으세요?",
+                        english: "Are you looking for something?",
+                        englishPron: "아 유 루킹 포 썸띵?",
+                        japanese: "何かお探しですか?",
+                        japanesePron: "나니카 오사가시 데스카?",
+                        chinese: "您在找什么吗?",
+                        chinesePron: "닌 짜이 자오 션머 마?",
+                        tip: "'looking for'는 찾고 있다라는 뜻이에요"
+                    },
+                    {
+                        korean: "이건 신상품입니다",
+                        english: "This is a new product",
+                        englishPron: "디스 이즈 어 뉴 프로덕트",
+                        japanese: "これは新商品です",
+                        japanesePron: "코레와 신쇼힌 데스",
+                        chinese: "这是新品",
+                        chinesePron: "쩌스 신핀",
+                        tip: "'new product'는 신상품이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 3,
+                situation: "가격 안내",
+                phrases: [
+                    {
+                        korean: "이 제품은 ~원입니다",
+                        english: "This product is ~ won",
+                        englishPron: "디스 프로덕트 이즈 ~ 원",
+                        japanese: "この商品は~ウォンです",
+                        japanesePron: "코노 쇼힌와 ~ 원 데스",
+                        chinese: "这个产品是~韩元",
+                        chinesePron: "쩌거 찬핀 스 ~ 한위안",
+                        tip: "'product'는 제품이라는 뜻이에요"
+                    },
+                    {
+                        korean: "면세가로 더 저렴합니다",
+                        english: "It's cheaper with duty-free price",
+                        englishPron: "잇츠 치퍼 위드 듀티프리 프라이스",
+                        japanese: "免税価格でもっとお得です",
+                        japanesePron: "멘제이 카카쿠데 못토 오토쿠 데스",
+                        chinese: "免税价更便宜",
+                        chinesePron: "미엔슈이지아 겅 피엔이",
+                        tip: "'duty-free'는 면세라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 4,
+                situation: "할인/프로모션",
+                phrases: [
+                    {
+                        korean: "지금 세일 중입니다",
+                        english: "It's on sale now",
+                        englishPron: "잇츠 온 세일 나우",
+                        japanese: "今セール中です",
+                        japanesePron: "이마 세루츄 데스",
+                        chinese: "现在正在打折",
+                        chinesePron: "시엔짜이 정짜이 다저",
+                        tip: "'on sale'은 세일 중이라는 뜻이에요"
+                    },
+                    {
+                        korean: "2개 사시면 10% 할인됩니다",
+                        english: "Buy 2 and get 10% off",
+                        englishPron: "바이 투 앤 겟 텐 퍼센트 오프",
+                        japanese: "2点で10%オフになります",
+                        japanesePron: "니텐데 쥬퍼센토 오프니 나리마스",
+                        chinese: "买两件享受九折",
+                        chinesePron: "마이 량지엔 샹셔우 지우저",
+                        tip: "'get ~ off'는 ~% 할인받다라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 5,
+                situation: "사이즈/색상",
+                phrases: [
+                    {
+                        korean: "어떤 사이즈를 찾으세요?",
+                        english: "What size are you looking for?",
+                        englishPron: "왓 사이즈 아 유 루킹 포?",
+                        japanese: "どのサイズをお探しですか?",
+                        japanesePron: "도노 사이즈오 오사가시 데스카?",
+                        chinese: "您要什么尺寸?",
+                        chinesePron: "닌 야오 션머 츠춘?",
+                        tip: "'size'는 크기, 사이즈라는 뜻이에요"
+                    },
+                    {
+                        korean: "다른 색상도 있어요",
+                        english: "We have other colors too",
+                        englishPron: "위 해브 아더 컬러스 투",
+                        japanese: "他の色もあります",
+                        japanesePron: "호카노 이로모 아리마스",
+                        chinese: "还有其他颜色",
+                        chinesePron: "하이요우 치타 옌써",
+                        tip: "'color'는 색상이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 6,
+                situation: "시착/테스트",
+                phrases: [
+                    {
+                        korean: "입어보시겠어요?",
+                        english: "Would you like to try it on?",
+                        englishPron: "우쥬 라이크 투 트라이 잇 온?",
+                        japanese: "試着されますか?",
+                        japanesePron: "시차쿠 사레마스카?",
+                        chinese: "要试穿吗?",
+                        chinesePron: "야오 스추안 마?",
+                        tip: "'try on'은 입어보다라는 뜻이에요"
+                    },
+                    {
+                        korean: "테스터로 사용해보세요",
+                        english: "Please try the tester",
+                        englishPron: "플리즈 트라이 더 테스터",
+                        japanese: "テスターをお試しください",
+                        japanesePron: "테스타오 오타메시 쿠다사이",
+                        chinese: "请试用一下试用品",
+                        chinesePron: "칭 스용 이샤 스용핀",
+                        tip: "'tester'는 시험용 제품이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 7,
+                situation: "인기 상품 추천",
+                phrases: [
+                    {
+                        korean: "이게 가장 인기있어요",
+                        english: "This is our best seller",
+                        englishPron: "디스 이즈 아워 베스트 셀러",
+                        japanese: "これが一番人気です",
+                        japanesePron: "코레가 이치반 닌키 데스",
+                        chinese: "这是最畅销的",
+                        chinesePron: "쩌스 쭈이 창샤오더",
+                        tip: "'best seller'는 가장 잘 팔리는 것이에요"
+                    },
+                    {
+                        korean: "한국에서만 살 수 있어요",
+                        english: "You can only buy this in Korea",
+                        englishPron: "유 캔 온리 바이 디스 인 코리아",
+                        japanese: "韓国だけで買えます",
+                        japanesePron: "칸코쿠 다케데 카에마스",
+                        chinese: "只有在韩国能买到",
+                        chinesePron: "즈요우 짜이 한궈 넝 마이다오",
+                        tip: "'only'는 오직, ~만이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 8,
+                situation: "결제",
+                phrases: [
+                    {
+                        korean: "여권을 보여주세요",
+                        english: "May I see your passport?",
+                        englishPron: "메이 아이 시 유어 패스포트?",
+                        japanese: "パスポートを見せてください",
+                        japanesePron: "파스포토오 미세테 쿠다사이",
+                        chinese: "请出示护照",
+                        chinesePron: "칭 추스 후자오",
+                        tip: "'passport'는 여권이라는 뜻이에요"
+                    },
+                    {
+                        korean: "카드로 하시겠어요?",
+                        english: "Would you like to pay by card?",
+                        englishPron: "우쥬 라이크 투 페이 바이 카드?",
+                        japanese: "カードでお支払いですか?",
+                        japanesePron: "카도데 오시하라이 데스카?",
+                        chinese: "要刷卡吗?",
+                        chinesePron: "야오 슈아카 마?",
+                        tip: "'pay by card'는 카드 결제라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 9,
+                situation: "포장 및 면세 안내",
+                phrases: [
+                    {
+                        korean: "선물 포장해 드릴까요?",
+                        english: "Would you like gift wrapping?",
+                        englishPron: "우쥬 라이크 기프트 래핑?",
+                        japanese: "プレゼント包装しますか?",
+                        japanesePron: "프레젠토 호소 시마스카?",
+                        chinese: "需要礼品包装吗?",
+                        chinesePron: "쉬야오 리핀 바오좡 마?",
+                        tip: "'gift wrapping'은 선물 포장이에요"
+                    },
+                    {
+                        korean: "출국장에서 받으세요",
+                        english: "Please pick it up at the departure gate",
+                        englishPron: "플리즈 픽 잇 업 앳 더 디파처 게이트",
+                        japanese: "出国ゲートでお受け取りください",
+                        japanesePron: "슛코쿠 게이토데 오우케토리 쿠다사이",
+                        chinese: "请在出境处领取",
+                        chinesePron: "칭 짜이 추징추 링취",
+                        tip: "'departure gate'는 출국장이라는 뜻이에요"
+                    }
+                ]
+            },
+            {
+                day: 10,
+                situation: "배웅",
+                phrases: [
+                    {
+                        korean: "좋은 여행 되세요",
+                        english: "Have a nice trip",
+                        englishPron: "해브 어 나이스 트립",
+                        japanese: "良いご旅行を",
+                        japanesePron: "요이 고료코오",
+                        chinese: "祝您旅途愉快",
+                        chinesePron: "주 닌 뤼투 위콰이",
+                        tip: "'Have a nice ~'는 좋은 ~되세요라는 뜻이에요"
+                    },
+                    {
+                        korean: "다음에 또 오세요",
+                        english: "Please come again",
+                        englishPron: "플리즈 컴 어겐",
+                        japanese: "またお越しください",
+                        japanesePron: "마타 오코시 쿠다사이",
+                        chinese: "欢迎再次光临",
+                        chinesePron: "환잉 짜이츠 광린",
+                        tip: "'come again'은 또 오세요라는 뜻이에요"
+                    }
+                ]
+            },
+            { day: 11, situation: "1-5일차 복습", review: true, reviewDays: [1, 2, 3, 4, 5] },
+            { day: 12, situation: "6-10일차 복습", review: true, reviewDays: [6, 7, 8, 9, 10] },
+            { day: 13, situation: "영어 집중 복습", review: true, reviewLang: "english" },
+            { day: 14, situation: "일본어/중국어 집중 복습", review: true, reviewLang: "asian" }
+        ];
+
+        let currentDay = 1;
+        let completedDays = [];
+        let speechRate = 1.0;
+
+        // 라이선스 체크
+        function checkLicense() {
+            const today = new Date();
+            const expiry = new Date(LICENSE_CONFIG.expiryDate);
+
+            if (today > expiry) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('expiredNotice').style.display = 'block';
+                return false;
+            }
+            return true;
+        }
+
+        // 비밀번호 확인
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+
+            if (!checkLicense()) {
+                return;
+            }
+
+            if (input === LICENSE_CONFIG.password) {
+                sessionStorage.setItem('shopping_authenticated', 'true');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                initApp();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        // 엔터키 지원
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // 세션 체크
+        function checkSession() {
+            if (sessionStorage.getItem('shopping_authenticated') === 'true') {
+                if (checkLicense()) {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    initApp();
+                }
+            }
+        }
+
+        // 앱 초기화
+        function initApp() {
+            loadProgress();
+            renderDaySelector();
+            renderContent();
+            updateProgress();
+
+            document.getElementById('speedSlider').addEventListener('input', function() {
+                speechRate = parseFloat(this.value);
+                document.getElementById('speedValue').textContent = speechRate.toFixed(1) + 'x';
+            });
+        }
+
+        // 진행상황 로드
+        function loadProgress() {
+            const saved = localStorage.getItem('shopping_progress');
+            if (saved) {
+                completedDays = JSON.parse(saved);
+            }
+        }
+
+        // 진행상황 저장
+        function saveProgress() {
+            localStorage.setItem('shopping_progress', JSON.stringify(completedDays));
+        }
+
+        // 일차 선택 버튼 렌더링
+        function renderDaySelector() {
+            const container = document.getElementById('daySelector');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= 14; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'day-btn';
+                btn.textContent = i + '일';
+
+                if (i === currentDay) {
+                    btn.classList.add('active');
+                }
+                if (completedDays.includes(i)) {
+                    btn.classList.add('completed');
+                }
+
+                btn.addEventListener('click', () => {
+                    currentDay = i;
+                    renderDaySelector();
+                    renderContent();
+                });
+
+                container.appendChild(btn);
+            }
+        }
+
+        // 콘텐츠 렌더링
+        function renderContent() {
+            const container = document.getElementById('contentArea');
+            const dayData = lessonData.find(d => d.day === currentDay);
+
+            if (!dayData) return;
+
+            if (dayData.review) {
+                renderReviewContent(container, dayData);
+            } else {
+                renderLessonContent(container, dayData);
+            }
+        }
+
+        // 학습 콘텐츠 렌더링
+        function renderLessonContent(container, dayData) {
+            let html = `
+                <div class="day-title">
+                    <h2>Day ${dayData.day}</h2>
+                    <span class="situation">${dayData.situation}</span>
+                </div>
+            `;
+
+            dayData.phrases.forEach((phrase, index) => {
+                html += `
+                    <div class="phrase-card">
+                        <div class="korean-phrase">${phrase.korean}</div>
+
+                        <div class="language-section">
+                            <div class="lang-header">
+                                <span class="lang-flag">🇺🇸</span>
+                                <span class="lang-name">English</span>
+                            </div>
+                            <div class="foreign-text">${phrase.english}</div>
+                            <div class="pronunciation">${phrase.englishPron}</div>
+                            <button class="speak-btn" onclick="speak('${phrase.english}', 'en-US')">
+                                🔊 발음 듣기
+                            </button>
+                        </div>
+
+                        <div class="language-section">
+                            <div class="lang-header">
+                                <span class="lang-flag">🇯🇵</span>
+                                <span class="lang-name">日本語</span>
+                            </div>
+                            <div class="foreign-text">${phrase.japanese}</div>
+                            <div class="pronunciation">${phrase.japanesePron}</div>
+                            <button class="speak-btn" onclick="speak('${phrase.japanese}', 'ja-JP')">
+                                🔊 발음 듣기
+                            </button>
+                        </div>
+
+                        <div class="language-section">
+                            <div class="lang-header">
+                                <span class="lang-flag">🇨🇳</span>
+                                <span class="lang-name">中文</span>
+                            </div>
+                            <div class="foreign-text">${phrase.chinese}</div>
+                            <div class="pronunciation">${phrase.chinesePron}</div>
+                            <button class="speak-btn" onclick="speak('${phrase.chinese}', 'zh-CN')">
+                                🔊 발음 듣기
+                            </button>
+                        </div>
+
+                        <div class="tip-box">
+                            <span class="tip-icon">💡</span>
+                            <span class="tip-text">${phrase.tip}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <button class="complete-btn" onclick="completeDay(${dayData.day})"
+                    ${completedDays.includes(dayData.day) ? 'disabled' : ''}>
+                    ${completedDays.includes(dayData.day) ? '✅ 학습 완료!' : '✓ 오늘 학습 완료하기'}
+                </button>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // 복습 콘텐츠 렌더링
+        function renderReviewContent(container, dayData) {
+            let html = `
+                <div class="review-section">
+                    <h2 class="review-title">📚 ${dayData.situation}</h2>
+                    <div class="review-grid">
+            `;
+
+            if (dayData.reviewDays) {
+                dayData.reviewDays.forEach(day => {
+                    const lesson = lessonData.find(d => d.day === day);
+                    if (lesson && lesson.phrases) {
+                        lesson.phrases.forEach(phrase => {
+                            html += `
+                                <div class="review-card">
+                                    <div class="review-korean">${phrase.korean}</div>
+                                    <div class="review-foreign">
+                                        🇺🇸 ${phrase.english}<br>
+                                        🇯🇵 ${phrase.japanese}<br>
+                                        🇨🇳 ${phrase.chinese}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                });
+            } else if (dayData.reviewLang === 'english') {
+                lessonData.filter(d => d.phrases).forEach(lesson => {
+                    lesson.phrases.forEach(phrase => {
+                        html += `
+                            <div class="review-card">
+                                <div class="review-korean">${phrase.korean}</div>
+                                <div class="review-foreign">
+                                    🇺🇸 ${phrase.english}<br>
+                                    <span style="color: #7b1fa2;">${phrase.englishPron}</span>
+                                </div>
+                                <button class="speak-btn" style="margin-top: 10px;" onclick="speak('${phrase.english}', 'en-US')">
+                                    🔊 듣기
+                                </button>
+                            </div>
+                        `;
+                    });
+                });
+            } else if (dayData.reviewLang === 'asian') {
+                lessonData.filter(d => d.phrases).forEach(lesson => {
+                    lesson.phrases.forEach(phrase => {
+                        html += `
+                            <div class="review-card">
+                                <div class="review-korean">${phrase.korean}</div>
+                                <div class="review-foreign">
+                                    🇯🇵 ${phrase.japanese} (${phrase.japanesePron})<br>
+                                    🇨🇳 ${phrase.chinese} (${phrase.chinesePron})
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+            }
+
+            html += `
+                    </div>
+                    <button class="complete-btn" onclick="completeDay(${dayData.day})"
+                        ${completedDays.includes(dayData.day) ? 'disabled' : ''}>
+                        ${completedDays.includes(dayData.day) ? '✅ 복습 완료!' : '✓ 복습 완료하기'}
+                    </button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // TTS 발음
+        function speak(text, lang) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = speechRate;
+                utterance.pitch = 1;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('이 브라우저는 음성 기능을 지원하지 않습니다.');
+            }
+        }
+
+        // 일차 완료
+        function completeDay(day) {
+            if (!completedDays.includes(day)) {
+                completedDays.push(day);
+                saveProgress();
+                renderDaySelector();
+                renderContent();
+                updateProgress();
+            }
+        }
+
+        // 진행률 업데이트
+        function updateProgress() {
+            const percent = (completedDays.length / 14) * 100;
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = completedDays.length + ' / 14일 완료';
+        }
+
+        // 페이지 로드시 세션 체크
+        checkSession();
+    </script>
+</body>
+</html>

@@ -398,6 +398,117 @@ async def create_fgfc_trial():
         }, status_code=500)
 
 
+# ========== 캐시 관리 API ==========
+
+@app.post("/api/cache/clear")
+async def clear_all_cache():
+    """
+    모든 캐시 및 임시 파일 삭제
+    - 업로드된 PDF 파일
+    - OCR 캐시
+    - 세션 데이터
+    """
+    import shutil
+    import glob
+
+    deleted_files = []
+    errors = []
+
+    try:
+        # 1. 업로드 폴더 정리
+        upload_patterns = [
+            str(UPLOAD_DIR / "*.pdf"),
+            str(UPLOAD_DIR / "*.jpg"),
+            str(UPLOAD_DIR / "*.png"),
+        ]
+        for pattern in upload_patterns:
+            for file_path in glob.glob(pattern):
+                try:
+                    os.remove(file_path)
+                    deleted_files.append(file_path)
+                except Exception as e:
+                    errors.append(f"{file_path}: {str(e)}")
+
+        # 2. 임시 폴더 정리
+        temp_patterns = [
+            str(BASE_DIR / "temp" / "*"),
+            str(BASE_DIR / "tmp" / "*"),
+        ]
+        for pattern in temp_patterns:
+            for file_path in glob.glob(pattern):
+                try:
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)
+                    elif os.path.isdir(file_path):
+                        shutil.rmtree(file_path)
+                    deleted_files.append(file_path)
+                except Exception as e:
+                    errors.append(f"{file_path}: {str(e)}")
+
+        # 3. VisionOCR 캐시 초기화 (메모리)
+        global vision_ocr_cache
+        vision_ocr_cache = {}
+
+        logger.info(f"캐시 삭제 완료: {len(deleted_files)}개 파일")
+
+        return JSONResponse({
+            "success": True,
+            "message": f"캐시가 완전히 삭제되었습니다. ({len(deleted_files)}개 파일)",
+            "deleted_count": len(deleted_files),
+            "errors": errors if errors else None
+        })
+
+    except Exception as e:
+        logger.error(f"캐시 삭제 실패: {e}")
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        }, status_code=500)
+
+
+@app.post("/api/cache/clear-church/{church_name}")
+async def clear_church_cache(church_name: str):
+    """특정 교회의 캐시만 삭제"""
+    import glob
+
+    deleted_files = []
+
+    try:
+        # 교회 폴더의 임시 파일만 삭제 (HTML 결과물은 유지)
+        church_folder = OUTPUT_DIR / "Church" / church_name
+
+        if church_folder.exists():
+            # 임시 파일 패턴만 삭제
+            temp_patterns = [
+                str(church_folder / "*.tmp"),
+                str(church_folder / "*.bak"),
+                str(church_folder / "*_temp.*"),
+            ]
+            for pattern in temp_patterns:
+                for file_path in glob.glob(pattern):
+                    os.remove(file_path)
+                    deleted_files.append(file_path)
+
+        logger.info(f"{church_name} 캐시 삭제: {len(deleted_files)}개")
+
+        return JSONResponse({
+            "success": True,
+            "message": f"{church_name} 캐시가 삭제되었습니다.",
+            "deleted_count": len(deleted_files)
+        })
+
+    except Exception as e:
+        logger.error(f"교회 캐시 삭제 실패: {e}")
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        }, status_code=500)
+
+
+# VisionOCR 캐시 (메모리)
+vision_ocr_cache = {}
+
+
 @app.get("/api/license/list")
 async def list_all_licenses():
     """모든 라이선스 목록 조회 (관리자용)"""
@@ -456,29 +567,32 @@ def check_license_and_record_usage(license_key: str, action: str = "convert") ->
     Returns:
         {"valid": bool, "message": str, "remaining": int}
     """
-    if not license_key:
-        # 라이선스 키 없이 요청 시 (개발 모드 또는 데모)
-        return {"valid": True, "message": "데모 모드", "remaining": -1}
+    # 개발 모드: 항상 통과
+    return {"valid": True, "message": "개발 모드 - 무제한", "remaining": 9999}
 
-    manager = get_license_manager()
-
-    # 라이선스 검증
-    validation = manager.validate_license(license_key)
-    if not validation["valid"]:
-        return {
-            "valid": False,
-            "message": validation["message"],
-            "remaining": 0
-        }
-
-    # 사용량 기록
-    usage_result = manager.record_usage(license_key, action)
-
-    return {
-        "valid": usage_result["success"],
-        "message": usage_result["message"],
-        "remaining": usage_result["daily_remaining"]
-    }
+    # if not license_key:
+    #     # 라이선스 키 없이 요청 시 (개발 모드 또는 데모)
+    #     return {"valid": True, "message": "데모 모드", "remaining": -1}
+    #
+    # manager = get_license_manager()
+    #
+    # # 라이선스 검증
+    # validation = manager.validate_license(license_key)
+    # if not validation["valid"]:
+    #     return {
+    #         "valid": False,
+    #         "message": validation["message"],
+    #         "remaining": 0
+    #     }
+    #
+    # # 사용량 기록
+    # usage_result = manager.record_usage(license_key, action)
+    #
+    # return {
+    #     "valid": usage_result["success"],
+    #     "message": usage_result["message"],
+    #     "remaining": usage_result["daily_remaining"]
+    # }
 
 
 # ============================================
@@ -4324,13 +4438,13 @@ async def convert_church_bulletin_ai(
     if not file.filename.lower().endswith('.pdf'):
         raise HTTPException(status_code=400, detail="PDF 파일만 지원됩니다")
 
-    # 라이선스 검증 (선택적)
-    license_check = check_license_and_record_usage(license_key, "church_convert")
-    if license_key and not license_check["valid"]:
-        raise HTTPException(
-            status_code=403,
-            detail=f"라이선스 오류: {license_check['message']}"
-        )
+    # 라이선스 검증 비활성화 (개발 모드)
+    # license_check = check_license_and_record_usage(license_key, "church_convert")
+    # if license_key and not license_check["valid"]:
+    #     raise HTTPException(
+    #         status_code=403,
+    #         detail=f"라이선스 오류: {license_check['message']}"
+    #     )
 
     try:
         # Vision OCR 초기화
@@ -4458,13 +4572,11 @@ async def convert_church_bulletin_ai(
         encoded_church_name = quote(church_name, safe='')
         encoded_url = f"/outputs/Church/{encoded_church_name}/{output_filename}"
 
-        # 라이선스 정보 추가
-        license_info = {}
-        if license_key:
-            license_info = {
-                "daily_remaining": license_check.get("remaining", 0),
-                "message": license_check.get("message", "")
-            }
+        # 라이선스 정보 추가 (개발 모드: 무제한)
+        license_info = {
+            "daily_remaining": 9999,
+            "message": "개발 모드 - 무제한"
+        }
 
         return JSONResponse({
             "success": True,
@@ -6807,6 +6919,105 @@ async def get_services():
             "success": False,
             "error": str(e)
         })
+
+
+# ========== FGFC 전용 검증 API ==========
+
+@app.post("/api/fgfc/verify")
+async def verify_fgfc_bulletin(
+    ocr_data: dict = None,
+    html_content: str = Form(None),
+    html_path: str = Form(None)
+):
+    """
+    여의도순복음교회 전용 주보 검증 API
+
+    - OCR 추출 데이터 검증
+    - HTML 출력물과 원본 비교
+    - 자동 교정 제안
+    """
+    try:
+        from church_bulletin_verifier import verify_bulletin, get_bulletin_verifier
+
+        # HTML 파일에서 읽기 (경로 제공 시)
+        html_text = html_content
+        if html_path and not html_content:
+            full_path = OUTPUT_DIR / html_path.lstrip("/outputs/")
+            if full_path.exists():
+                with open(full_path, 'r', encoding='utf-8') as f:
+                    html_text = f.read()
+
+        # 검증 실행
+        result = verify_bulletin(ocr_data or {}, html_text)
+
+        return JSONResponse({
+            "success": True,
+            **result
+        })
+
+    except Exception as e:
+        logger.error(f"FGFC 검증 실패: {str(e)}")
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        }, status_code=500)
+
+
+@app.get("/api/fgfc/template")
+async def get_fgfc_template():
+    """여의도순복음교회 전용 템플릿 조회"""
+    try:
+        template_path = Path(__file__).parent / "learning_data/church_bulletin/fgfc_template.json"
+
+        if template_path.exists():
+            with open(template_path, 'r', encoding='utf-8') as f:
+                template = json.load(f)
+            return JSONResponse({
+                "success": True,
+                "template": template
+            })
+        else:
+            return JSONResponse({
+                "success": False,
+                "error": "템플릿 파일을 찾을 수 없습니다"
+            }, status_code=404)
+
+    except Exception as e:
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        }, status_code=500)
+
+
+@app.post("/api/fgfc/auto-correct")
+async def auto_correct_fgfc_data(ocr_data: dict):
+    """
+    FGFC 주보 데이터 자동 교정
+
+    - 오타 수정
+    - 형식 정규화
+    - 누락 데이터 추정
+    """
+    try:
+        from church_bulletin_verifier import get_bulletin_verifier
+
+        verifier = get_bulletin_verifier()
+        corrected_data, corrections = verifier.auto_correct(ocr_data)
+
+        return JSONResponse({
+            "success": True,
+            "original": ocr_data,
+            "corrected": corrected_data,
+            "corrections": corrections,
+            "correction_count": len(corrections)
+        })
+
+    except Exception as e:
+        logger.error(f"자동 교정 실패: {str(e)}")
+        return JSONResponse({
+            "success": False,
+            "error": str(e)
+        }, status_code=500)
 
 
 # 서버 실행 (개발용)
