@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="김병욱 - 국회의원 후보 성남시 분당구을">
+    <title>김병욱 - 국회의원 후보</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --party-color: #004EA2;
+            --party-color-light: #DBEAFE;
+            --party-color-dark: #1E3A8A;
+            --party-gradient: linear-gradient(135deg, #004EA2 0%, #1E3A8A 100%);
+            --party-accent: #3B82F6;
+            --text-on-primary: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Fixed Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar .candidate-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .nav-bar .party-badge {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 60px;
+            background: var(--party-gradient);
+            color: var(--text-on-primary);
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-number {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 1.5em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-slogan {
+            font-size: 1.8em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-name {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin: 15px 0;
+        }
+
+        .hero-position {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* Vision Section */
+        .vision-section {
+            background: white;
+            margin: 0;
+            padding: 25px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .vision-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--party-color);
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--party-color-light);
+            border-radius: 10px;
+        }
+
+        /* Quick Highlights */
+        .quick-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 25px 20px;
+            background: white;
+        }
+
+        .highlight-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: var(--party-color-light);
+            border: 2px solid var(--party-color);
+            gap: 15px;
+        }
+
+        .highlight-card .icon {
+            font-size: 2em;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .highlight-card .content {
+            flex: 1;
+        }
+
+        .highlight-card .number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .highlight-card .label {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Section Container */
+        .section {
+            background: white;
+            margin: 15px 0;
+            padding: 25px 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--party-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--party-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+
+        /* Promise Cards */
+        .promise-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .promise-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .promise-card.expanded {
+            border-color: var(--party-color);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .promise-header {
+            padding: 20px;
+            background: var(--party-color-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .promise-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--party-color);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .promise-header-text {
+            flex: 1;
+        }
+
+        .promise-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .promise-subtitle {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .promise-details {
+            padding: 20px;
+            display: none;
+            background: #f8f9fa;
+        }
+
+        .promise-card.expanded .promise-details {
+            display: block;
+        }
+
+        .promise-details ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .promise-details li {
+            padding: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .promise-details li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--party-color);
+            font-weight: bold;
+        }
+
+        .promise-details li:last-child {
+            border-bottom: none;
+        }
+
+        .expand-btn {
+            text-align: center;
+            color: var(--party-color);
+            font-weight: 600;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .expand-btn::after {
+            content: ' ▼';
+        }
+
+        .promise-card.expanded .expand-btn::after {
+            content: ' ▲';
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--party-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background: var(--party-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--party-color);
+        }
+
+        .timeline-year {
+            font-size: 0.85em;
+            color: var(--party-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Contact Section */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .contact-link.phone {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+        }
+
+        .contact-link.youtube {
+            background: #FF0000;
+            color: white;
+        }
+
+        .contact-link.facebook {
+            background: #1877F2;
+            color: white;
+        }
+
+        .contact-link.blog {
+            background: #03C75A;
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.75em;
+            padding: 5px 15px;
+            transition: all 0.3s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--party-color);
+        }
+
+        .bottom-nav .nav-icon {
+            font-size: 1.5em;
+            margin-bottom: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .footer a {
+            color: var(--party-color);
+            text-decoration: none;
+        }
+
+        /* Auto Badge */
+        .auto-badge {
+            position: fixed;
+            top: 70px;
+            right: 10px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7em;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .gallery-item {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow: hidden;
+        }
+
+        .modal-controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+            z-index: 2001;
+        }
+
+        .modal-title {
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .modal-btn.close {
+            background: #e74c3c;
+        }
+
+        .modal-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 70px 20px;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--party-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .info-box h4 {
+            color: var(--party-color);
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        /* Category Badge */
+        .category-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .badge-blue {
+            background: #DBEAFE;
+            color: #1E3A8A;
+        }
+
+        .badge-green {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge-purple {
+            background: #E9D5FF;
+            color: #6B21A8;
+        }
+
+        .badge-orange {
+            background: #FED7AA;
+            color: #9A3412;
+        }
+    </style>
+</head>
+<body>
+    <!-- Auto Generation Badge -->
+    <div class="auto-badge">AUTO</div>
+
+    <!-- Fixed Top Navigation -->
+    <nav class="nav-bar">
+        <span class="candidate-name">김병욱</span>
+        <span class="party-badge">더불어민주당</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <div class="hero-number">기호 1번</div>
+            <h1 class="hero-name">김병욱</h1>
+            <p class="hero-slogan">말꾼이 아닌 진짜일꾼!</p>
+            <p class="hero-position">3선 국토교통위원장으로</p>
+        </div>
+    </section>
+
+    <!-- Main Image -->
+    <div style="background:white;padding:15px;margin:0 0 15px 0;text-align:center;">
+        <img src="./images/page1.jpg" alt="김병욱 후보" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openModal(this.src)">
+    </div>
+
+    <!-- Vision Section -->
+    <section class="vision-section" id="vision">
+        <div class="vision-title">"분당을 딛으로 직시겠습니다"</div>
+        <div style="background:#f8f9fa;padding:20px;border-radius:10px;line-height:1.8;">
+            <p style="margin-bottom:15px;">사랑하는 분당구민 여러분,</p>
+            <p style="margin-bottom:15px;">많은 사람들이 대한민국의 민주적 기본 질서가 무너져 내려 가고 있는 모습에 대해 격정을 하고 있습니다. 이제 대한민국을 바로 세워야 합니다.</p>
+            <p style="margin-bottom:15px;">분당 신도시가 지어진 지 30년이 되었습니다. 많이 노후화되었습니다.</p>
+            <p style="margin-bottom:15px;">제가 이번에 '신도시 재건축 특별법'을 통과시켰듯이, 분당을 최첨단 미래도시로 만들어야합니다.</p>
+            <p style="margin-bottom:15px;">분당구민 여러분의 슬기와 지혜가 필요합니다. 여러분과 함께 가슴을 열고 머리를 맞대며 뜀뿍뜀뿍 걸어가겠습니다.</p>
+            <p style="margin-bottom:15px;">대한민국을 바로 세우고, 분당을 미래도시에 맞게끔 '리빌딩'하기 위해서 저 김병욱이 굵은 각오와 다짐을 하고 있습니다!</p>
+            <p style="font-weight:bold;color:var(--party-color);margin-top:20px;">저 김병욱이 3선 국토교통위원장이 되어 분당의 미래를 새롭게 디자인 하겠습니다.</p>
+        </div>
+    </section>
+
+    <!-- Quick Highlights -->
+    <div class="quick-highlights">
+        <div class="highlight-card">
+            <span class="icon">🏆</span>
+            <div class="content">
+                <span class="number">정책전문가</span>
+                <div class="label">8년 연속 더불어민주당 국정감사 우수의원상</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">📋</span>
+            <div class="content">
+                <span class="number">221개</span>
+                <div class="label">8년간 총 법률안 대표발의</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">🎯</span>
+            <div class="content">
+                <span class="number">68개</span>
+                <div class="label">법안 국회 본회의 통과</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why 김병욱 Section -->
+    <section class="section" id="why">
+        <h2 class="section-title"><span class="icon">💡</span> 왜, 김병욱 이어야 하는가?</h2>
+
+        <div class="info-box">
+            <h4>01. 국회를 대표하는 '정책전문가'</h4>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    8년 연속 더불어민주당 국정감사 우수의원상 수상
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    국회의장 수여 국회의정대상 수상
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    국회의장 수여 입법 및 정책개발 우수위원 2회 수상
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    국정감사 NGO 모니터단 선정 국정감사 국민불리상 3회 수상
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    PUM(Political Users Mind)선정 국회의원 평가순위 1위 기록 (2023.9)
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    8년간 총 221개 법률안 대표발의, 68개 법안 국회 본회의 통과
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    2023년 벤처인이 뽑은 최고의 국회의원 공로대상 수상
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-box" style="background:#fff3cd;border-left-color:#f59e0b;">
+            <h4 style="color:#92400e;">02. 누가 신도시 재건축 특별법을 주도해서 통과시켰습니까?</h4>
+            <p>1기 신도시 재건축 특별법(노후계획도시 정비법)을 대표 발의했고 법안 통과를 주도했습니다.</p>
+            <p>1기신도시특별법 제정은 두 대선후보의 공약이었음에도 불구하고 여야 의원의 대다수가 반대하여 국회통과가 어려운 상황에 있었습니다. 이에 저는 국회 상임위를 정무위에서 국토위로 바꾸고 지도부를 설득하여 홍익표 민주당 원내대표가 특별법 통과를 공개적으로 천명했고 소위 여야 의원을 설득하고 제가 주도해서 법안을 통과시켰습니다. 국회 본회의 법안 제안설명도 직접 했습니다.</p>
+        </div>
+
+        <div class="info-box">
+            <h4>재건축 부담금을 줄이는 '재건축 초과이익 환수법'도 지난 12월에 통과시켰습니다</h4>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    재건축 부담금 면제기준을 기존 3천만원에서 8천만원으로 올림
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    과세구간은 2천만원에서 5천만원으로 완화
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    부과 개시 시점을 '추진위 구성 승인 시점'에서 '조합설립인가 시점'으로 변경
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    1세대 1주택자 장기 보유가구는 최대 70%(20년 이상 보유)까지 면제
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Main Image 2 -->
+    <div style="background:white;padding:15px;margin:15px 0;text-align:center;">
+        <img src="./images/page2.jpg" alt="Rebuilding 분당" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openModal(this.src)">
+    </div>
+
+    <!-- 분당 23년 사랑 Section -->
+    <section class="section">
+        <h2 class="section-title"><span class="icon">❤️</span> 23년 분당 사랑, 김병욱입니다!</h2>
+
+        <div class="info-box">
+            <h4>03. 누가 분당에 초·중·고 실내체육관을 만들었습니까?</h4>
+            <p>분당의 아이들이 맘편히 친구들과 함께 뛰고, 놀 수 있도록 국비 등을 유치하여 20개의 학교(늘푸른중, 수내초, 수내중, 신기초, 당촌초, 불정초, 미금초, 정자초, 분당중, 불곡초, 백현초, 탄천초, 장안중, 구미초, 장안초, 조림초, 이우고, 함솔초, 백현초, 오리초(공사중))에 실내체육관을 만들었습니다.</p>
+        </div>
+
+        <div class="info-box">
+            <h4>04. 누가 분당에 도서관을 만들었습니까?</h4>
+            <p>주민들이 함께 독서하며 문화생활을 누릴 수 있는 도서관을 주민들과 함께 만들었습니다.</p>
+            <p>내년 봄이 되면 수내도서관이 드디어 완공되게 됩니다.</p>
+        </div>
+
+        <div class="info-box">
+            <h4>05. 누가 분당에 종합 스포츠센터를 만들었습니까?</h4>
+            <p>분당 남부권에 부족한 스포츠시설을 유치하기 위해 초선시절 국회 교육문화체육위원회 위원으로서 부지를 확보하기 위해 발로 뛰어다녔고 국비를 유치했습니다.</p>
+            <p>그 결과 배드민턴, 수영, 헬스, 농구, 탁구, 인공암벽 등을 즐길 수 있는 종합스포츠센터인 '금곡공원 국민체육센터'가 올해 초 개관하여 운영 중에 있습니다.</p>
+        </div>
+
+        <div class="info-box">
+            <h4>06. 누가 분당지역 공원을 리모델링하고 대각선(X자) 횡단보도를 만들었습니까?</h4>
+            <p>분당에는 오래된 공원이 많습니다. 주민들의 휴식공간인 공원과 어린이공원이 보다 쾌적해질 수 있도록 공원(마내, 벌말, 구미, 맹산, 태현, 정자, 오리, 마루, 장골, 중앙)과 어린이공원(구미, 하안마을, 수내, 푸른, 초림, 햇빛, 샘터, 까치마을, 느티미을, 너븐, 덕뜰, 금골, 내정, 장안, 정자, 함솔 등)이 새롭게 태어났습니다.</p>
+            <p>이와함께 아이들의 안전과 주민편의를 위해 분당경찰서와 협의하여 X자 횡단보도를 설치하고 있습니다.</p>
+        </div>
+    </section>
+
+    <!-- 김병욱의 해법 1 - 재건축 Section -->
+    <section class="section">
+        <h2 class="section-title" style="background:linear-gradient(135deg, #004EA2 0%, #1E3A8A 100%);color:white;padding:15px;border-radius:10px;border:none;">
+            <span class="icon">🏗️</span> 김병욱의 해법 1 - '말꾼'이 아닌 '진짜일꾼' 김병욱은 해답을 찾아왔습니다!
+        </h2>
+
+        <div class="info-box">
+            <h4>신속한 재건축을 위한 김병욱의 약속!</h4>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    선도지구 전국 최다 지정 및 선도지구 해마다 추가지정
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    공공기여 비율 대폭 축소로 사업성 확보
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    재건축 1+1 입주권 제도 활성화로 재건축 동의율 확보
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    신속한 이주단지 조성
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    재건축 주민 등의 전산화 도입으로 신속한 재건축 실현
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    세입자 보호대책 수립 (이주비 지원, 세입자 대상 저리 대출 지원, 우선 분양권 부여, 임대주택 입주권 부여 등)
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    재건축 지원을 위한 6천억원 규모의 '노후계획도시 특별회계 조성'
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">✓</span>
+                    재건축초과이익환수법 개정안 시행 등 개정 추진
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 김병욱의 해법 2 - 신분당선 Section -->
+    <section class="section">
+        <h2 class="section-title" style="background:linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);color:white;padding:15px;border-radius:10px;border:none;">
+            <span class="icon">🚇</span> 김병욱의 해법 2 - 신분당선 중차 및 요금 인하
+        </h2>
+
+        <div class="info-box">
+            <p><strong>신분당선은 분당 표항, 경기 남부권에서 서울로 출퇴근하는 시민 여러분의 주요 교통수단입니다.</strong></p>
+            <p>제가 2023년 국토부·경기도 국정감사에서 지적하였듯이 출퇴근시 혼잡이 극심한 신분당선의 차량을 증차하고 요금을 인하하겠습니다. 민자 사업인 신분당선에서 요금할인을 하기 위해서는 현재 진행중인 영정대 및 인천대교의 요금인하 방식인 '선투자 요금할인'을 적용하여 실현가능하도록 하겠습니다.</p>
+        </div>
+
+        <div class="info-box" style="background:#FEF3C7;border-left-color:#F59E0B;">
+            <h4 style="color:#92400E;">신분당선 판교역으로 연결하는 판교-분당동-오포 도시철도 신설</h4>
+            <h4 style="color:#92400E;margin-top:10px;">도시철도(가칭) 분당동역 신설</h4>
+            <p>저 김병욱은 국지도 57호선의 교통정체를 해결하기 위해 초선 시절부터 발로 뛰어다녔고 그 결과 성남시와 광주시가 합동으로 용역을 진행하여 판교에서 분당동을 지나 오포로 연결되는 도시철도 추진이 가능하다는 답을 받았습니다.</p>
+            <p><strong>하지만 난관에 부딪혔습니다.</strong> 당초 구상은 8호선 모란~판교 연장과 '판교-분당동-오포' 도시철도 신설을 함께 추진하는 것이었으나 8호선 모란-판교 연장 사업 B/C(경제성평가)가 기준치에 미달되어 사업 추진이 어려워졌습니다.</p>
+            <p><strong>이에 저는 결단을 내렸습니다.</strong> 우선 경제성이 높은 '판교-분당동-오포' 도시철도 신설을 8호선 연장 사업보다 먼저 추진하자고 국토부와 경기도를 설득(2023년 국정감사)한 것입니다.</p>
+            <p>이 후 경기도가 저의 제안을 받아 <strong><판교-분당동-오포 도시철도 신설>을 적극적으로 추진하고 있고 경기도 제2차 도시철도망구축계획에 반영될 수 있도록 하였습니다. 저의 결단에 따라 사업추진이 되어 국토부에 사업 승인이 나게 된다면 2029년에는 첫 삽을 뜨게 됩니다.</strong></p>
+        </div>
+    </section>
+
+    <!-- 김병욱의 해법 3 - SRT Section -->
+    <section class="section">
+        <h2 class="section-title" style="background:linear-gradient(135deg, #059669 0%, #047857 100%);color:white;padding:15px;border-radius:10px;border:none;">
+            <span class="icon">🚄</span> 김병욱의 해법 3 - SRT 오리역 신설, SRT 복복선화가 정답입니다!
+        </h2>
+
+        <div class="info-box">
+            <p>SRT 오리역사 신설을 위해 성남시에서 진행한 타당성 용역 결과 SRT 오리역사 신설은 B/C(경제성평가)값이 0.16으로 나와 사업 추진이 어려워졌습니다.</p>
+            <p><strong>이에 저 김병욱은 23년 국정감사에서 <SRT 복복선화>라는 해법을 제시했습니다.</strong></p>
+            <p>올해부터 SRT 노선에 GTX-A를 운용하게 되면서 현재 SRT 선로는 2027년에 한계(일일 185회 운행)에 도달하게 됩니다. 이에 따라 안전상의 문제가 제기될 수 있습니다.</p>
+            <p>이에 현재 1복선으로 운영되는 SRT를 복복선(2복선)으로 늘려 선로를 2개로 늘리면 새로 놓일 선로에 SRT 오리역을 신설할 수 있게 됩니다.</p>
+            <p><strong>저는 이러한 대안을 국토부 장관과 SR 사장에게 제안했고 SRT 복복선화에 대해 긍정적인 답변을 받아내었습니다.</strong></p>
+            <p><strong>저 김병욱은 '말로만 SRT를 말하는 말꾼이 아니라 '대안'을 말하는 진짜일꾼 입니다.</strong></p>
+        </div>
+    </section>
+
+    <!-- 김병욱의 해법 4 - 분당 리빌딩 Section -->
+    <section class="section">
+        <h2 class="section-title" style="background:linear-gradient(135deg, #DC2626 0%, #991B1B 100%);color:white;padding:15px;border-radius:10px;border:none;">
+            <span class="icon">🏙️</span> 김병욱의 해법 4 - 분당 리빌딩을 위한 김병욱의 파격적인 제안!
+        </h2>
+
+        <div class="info-box">
+            <h4>강남을 뛰어넘는 분당 남부권 신 랜드마크!</h4>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    구미동 하수종말처리장 - 복합문화체육단지로 산학하게 진행
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    SRT 노선 복복선화를 통한 SRT 오리역 역사 신설 및 도심공항터미널, 복합쇼핑몰 유치
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    법원부지 - 대기업분사 유치
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    오리역 지하아케이드 조성 및 구미동까지 지하연결공간 대규모로 조성
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h4>집값도 여유 부지 개발 추진</h4>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    집값도 현재 시설을 유지하면서 여유부지를 활용해 대규모 개발 추진
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    현재 한국창원드는 전체 부지 80,000㎡ (약 24,000평) 중 건물 15,973㎡ (4,840평), 광장 등 7,500㎡ (2,272평)만 이용하여 여유부지 56,527㎡ (약 17,129평)가 개발 가능한 공간임.
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    이에 인근 호텔과 건너편 MICE 시설과 연계하고 판교테크노밸리까지 연계하여 집값도 여유부지에 대한 복합개발 방안수립
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h4>경부고속도로 지하화 및 분당수서로 지하화, 서울플레이트 개발 추진</h4>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:8px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    <strong>경부고속도로 지하화 - 22년 국토교통부 국정감사에서 제안</strong><br>
+                    - 경부고속도로 지하화를 통한 교통정체 해소 및 소음·미세먼지 저감<br>
+                    - 2023년부터 예비타당성조사 진행 중이며 지하화 완료되면 기존에서 양재까지 고통량이 4만대 정도 감소하고, 통행시간도 30분정도 단축될 것으로 예상됨
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;margin-top:10px;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    <strong>서울플레이트 개발 추진 - 23년 국토교통부 국정감사에서 제안</strong><br>
+                    - 서울플레이트 복합 개발은 R&D센터, UAM 정류장은 물론 주민들을 위한 하늘공원 및 고속도로 단절되어있는 공내동과 정자동을 연결하는 무빙워크를 설치하는 복합개발계획 진행
+                </li>
+                <li style="padding:8px 0;padding-left:20px;position:relative;margin-top:10px;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">•</span>
+                    <strong>분당수서로 분당남부권 구간 지하화 추진</strong><br>
+                    - 분당수서로 분당남부권 지하화 추진 검토
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Main Image 7 -->
+    <div style="background:white;padding:15px;margin:15px 0;text-align:center;">
+        <img src="./images/page7.jpg" alt="분당 리빌딩 계획" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openModal(this.src)">
+    </div>
+
+    <!-- 청년·교육·복지 공약 Section -->
+    <section class="section" id="pledges">
+        <h2 class="section-title"><span class="icon">📋</span> 김병욱이 약속하는 청년·교육·복지 공약</h2>
+
+        <div class="promise-card">
+            <div class="promise-header">
+                <span class="promise-number">01</span>
+                <div class="promise-header-text">
+                    <div class="promise-title">청년들의 부담을 확 낮추겠습니다!</div>
+                </div>
+            </div>
+            <div class="promise-details">
+                <ul>
+                    <li>청년 전용 반값 교통비 '월 3만원 청년패스' 도입</li>
+                    <li>청년 맞춤형 알뜰 통신요금제(월 3만원대 사심상 데이터무제한) 제공</li>
+                    <li>1억원 + 1억원 "결혼-출산-양육 드림 패키지" 지원</li>
+                </ul>
+            </div>
+            <div class="expand-btn">상세 보기</div>
+        </div>
+
+        <div class="promise-card">
+            <div class="promise-header">
+                <span class="promise-number">02</span>
+                <div class="promise-header-text">
+                    <div class="promise-title">학부모와 수험생 모두가 공감하는 교육 개혁을 하겠습니다!</div>
+                </div>
+            </div>
+            <div class="promise-details">
+                <h4 style="color:var(--party-color);margin-bottom:10px;">교육발전특구 지정으로 과학교를 신설하겠습니다</h4>
+                <ul>
+                    <li>최근 수도권 지역에 대한 특목고 신설은 어려운 상태이며 자율형 사립고도 학생수 감소로 일반고로 전환되고 있는 상황임 (구미동 하수종말처리장 부지에 자사고 특목고 유치는 따다시 실패를 반복하여 이 후 10년을 낭비하는 결과가 될 수 있음)</li>
+                    <li>단 과학고에 한정해서 볼 때 경기도의 경우 경기과학고(수원)이 영재학교인 관계로 ICT가 집중된 분당권고 지역에 과학고 신설 추진이 가능함</li>
+                    <li>이에 정부가 추진하는 교육발전특구 지정 요건을 완화하여 분당에 유치하도록 하며 과학고를 신설할 수 있음</li>
+                </ul>
+                <h4 style="color:var(--party-color);margin:15px 0 10px 0;">분당일반고를 차올형 사립고 수준으로 업그레이드 하겠습니다</h4>
+                <ul>
+                    <li>일반고 교육환경 획기적 개선 (일반고 원어민 교사 도입, 교사 학생 비율 조정, 국제교육프로그램 신설, 수학 경시대회, 봉사활동, 예술프로그램 지원)</li>
+                    <li>특화된 고교학점제, 자유학기제 실시</li>
+                    <li>판교의 기업인프티를 활용한 진로체험과 교과융합(전공연계, 전공 실화)취득 방안 마련</li>
+                </ul>
+                <h4 style="color:var(--party-color);margin:15px 0 10px 0;">예술가능한 입시를 위해 대학입시제도 차주 바꾸지 않겠습니다</h4>
+                <ul>
+                    <li>학부모와 수험생들의 부담을 줄이기 위해 정권만 바뀌면 변하는 대학입시제도를 대통령도 바꿀 수 없도록 6년에 정기적으로 한 번씩만 하도록 조정</li>
+                    <li>수능 중요 출제 방향 및 중요 교육정책 변경시 국회 승인을 받도록 함</li>
+                </ul>
+            </div>
+            <div class="expand-btn">상세 보기</div>
+        </div>
+
+        <div class="promise-card">
+            <div class="promise-header">
+                <span class="promise-number">03</span>
+                <div class="promise-header-text">
+                    <div class="promise-title">강남을 뛰어넘는 분당 복지 완성하겠습니다!</div>
+                </div>
+            </div>
+            <div class="promise-details">
+                <h4 style="color:var(--party-color);margin-bottom:10px;">'분당 어성·아동 복지 All Care 센터' 추진(금곡동 주민센터 앞 근조주차장 부지)</h4>
+                <ul>
+                    <li>'영유아 종합 돌봄센터', '키즈카페', '실내게임장', '커뮤니티', '평생학습관', '독서실' 등 종합 복지 서비스 제공</li>
+                </ul>
+                <h4 style="color:var(--party-color);margin:15px 0 10px 0;">머내공원 '어린이 특화 공원'으로 업그레이드 진행 - 구미도서관과 연계 개발</h4>
+                <h4 style="color:var(--party-color);margin:15px 0 10px 0;">경로당점 여성을 위한 '엄마 일자리'추진(파트타임 일자리 확대)</h4>
+                <h4 style="color:var(--party-color);margin:15px 0 10px 0;">다자녀 가구를 위한 교육비 지원</h4>
+                <h4 style="color:var(--party-color);margin:15px 0 10px 0;">간병비 건강보험 적용</h4>
+                <h4 style="color:var(--party-color);margin:15px 0 10px 0;">장애인 1천만원 자산형성 및 특장차 2배 확대로 이동권 보장</h4>
+            </div>
+            <div class="expand-btn">상세 보기</div>
+        </div>
+    </section>
+
+    <!-- Main Image 8 -->
+    <div style="background:white;padding:15px;margin:15px 0;text-align:center;">
+        <img src="./images/page8.jpg" alt="청년 교육 복지 공약" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openModal(this.src)">
+    </div>
+
+    <!-- 성남시 지역별 공약 Section -->
+    <section class="section">
+        <h2 class="section-title"><span class="icon">🗺️</span> 김병욱 만들어온 분당! 김병욱이</h2>
+        <p style="font-size:1.1em;font-weight:600;color:var(--party-color);margin-bottom:20px;">저 김병욱이 성남시와 성남시의원 및 경기도의원, 주민들과</p>
+
+        <div style="background:white;padding:15px;margin:15px 0;text-align:center;">
+            <img src="./images/page9.jpg" alt="성남시 지역별 공약" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openModal(this.src)">
+        </div>
+
+        <div class="info-box">
+            <h4>수내 1동·2동·3동</h4>
+            <h5 style="color:#666;font-weight:600;margin:10px 0;">성과</h5>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    수내도서관 개관 예정(2025년 봄)
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    성남대로 저소음 포장 완료
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    수내역 에스컬레이터 2대 설치(2023년 10월)
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    내정, 초림고, 문화원리뉴얼, 야탑7동 교량 보상보상 공사
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    파크골프장 등 체육시설 보강
+                </li>
+            </ul>
+            <h5 style="color:#666;font-weight:600;margin:15px 0 10px 0;">공약</h5>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    신분당선 MICE역 신설
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    수내중 작은도서관 신설
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    금호-송악경영 복교 천단 개보수
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h4>금곡동</h4>
+            <h5 style="color:#666;font-weight:600;margin:10px 0;">성과</h5>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    금곡공원국민체육센터 개관
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    미금역 2번출구 양방향 에스컬레이터 설치
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    중앙동 행복누리관(금곡복 다목적 복지관) 개관
+                </li>
+            </ul>
+            <h5 style="color:#666;font-weight:600;margin:15px 0 10px 0;">공약</h5>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    분당 아동·여성 복지 All Care 센터 (금곡동 주민센터 앞 공영주차장)
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    경부고속도로 지하화 및 서울플레이트 복합개발
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h4>구미동·구미1동</h4>
+            <h5 style="color:#666;font-weight:600;margin:10px 0;">성과</h5>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    비둘기 6번 출구 양방향 에스컬레이터 설치
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    오리역 에스컬레이터 1대 설치, 스크린 도어 설치
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    불곡산 정자공원-대성리 일주 건강 마실길 조성
+                </li>
+            </ul>
+            <h5 style="color:#666;font-weight:600;margin:15px 0 10px 0;">공약</h5>
+            <ul style="list-style:none;padding-left:0;">
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    구미동 하수종말처리장 복합문화체육단지로 신축하게 진행
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    구미역 법원 부지 대기업 분사 유치
+                </li>
+                <li style="padding:5px 0;padding-left:20px;position:relative;">
+                    <span style="position:absolute;left:0;color:var(--party-color);">▶</span>
+                    오리역 지하아케이드 조성 및 구미동까지 지하연결공간 대규모로 조성
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Main Image 10 -->
+    <div style="background:white;padding:15px;margin:15px 0;text-align:center;">
+        <img src="./images/page10.jpg" alt="앞으로 만들어갈 NEW 분당" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openModal(this.src)">
+    </div>
+
+    <!-- Career Section -->
+    <section class="section" id="career">
+        <h2 class="section-title"><span class="icon">📜</span> 김병욱이 걸어온길</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">경남 산청 출생</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">부산 배정고 졸업</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">한양대학교 법학 학사</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">고려대학교 경영학 석사</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">현)</div>
+                <div class="timeline-content">제20대, 21대 분당을 국회의원</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">현)</div>
+                <div class="timeline-content">국회 국토교통위원회 위원, 예산결산특별위원회 위원</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">현)</div>
+                <div class="timeline-content">더불어민주당 경기도당위원장(직무대행)</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">현)</div>
+                <div class="timeline-content">더불어민주당 노후계획도시 추가협력경제선별위원회위원장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">현)</div>
+                <div class="timeline-content">글로벌기업경쟁력강화 민주당 국회의원모임 공동대표</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">전)</div>
+                <div class="timeline-content">더불어민주당 정책위원회 수석부의장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">전)</div>
+                <div class="timeline-content">제21대 국회 상반기 정무위원회 간사</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">전)</div>
+                <div class="timeline-content">제20대 국회 미세먼지대책특별위원회 위원</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">전)</div>
+                <div class="timeline-content">더불어민주당 자본시장특별위원회 위원장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">전)</div>
+                <div class="timeline-content">가천대학교, 국민대학교 겸임교수</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">전)</div>
+                <div class="timeline-content">경제정의실천시민연합 상임집행위원</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Image 11 -->
+    <div style="background:white;padding:15px;margin:15px 0;text-align:center;">
+        <img src="./images/page11.jpg" alt="김병욤을 지켜주십시오" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openModal(this.src)">
+    </div>
+
+    <!-- 사전투표 안내 Section -->
+    <section class="section">
+        <h2 class="section-title"><span class="icon">🗳️</span> 사전투표 안내</h2>
+        <div style="background:linear-gradient(135deg, #004EA2 0%, #1E3A8A 100%);color:white;padding:30px 20px;border-radius:15px;text-align:center;">
+            <div style="font-size:1.5em;font-weight:900;margin-bottom:10px;">4월 5일(금)~6일(토)</div>
+            <div style="font-size:1.2em;font-weight:600;margin-bottom:5px;">오전 6시 ~ 오후 6시</div>
+            <div style="font-size:1em;opacity:0.9;">별도의 신청없이 가까운 사전투표소에, 신분증을 꼭 챙겨주세요</div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <h2 class="section-title"><span class="icon">📞</span> 선거사무소</h2>
+        <div class="contact-links">
+            <div style="width:100%;padding:15px;background:#f8f9fa;border-radius:10px;margin-bottom:10px;">
+                <p style="font-weight:600;color:var(--party-color);margin-bottom:5px;">📍 경기도 성남시 분당구 성남대로 345 정자역프라자 603호</p>
+                <p style="color:#666;">Tel. 031-711-3397</p>
+            </div>
+            <a href="https://youtube.com/@777byung" target="_blank" class="contact-link youtube">▶️ YouTube</a>
+            <a href="https://facebook.com/777byung" target="_blank" class="contact-link facebook">📘 Facebook</a>
+            <a href="https://blog.naver.com/777byung" target="_blank" class="contact-link blog">📝 Blog</a>
+        </div>
+        <div style="margin-top:15px; padding:15px; background:#f8f9fa; border-radius:10px; line-height:1.8; font-size:0.85em; color:#666;">
+            캠페인TV ▶ @777byung, 📘 777byung, 💬 777byung<br>
+            인쇄: (주)타모인쇄협회 서울특별시 영등포구 국회대로70길 18 한일빌딩 904호(여의도동) T. 02-782-0133
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>본 페이지는 PDF 선거공보물에서 자동 생성되었습니다.</p>
+        <p style="margin-top: 10px;"><a href="https://studysnap.kr" target="_blank">StudySnap</a> | 완전 자동화 변환</p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#home" class="active">
+            <span class="nav-icon">🏠</span>
+            홈
+        </a>
+        <a href="#pledges">
+            <span class="nav-icon">📋</span>
+            공약
+        </a>
+        <a href="#career">
+            <span class="nav-icon">📜</span>
+            경력
+        </a>
+        <a href="#contact">
+            <span class="nav-icon">📞</span>
+            연락처
+        </a>
+    </nav>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <div class="modal-controls">
+            <div class="modal-title">이미지 확대</div>
+            <div class="modal-buttons">
+                <button class="modal-btn close" onclick="closeModal()">×</button>
+            </div>
+        </div>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="확대 이미지">
+        </div>
+    </div>
+
+    <script>
+        // Promise card toggle
+        document.querySelectorAll('.promise-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+        });
+
+        // Bottom navigation scroll spy
+        const sections = ['home', 'pledges', 'career', 'contact'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {
+                    current = id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Image Modal Functions
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = src;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // ESC key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
