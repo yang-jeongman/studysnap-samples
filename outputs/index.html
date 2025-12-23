@@ -3,98 +3,564 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudySnap - Private Files</title>
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="StudySnap - PDF를 아름다운 웹페이지로 변환하는 AI 기반 서비스. 선거공보물, 교회주보, 뉴스레터, 강의자료를 모바일 최적화된 HTML로 변환하세요.">
+    <meta name="keywords" content="PDF 변환, HTML 변환, 선거공보물, 교회주보, 뉴스레터, 강의자료, 모바일 최적화">
+    <title>StudySnap - PDF to Web 변환 서비스</title>
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --border-color: #e2e8f0;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-        .info {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .info p {
-            margin: 10px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
             line-height: 1.6;
-            color: #555;
+            color: var(--text-dark);
+            background: #fff;
         }
-        .warning {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .warning p {
-            color: #856404;
-            font-size: 0.9em;
-        }
-        code {
-            background: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: monospace;
-            color: #d63384;
-        }
-        .footer {
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 20px;
             text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .header .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-top: 30px;
-            color: #999;
-            font-size: 0.85em;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--bg-light);
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            color: var(--text-light);
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Categories Section */
+        .categories {
+            padding: 80px 20px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .category-card.democratic {
+            background: linear-gradient(135deg, #004EA2 0%, #1E3A8A 100%);
+        }
+
+        .category-card.ppp {
+            background: linear-gradient(135deg, #E61E2B 0%, #991B1B 100%);
+        }
+
+        .category-card.progressive {
+            background: linear-gradient(135deg, #10B981 0%, #065F46 100%);
+        }
+
+        .category-card.church {
+            background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+        }
+
+        .category-card.newsletter {
+            background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+        }
+
+        .category-card.lecture {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+
+        .category-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .category-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .category-card p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: var(--bg-light);
+            padding: 80px 20px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.8em;
+            font-weight: 700;
+            line-height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .step h3 {
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .step p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .cta-section p {
+            font-size: 1.2em;
+            margin-bottom: 35px;
+            opacity: 0.95;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: white;
+            padding: 60px 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+
+            .feature-grid,
+            .category-grid,
+            .steps,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔒 Private File Storage</h1>
+    <!-- Header -->
+    <header class="header">
+        <h1>📚 StudySnap</h1>
+        <p>PDF를 아름다운 웹페이지로 변환하는 AI 기반 서비스</p>
+        <p style="font-size: 0.95em; margin-top: 10px;">선거공보물, 교회주보, 뉴스레터, 강의자료를 모바일 최적화된 HTML로 자동 변환</p>
 
-        <div class="info">
-            <p><strong>이 페이지는 비공개 파일 저장소입니다.</strong></p>
-            <p>직접 링크를 통해서만 파일에 접근할 수 있습니다.</p>
-            <p>검색 엔진에 노출되지 않도록 설정되어 있습니다.</p>
+        <div class="cta-buttons">
+            <a href="#categories" class="btn btn-primary">시작하기</a>
+            <a href="#how-it-works" class="btn btn-secondary">사용 방법</a>
         </div>
+    </header>
 
-        <div class="info">
-            <p><strong>📁 파일 접근 방법:</strong></p>
-            <p>각 파일의 전체 경로를 사용하여 접근하세요.</p>
-            <p>예시: <code>https://studysnap-pdf.netlify.app/Election/Minjoo/송노섭/SONG_dangjin.html</code></p>
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat">
+                <div class="stat-number">11+</div>
+                <div class="stat-label">변환 완료</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">7</div>
+                <div class="stat-label">템플릿</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">성공률</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">3</div>
+                <div class="stat-label">정당 지원</div>
+            </div>
         </div>
+    </section>
 
-        <div class="warning">
-            <p>⚠️ <strong>주의사항</strong></p>
-            <p>• 이 저장소는 개인용으로 사용됩니다</p>
-            <p>• 링크를 공유할 때 주의하세요</p>
-            <p>• 민감한 정보는 업로드하지 마세요</p>
-        </div>
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">주요 기능</h2>
+            <p class="section-subtitle">AI 기반 자동 변환으로 PDF를 아름다운 웹페이지로 만들어드립니다</p>
 
-        <div class="footer">
-            <p>StudySnap © 2025</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>자동 디자인</h3>
+                    <p>AI가 콘텐츠를 분석하여 최적의 템플릿을 자동으로 선택합니다</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>모바일 최적화</h3>
+                    <p>모든 기기에서 완벽하게 보이는 반응형 디자인을 제공합니다</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>빠른 변환</h3>
+                    <p>몇 초 만에 PDF를 웹페이지로 변환하여 즉시 공유할 수 있습니다</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>정당별 템플릿</h3>
+                    <p>민주당, 국민의힘, 진보당 등 각 정당에 맞는 색상과 디자인</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🖼️</div>
+                    <h3>이미지 최적화</h3>
+                    <p>고품질 이미지 추출 및 확대/축소 기능을 자동으로 제공합니다</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>쉬운 공유</h3>
+                    <p>생성된 URL을 통해 누구나 쉽게 접근하고 공유할 수 있습니다</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <h2 class="section-title">변환 카테고리</h2>
+            <p class="section-subtitle">용도에 맞는 카테고리를 선택하세요</p>
+
+            <div class="category-grid">
+                <a href="mailto:support@studysnap.kr?subject=민주당 선거공보물 변환 문의" class="category-card democratic">
+                    <div class="category-icon">🗳️</div>
+                    <h3>선거공보물 - 민주당</h3>
+                    <p>더불어민주당 후보자 공보물 변환</p>
+                </a>
+
+                <a href="mailto:support@studysnap.kr?subject=국민의힘 선거공보물 변환 문의" class="category-card ppp">
+                    <div class="category-icon">🗳️</div>
+                    <h3>선거공보물 - 국민의힘</h3>
+                    <p>국민의힘 후보자 공보물 변환</p>
+                </a>
+
+                <a href="mailto:support@studysnap.kr?subject=진보당 선거공보물 변환 문의" class="category-card progressive">
+                    <div class="category-icon">🗳️</div>
+                    <h3>선거공보물 - 진보당</h3>
+                    <p>진보당 후보자 공보물 변환</p>
+                </a>
+
+                <a href="mailto:support@studysnap.kr?subject=교회주보 변환 문의" class="category-card church">
+                    <div class="category-icon">⛪</div>
+                    <h3>교회 주보</h3>
+                    <p>주간 예배 주보를 웹페이지로</p>
+                </a>
+
+                <a href="mailto:support@studysnap.kr?subject=뉴스레터 변환 문의" class="category-card newsletter">
+                    <div class="category-icon">📰</div>
+                    <h3>뉴스레터</h3>
+                    <p>정당·단체 소식지 변환</p>
+                </a>
+
+                <a href="mailto:support@studysnap.kr?subject=강의자료 변환 문의" class="category-card lecture">
+                    <div class="category-icon">📖</div>
+                    <h3>강의자료</h3>
+                    <p>교육 자료를 웹으로 변환</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">사용 방법</h2>
+            <p class="section-subtitle">간단한 3단계로 변환을 완료하세요</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>카테고리 선택</h3>
+                    <p>변환하려는 문서의 카테고리를 선택하고 문의 메일을 보내주세요</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>PDF 업로드</h3>
+                    <p>변환할 PDF 파일을 첨부하여 전송해주세요</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>변환 완료</h3>
+                    <p>AI가 자동으로 변환하여 웹페이지 링크를 전달드립니다</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>지금 바로 시작하세요!</h2>
+            <p>PDF를 아름다운 웹페이지로 변환하여 더 많은 사람들에게 공유하세요</p>
+            <a href="mailto:support@studysnap.kr?subject=StudySnap 변환 서비스 문의" class="btn btn-primary">문의하기</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p><strong>StudySnap</strong> - PDF to Web Conversion Service</p>
+            <p>문의: <a href="mailto:support@studysnap.kr">support@studysnap.kr</a></p>
+            <p>템플릿 시스템: <a href="/sample_templates/README.md">7개 템플릿 · 11개 샘플 · 100% 성공률</a></p>
+            <p style="margin-top: 20px; opacity: 0.7;">© 2025 StudySnap. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

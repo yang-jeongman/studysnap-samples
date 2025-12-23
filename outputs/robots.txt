@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Allow homepage and main pages
+Allow: /index.html
+
+# Disallow sample templates (internal use)
+Disallow: /sample_templates/
+
+# Sitemap
+Sitemap: https://studysnap-pdf.netlify.app/sitemap.xml
