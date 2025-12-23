@@ -1,0 +1,243 @@
+{
+  "category": "election",
+  "subcategory": "democratic",
+  "party_info": {
+    "name": "더불어민주당",
+    "english_name": "Democratic Party",
+    "color_primary": "#004EA2",
+    "color_light": "#DBEAFE",
+    "color_dark": "#1E3A8A",
+    "color_accent": "#3B82F6"
+  },
+  "templates": [
+    {
+      "id": "minjoo_standard_v1",
+      "name": "민주당 표준 템플릿 v1.0",
+      "description": "류삼영, 김병욱 후보 기반 표준 템플릿. 국회의원 및 지방자치단체장 선거에 적합",
+      "file": "democratic_standard_v1.html",
+      "created": "2025-12-23",
+      "version": "1.0.0",
+      "position_types": ["assembly", "mayor", "governor"],
+      "features": {
+        "design": [
+          "모바일 최적화 반응형",
+          "아코디언 공약 카드",
+          "타임라인 형식 경력 섹션",
+          "이미지 모달 확대/축소",
+          "하단 고정 네비게이션 바",
+          "스크롤 스파이 기능",
+          "부드러운 스크롤 애니메이션"
+        ],
+        "sections": [
+          "Hero (기호, 슬로건, 이름)",
+          "Vision (핵심 비전)",
+          "Quick Highlights (주요 성과)",
+          "Pledges (공약 - 아코디언)",
+          "Career (경력 - 타임라인)",
+          "Gallery (이미지 갤러리)",
+          "Contact (연락처, SNS)"
+        ],
+        "interactions": [
+          "공약 카드 클릭 확장",
+          "이미지 모달 확대",
+          "핀치 줌 지원",
+          "네비게이션 스크롤 연동"
+        ]
+      },
+      "color_scheme": {
+        "primary": "#004EA2",
+        "secondary": "#DBEAFE",
+        "dark": "#1E3A8A",
+        "accent": "#3B82F6",
+        "text_on_primary": "#FFFFFF"
+      },
+      "template_variables": {
+        "candidate_name": "후보자 이름",
+        "candidate_number": "기호 번호",
+        "party_name": "정당명",
+        "party_badge": "정당 배지명",
+        "district": "지역구",
+        "slogan": "슬로건",
+        "vision_title": "비전 제목",
+        "vision_items": "비전 항목 배열",
+        "pledges": "공약 카테고리 배열",
+        "career_items": "경력 항목 배열",
+        "images": "이미지 배열",
+        "contacts": "연락처 정보 객체"
+      },
+      "ml_features": {
+        "structure_pattern": "hero_vision_highlights_pledges_career_gallery_contact",
+        "layout_type": "accordion_timeline_hybrid",
+        "interaction_level": "high",
+        "section_count_avg": 7,
+        "image_count_avg": 8,
+        "pledge_count_avg": 10,
+        "career_count_avg": 14,
+        "color_scheme_type": "party_branded",
+        "mobile_optimized": true,
+        "animation_level": "medium",
+        "accessibility_score": 85
+      },
+      "performance_metrics": {
+        "usage_count": 2,
+        "success_rate": 100,
+        "avg_content_coverage": 85,
+        "avg_generation_time_seconds": 45,
+        "avg_file_size_kb": 60
+      },
+      "sample_outputs": [
+        {
+          "candidate": "류삼영",
+          "position": "국회의원",
+          "district": "서울 동작구을",
+          "file_path": "/outputs/Election/Minjoo/류삼영/류삼영.html",
+          "date": "2025-12-22",
+          "quality_score": 90,
+          "content_coverage": 85
+        },
+        {
+          "candidate": "김병욱",
+          "position": "국회의원",
+          "district": "성남시 분당구을",
+          "file_path": "/outputs/Election/Minjoo/김병욱/김병욱.html",
+          "date": "2025-12-23",
+          "quality_score": 95,
+          "content_coverage": 90
+        }
+      ],
+      "recommended_for": {
+        "party": "더불어민주당",
+        "positions": ["국회의원", "시장", "도지사", "구청장"],
+        "content_volume": "medium_to_high",
+        "image_count": "5-15",
+        "pledge_count": "8-20"
+      }
+    }
+  ],
+  "ml_training_data": {
+    "feature_extraction": {
+      "pdf_features": [
+        "page_count",
+        "has_images",
+        "image_count",
+        "text_density",
+        "dominant_color",
+        "layout_complexity",
+        "has_tables",
+        "has_charts"
+      ],
+      "candidate_features": [
+        "party",
+        "position",
+        "experience_level",
+        "is_incumbent",
+        "district_type",
+        "career_item_count",
+        "pledge_category_count"
+      ],
+      "content_features": [
+        "total_word_count",
+        "section_count",
+        "has_timeline",
+        "has_statistics",
+        "has_quotes",
+        "sentiment_score"
+      ]
+    },
+    "training_samples": [
+      {
+        "sample_id": "sample_001",
+        "input": {
+          "pdf_features": {
+            "page_count": 11,
+            "has_images": true,
+            "image_count": 8,
+            "text_density": "medium",
+            "dominant_color": "blue",
+            "layout_complexity": "high",
+            "has_tables": false,
+            "has_charts": false
+          },
+          "candidate_info": {
+            "party": "democratic",
+            "position": "assembly",
+            "experience_level": "incumbent",
+            "is_incumbent": true,
+            "district_type": "urban",
+            "career_item_count": 14,
+            "pledge_category_count": 10
+          },
+          "content_features": {
+            "total_word_count": 3500,
+            "section_count": 7,
+            "has_timeline": true,
+            "has_statistics": true,
+            "has_quotes": false,
+            "sentiment_score": 0.75
+          }
+        },
+        "output": {
+          "template_id": "minjoo_standard_v1",
+          "customizations": {
+            "increased_image_modals": true,
+            "added_sns_links": true,
+            "removed_fulltext_section": true
+          },
+          "quality_score": 90,
+          "user_feedback": "positive",
+          "generation_success": true
+        }
+      },
+      {
+        "sample_id": "sample_002",
+        "input": {
+          "pdf_features": {
+            "page_count": 11,
+            "has_images": true,
+            "image_count": 11,
+            "text_density": "high",
+            "dominant_color": "blue",
+            "layout_complexity": "high",
+            "has_tables": false,
+            "has_charts": true
+          },
+          "candidate_info": {
+            "party": "democratic",
+            "position": "assembly",
+            "experience_level": "incumbent",
+            "is_incumbent": true,
+            "district_type": "urban",
+            "career_item_count": 15,
+            "pledge_category_count": 12
+          },
+          "content_features": {
+            "total_word_count": 4200,
+            "section_count": 7,
+            "has_timeline": true,
+            "has_statistics": true,
+            "has_quotes": true,
+            "sentiment_score": 0.80
+          }
+        },
+        "output": {
+          "template_id": "minjoo_standard_v1",
+          "customizations": {
+            "all_pages_as_images": true,
+            "quick_highlights_added": true,
+            "vision_section_emphasized": true
+          },
+          "quality_score": 95,
+          "user_feedback": "positive",
+          "generation_success": true
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "last_updated": "2025-12-23",
+    "version": "1.0.0",
+    "total_templates": 1,
+    "maintainer": "StudySnap AI Team",
+    "contact": "support@studysnap.kr"
+  }
+}

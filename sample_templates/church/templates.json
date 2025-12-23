@@ -1,0 +1,231 @@
+{
+  "category": "church",
+  "subcategory": "general",
+  "templates": [
+    {
+      "id": "church_general_v1",
+      "name": "교회 주보 일반형 템플릿 v1.0",
+      "description": "여의도순복음교회 기반 표준 주보 템플릿. 전통적이면서도 모던한 디자인",
+      "file": "church_general_v1.html",
+      "created": "2025-12-23",
+      "version": "1.0.0",
+      "church_types": ["large", "medium", "small"],
+      "features": {
+        "design": [
+          "깔끔한 카드 레이아웃",
+          "모바일 최적화",
+          "주간 일정 캘린더",
+          "설교 요약 섹션",
+          "찬양 가사 표시",
+          "광고 및 공지사항",
+          "헌금 계좌 정보"
+        ],
+        "sections": [
+          "Header (교회명, 날짜, 주제)",
+          "Worship Order (예배 순서)",
+          "Sermon (설교 요약)",
+          "Hymns (찬양)",
+          "Weekly Schedule (주간 일정)",
+          "Announcements (광고)",
+          "Offering (헌금)",
+          "Prayer (기도제목)"
+        ],
+        "interactions": [
+          "섹션 접기/펼치기",
+          "인쇄 최적화 뷰"
+        ]
+      },
+      "color_scheme": {
+        "primary": "#2563EB",
+        "secondary": "#DBEAFE",
+        "accent": "#3B82F6",
+        "background": "#F9FAFB",
+        "text": "#1F2937"
+      },
+      "template_variables": {
+        "church_name": "교회명",
+        "service_date": "예배 날짜",
+        "service_theme": "예배 주제",
+        "worship_order": "예배 순서 배열",
+        "sermon_title": "설교 제목",
+        "sermon_verse": "본문 말씀",
+        "sermon_summary": "설교 요약",
+        "hymns": "찬양 목록",
+        "weekly_schedule": "주간 일정 배열",
+        "announcements": "광고 배열",
+        "prayer_items": "기도제목 배열",
+        "offering_info": "헌금 정보"
+      },
+      "ml_features": {
+        "structure_pattern": "header_worship_sermon_hymns_schedule_announcements_offering_prayer",
+        "layout_type": "card_based",
+        "interaction_level": "medium",
+        "section_count_avg": 8,
+        "has_calendar": true,
+        "has_multimedia": false,
+        "color_scheme_type": "traditional",
+        "mobile_optimized": true,
+        "print_optimized": true,
+        "accessibility_score": 85
+      },
+      "performance_metrics": {
+        "usage_count": 5,
+        "success_rate": 100,
+        "avg_content_coverage": 90,
+        "avg_generation_time_seconds": 25,
+        "avg_file_size_kb": 40
+      },
+      "sample_outputs": [
+        {
+          "church": "여의도순복음교회",
+          "date": "2025-11-16",
+          "file_path": "/outputs/Church/여의도순복음교회/2025-11-16.html",
+          "quality_score": 90,
+          "content_coverage": 90
+        },
+        {
+          "church": "여의도순복음교회",
+          "date": "2025-11-23",
+          "file_path": "/outputs/Church/여의도순복음교회/2025-11-23.html",
+          "quality_score": 92,
+          "content_coverage": 92
+        }
+      ],
+      "recommended_for": {
+        "church_size": ["대형", "중형", "소형"],
+        "worship_style": ["전통", "현대", "절충"],
+        "content_volume": "medium",
+        "has_multimedia": false
+      }
+    },
+    {
+      "id": "church_modern_v1",
+      "name": "교회 주보 모던형 템플릿 v1.0",
+      "description": "현대적이고 미니멀한 디자인의 주보 템플릿",
+      "file": "church_modern_v1.html",
+      "created": "2025-12-23",
+      "version": "1.0.0",
+      "church_types": ["medium", "small", "young"],
+      "features": {
+        "design": [
+          "미니멀 디자인",
+          "대형 타이포그래피",
+          "이미지 중심 레이아웃",
+          "모바일 퍼스트",
+          "소셜 미디어 연동"
+        ],
+        "sections": [
+          "Hero (메인 이미지, 주제)",
+          "Sermon (설교)",
+          "Worship (예배 순서)",
+          "Connect (소통)",
+          "Events (행사)"
+        ]
+      },
+      "color_scheme": {
+        "primary": "#10B981",
+        "secondary": "#F3F4F6",
+        "accent": "#059669",
+        "background": "#FFFFFF",
+        "text": "#111827"
+      },
+      "ml_features": {
+        "structure_pattern": "hero_sermon_worship_connect_events",
+        "layout_type": "minimal_modern",
+        "interaction_level": "high",
+        "section_count_avg": 5,
+        "has_calendar": false,
+        "has_multimedia": true,
+        "color_scheme_type": "modern",
+        "mobile_optimized": true,
+        "accessibility_score": 90
+      },
+      "performance_metrics": {
+        "usage_count": 0,
+        "success_rate": 0,
+        "avg_content_coverage": 0,
+        "avg_generation_time_seconds": 0,
+        "avg_file_size_kb": 0
+      },
+      "sample_outputs": [],
+      "recommended_for": {
+        "church_size": ["중형", "소형"],
+        "worship_style": ["현대", "청년"],
+        "content_volume": "low_to_medium",
+        "has_multimedia": true
+      }
+    }
+  ],
+  "ml_training_data": {
+    "feature_extraction": {
+      "pdf_features": [
+        "page_count",
+        "has_images",
+        "text_density",
+        "has_calendar",
+        "has_hymn_lyrics",
+        "layout_complexity"
+      ],
+      "church_features": [
+        "church_size",
+        "worship_style",
+        "denomination",
+        "has_multimedia",
+        "weekly_services_count"
+      ],
+      "content_features": [
+        "sermon_length",
+        "announcement_count",
+        "event_count",
+        "prayer_item_count",
+        "hymn_count"
+      ]
+    },
+    "training_samples": [
+      {
+        "sample_id": "church_sample_001",
+        "input": {
+          "pdf_features": {
+            "page_count": 2,
+            "has_images": true,
+            "text_density": "high",
+            "has_calendar": true,
+            "has_hymn_lyrics": true,
+            "layout_complexity": "medium"
+          },
+          "church_info": {
+            "church_size": "large",
+            "worship_style": "traditional",
+            "denomination": "순복음",
+            "has_multimedia": false,
+            "weekly_services_count": 7
+          },
+          "content_features": {
+            "sermon_length": "long",
+            "announcement_count": 12,
+            "event_count": 5,
+            "prayer_item_count": 8,
+            "hymn_count": 4
+          }
+        },
+        "output": {
+          "template_id": "church_general_v1",
+          "customizations": {
+            "expanded_calendar": true,
+            "detailed_announcements": true
+          },
+          "quality_score": 90,
+          "user_feedback": "positive",
+          "generation_success": true
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "last_updated": "2025-12-23",
+    "version": "1.0.0",
+    "total_templates": 2,
+    "maintainer": "StudySnap AI Team",
+    "contact": "support@studysnap.kr"
+  }
+}

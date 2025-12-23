@@ -1,0 +1,167 @@
+{
+  "category": "election",
+  "subcategory": "ppp",
+  "party_info": {
+    "name": "국민의힘",
+    "english_name": "People Power Party",
+    "color_primary": "#E61E2B",
+    "color_light": "#FEE2E2",
+    "color_dark": "#991B1B",
+    "color_accent": "#DC2626"
+  },
+  "templates": [
+    {
+      "id": "ppp_standard_v1",
+      "name": "국민의힘 표준 템플릿 v1.0",
+      "description": "나경원 후보 기반 표준 템플릿. 깔끔한 카드 기반 디자인",
+      "file": "ppp_standard_v1.html",
+      "created": "2025-12-23",
+      "version": "1.0.0",
+      "position_types": ["assembly", "mayor", "governor"],
+      "features": {
+        "design": [
+          "카드 기반 레이아웃",
+          "아코디언 공약 섹션",
+          "깔끔한 타이포그래피",
+          "모바일 최적화",
+          "이미지 갤러리",
+          "SNS 연동"
+        ],
+        "sections": [
+          "Hero (기호, 이름, 슬로건)",
+          "Intro (인사말)",
+          "Pledges (공약 - 아코디언)",
+          "Achievements (성과)",
+          "Career (경력)",
+          "Gallery (이미지)",
+          "Contact (연락처)"
+        ],
+        "interactions": [
+          "아코디언 토글",
+          "이미지 확대",
+          "스무스 스크롤"
+        ]
+      },
+      "color_scheme": {
+        "primary": "#E61E2B",
+        "secondary": "#FEE2E2",
+        "dark": "#991B1B",
+        "accent": "#DC2626",
+        "text_on_primary": "#FFFFFF"
+      },
+      "template_variables": {
+        "candidate_name": "후보자 이름",
+        "candidate_number": "기호 번호",
+        "party_name": "정당명",
+        "district": "지역구",
+        "slogan": "슬로건",
+        "intro_message": "인사말",
+        "pledges": "공약 배열",
+        "achievements": "성과 배열",
+        "career_items": "경력 배열",
+        "images": "이미지 배열",
+        "contacts": "연락처 정보"
+      },
+      "ml_features": {
+        "structure_pattern": "hero_intro_pledges_achievements_career_gallery_contact",
+        "layout_type": "card_based_accordion",
+        "interaction_level": "medium",
+        "section_count_avg": 7,
+        "image_count_avg": 10,
+        "pledge_count_avg": 12,
+        "career_count_avg": 15,
+        "color_scheme_type": "party_branded",
+        "mobile_optimized": true,
+        "animation_level": "low",
+        "accessibility_score": 90
+      },
+      "performance_metrics": {
+        "usage_count": 1,
+        "success_rate": 100,
+        "avg_content_coverage": 80,
+        "avg_generation_time_seconds": 40,
+        "avg_file_size_kb": 55
+      },
+      "sample_outputs": [
+        {
+          "candidate": "나경원",
+          "position": "국회의원",
+          "district": "서울 동작구을",
+          "file_path": "/outputs/Election/PPP/NA.html",
+          "date": "2025-12-20",
+          "quality_score": 85,
+          "content_coverage": 80
+        }
+      ],
+      "recommended_for": {
+        "party": "국민의힘",
+        "positions": ["국회의원", "시장", "도지사"],
+        "content_volume": "medium",
+        "image_count": "5-15",
+        "pledge_count": "8-15"
+      }
+    }
+  ],
+  "ml_training_data": {
+    "feature_extraction": {
+      "pdf_features": [
+        "page_count",
+        "has_images",
+        "image_count",
+        "text_density",
+        "dominant_color",
+        "layout_complexity"
+      ],
+      "candidate_features": [
+        "party",
+        "position",
+        "experience_level",
+        "is_incumbent",
+        "district_type",
+        "career_item_count",
+        "pledge_category_count"
+      ]
+    },
+    "training_samples": [
+      {
+        "sample_id": "ppp_sample_001",
+        "input": {
+          "pdf_features": {
+            "page_count": 12,
+            "has_images": true,
+            "image_count": 10,
+            "text_density": "high",
+            "dominant_color": "red",
+            "layout_complexity": "medium"
+          },
+          "candidate_info": {
+            "party": "ppp",
+            "position": "assembly",
+            "experience_level": "experienced",
+            "is_incumbent": true,
+            "district_type": "urban",
+            "career_item_count": 15,
+            "pledge_category_count": 8
+          }
+        },
+        "output": {
+          "template_id": "ppp_standard_v1",
+          "customizations": {
+            "card_layout": true,
+            "achievement_section": true
+          },
+          "quality_score": 85,
+          "user_feedback": "positive",
+          "generation_success": true
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "last_updated": "2025-12-23",
+    "version": "1.0.0",
+    "total_templates": 1,
+    "maintainer": "StudySnap AI Team",
+    "contact": "support@studysnap.kr"
+  }
+}

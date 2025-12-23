@@ -1,0 +1,226 @@
+{
+  "category": "newsletter",
+  "subcategory": "general",
+  "templates": [
+    {
+      "id": "newsletter_party_v1",
+      "name": "정당 뉴스레터 템플릿 v1.0",
+      "description": "진보당 너머로 뉴스레터 기반 템플릿. 풍부한 콘텐츠와 이미지",
+      "file": "newsletter_party_v1.html",
+      "created": "2025-12-23",
+      "version": "1.0.0",
+      "organization_types": ["party", "ngo", "organization"],
+      "features": {
+        "design": [
+          "매거진 스타일 레이아웃",
+          "리치 타이포그래피",
+          "이미지 갤러리",
+          "섹션 구분 명확",
+          "모바일 최적화",
+          "소셜 공유 버튼"
+        ],
+        "sections": [
+          "Header (제목, 호수, 날짜)",
+          "Cover Story (커버 스토리)",
+          "Articles (기사들)",
+          "News Briefs (뉴스 브리프)",
+          "Opinion (논평/칼럼)",
+          "Photo Gallery (포토 갤러리)",
+          "Upcoming Events (예정 행사)",
+          "Footer (연락처, 구독)"
+        ],
+        "interactions": [
+          "기사 확장/축소",
+          "이미지 슬라이드",
+          "소셜 공유"
+        ]
+      },
+      "color_scheme": {
+        "primary": "#10B981",
+        "secondary": "#F3F4F6",
+        "accent": "#059669",
+        "background": "#FFFFFF",
+        "text": "#111827"
+      },
+      "template_variables": {
+        "newsletter_title": "뉴스레터명",
+        "issue_number": "호수",
+        "issue_date": "발행일",
+        "cover_story": "커버 스토리 객체",
+        "articles": "기사 배열",
+        "news_briefs": "뉴스 브리프 배열",
+        "opinion_pieces": "논평 배열",
+        "photo_gallery": "이미지 배열",
+        "events": "행사 배열",
+        "contact_info": "연락처 정보",
+        "subscription_link": "구독 링크"
+      },
+      "ml_features": {
+        "structure_pattern": "header_cover_articles_briefs_opinion_gallery_events_footer",
+        "layout_type": "magazine_style",
+        "interaction_level": "medium",
+        "section_count_avg": 8,
+        "article_count_avg": 5,
+        "image_count_avg": 12,
+        "has_multimedia": true,
+        "color_scheme_type": "brand_based",
+        "mobile_optimized": true,
+        "accessibility_score": 87
+      },
+      "performance_metrics": {
+        "usage_count": 2,
+        "success_rate": 100,
+        "avg_content_coverage": 88,
+        "avg_generation_time_seconds": 60,
+        "avg_file_size_kb": 150
+      },
+      "sample_outputs": [
+        {
+          "organization": "진보당",
+          "newsletter": "너머로",
+          "issue": "55호",
+          "date": "2025-12",
+          "file_path": "/outputs/Newsletter/진보당/neomeo_55_2025_12_complete.html",
+          "quality_score": 88,
+          "content_coverage": 88
+        }
+      ],
+      "recommended_for": {
+        "organization_type": ["정당", "NGO", "협회"],
+        "content_volume": "high",
+        "image_count": "10-20",
+        "article_count": "3-8",
+        "frequency": "monthly_biweekly"
+      }
+    },
+    {
+      "id": "newsletter_simple_v1",
+      "name": "심플 뉴스레터 템플릿 v1.0",
+      "description": "간단하고 읽기 쉬운 뉴스레터 템플릿",
+      "file": "newsletter_simple_v1.html",
+      "created": "2025-12-23",
+      "version": "1.0.0",
+      "organization_types": ["company", "startup", "personal"],
+      "features": {
+        "design": [
+          "미니멀 디자인",
+          "텍스트 중심",
+          "빠른 로딩",
+          "이메일 호환"
+        ],
+        "sections": [
+          "Header",
+          "Main Article",
+          "Quick Updates",
+          "Footer"
+        ]
+      },
+      "color_scheme": {
+        "primary": "#2563EB",
+        "secondary": "#F9FAFB",
+        "text": "#1F2937"
+      },
+      "ml_features": {
+        "structure_pattern": "header_main_updates_footer",
+        "layout_type": "simple_single_column",
+        "interaction_level": "low",
+        "section_count_avg": 4,
+        "article_count_avg": 1,
+        "image_count_avg": 3,
+        "mobile_optimized": true,
+        "email_compatible": true,
+        "accessibility_score": 92
+      },
+      "performance_metrics": {
+        "usage_count": 0,
+        "success_rate": 0,
+        "avg_content_coverage": 0,
+        "avg_generation_time_seconds": 0,
+        "avg_file_size_kb": 0
+      },
+      "sample_outputs": [],
+      "recommended_for": {
+        "organization_type": ["기업", "스타트업", "개인"],
+        "content_volume": "low",
+        "image_count": "1-5",
+        "article_count": "1-3",
+        "frequency": "weekly"
+      }
+    }
+  ],
+  "ml_training_data": {
+    "feature_extraction": {
+      "pdf_features": [
+        "page_count",
+        "has_images",
+        "image_count",
+        "text_density",
+        "has_charts",
+        "layout_complexity"
+      ],
+      "organization_features": [
+        "org_type",
+        "content_frequency",
+        "target_audience",
+        "content_style",
+        "brand_strength"
+      ],
+      "content_features": [
+        "article_count",
+        "avg_article_length",
+        "has_opinion",
+        "has_events",
+        "has_gallery",
+        "multimedia_level"
+      }
+    },
+    "training_samples": [
+      {
+        "sample_id": "newsletter_sample_001",
+        "input": {
+          "pdf_features": {
+            "page_count": 16,
+            "has_images": true,
+            "image_count": 15,
+            "text_density": "high",
+            "has_charts": false,
+            "layout_complexity": "high"
+          },
+          "organization_info": {
+            "org_type": "party",
+            "content_frequency": "monthly",
+            "target_audience": "members_supporters",
+            "content_style": "magazine",
+            "brand_strength": "strong"
+          },
+          "content_features": {
+            "article_count": 6,
+            "avg_article_length": "long",
+            "has_opinion": true,
+            "has_events": true,
+            "has_gallery": true,
+            "multimedia_level": "high"
+          }
+        },
+        "output": {
+          "template_id": "newsletter_party_v1",
+          "customizations": {
+            "magazine_layout": true,
+            "rich_imagery": true,
+            "multiple_sections": true
+          },
+          "quality_score": 88,
+          "user_feedback": "positive",
+          "generation_success": true
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "last_updated": "2025-12-23",
+    "version": "1.0.0",
+    "total_templates": 2,
+    "maintainer": "StudySnap AI Team",
+    "contact": "support@studysnap.kr"
+  }
+}
