@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOSME Webzine Vol.49 No.6 - 04 연구자·소식</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding-top: 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            z-index: 10001;
+            transition: width 0.2s ease;
+        }
+
+        /* Sticky Navigation */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sticky-nav.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            position: relative;
+        }
+
+        .fab.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .fab-tooltip {
+            position: absolute;
+            right: 65px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .fab:hover .fab-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Cover Section */
+        .cover-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 60s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .cover-title {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cover-info {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-info {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-info p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        /* Accordion Image Viewer */
+        .accordion-image {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .accordion-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+        }
+
+        .accordion-header h4 {
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .accordion-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 2000px;
+        }
+
+        .accordion-body {
+            padding: 20px;
+        }
+
+        /* Image Zoom Container */
+        .image-zoom-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: zoom-in;
+            background: #f8f9fa;
+        }
+
+        .image-zoom-container img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .image-zoom-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-caption {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .zoom-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            pointer-events: none;
+        }
+
+        /* Fullscreen Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 95vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.1);
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        /* Figure containers for images */
+        .figure-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .figure-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .figure-container img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .figure-caption {
+            text-align: center;
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Table of Contents */
+        .toc-section {
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+        }
+
+        .toc-section h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .toc-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2a5298;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .toc-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .toc-item h3 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .toc-item p {
+            color: #666;
+            margin-left: 20px;
+        }
+
+        .page-number {
+            float: right;
+            color: #2a5298;
+            font-weight: bold;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 40px 20px;
+        }
+
+        .content-section h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .content-section h3 {
+            font-size: 1.5em;
+            color: #2a5298;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .content-section h4 {
+            font-size: 1.2em;
+            color: #1e3c72;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        /* Author Info */
+        .author-info {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+        }
+
+        .author-info h3 {
+            font-size: 1.5em;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .author-info p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        /* Company News Section */
+        .company-news {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .company-news h3 {
+            font-size: 1.8em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+        }
+
+        .company-news h4 {
+            font-size: 1.3em;
+            color: #2a5298;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .company-news ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .company-news li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-menu {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                font-size: 0.85em;
+                padding: 6px 12px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .cover-title {
+                font-size: 2em;
+            }
+
+            .content-section h2 {
+                font-size: 1.5em;
+            }
+
+            .toc-item h3 {
+                font-size: 1.1em;
+            }
+
+            .fab-container {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3em;
+            }
+        }
+
+        /* Table Styles - 모바일 최적화 */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 25px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table caption {
+            text-align: left;
+            padding: 15px;
+            font-size: 1.1em;
+            color: #1e3c72;
+            font-weight: 700;
+            background: #f8f9fa;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        table th {
+            padding: 15px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95em;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        table th:last-child {
+            border-right: none;
+        }
+
+        table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        table tbody tr:hover {
+            background-color: #f5f7fa;
+        }
+
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 모바일에서 테이블 스크롤 힌트 */
+        @media (max-width: 768px) {
+            .table-wrapper::after {
+                content: "👉 좌우로 스크롤하세요";
+                display: block;
+                text-align: center;
+                font-size: 0.85em;
+                color: #999;
+                margin-top: 8px;
+            }
+
+            table {
+                min-width: 100%;
+                font-size: 0.85em;
+            }
+
+            table th,
+            table td {
+                padding: 10px 8px;
+                white-space: nowrap;
+            }
+        }
+
+        /* 섹션 및 콘텐츠 패딩 최적화 */
+        .content-section {
+            padding: 40px 20px;
+        }
+
+        .article {
+            padding: 30px 20px;
+            margin: 0 0 30px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content-section {
+                padding: 30px 15px;
+            }
+
+            .article {
+                padding: 25px 15px;
+            }
+
+            .content-section p,
+            .article p {
+                text-align: justify;
+                word-break: keep-all;
+                overflow-wrap: break-word;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <nav class="sticky-nav" id="stickyNav">
+        <div class="nav-container">
+            <a href="index_complete.html" class="nav-logo">
+                <span>📱</span>
+                <span>KOSME Webzine</span>
+            </a>
+            <div class="nav-menu">
+                <a href="index_complete.html" class="nav-btn">🏠 홈</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase1_Complete.html" class="nav-btn ">01 표지·목차</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase2_Complete.html" class="nav-btn ">02 특집기사</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase3_Complete.html" class="nav-btn ">03 인터뷰·상식</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase4_Complete.html" class="nav-btn active">04 연구자·소식</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h1>KOSME Webzine</h1>
+            <p class="subtitle">The Korean Society of Marine Engineering</p>
+            <p class="subtitle">한국마린엔지니어링학회</p>
+            <p class="subtitle" style="margin-top: 15px; font-size: 1.3em; font-weight: 600;">04 연구자·소식</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Researcher & News</h2>
+
+            
+        <div class="figure-container">
+            <img src="images/page25_img1.jpeg" alt="ISMT2025 학회 현장" onclick="openImageModal(this.src, 'ISMT2025 국제 학회')"
+                 onerror="this.parentElement.innerHTML='<p style=\'padding:40px;text-align:center;color:#999;\'>이미지를 불러올 수 없습니다.</p>'">
+            <p class="figure-caption">ISMT2025 국제 학회</p>
+        </div>
+        
+        <div class="figure-container">
+            <img src="images/page25_img2.jpeg" alt="ISMT2025 발표" onclick="openImageModal(this.src, '학술 발표 장면')"
+                 onerror="this.parentElement.innerHTML='<p style=\'padding:40px;text-align:center;color:#999;\'>이미지를 불러올 수 없습니다.</p>'">
+            <p class="figure-caption">학술 발표 장면</p>
+        </div>
+        
+        <div class="figure-container">
+            <img src="images/page26_img1.jpeg" alt="후기학술대회 단체 사진" onclick="openImageModal(this.src, '2025년도 후기학술대회')"
+                 onerror="this.parentElement.innerHTML='<p style=\'padding:40px;text-align:center;color:#999;\'>이미지를 불러올 수 없습니다.</p>'">
+            <p class="figure-caption">2025년도 후기학술대회</p>
+        </div>
+        
+        <div class="figure-container">
+            <img src="images/page28_img1.jpeg" alt="학회 행사" onclick="openImageModal(this.src, '학회 주요 행사')"
+                 onerror="this.parentElement.innerHTML='<p style=\'padding:40px;text-align:center;color:#999;\'>이미지를 불러올 수 없습니다.</p>'">
+            <p class="figure-caption">학회 주요 행사</p>
+        </div>
+        
+
+            
+        </div>
+
+        <div class="footer">
+            <p><strong>(사)한국마린엔지니어링학회</strong></p>
+            <p>부산광역시 영도구 태종로 727 한국해양대학교 해사대학관 433호 (49112)</p>
+            <p>Tel : 051-405-1050/1054 | Fax : 051-405-1125</p>
+            <p>E-mail : kosme@kosme.or.kr | www.kosme.or.kr</p>
+            <p style="margin-top: 20px;">COPYRIGHT (C) 2008 사단법인 한국마린엔지니어링학회 ALL RIGHTS RESERVED.</p>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <button class="fab fab-top" id="fabTop" onclick="scrollToTop()">
+            <span>↑</span>
+            <span class="fab-tooltip">맨 위로</span>
+        </button>
+        <button class="fab fab-home" id="fabHome" onclick="goHome()">
+            <span>🏠</span>
+            <span class="fab-tooltip">홈으로</span>
+        </button>
+        <button class="fab fab-menu" id="fabMenu" onclick="toggleMenu()">
+            <span>☰</span>
+            <span class="fab-tooltip">메뉴</span>
+        </button>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <button class="modal-close" onclick="closeModal(event)">×</button>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modalImage" src="" alt="">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        });
+
+        const stickyNav = document.getElementById('stickyNav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                stickyNav.classList.add('scrolled');
+            } else {
+                stickyNav.classList.remove('scrolled');
+            }
+        });
+
+        const fabTop = document.getElementById('fabTop');
+        const fabHome = document.getElementById('fabHome');
+        const fabMenu = document.getElementById('fabMenu');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                fabTop.classList.add('visible');
+                fabHome.classList.add('visible');
+                fabMenu.classList.add('visible');
+            } else {
+                fabTop.classList.remove('visible');
+                fabHome.classList.remove('visible');
+                fabMenu.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function goHome() {
+            window.location.href = 'index_complete.html';
+        }
+
+        function toggleMenu() {
+            stickyNav.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleAccordion(element) {
+            const content = element.nextElementSibling;
+            const isActive = element.classList.contains('active');
+
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.classList.remove('active');
+                header.nextElementSibling.classList.remove('active');
+            });
+
+            if (!isActive) {
+                element.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+
+        function openImageModal(imageSrc, caption) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
+
+            modal.classList.add('active');
+            modalImg.src = imageSrc;
+            modalCaption.textContent = caption || '';
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(e);
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

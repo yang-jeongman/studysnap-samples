@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOSME Webzine Vol.49 No.6 - 03 인터뷰·상식</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding-top: 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            z-index: 10001;
+            transition: width 0.2s ease;
+        }
+
+        /* Sticky Navigation */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sticky-nav.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            position: relative;
+        }
+
+        .fab.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .fab-tooltip {
+            position: absolute;
+            right: 65px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .fab:hover .fab-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Cover Section */
+        .cover-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 60s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .cover-title {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cover-info {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-info {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-info p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        /* Accordion Image Viewer */
+        .accordion-image {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .accordion-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+        }
+
+        .accordion-header h4 {
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .accordion-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 2000px;
+        }
+
+        .accordion-body {
+            padding: 20px;
+        }
+
+        /* Image Zoom Container */
+        .image-zoom-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: zoom-in;
+            background: #f8f9fa;
+        }
+
+        .image-zoom-container img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .image-zoom-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-caption {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .zoom-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            pointer-events: none;
+        }
+
+        /* Fullscreen Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 95vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.1);
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        /* Figure containers for images */
+        .figure-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .figure-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .figure-container img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .figure-caption {
+            text-align: center;
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Table of Contents */
+        .toc-section {
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+        }
+
+        .toc-section h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .toc-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2a5298;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .toc-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .toc-item h3 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .toc-item p {
+            color: #666;
+            margin-left: 20px;
+        }
+
+        .page-number {
+            float: right;
+            color: #2a5298;
+            font-weight: bold;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 40px 10px;
+        }
+
+        .content-section h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .content-section h3 {
+            font-size: 1.5em;
+            color: #2a5298;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .content-section h4 {
+            font-size: 1.2em;
+            color: #1e3c72;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        /* Author Info */
+        .author-info {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+        }
+
+        .author-info h3 {
+            font-size: 1.5em;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .author-info p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        /* Company News Section */
+        .company-news {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .company-news h3 {
+            font-size: 1.8em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+        }
+
+        .company-news h4 {
+            font-size: 1.3em;
+            color: #2a5298;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .company-news ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .company-news li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-menu {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                font-size: 0.85em;
+                padding: 6px 12px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .cover-title {
+                font-size: 2em;
+            }
+
+            .content-section h2 {
+                font-size: 1.5em;
+            }
+
+            .toc-item h3 {
+                font-size: 1.1em;
+            }
+
+            .fab-container {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3em;
+            }
+        }
+
+        /* QA Accordion Styles */
+        .qa-accordion {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .qa-accordion:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .qa-header {
+            display: flex;
+            align-items: center;
+            padding: 18px 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-left: 4px solid #2a5298;
+        }
+
+        .qa-header:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+
+        .qa-header.active {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+        }
+
+        .qa-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .qa-title {
+            flex: 1;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .qa-header.active .qa-title {
+            color: white;
+        }
+
+        .qa-toggle {
+            font-size: 1.2em;
+            margin-left: 15px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .qa-header.active .qa-toggle {
+            transform: rotate(180deg);
+        }
+
+        .qa-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding: 0 15px;
+        }
+
+        .qa-content.active {
+            max-height: 2000px;
+            padding: 20px 15px;
+        }
+
+        .qa-content p {
+            color: #555;
+            line-height: 1.9;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .qa-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Improved Content Readability Styles */
+        /* Section and Article Container Styles - Mobile Friendly */
+        .section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 10px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .article {
+            background: white;
+            padding: 25px 15px;
+            margin: 0 10px 30px 10px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .article-header {
+            margin-bottom: 25px;
+        }
+
+        .article-title {
+            font-size: 1.8em;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .content {
+            padding: 20px 0;
+            line-height: 2.0;
+        }
+
+        .content h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #2a5298;
+            font-weight: 700;
+        }
+
+        .content h3 {
+            color: #2a5298;
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 12px;
+            border-left: 4px solid #667eea;
+            font-weight: 600;
+        }
+
+        .content h4 {
+            color: #555;
+            font-size: 1.15em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .content p {
+            margin-bottom: 18px;
+            text-align: justify;
+            color: #333;
+            line-height: 2.0;
+        }
+
+        .content strong {
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0;
+        }
+
+        .tips-list li {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            line-height: 1.9;
+        }
+
+        .tips-list li strong {
+            display: block;
+            color: #2a5298;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .reference {
+            background: #e7f3ff;
+            border-left: 4px solid #2a5298;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 8px;
+        }
+
+        .reference h4 {
+            color: #1e3c72;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .reference p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #fffaeb 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box strong {
+            color: #856404;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #d1ecf1 0%, #e7f5f8 100%);
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .info-box strong {
+            color: #0c5460;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, #f8d7da 0%, #ffe0e3 100%);
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box strong {
+            color: #721c24;
+        }
+
+        /* Section Divider */
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            margin: 50px 0;
+            border-radius: 2px;
+        }
+
+        /* Table Styles - 모바일 최적화 */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 25px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table caption {
+            text-align: left;
+            padding: 15px;
+            font-size: 1.1em;
+            color: #1e3c72;
+            font-weight: 700;
+            background: #f8f9fa;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        table th {
+            padding: 15px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95em;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        table th:last-child {
+            border-right: none;
+        }
+
+        table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        table tbody tr:hover {
+            background-color: #f5f7fa;
+        }
+
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 모바일에서 테이블 스크롤 힌트 */
+        @media (max-width: 768px) {
+            .table-wrapper::after {
+                content: "👉 좌우로 스크롤하세요";
+                display: block;
+                text-align: center;
+                font-size: 0.85em;
+                color: #999;
+                margin-top: 8px;
+            }
+
+            table {
+                min-width: 100%;
+                font-size: 0.85em;
+            }
+
+            table th,
+            table td {
+                padding: 10px 8px;
+                white-space: nowrap;
+            }
+        }
+
+        /* 이미지 보기 버튼 */
+        .image-view-btn-wrapper {
+            margin: 20px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #2a5298;
+        }
+
+        .image-view-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .image-view-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(42, 82, 152, 0.4);
+        }
+
+        .image-view-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .image-source {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* 이미지 모달 - 핀치 줌 지원 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            overflow: auto;
+            touch-action: pan-x pan-y pinch-zoom;
+        }
+
+        .image-modal-content {
+            margin: auto;
+            display: block;
+            max-width: 95%;
+            max-height: 95%;
+            margin-top: 50px;
+            border-radius: 8px;
+            touch-action: pan-x pan-y pinch-zoom;
+        }
+
+        .image-modal-caption {
+            text-align: center;
+            color: white;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .image-modal-close:hover {
+            color: #bbb;
+        }
+
+        @media (max-width: 768px) {
+            .image-view-btn {
+                font-size: 0.95em;
+                padding: 12px 25px;
+            }
+
+            .image-modal-close {
+                top: 10px;
+                right: 20px;
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <nav class="sticky-nav" id="stickyNav">
+        <div class="nav-container">
+            <a href="index_complete.html" class="nav-logo">
+                <span>📱</span>
+                <span>KOSME Webzine</span>
+            </a>
+            <div class="nav-menu">
+                <a href="index_complete.html" class="nav-btn">🏠 홈</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase1_Complete.html" class="nav-btn ">01 표지·목차</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase2_Complete.html" class="nav-btn ">02 특집기사</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase3_Complete.html" class="nav-btn active">03 인터뷰·상식</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase4_Complete.html" class="nav-btn ">04 연구자·소식</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h1>KOSME Webzine</h1>
+            <p class="subtitle">The Korean Society of Marine Engineering</p>
+            <p class="subtitle">한국마린엔지니어링학회</p>
+            <p class="subtitle" style="margin-top: 15px; font-size: 1.3em; font-weight: 600;">03 인터뷰·상식</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Interview & Knowledge</h2>
+
+            
+        
+
+            
+            <h2 class="section-title">연구실 인터뷰</h2>
+
+            <div class="article">
+                <div class="article-header">
+                    <h2 class="article-title">국립한국해양대학교 기관시스템공학부 박치병 교수님</h2>
+                </div>
+
+                <div class="author-info">
+                    <div class="author-photo">
+                        [Professor Photo]
+                    </div>
+                    <div class="author-details">
+                        <h3>박치병 (Jae-Sung Choi)</h3>
+                        <p>국립한국해양대학교 명예교수</p>
+                        <p>jschoi@kmou.ac.kr</p>
+                    </div>
+                </div>
+
+                <div class="content qa-section">
+                    <!-- Q1 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q1. 학회지 인터뷰에 응해주셔서 진심으로 감사드립니다. 독자분들께 인사 한마디 부탁드립니다.</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>안녕하세요. 한국해양대학교 기관시스템공학부 박치병입니다. 한국마린엔지니어링 학회 인터뷰에 초대해주셔서 감사드립니다. 올해 임용이 되어서 아직 많은 것들이 낯설기도 하지만, 모교에서 후배들이기도 한 학생들을 가르치고 연구를 한다는 것이 굉장히 뜻깊다는 생각을 많이 하면서 지내고 있습니다. 앞으로 잘 부탁드리며 꾸준히 인사드리겠습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q2. 현재 전공은 친환경 선박 분야로 알고 있습니다. 해당 분야를 전공하시게 된 계기가 있으신지요?</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>상선에서 7년간 기관사로 근무하면서 다양한 해운 규제와 환경 변화를 직접 경험하였습니다. 특히 점점 심각해지는 지구온난화와 강화되는 국제해사기구(IMO) 중심의 환경 규제를 보며, 선박 운항에서 지속적으로 사용되는 화석연료와 그에 연관된 시스템이 앞으로 어떻게 변화해야 할지에 대해 깊이 고민하게 되었습니다. 단순히 규제 대응 차원을 넘어, 현장에서 실제로 작동 가능한 탈탄소 기술과 대체연료 적용 방안이 필요하다는 문제의식이 생겼고, 이러한 경험이 친환경 선박 분야로 연구 방향을 전환하게 된 결정적인 계기가 되었습니다. 지금은 현장 경험을 토대로 지속가능한 해운 에너지 전환과 Net-zero 달성을 위한 연구를 이어가고 있습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q3. University of Strathclyde에서 박사를 취득하신 것으로 알고 있습니다. 연구하신 내용을 소개해주시겠습니까?</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>박사과정에서는 해운 분야의 탄소중립 달성에 기여하기 위해 전과정 환경영향평가(Life Cycle Assessment, LCA) 기반의 방법론을 개발하였습니다. 특히 수소, 암모니아, 메탄올, 전기에너지와 같은 다양한 친환경 연료의 적용에 따라 선박 운항과 관련한 전 과정에서 발생하는 온실가스(GHG)와 대기오염물질 배출량이 얼마나 저감될 수 있는지를 정량적으로 분석하였습니다. 이를 통해 연료 전환에 따른 환경적 효과를 객관적으로 비교할 수 있는 평가 체계를 제시하고, 향후 친환경 선박 기술 및 정책 의사결정에 활용될 수 있는 기반을 마련하고자 하였습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q4. 한국해양대학교 기관시스템공학부 교수로 학생과의 다양한 추억들이 많으실 것 같습니다. 가장 기억에 남는 에피소드가 있으신지요?</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>아직 교수로서 학생들과 함께한 시간이 길지는 않아 많은 추억을 쌓지는 못했지만, 이제 두 번째 학기를 함께하며 점차 가까워지고 있습니다. 특히 학생들의 진로와 취업 방향에 도움을 주기 위한 작은 조언이나 지원 활동을 했을 때, 학생들이 만족해하고 감사의 마음을 표현할 때마다 큰 보람과 뿌듯함을 느꼈습니다. 앞으로도 강의실 안팎에서 학생들과 더 다양한 방식으로 소통하며, 학문적인 성장뿐 아니라 생활과 진로 측면에서도 긍정적인 영향을 줄 수 있는 교수가 되고자 노력할 것입니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q5. 친환경 연료에 대한 환경 및 안전 분야에 관한 연구를 수행 중으로 알고 있는데 본 연구에 대해 간략한 설명을 부탁드립니다.</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>현재까지의 규제와 사회적 인식은 주로 연료 사용 과정에서 배출되는 대기오염물질에 초점을 맞추어 왔습니다. 그러나 탄소중립 달성을 위해 도입이 필요한 다양한 대체연료는 생산 단계에서 오히려 더 많은 온실가스를 배출할 수 있다는 점이 드러나고 있습니다. 이러한 현실로 인해 전과정 환경영향평가(Life Cycle Assessment, LCA)의 중요성이 커지고 있으며, 실제로 국제적인 환경규제들도 점차 LCA 기반으로 강화되는 추세입니다.</p>
+                            <p>저는 이러한 규제 변화에 대응하기 위한 기초연구로서의 LCA 방법론 개발 및 전기추진선박과 다양한 친환경 연료가 적용되는 선박의 전과정 환경영향을 체계적으로 분석하는 연구를 수행하고 있습니다. 더불어, 친환경 연료들은 그 물리·화학적 특성상 기존 화석연료보다 다양하고 잠재적인 위험요인을 내포하고 있기 때문에, 이를 고려한 정성적 및 정량적 위험성 평가 연구도 병행하여 수행하고 있습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q6. 오랜 연구생활을 하면서 기억에 남는 연구나 친환경 선박의 환경 및 안전을 전공함으로 인해 보람을 느끼셨던 적은 언제이신가요?</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>아직 연구 경력이 길다고 말하기에는 부족한 점이 많고, 초기 연구자로서 배워야 할 부분이 많다고 생각합니다. 그럼에도 불구하고 저의 연구가 해운 분야의 환경규제와 직접적으로 맞닿아 있으며, 나아가 IMO를 비롯한 국제 논의와 산업 전반의 변화에도 연결된다는 점에서 큰 보람을 느끼고 있습니다.</p>
+                            <p>특히 연구의 필요성과 가치를 인정받아 학회나 기관으로부터 수상을 하거나, 연구 결과가 IMO에 의제 문서로 제출될 때, 그동안의 노력이 결실을 맺는 듯한 깊은 의미를 느꼈습니다. 앞으로도 이러한 연구가 해운 산업의 지속가능한 발전에 기여하고, 다양한 분야에 긍정적인 영향을 미칠 수 있도록 최선을 다하겠습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q7. 연구 활동 이외의 시간에 즐기시는 취미나 여가 활동이 있으시다면 무엇인가요?</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>평소에 운동을 좋아하지만, 최근에는 학교에 부임한 지 얼마 되지 않아 수업 준비와 연구로 바쁜 일정을 보내다 보니 예전처럼 자주 즐기지 못하고 있습니다.</p>
+                            <p>앞으로 조금 여유가 생긴다면 새로운 운동을 배우고 싶다는 생각을 자주 하는데, 테니스나 배드민턴 등의 스포츠를 배우면서 꾸준히 즐길 수 있는 취미로 삼고 싶습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q8. 현재 몸담고 계신 국내외 친환경 선박의 현주소에 대해 어떻게 보십니까?</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>현재 친환경 선박과 친환경 연료는 해운 분야에서 가장 활발하게 논의되고 있는 주제이지만, 어떤 연료가 미래의 주력 에너지원이 될지는 여전히 불확실한 상황입니다. 수소, 암모니아, 메탄올, 전기에너지 등 다양한 연료에 대한 연구가 병행되고 있으며, 각국 정부와 국제기구에서도 이를 지원하기 위한 정책적 노력이 이어지고 있습니다. 다만 한 가지 분명한 점은, 환경 규제의 최종 목표가 2050년 탄소중립으로 명확히 설정되어 있다는 것입니다.</p>
+                            <p>규제들은 이제 단순히 연료 사용 단계의 배출 저감이 아니라, 생산에서부터 전과정을 고려한 체계로 전환되고 있습니다. 그러나 이러한 변화의 흐름 속에서도 여전히 높은 비용과 기술적 제약이 큰 걸림돌로 작용하고 있으며, 이를 극복하기 위해서는 정부의 정책적 지원과 산업계·학계의 긴밀한 협력이 필수적입니다. 결국 친환경 선박의 미래는 단일 기술이 아닌, 다양한 이해관계자 간의 공동 노력과 장기적 비전 속에서 만들어져야 한다고 생각합니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q9. 앞으로 우리가 주목해야할 친환경 선박이나 미래 비전에 대해 한 말씀 부탁드립니다.</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>현재 해운 분야에서 가장 활발하게 논의되고 있는 주제는 친환경 선박과 자율운항 선박입니다. 얼핏 보면 두 분야는 전혀 다른 기술 영역처럼 보이지만, 실제로는 서로 밀접하게 연결되어 있습니다. 예를 들어, 친환경 연료의 물리적 특성과 잠재적 위험성으로 인해 안전 확보를 위한 자동화·무인화 기술의 필요성이 높아지고 있으며, 반대로 자율운항 기술의 구현을 위해서는 전기추진시스템과 에너지 관리 기술이 필수적으로 요구됩니다.</p>
+                            <p>이러한 흐름을 고려할 때, 앞으로는 친환경 선박과 자율운항 선박이 하나의 융합 연구 분야로 발전할 가능성이 크다고 생각합니다. 즉, 각 분야의 전문가들이 공동의 목표를 가지고 협력하여 친환경 자율운항 선박이라는 새로운 패러다임을 만들어가는 시대가 도래할 것으로 기대됩니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="qa-accordion">
+                        <div class="qa-header" onclick="toggleQA(this)">
+                            <span class="qa-icon">💬</span>
+                            <span class="qa-title">Q10. 마지막으로 교수님이 몸담고 있는 분야를 공부하고 있는 연구생들에게 해주고 싶은 말이 있다면 응원의 말씀을 부탁드립니다.</span>
+                            <span class="qa-toggle">▼</span>
+                        </div>
+                        <div class="qa-content">
+                            <p>친환경 선박과 대체연료를 포함한 환경 분야는 앞으로도 지속적으로 연구와 논의가 활발히 이루어질 전망입니다. 국제 규제는 점점 더 강화될 것이며, 이에 대응하기 위한 기술적·정책적 연구가 한층 중요해질 것입니다. 또한 새로운 연료를 적용하면서 발생할 수 있는 안전성과 위험성 문제를 최소화하기 위한 노력도 계속 필요하다고 생각합니다.</p>
+                            <p>이처럼 친환경 해운 분야는 앞으로도 매우 전도유망한 연구 영역으로, 꾸준히 학업과 연구를 이어간다면 다양한 산업과 국제무대에서 의미 있는 역할을 할 수 있을 것입니다. 도전과 변화가 많은 분야이지만, 그만큼 세계를 바꾸는 보람과 가능성이 있는 분야이기에 끝까지 포기하지 않고 열정을 가지고 나아가길 바랍니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Helpful Tips Section 1 -->
+        <div class="section" style="background-color: #f9f9f9;">
+            <h2 class="section-title">알아두면 도움이 되는 상식</h2>
+
+            <div class="article">
+                <div class="article-header">
+                    <h2 class="article-title">복합외상에 대처하는 우리의 자세</h2>
+                </div>
+
+                <div class="author-info">
+                    <div class="author-photo">
+                        [Professor Photo]
+                    </div>
+                    <div class="author-details">
+                        <h3>김영근 (Youngkeun Kim)</h3>
+                        <p>인제대학교 상담심리치료학과, 교수</p>
+                        <p>ykkim@inje.ac.kr</p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <p>
+                        지금은 대학에서 상담학을 가르치는 교수이지만, 한때 환경공학을 전공했던 사람으로서 한국마린엔지니어링학회의 요청으로 상식기사를 쓰고자 노트북 앞에 앉아 있는 지금 이 순간이 그저 신기하게 다가오기만 한다. 첫 번째 상식기사를 무엇에 대해 쓸까 고민하다가 올해 내가 번역한 책의 내용이 마침 공학도들에게도 중요한 주제일 수 있을 것 같아 타이핑을 하기 시작한다. 바로 '복합외상'이다.
+                    </p>
+
+                    <h2>외상(Trauma)과 복합외상(Complex Trauma)의 이해</h2>
+                    <p>
+                        '외상(trauma)'이란, 심리적·신체적·사회적으로 인간에게 치명적인 영향을 줄 수 있는 정서적으로 압도되는 경험을 말한다. 보통 외상의 경우 교통사고나 산업재해, 자연재해 또는 한 번의 폭행과 같은 '단일 사건' 또는 '제한된 노출 외상'으로서의 특징을 지닌다.
+                    </p>
+                    <p>
+                        한편, '복합외상(complex trauma)'이란, 애착 대상으로부터의 배신, 폭력 등에 반복적으로 노출되는 경험을 말한다. 복합외상은 단일 사건으로서의 제한된 노출 외상과는 달리 항상 본질적으로 대인관계에서 비롯된다(Paivio & Pascual-Leone, 2025). 이렇게 대인관계에서 이루어지는 특성으로 인해 복합외상에 관한 주제는 거의 매일 같이 실험실에 앉아서 실험을 하고 있을 공학도들에게도 중요한 이슈일 수밖에 없는 것이다.
+                    </p>
+
+                    <h2>외상 후 스트레스 장애(PTSD)의 주요 증상</h2>
+                    <p>
+                        외상 후 스트레스 장애의 주된 증상 세 가지는 바로 재경험, 회피 및 과각성이다.
+                    </p>
+
+                    <ul class="tips-list">
+                        <li>
+                            <strong>1. 재경험 (Re-experiencing)</strong>
+                            침습 증상으로 주로 나타나는데, 악몽이나 플래시백 같은 현상을 포함한다. 본질적으로 외상 경험은 잊을 수가 없기 때문에 원치 않는 상황에서 갑작스럽게 마치 공포영화의 한 장면이 순간적으로 짤막하게 공포스럽게 전개되듯이 경험되기도 한다.
+                        </li>
+                        <li>
+                            <strong>2. 회피 (Avoidance)</strong>
+                            회피는 본질적으로 침습에 대한 결과이다. 즉, 침습과 같이 외상에 대한 감정과 기억, 그리고 외상을 연상시키는 상황으로부터 우리 인간은 피하고 싶기 마련이다. 문제는 이러한 회피가 단기적으로는 적응적일 수 있지만 장기적으로는 오히려 외상 증상을 지속시킨다는 데 있다.
+                        </li>
+                        <li>
+                            <strong>3. 과각성 (Hyperarousal)</strong>
+                            신경계의 만성적인 과잉 자극으로 인해서 신체가 위험상황이 아닌데도 불구하고 지속적으로 경계하는 상태를 말한다.
+                        </li>
+                    </ul>
+
+                    <h2>복합외상에 대처하는 방법</h2>
+
+                    <h3>첫째, 고통을 허용하고, 상실을 수용하며, 슬픔을 표현하라</h3>
+                    <p>
+                        우리 인간은 대개 고통스러운 정서는 피하기 마련이지만 아이러니하게도 고통스러운 정서라고 할지라도 피하는 것을 반복하면 오히려 부적응에 놓이기 쉽다. 원래 정서는 적응적인 기능을 하기에 고통이 있다면 그 자체를 허용할 필요가 있다. 그리고 상실, 즉 우리가 놓쳐버린 어떤 것을 적어도 당분간은 돌이킬 수 없는 것으로 받아들이게 되면 역설적으로 자기에 대한 새롭고 보다 현실적인 시각이 생겨날 수 있다.
+                    </p>
+
+                    <h3>둘째, 적응적 분노의 표현을 촉진하라</h3>
+                    <p>
+                        분노에도 부적응적 분노가 있고, 적응적 분노가 있다. 부적응적 분노는 흔히 남을 밀어내고, 거부하며, 멀어지고자 하는 분노이다. 이를 거부적 분노(rejective anger)라고 부른다. 반대로, 적응적인 분노는 자신의 권한을 주장하고 보호하는 분노이다. 이를 주장적 분노(assertive anger)라고 부른다. 적응적 분노로서의 주장적 분노는 자신의 경계를 침범하는 것에 대해 자신을 보호하는 분노이기 때문에 자신을 위협으로부터 지키는 분노라고 볼 수 있다.
+                    </p>
+
+                    <h3>셋째, 충족되지 못한 욕구의 표현을 촉진하라</h3>
+                    <p>
+                        충족되지 못한 욕구(unmet needs)란, 인간으로서 마땅히 받았어야 했을 사랑, 관심, 인정과 같은 기본적인 욕구가 충족되지 못하고 좌절된 것을 말한다. 또한, 안전해야 했을 상황에서 그러지 못한 경험을 하게 되었을 때 중요한 욕구가 좌절되는 것이다.
+                    </p>
+
+                    <h3>넷째, 자기에 대한 새로운 인식의 출현을 지지하라</h3>
+                    <p>
+                        자기 자신에 대한 보다 명확하고 현실적인 관점은 부분적으로는 정서적 고통을 허용하고, 중요한 타인에 대한 욕구와 기대를 내려놓고, 상실을 받아들일 때 나타날 수 있다. 이때 우리는 상실의 해결과 수용을 체념과 무력감이라는 가짜 해결과 구별할 필요가 있다.
+                    </p>
+
+                    <div class="reference">
+                        <h4>참고 문헌</h4>
+                        <p>[1] Paivio, S. C., & Pascual-Leone, A. (2025). 복합외상에 대한 정서중심치료: 통합적 접근법 2판[Emotion-focused therapy for complex trauma: An integrative approach, 2nd Ed.]. (김영근 역). 학지사(원전은 2023에 출간).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Helpful Tips Section 2 -->
+        <div class="section">
+            <div class="article">
+                <div class="article-header">
+                    <h2 class="article-title">#2. 스마트선박 보안모델 : 스마트선박 사이버 위험 분석 방법론 및 보호기술</h2>
+                </div>
+
+                <div class="author-info">
+                    <div class="author-photo">
+                        [Author Photo]
+                    </div>
+                    <div class="author-details">
+                        <h3>임정규 (Jeoungkyu Lim)</h3>
+                        <p>한국선급 사이버안전기술팀, 수석연구원</p>
+                        <p>jklim@krs.co.kr</p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <p>
+                        한국선급은 한국인터넷진흥원과 함께 '스마트선박 보안취약점 점검 및 보안모델 개발' 사업의 일환으로 '스마트선박 보안모델'을 개발하였습니다. 1편에서는 스마트선박 보안모델 개발 배경 및 스마트선박 위협 분석 방법론에 대해 다뤘으며, 2편에서는 스마트선박 사이버 위험 분석 방법론 및 보호기술에 대해 다루고자 합니다.
+                    </p>
+
+                    <h2>1. 스마트선박 사이버위험 분석 방법론</h2>
+                    <p>
+                        선박 사이버 리스크 평가(Cyber Risk Assessment)는 선박 IT/OT 시스템의 사이버보안 설계 타당성을 검증하는 필수적인 요소입니다. 선박 주요 시스템에 대한 사이버 위협과 취약점을 식별하여 가능한 사이버 공격 시나리오 및 사이버 리스크 수준을 확인하고, 리스크를 저감하기 위한 기술적 보안 대책(방화벽, IPS/IDS, VPN, Anti-virus, 통신 및 데이터 암호화 등)을 식별할 수 있습니다.
+                    </p>
+
+                    <h3>1.1 1단계 : 범위 수립</h3>
+                    <p>
+                        사이버보안 리스크 평가의 첫번째 단계에서는 평가대상을 명확히 이해하고 리스크 평가의 목적과 범위, 리스크 수용 기준을 포함하여 리스크 평가 작업에 필요한 모든 사항을 정의하기 위해 모든 정보를 수집해야 합니다.
+                    </p>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page21_cyber_risk_method.png', 'Figure 1: 선박 사이버 위험분석 방법론 (4단계 프로세스)')">
+                            🖼️ Figure 1: 선박 사이버 위험분석 방법론 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <h3>1.2 2단계 : 중요 자산 식별</h3>
+                    <p>
+                        중요 자산 식별의 목적은 자산이 비즈니스 활동에 미치는 영향을 분석하는 것입니다. 주요 시스템은 일반적으로 손상될 경우 비즈니스 활동에 가장 큰 영향을 미치는 자산입니다.
+                    </p>
+
+                    <div class="info-box">
+                        <p><strong>중요 시스템 식별을 위한 지수 계산:</strong></p>
+                        <p>중요 시스템 식별을 위해 기밀성 지수(CoI), 무결성 지수(II) 및 가용성 지수(AI)가 사용되며, 중요도 지수(CrI)는 다음 공식을 사용하여 계산할 수 있습니다.</p>
+                        <p style="text-align: center; font-size: 1.1em; font-weight: 600; margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 8px;">
+                            중요도 지수 (CrI) = 기밀성 지수 (CoI) + 무결성 지수 (II) + 가용성 지수 (AI)
+                        </p>
+                    </div>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page22_criticality_table.png', 'Table 1: 중요도 지수 정의')">
+                            📊 Table 1: 중요도 지수 정의 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <h3>1.3 3단계 : 사이버 리스크 평가</h3>
+                    <p>
+                        사이버보안 리스크 평가의 목적은 중요 시스템에 대한 위협 식별, 취약점 식별, 사이버 공격 시나리오 식별, 사이버보안 리스크 수준 확인 등을 수행하는 것입니다.
+                    </p>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page22_risk_criteria.png', 'Figure 2: 리스크 허용 기준 (영향도 × 발생빈도)')">
+                            🖼️ Figure 2: 리스크 허용 기준 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page23_primary_secondary_attack.png', 'Figure 3: 1차(Primary) 및 2차(Secondary) 공격의 순서와 피해의 결과')">
+                            🖼️ Figure 3: 1차/2차 공격 순서도 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <h3>1.4 4단계 : 개선사항 이행</h3>
+                    <p>
+                        사이버보안 리스크 평가 결과는 선박의 현재 사이버보안 리스크 수준, 리스크 감소가 필요한 영역, 리스크를 줄이기 위해 필요한 추가 작업 등을 쉽게 찾을 수 있도록 적절하게 문서화되어야 합니다.
+                    </p>
+
+                    <h2>2. 스마트선박 사이버보안 보호기술</h2>
+                    <p>
+                        스마트선박의 보안 위협에 대응하기 위한 사이버보안 보호기술 아키텍처는 국제표준 아키텍처 기반의 ITU-T X.805 기준으로 IT 계층의 정보보호 기술 영역과 ISA-95 표준 모델인 OT/ICS 계층을 스마트선박 환경에 맞게 재구성하였습니다.
+                    </p>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page23_security_architecture.png', 'Figure 4: 스마트선박 사이버보안 보호기술 (IT/OT 계층 구조)')">
+                            🖼️ Figure 4: 사이버보안 보호기술 아키텍처 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page23_it_ot_mapping.png', 'Figure 5: IT/OT 계층별 보안기술 매핑 및 적용 영역')">
+                            🖼️ Figure 5: IT/OT 계층별 보안기술 매핑 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <h3>보호기술 영역</h3>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page23_table2_security_areas.png', 'Table 2: 사이버보안 보호기술 영역 (6대 핵심 영역)')">
+                            📊 Table 2: 사이버보안 보호기술 영역 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <ul class="tips-list">
+                        <li>
+                            <strong>1. 인증 (Authentication)</strong>
+                            정보자산에 접근하고자 하는 사용자와 장비에 대해 정보자산의 중요도에 따라 차별화된 식별성을 보장
+                        </li>
+                    </ul>
+
+                    <div class="image-view-btn-wrapper">
+                        <button class="image-view-btn" onclick="openImageModal('images/page24_table3_auth.png', 'Table 3: 사이버보안 보호기술 상세 (인증 영역)')">
+                            📊 Table 3: 인증 보호기술 상세 보기
+                        </button>
+                        <p class="image-source">출처: 한국인터넷진흥원, 스마트선박 보안모델</p>
+                    </div>
+
+                    <ul class="tips-list">
+                        <li>
+                            <strong>2. 접근/권한 통제 (Access Control)</strong>
+                            허가 받지 않은 사용자, 장비에게는 네트워크/정보시스템/서비스에 대한 접근을 제한
+                        </li>
+                        <li>
+                            <strong>3. 암호화 (Encryption)</strong>
+                            중요정보/인증정보 등 기밀성을 요구하는 정보를 변조/삭제/오남용 등으로부터 보호
+                        </li>
+                        <li>
+                            <strong>4. 부인방지 (Non-repudiation)</strong>
+                            사용자 및 장비의 정보자산에 대한 접근/처리 내역을 보존하여 감사/추적성 및 모니터링 증적을 확보
+                        </li>
+                        <li>
+                            <strong>5. 가용성/기타 (Availability/etc.)</strong>
+                            인가된 사용자(조직)가 정보시스템 및 정보 자원을 필요로 할 때 접근하고 사용할 수 있도록 보장
+                        </li>
+                        <li>
+                            <strong>6. 관리체계 (CSMS)</strong>
+                            조직의 보안 정책과 절차를 수립하고, 이를 일관되게 시행하여 정보자산 보호와 사이버보안 관리 체계를 유지 및 강화
+                        </li>
+                    </ul>
+
+                    <h2>3. 맺음말</h2>
+                    <p>
+                        해사업계 정보통신기술(ICT)도입이 가속화됨으로써 사이버보안은 이제 필수적인 요소가 되고 있습니다. 기존 해사 사이버사고는 단순 서비스 장애, 정보유출 정도에 한정되었으나, 최근 선박, 항만, 육상 인프라, 관계자 등에서 발생하는 사이버사고는 해상물류체계를 마비시키는 수준으로 해사업계에 큰 사회적 혼란 및 경제적 손실을 야기할 수 있습니다.
+                    </p>
+                    <p>
+                        '스마트선박 보안모델'은 해사업계가 직면한 사이버 위협에 대응하기 위하여 스마트선박 생애주기 보안 프레임워크를 제시함으로써, 해사업계 보안 역량 강화에 기여하고자 하였습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        
+        </div>
+
+        <div class="footer">
+            <p><strong>(사)한국마린엔지니어링학회</strong></p>
+            <p>부산광역시 영도구 태종로 727 한국해양대학교 해사대학관 433호 (49112)</p>
+            <p>Tel : 051-405-1050/1054 | Fax : 051-405-1125</p>
+            <p>E-mail : kosme@kosme.or.kr | www.kosme.or.kr</p>
+            <p style="margin-top: 20px;">COPYRIGHT (C) 2008 사단법인 한국마린엔지니어링학회 ALL RIGHTS RESERVED.</p>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <button class="fab fab-top" id="fabTop" onclick="scrollToTop()">
+            <span>↑</span>
+            <span class="fab-tooltip">맨 위로</span>
+        </button>
+        <button class="fab fab-home" id="fabHome" onclick="goHome()">
+            <span>🏠</span>
+            <span class="fab-tooltip">홈으로</span>
+        </button>
+        <button class="fab fab-menu" id="fabMenu" onclick="toggleMenu()">
+            <span>☰</span>
+            <span class="fab-tooltip">메뉴</span>
+        </button>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <button class="modal-close" onclick="closeModal(event)">×</button>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modalImage" src="" alt="">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        });
+
+        const stickyNav = document.getElementById('stickyNav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                stickyNav.classList.add('scrolled');
+            } else {
+                stickyNav.classList.remove('scrolled');
+            }
+        });
+
+        const fabTop = document.getElementById('fabTop');
+        const fabHome = document.getElementById('fabHome');
+        const fabMenu = document.getElementById('fabMenu');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                fabTop.classList.add('visible');
+                fabHome.classList.add('visible');
+                fabMenu.classList.add('visible');
+            } else {
+                fabTop.classList.remove('visible');
+                fabHome.classList.remove('visible');
+                fabMenu.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function goHome() {
+            window.location.href = 'index_complete.html';
+        }
+
+        function toggleMenu() {
+            stickyNav.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleAccordion(element) {
+            const content = element.nextElementSibling;
+            const isActive = element.classList.contains('active');
+
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.classList.remove('active');
+                header.nextElementSibling.classList.remove('active');
+            });
+
+            if (!isActive) {
+                element.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+
+        function openImageModal(imageSrc, caption) {
+            // 새로운 이미지 모달 사용 (핀치 줌 지원)
+            const modal = document.getElementById('imageModalNew');
+            const modalImg = document.getElementById('modalImageNew');
+            const modalCaption = document.getElementById('captionNew');
+
+            if (modal && modalImg && modalCaption) {
+                modal.style.display = 'block';
+                modalImg.src = imageSrc;
+                modalCaption.textContent = caption || '';
+            } else {
+                // 폴백: 기존 모달 사용
+                const oldModal = document.getElementById('imageModal');
+                const oldModalImg = document.getElementById('modalImage');
+                const oldModalCaption = document.getElementById('modalCaption');
+
+                if (oldModal) {
+                    oldModal.classList.add('active');
+                    oldModalImg.src = imageSrc;
+                    oldModalCaption.textContent = caption || '';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        }
+
+        function closeModal(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(e);
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // QA Accordion Toggle Function
+        function toggleQA(element) {
+            const header = element;
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+
+            // Close all other QA items
+            document.querySelectorAll('.qa-header').forEach(h => {
+                if (h !== header) {
+                    h.classList.remove('active');
+                    h.nextElementSibling.classList.remove('active');
+                }
+            });
+
+            // Toggle current item
+            if (isActive) {
+                header.classList.remove('active');
+                content.classList.remove('active');
+            } else {
+                header.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+
+        // 이미지 모달 함수가 이미 존재하므로, 닫기 함수만 추가
+        function closeImageModal() {
+            const modal = document.getElementById('imageModalNew');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModalNew');
+            if (event.target == modal) {
+                closeImageModal();
+            }
+        }
+    </script>
+
+    <!-- 이미지 확대 모달 -->
+    <div id="imageModalNew" class="image-modal" onclick="closeImageModal()">
+        <span class="image-modal-close" onclick="closeImageModal()">&times;</span>
+        <img class="image-modal-content" id="modalImageNew" alt="">
+        <div class="image-modal-caption" id="captionNew"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOSME Webzine Vol.49 No.6 - 2025년 11월 (Complete with Images)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding-top: 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            z-index: 10001;
+            transition: width 0.2s ease;
+        }
+
+        /* Sticky Navigation */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sticky-nav.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            position: relative;
+        }
+
+        .fab.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .fab-tooltip {
+            position: absolute;
+            right: 65px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .fab:hover .fab-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Cover Section */
+        .cover-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 60s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .cover-title {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cover-info {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-info {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-info p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        /* Accordion Image Viewer */
+        .accordion-image {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .accordion-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+        }
+
+        .accordion-header h4 {
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .accordion-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 2000px;
+        }
+
+        .accordion-body {
+            padding: 20px;
+        }
+
+        /* Image Zoom Container */
+        .image-zoom-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: zoom-in;
+            background: #f8f9fa;
+        }
+
+        .image-zoom-container img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .image-zoom-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-caption {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .zoom-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            pointer-events: none;
+        }
+
+        /* Fullscreen Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 95vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.1);
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        /* Figure containers for images */
+        .figure-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .figure-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .figure-container img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .figure-caption {
+            text-align: center;
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Table of Contents */
+        .toc-section {
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+        }
+
+        .toc-section h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .toc-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2a5298;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .toc-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .toc-item h3 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .toc-item p {
+            color: #666;
+            margin-left: 20px;
+        }
+
+        .page-number {
+            float: right;
+            color: #2a5298;
+            font-weight: bold;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 40px 20px;
+        }
+
+        .content-section h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .content-section h3 {
+            font-size: 1.5em;
+            color: #2a5298;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .content-section h4 {
+            font-size: 1.2em;
+            color: #1e3c72;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        /* Author Info */
+        .author-info {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+        }
+
+        .author-info h3 {
+            font-size: 1.5em;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .author-info p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        /* Company News Section */
+        .company-news {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .company-news h3 {
+            font-size: 1.8em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a5298;
+        }
+
+        .company-news h4 {
+            font-size: 1.3em;
+            color: #2a5298;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .company-news ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .company-news li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-menu {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                font-size: 0.85em;
+                padding: 6px 12px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .cover-title {
+                font-size: 2em;
+            }
+
+            .content-section h2 {
+                font-size: 1.5em;
+            }
+
+            .toc-item h3 {
+                font-size: 1.1em;
+            }
+
+            .fab-container {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <nav class="sticky-nav" id="stickyNav">
+        <div class="nav-container">
+            <a href="index_interactive.html" class="nav-logo">
+                <span>📱</span>
+                <span>KOSME Webzine</span>
+            </a>
+            <div class="nav-menu">
+                <a href="index_complete.html" class="nav-btn">🏠 홈</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase1_Complete.html" class="nav-btn active">01 표지·목차</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase2_Complete.html" class="nav-btn">02 특집기사</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase3_Complete.html" class="nav-btn">03 인터뷰·상식</a>
+                <a href="KOSME_Webzine_Vol49_No6_Phase4_Complete.html" class="nav-btn">04 연구자·소식</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>KOSME Webzine</h1>
+            <p class="subtitle">The Korean Society of Marine Engineering</p>
+            <p class="subtitle">한국마린엔지니어링학회</p>
+        </div>
+
+        <div class="cover-section">
+            <div class="cover-title">25 KOSME Webzine</div>
+            <div class="cover-info">Vol. 49 No. 6, November, 2025</div>
+
+            <div class="contact-info">
+                <p><strong>(사)한국마린엔지니어링학회</strong></p>
+                <p>부산광역시 영도구 태종로 727 한국해양대학교 해사대학관 433호</p>
+                <p>Tel : 051-405-1050 / 1054 | Fax : 051-405-1125</p>
+                <p>고유번호 : 602-82-05812 | 대표자 : 남택근</p>
+                <p>kosme@kosme.or.kr</p>
+            </div>
+        </div>
+
+        <div class="content-section" id="editorial">
+            <h2>권두언</h2>
+            <h3>국제표준이 여는 녹색 해양의 미래: ISO 리더십과 초격차 산업혁신</h3>
+
+            <div class="author-info" style="text-align: center;">
+                <img src="images/page5_img1.jpeg" alt="강호근 교수" style="width: 150px; height: auto; margin: 0 auto 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openImageModal(this.src, '강호근 (한국마린엔지니어링학회 편집위원장)')">
+                <h3>강호근</h3>
+                <p>국립한국해양대학교 기관시스템공학부 교수</p>
+                <p>(사)한국마린엔지니어링학회 편집위원장 / ISO TC8 SC3 차기 의장</p>
+            </div>
+
+            <h4>[해양산업의 새로운 전환점, 표준이 만든 항로]</h4>
+            <p>21세기 해양산업은 기후위기 대응, 디지털 전환, 산업구조 혁신이라는 세 가지 큰 조류 속에서 새로운 항로를 그리고 있다. 탄소중립과 탈화석연료의 흐름 속에서, LNG·암모니아·수소 등 대체연료 기반의 추진기술은 새로운 산업생태계를 열고 있으며, 그 중심에는 국제표준(ISO, International Organization for Standardization)을 통한 글로벌 기술 질서의 재구성이 자리하고 있다.</p>
+
+            <p>ISO는 단순히 기술의 규격을 제정하는 조직이 아니라, 국가의 기술주권과 시장 진입 질서를 결정하는 무대다. 특히 선박과 해양기술 분야를 다루는 ISO TC8(Ships and Marine Technology)은 친환경 추진, 기자재 신뢰성, 안전 및 리스크 관리, 디지털 설비관리 등 현대 마린엔지니어링의 핵심 영역을 아우르고 있다.</p>
+
+            <h4>[ISO TC8 SC3 의장국 진출과 그 의미]</h4>
+            <p>우리나라는 2025년 ISO TC8 SC3(Machinery and Propulsion Systems) 차기 의장국으로 선출되었다. SC3는 선박 추진기관, 보조기계, 배관 시스템 등 마린엔지니어링의 핵심 설비 표준을 다루는 분과로, 그동안 유럽과 일본이 주도해왔다. 이번 의장국 진출은 우리나라가 조선·해양 강국을 넘어 글로벌 기술 표준을 주도하는 국가로 도약하는 전환점이다.</p>
+
+            <p>의장국 역할은 단순히 회의를 주재하는 것을 넘어, 신규 표준의 제·개정 방향을 설정하고, 각국의 의견을 조율하며, 산업계의 목소리를 표준에 반영하는 핵심 기능을 수행한다. 특히 친환경 대체연료(LNG, 암모니아, 수소, 메탄올 등)의 안전·성능·환경 기준 수립, 디지털화·스마트화에 부합하는 설비관리 표준 정립 등 미래 먹거리가 걸린 의제에서 우리가 주도권을 확보할 수 있다.</p>
+
+            <h4>[ISO 리더십이 가져올 산업혁신]</h4>
+            <p>ISO 표준은 기술의 글로벌 확산을 촉진하고, 시장 진입 장벽을 완화하며, 공정 경쟁을 보장하는 인프라다. 우리가 의장국으로서 표준 제정을 주도하면, 다음과 같은 효과를 기대할 수 있다.</p>
+
+            <p><strong>첫째, 기술 선점과 시장 주도권 확보.</strong> 우리 산업이 강점을 가진 LNG 추진, 스크러버, 전기추진 시스템 등의 표준을 선제적으로 제정하면, 글로벌 시장에서 우리 기술이 사실상의 표준(de facto standard)이 된다. 이는 곧 수출 경쟁력 강화와 시장 점유율 확대로 이어진다.</p>
+
+            <p><strong>둘째, 초격차 기술혁신 촉진.</strong> 표준은 단순히 기존 기술을 정리하는 것이 아니라, 미래 기술의 발전 방향을 제시한다. 암모니아·수소 연료의 안전 기준, 디지털 트윈 기반 설비관리, AI 고장 예측 시스템 등 차세대 기술의 표준화를 선도하면, 우리 산업은 기술 추격자(fast follower)가 아닌 선도자(first mover)로 자리매김할 수 있다.</p>
+
+            <p><strong>셋째, 글로벌 협력 네트워크 강화.</strong> ISO 활동은 각국의 전문가, 산업계, 학계가 모이는 글로벌 플랫폼이다. 의장국으로서 이 네트워크를 주도하면, 기술 정보 교류, 공동 R&D, 인력 교류 등 다층적 협력 관계를 구축할 수 있다.</p>
+
+            <h4>[학회와 산학연의 역할]</h4>
+            <p>ISO 리더십의 성공은 학회와 산학연 협력에 달려 있다. 한국마린엔지니어링학회는 다음과 같은 역할을 수행해야 한다.</p>
+
+            <p><strong>1) 전문가 풀 구축과 역량 강화.</strong> ISO 표준 개발에는 높은 수준의 전문성과 국제 감각이 요구된다. 학회는 산업계, 학계, 연구기관의 전문가를 발굴·육성하고, ISO 표준 개발 프로세스에 대한 교육·훈련을 제공해야 한다.</p>
+
+            <p><strong>2) 산업계 의견 수렴과 반영.</strong> 표준은 현장에서 실제로 작동해야 한다. 학회는 조선소, 기자재업체, 선급, 선주의 의견을 수렴하고, 이를 표준 제·개정 과정에 반영하는 창구 역할을 해야 한다.</p>
+
+            <p><strong>3) 국제 협력과 정보 공유.</strong> 학회는 국제학술대회, 워크숍, 심포지엄 등을 통해 각국 전문가와의 교류를 활성화하고, ISO 논의 동향을 국내에 신속히 전파해야 한다.</p>
+
+            <p><strong>4) 정부·유관기관과의 협업.</strong> ISO 활동에는 상당한 시간과 비용이 소요된다. 학회는 산업통상자원부, 국가기술표준원, 해양수산부 등 정부기관 및 한국선급, 한국조선해양기자재연구원 등 유관기관과 긴밀히 협력하여, 정책·재정·인력 지원을 확보해야 한다.</p>
+
+            <h4>[맺음말: 표준이 여는 녹색 해양의 미래]</h4>
+            <p>ISO TC8 SC3 의장국 진출은 우리 해양산업이 글로벌 기술 질서를 주도하는 역사적 기회다. 표준은 단순한 문서가 아니라, 기술혁신의 나침반이며, 시장 경쟁의 규칙이고, 국가 경쟁력의 핵심 요소다.</p>
+
+            <p>우리는 이 기회를 최대한 활용하여, 친환경·디지털·스마트 해양기술의 글로벌 표준을 선도하고, 이를 통해 조선·해양 산업의 초격차 경쟁력을 확보해야 한다. 한국마린엔지니어링학회는 이 여정의 중심에서, 산학연을 연결하고, 전문가를 육성하며, 국제 협력을 촉진하는 허브 역할을 수행할 것이다.</p>
+
+            <p>표준이 여는 녹색 해양의 미래, 우리 모두의 지혜와 열정을 모아 함께 만들어 가기를 기대한다.</p>
+
+            <p style="text-align: right; margin-top: 40px; font-weight: 600; color: #2a5298;">2025년 11월<br>강호근<br>(사)한국마린엔지니어링학회 편집위원장 / ISO TC8 SC3 차기 의장</p>
+        </div>
+
+        <div class="content-section" id="company-news">
+            <h2>업체동정</h2>
+            <h3>• 한국선급(KR) - 2025 ICS Tripartite Meeting 개최</h3>
+
+            <h4>1) 행사 개요</h4>
+                <ul>
+                    <li>(일자/장소) 2025년 10월 21일(화)–23일(목) / 부산 시그니엘 호텔</li>
+                    <li>(주최/공동주관) ICS / KR, KSA, KOSHIPA</li>
+                    <li>(목적) 선주–선급–조선소 간 현안 논의 및 공동 대응 체계 강화</li>
+                </ul>
+
+                <h4>2) 주요 진행</h4>
+                <ul>
+                    <li>(개회사) 10월 22일(수) 오전 세션에서 KR 이형철 회장의 환영사로 공식 개막</li>
+                    <li>(세션 운영) WG 현황 보고, 탈탄소, 환경, IMO NZF, 안전, MASS 등 전 주제를 균형 있게 다룸</li>
+                </ul>
+
+                <h4>3) 주요 성과(요약)</h4>
+                <ul>
+                    <li>(공동 인식 확인) 안전·탈탄소·탄소포집·환경·디지털 전환 등 기술 진행 상황에 대해 공동의 인식 확인. IMO NZF 달성을 위해 산업계의 지속적 데이터·기술 투입 필요, 기술 효과성 평가 체계 마련 검토. Non-Tripartite 단체의 WG 참여는 가능하나 회의 참석은 불가.</li>
+                    <li>(환경 규제 논의) 환경 규제 지형이 빠르게 가속, 선제적 대응 필요. 평형수, 그레이워터, Biofouling, 스크러버 배출 영향 등 환경규제 대응에 필요한 기준 정비 필요성 재확인. 그레이워터 WG(의장: BIMCO), Biofouling WG(의장: INTERCARGO) 신설 합의.</li>
+                    <li>(IMO NZF 워크숍) IMO NZF 채택 연기로 산업 전반에 불확실성 확대. 글로벌 단일 규제 프레임워크의 중요성 재확인. 추가로 확보된 시간을 활용해 이해관계자와 협업, 중기조치 설계·개선 필요. 선박 연료소비 절감의 지속적 필요성과 ESD·재생에너지 기술의 역할 강조.</li>
+                    <li>(안전 이슈 논의) 대체연료·혁신 설계 확산에 맞춰 '목표기반(Goal-based)' 접근 필요, 명확한 수용기준 제시가 관건. 소프트웨어 유지관리 및 시스템 통합 심화에 부합하는 강제 프레임워크 필요. IMO FRP WG 참여 권장.</li>
+                    <li>(MASS 논의) '원격제어→자동화→자율'로 이어지는 단계적접근. 인적요소의 재정의(역량·숙련도 요구 변화) 필요. JIWG SDT(MASS) 참여 독려.</li>
+                    <li>(추진 과제 도출) 각 세션별 후속 과제와 담당 WG를 재정비하고, 정례 점검 체계 재확인.</li>
+                </ul>
+            </div>
+
+            <div class="company-news">
+                <h3>• (주)서울데이타시스템</h3>
+                <h4>◆ 전력설계 및 에너지운영 솔루션의 대명사, ETAP & ETAP RT</h4>
+
+                <p>1986년에 설립된 ㈜서울데이타시스템은 30년이상 국내 전력 및 플랜트 산업분야의 비즈니스 파트너로서 글로벌 우수 프로그램과 솔루션을 발굴하여 국내 산업에 소개하고 있습니다. 특히 전력분야 대표 전력계통해석 프로그램인 ETAP의 대한민국 공식 공급사로 1994년부터 공급 및 기술지원, 교육서비스까지 진행하고 있으며, 이와 더불어 글로벌 전력분야 트랜드에 발맞춘 전력 에너지 관리 및 운영에 사용되는 전력관리 솔루션(ETAP RT) 등을 제공해 드리고 있습니다.</p>
+
+                <p>이번 2025 한국마린엔지니어링 후기학회에서 ETAP 전시부스에서는 조선 및 해양 전력을 비롯하여 신재생 에너지 발전(PV, Wind Turbine, Etc.) 에너지 운용, 저장에 이르기까지 거의 모든 부분에 적용할 수 있는 전력계통해석프로그램 ETAP과 지능형 전력관리 솔루션인 ETAP RT(Real-Time), 플랜트 배관 설계프로그램인 ROHR2까지 당사가 서비스해 드리고 있는 제품들을 소개해 드렸습니다.</p>
+
+                <h4>ETAP (Electrical Power System Analysis & Operation Software)</h4>
+                <p>ETAP은 전세계적으로 가장 많이 사용되고 있는 글로벌 No.1 전력계통 해석 및 설계 프로그램입니다.</p>
+
+                <h4>ETAP RT (Intelligent Power Management System for Operators, Managers & Engineers)</h4>
+                <p>ETAP RT는 시스템 운영자, 엔지니어 및 의사결정자를 위한 지능형 전력관리 솔루션으로 소규모에서 대규모 전력 시스템에 이르기까지 각 회사의 요구에 맞게 조정할 수 있습니다.</p>
+
+                <h4>ROHR2(Piping & Structure System Static and Dynamic Analysis)</h4>
+                <p>ROHR2는 Power Plant, 원자력 엔지니어링, 화학공장, 가스배관 설계 등에 사용되고 있는 플랜트 배관 설계 프로그램입니다.</p>
+            </div>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>(사)한국마린엔지니어링학회</strong></p>
+            <p>부산광역시 영도구 태종로 727 한국해양대학교 해사대학관 433호 (49112)</p>
+            <p>Tel : 051-405-1050/1054 | Fax : 051-405-1125</p>
+            <p>E-mail : kosme@kosme.or.kr | www.kosme.or.kr</p>
+            <p style="margin-top: 20px;">COPYRIGHT (C) 2008 사단법인 한국마린엔지니어링학회 ALL RIGHTS RESERVED.</p>
+        </div>
+    </div>
+
+    <div class="fab-container">
+        <button class="fab fab-top" id="fabTop" onclick="scrollToTop()">
+            <span>↑</span>
+            <span class="fab-tooltip">맨 위로</span>
+        </button>
+        <button class="fab fab-home" id="fabHome" onclick="goHome()">
+            <span>🏠</span>
+            <span class="fab-tooltip">홈으로</span>
+        </button>
+        <button class="fab fab-menu" id="fabMenu" onclick="toggleMenu()">
+            <span>☰</span>
+            <span class="fab-tooltip">메뉴</span>
+        </button>
+    </div>
+
+    <div class="image-modal" id="imageModal">
+        <button class="modal-close" onclick="closeModal(event)">×</button>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modalImage" src="" alt="">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        });
+
+        const stickyNav = document.getElementById('stickyNav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                stickyNav.classList.add('scrolled');
+            } else {
+                stickyNav.classList.remove('scrolled');
+            }
+        });
+
+        const fabTop = document.getElementById('fabTop');
+        const fabHome = document.getElementById('fabHome');
+        const fabMenu = document.getElementById('fabMenu');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                fabTop.classList.add('visible');
+                fabHome.classList.add('visible');
+                fabMenu.classList.add('visible');
+            } else {
+                fabTop.classList.remove('visible');
+                fabHome.classList.remove('visible');
+                fabMenu.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function goHome() {
+            window.location.href = 'index_complete.html';
+        }
+
+        function toggleMenu() {
+            stickyNav.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleAccordion(element) {
+            const content = element.nextElementSibling;
+            const isActive = element.classList.contains('active');
+
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.classList.remove('active');
+                header.nextElementSibling.classList.remove('active');
+            });
+
+            if (!isActive) {
+                element.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+
+        function openImageModal(imageSrc, caption) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
+
+            modal.classList.add('active');
+            modalImg.src = imageSrc;
+            modalCaption.textContent = caption || '';
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal(e);
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

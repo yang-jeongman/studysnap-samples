@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOSME Webzine Vol.49 No.6 - 인터랙티브 웹진</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .header .volume {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .intro h2 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .intro p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .phases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .phase-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: #2a5298;
+        }
+
+        .phase-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .phase-title {
+            color: #1e3c72;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .phase-subtitle {
+            color: #2a5298;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .phase-desc {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .features {
+            background: #f8f9fa;
+            padding: 40px;
+            margin-top: 50px;
+            border-radius: 15px;
+        }
+
+        .features h3 {
+            color: #1e3c72;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-item .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .feature-item h4 {
+            color: #2a5298;
+            margin-bottom: 8px;
+        }
+
+        .feature-item p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header .volume {
+                font-size: 1.2em;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .intro h2 {
+                font-size: 1.5em;
+            }
+
+            .phases {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 KOSME Webzine</h1>
+            <p class="subtitle">The Korean Society of Marine Engineering</p>
+            <p class="subtitle">한국마린엔지니어링학회</p>
+            <p class="volume">Vol. 49 No. 6 | November 2025</p>
+        </div>
+
+        <div class="content">
+            <div class="intro">
+                <h2>인터랙티브 디지털 웹진</h2>
+                <p>전통적인 PDF 형식을 넘어, 모바일 최적화된 인터랙티브 웹진으로 만나보세요.<br>
+                이미지 확대, 부드러운 네비게이션, 그리고 풍부한 시각적 경험을 제공합니다.</p>
+            </div>
+
+            <div class="phases">
+                <a href="KOSME_Webzine_Vol49_No6_Phase1_Complete.html" class="phase-card">
+                    <div class="phase-icon">📖</div>
+                    <div class="phase-title">Phase 1</div>
+                    <div class="phase-subtitle">표지 & 목차</div>
+                    <p class="phase-desc">권두언, 업체동정<br>(사)한국선급, (주)서울데이타시스템</p>
+                </a>
+
+                <a href="KOSME_Webzine_Vol49_No6_Phase2_Complete.html" class="phase-card">
+                    <div class="phase-icon">🔬</div>
+                    <div class="phase-title">Phase 2</div>
+                    <div class="phase-subtitle">특집 해설기사</div>
+                    <p class="phase-desc">암모니아 벙커링 안전거리<br>Strain Gauge Method</p>
+                </a>
+
+                <a href="KOSME_Webzine_Vol49_No6_Phase3_Complete.html" class="phase-card">
+                    <div class="phase-icon">💬</div>
+                    <div class="phase-title">Phase 3</div>
+                    <div class="phase-subtitle">인터뷰 & 상식</div>
+                    <p class="phase-desc">연구실 인터뷰<br>복합외상, 스마트선박 보안</p>
+                </a>
+
+                <a href="KOSME_Webzine_Vol49_No6_Phase4_Complete.html" class="phase-card">
+                    <div class="phase-icon">🎓</div>
+                    <div class="phase-title">Phase 4</div>
+                    <div class="phase-subtitle">연구자 & 학회소식</div>
+                    <p class="phase-desc">선배 연구자 인터뷰<br>ISMT2025, 후기학술대회</p>
+                </a>
+            </div>
+
+            <div class="features">
+                <h3>🌟 주요 기능</h3>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="icon">🖼️</div>
+                        <h4>이미지 확대</h4>
+                        <p>그래프, 다이어그램 클릭으로 풀스크린 확대</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">📊</div>
+                        <h4>실험 결과</h4>
+                        <p>고해상도 그래프와 데이터 시각화</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">🔄</div>
+                        <h4>부드러운 네비게이션</h4>
+                        <p>페이지 간 원활한 이동</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">📱</div>
+                        <h4>모바일 최적화</h4>
+                        <p>모든 기기에서 완벽한 경험</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">🎨</div>
+                        <h4>아코디언 뷰어</h4>
+                        <p>컴팩트한 정보 표시</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">⚡</div>
+                        <h4>빠른 로딩</h4>
+                        <p>최적화된 성능</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 주요 협력사 및 기술 이미지 -->
+        <div class="partners-section" style="background: #f8f9fa; padding: 50px 40px; margin-top: 50px;">
+            <h3 style="color: #1e3c72; font-size: 1.8em; margin-bottom: 30px; text-align: center;">
+                주요 협력사 및 기술
+            </h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto;">
+                <!-- 한국선급 -->
+                <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="images/page2_img1.jpeg" alt="한국선급" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 15px;">
+                    <p style="text-align: center; color: #2a5298; font-weight: 600; font-size: 1.1em;">한국선급 - 탄소중립을 향한 신뢰의 파트너</p>
+                    <p style="text-align: center; color: #666; font-size: 0.95em; margin-top: 8px;">Move towards carbon neutrality with your trusted partner, KR</p>
+                </div>
+
+                <!-- 엔진 시스템 1 -->
+                <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="images/page3_img1.png" alt="선박용 엔진 1" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 15px;">
+                    <p style="text-align: center; color: #2a5298; font-weight: 600; font-size: 1.1em;">Fig. 1. 차세대 선박용 대형 디젤 엔진 시스템</p>
+                </div>
+
+                <!-- 엔진 시스템 2 -->
+                <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="images/page3_img2.png" alt="선박용 엔진 2" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 15px;">
+                    <p style="text-align: center; color: #2a5298; font-weight: 600; font-size: 1.1em;">Fig. 2. 친환경 LNG 추진 시스템 구조도</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>(사)한국마린엔지니어링학회</strong></p>
+            <p>부산광역시 영도구 태종로 727 한국해양대학교 해사대학관 433호</p>
+            <p>Tel: 051-405-1050/1054 | E-mail: kosme@kosme.or.kr</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">© 2025 KOSME. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
