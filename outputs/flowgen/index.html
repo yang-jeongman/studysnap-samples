@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowGen - PDF를 모바일 최적화 웹페이지로</title>
+    <meta name="description" content="FlowGen - PDF 문서를 모바일 최적화 HTML로 변환하는 AI 기반 솔루션. StudySnap, JobLingo, K-MART 서비스 제공">
+    <meta name="keywords" content="PDF 변환, 모바일 최적화, AI, FlowGen, StudySnap, JobLingo, K-MART">
+    <meta property="og:title" content="FlowGen - makes you comfortable">
+    <meta property="og:description" content="PDF를 모바일 최적화 웹페이지로 변환하는 AI 솔루션">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --primary-dark: #5B21B6;
+            --secondary: #EC4899;
+            --accent: #F59E0B;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-gray: #F9FAFB;
+            --border: #E5E7EB;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo img {
+            height: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-contact {
+            background: var(--primary);
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+
+        .nav-contact:hover {
+            background: var(--primary-dark) !important;
+        }
+
+        /* Hero Section with PDF Upload */
+        .hero {
+            min-height: 100vh;
+            padding: 120px 5% 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-gray) 100%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* Upload Area */
+        .upload-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .upload-area {
+            background: white;
+            border: 2px dashed var(--border);
+            border-radius: 20px;
+            padding: 50px 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(124, 58, 237, 0.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .upload-area h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .upload-area p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        #fileName {
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        /* Category Select */
+        .category-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .convert-btn {
+            margin-top: 24px;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .convert-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress */
+        .progress-container {
+            display: none;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 12px;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Result */
+        .result-container {
+            display: none;
+            margin-top: 30px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+
+        .result-preview {
+            background: var(--bg-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .result-preview iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            padding: 12px 30px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            color: var(--text-dark);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 5%;
+            background: var(--bg-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .service-card .service-subtitle {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .service-card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: gap 0.3s;
+        }
+
+        .service-link:hover {
+            gap: 12px;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 5%;
+            background: var(--bg-gray);
+        }
+
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .contact-item h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 5%;
+            background: var(--text-dark);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+
+        .footer-logo {
+            margin-bottom: 16px;
+        }
+
+        .footer-logo img {
+            height: 30px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer p {
+            font-size: 0.85rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 100px 5% 60px;
+            }
+
+            .upload-area {
+                padding: 30px 20px;
+            }
+
+            .category-select {
+                gap: 8px;
+            }
+
+            .category-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo">
+            <img src="logo.png" alt="FlowGen">
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a href="#services">StudySnap</a>
+            <a href="https://foreign-language.netlify.app/" target="_blank">JobLingo</a>
+            <a href="#services">K-MART</a>
+            <a href="#contact" class="nav-contact">문의하기</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section with PDF Upload -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>✨</span>
+            <span>무료 체험 가능</span>
+        </div>
+        <h1>PDF를 <span>모바일 최적화</span><br>웹페이지로 변환</h1>
+        <p class="hero-subtitle">AI 기반 레이아웃 분석으로 A4 PDF 문서를 스마트폰에서도<br>편리하게 읽을 수 있는 반응형 웹페이지로 변환합니다.</p>
+
+        <div class="upload-container">
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📄</div>
+                <h3>PDF 파일을 드래그하거나 클릭하세요</h3>
+                <p>최대 10MB / PDF 파일만 가능</p>
+                <input type="file" id="fileInput" accept=".pdf">
+                <div id="fileName"></div>
+            </div>
+
+            <div class="category-select">
+                <button class="category-btn active" data-category="church">⛪ 교회 주보</button>
+                <button class="category-btn" data-category="election">🗳️ 선거 공보물</button>
+                <button class="category-btn" data-category="lecture">🎓 강의자료</button>
+                <button class="category-btn" data-category="newsletter">📰 소식지</button>
+            </div>
+
+            <button class="convert-btn" id="convertBtn" disabled>변환 시작하기</button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">변환 준비 중...</p>
+            </div>
+
+            <div class="result-container" id="resultContainer">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary);">✅ 변환 완료!</h3>
+                <div class="result-preview">
+                    <iframe id="resultPreview" src=""></iframe>
+                </div>
+                <div class="result-actions">
+                    <a href="#" class="convert-btn" id="downloadBtn" style="text-decoration: none;">HTML 다운로드</a>
+                    <button class="btn-secondary" onclick="resetDemo()">다른 파일 변환</button>
+                </div>
+                <p style="text-align: center; margin-top: 20px; color: var(--text-gray); font-size: 0.9rem;">
+                    💡 회원가입하시면 변환 결과물을 저장하고 관리할 수 있습니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>FlowGen 서비스</h2>
+            <p>비즈니스를 위한 스마트 솔루션을 제공합니다</p>
+        </div>
+
+        <div class="services-grid">
+            <!-- StudySnap -->
+            <div class="service-card">
+                <div class="service-icon">📄</div>
+                <h3>StudySnap</h3>
+                <p class="service-subtitle">PDF 변환 서비스</p>
+                <p>교회 주보, 선거 공보물, 강의자료, 소식지 등 PDF 문서를 모바일 최적화 HTML로 변환합니다. AI가 레이아웃을 분석하여 최적의 결과물을 제공합니다.</p>
+                <a href="#" class="service-link">
+                    자세히 보기 <span>→</span>
+                </a>
+            </div>
+
+            <!-- JobLingo -->
+            <div class="service-card">
+                <div class="service-icon">🗣️</div>
+                <h3>JobLingo</h3>
+                <p class="service-subtitle">직업별 외국어 학습</p>
+                <p>치과, 한의원, 호텔, 면세점, 레스토랑 등 직군별 전문 외국어를 AI 음성으로 학습하세요. 실무에서 바로 사용할 수 있는 표현을 배웁니다.</p>
+                <a href="https://foreign-language.netlify.app/" target="_blank" class="service-link">
+                    학습 시작하기 <span>→</span>
+                </a>
+            </div>
+
+            <!-- K-MART -->
+            <div class="service-card">
+                <div class="service-icon">🛒</div>
+                <h3>K-MART</h3>
+                <p class="service-subtitle">오픈채팅 유통관리</p>
+                <p>카카오톡 오픈채팅에서 주문받고 자동으로 집계! 소매점과 소비자 주문을 한 번에 관리하고, 도매점 발주까지 자동화하는 스마트 유통 솔루션입니다.</p>
+                <a href="#contact" class="service-link">
+                    문의하기 <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="section-header">
+                <h2>문의하기</h2>
+                <p>서비스에 대해 궁금한 점이 있으시면 편하게 연락주세요</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <h4>이메일</h4>
+                    <a href="mailto:jmyangkr@gmail.com">jmyangkr@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">💬</div>
+                    <h4>카카오톡</h4>
+                    <a href="https://open.kakao.com/o/sExample" target="_blank">채널 상담하기</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <h4>전화</h4>
+                    <a href="tel:010-8665-8150">010-8665-8150</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📝</div>
+                    <h4>문의 폼</h4>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScycVWiwej6urOV4uYezaME557XenAGeJZG-w6I9FpzKdOidQ/viewform" target="_blank">문의서 작성</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">
+            <img src="logo.png" alt="FlowGen">
+        </div>
+        <p>© 2025 FlowGen. makes you comfortable. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // API Endpoint
+        const API_BASE = 'http://115.21.251.90:8000';
+
+        let selectedFile = null;
+        let selectedCategory = 'church';
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // File Upload Handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const convertBtn = document.getElementById('convertBtn');
+        const fileName = document.getElementById('fileName');
+
+        // Drag and Drop
+        uploadArea.addEventListener('dragover', e => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/pdf') {
+                handleFile(file);
+            } else {
+                alert('PDF 파일만 업로드 가능합니다.');
+            }
+        });
+
+        fileInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        });
+
+        function handleFile(file) {
+            if (file.size > 10 * 1024 * 1024) {
+                alert('파일 크기는 10MB 이하여야 합니다.');
+                return;
+            }
+            selectedFile = file;
+            fileName.textContent = '📎 ' + file.name;
+            convertBtn.disabled = false;
+        }
+
+        // Category Selection
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedCategory = btn.dataset.category;
+            });
+        });
+
+        // Convert Button
+        convertBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const resultContainer = document.getElementById('resultContainer');
+
+            progressContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            convertBtn.disabled = true;
+
+            // Progress Animation
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressFill.style.width = progress + '%';
+
+                if (progress < 30) progressText.textContent = '📄 PDF 분석 중...';
+                else if (progress < 60) progressText.textContent = '🤖 AI 레이아웃 최적화 중...';
+                else progressText.textContent = '✨ HTML 생성 중...';
+            }, 500);
+
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('category', selectedCategory);
+
+                const response = await fetch(API_BASE + '/api/convert', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('변환 실패');
+
+                const result = await response.json();
+
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                progressText.textContent = '✅ 변환 완료!';
+
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    resultContainer.style.display = 'block';
+                    document.getElementById('resultPreview').src = result.preview_url || '#';
+                    document.getElementById('downloadBtn').href = result.download_url || '#';
+                }, 500);
+
+            } catch (error) {
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                progressText.textContent = '⚠️ 서버 연결이 필요합니다';
+
+                setTimeout(() => {
+                    alert('현재 데모 서버가 연결되지 않았습니다.\n\n문의하기를 통해 정식 서비스를 이용해 주세요!');
+                    progressContainer.style.display = 'none';
+                    convertBtn.disabled = false;
+                }, 1500);
+            }
+        });
+
+        function resetDemo() {
+            selectedFile = null;
+            fileInput.value = '';
+            fileName.textContent = '';
+            convertBtn.disabled = true;
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'none';
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+                // Close mobile menu
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
