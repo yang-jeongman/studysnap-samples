@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap - PDF를 모바일 최적화 웹페이지로 변환</title>
+    <meta name="description" content="StudySnap - AI 기반 PDF 변환 서비스. 교회 주보, 선거 공보물, 강의자료, 소식지를 모바일 최적화 HTML로 변환합니다.">
+    <meta name="keywords" content="PDF 변환, 모바일 최적화, 교회 주보, 선거 공보물, 강의자료, 소식지, StudySnap">
+    <meta property="og:title" content="StudySnap - PDF 변환 서비스">
+    <meta property="og:description" content="PDF를 모바일 최적화 웹페이지로 변환하는 AI 솔루션">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --primary-dark: #5B21B6;
+            --secondary: #EC4899;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-gray: #F9FAFB;
+            --bg-dark: #1F2937;
+            --border: #E5E7EB;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            height: 36px;
+        }
+
+        .nav-logo span {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-contact {
+            background: var(--primary);
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+
+        .nav-contact:hover {
+            background: var(--primary-dark) !important;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 5% 100px;
+            background: linear-gradient(135deg, #F3E8FF 0%, #E0E7FF 50%, #DBEAFE 100%);
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 60px 5%;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 100px 5%;
+            background: var(--bg-gray);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category Filter */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--text-gray);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .portfolio-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .portfolio-image {
+            position: relative;
+            height: 250px;
+            background: linear-gradient(135deg, #F3E8FF, #E0E7FF);
+            overflow: hidden;
+        }
+
+        .portfolio-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .portfolio-card:hover .portfolio-image img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(124, 58, 237, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .portfolio-card:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-overlay span {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .portfolio-category {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .portfolio-info {
+            padding: 24px;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .portfolio-info p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .portfolio-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .portfolio-tag {
+            background: var(--bg-gray);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 5%;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 40px 30px;
+            border-radius: 20px;
+            background: var(--bg-gray);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            background: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Demo Section */
+        .demo {
+            padding: 100px 5%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .demo h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .demo p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        .upload-area {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 50px 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .upload-area h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .upload-area p {
+            opacity: 0.8;
+            margin-bottom: 0;
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        #fileName {
+            margin-top: 16px;
+            font-weight: 600;
+        }
+
+        .category-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .category-btn.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        .convert-btn {
+            margin-top: 24px;
+            padding: 16px 48px;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .convert-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 5%;
+            background: var(--bg-gray);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 50px auto 0;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .contact-item h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 5%;
+            background: var(--bg-dark);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-gray);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+
+        .modal-iframe {
+            width: 100%;
+            height: 80vh;
+            border: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .category-select {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <img src="logo.png" alt="FlowGen">
+            <span>StudySnap</span>
+        </a>
+        <button class="mobile-menu-btn">☰</button>
+        <div class="nav-links">
+            <a href="#portfolio">포트폴리오</a>
+            <a href="#features">기능</a>
+            <a href="#demo">체험하기</a>
+            <a href="#contact" class="nav-contact">문의하기</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>📄</span>
+            <span>AI 기반 PDF 변환 서비스</span>
+        </div>
+        <h1>PDF를 <span>모바일 최적화</span><br>웹페이지로 변환</h1>
+        <p class="hero-subtitle">
+            교회 주보, 선거 공보물, 강의자료, 소식지를 AI가 분석하여<br>
+            스마트폰에서 편리하게 읽을 수 있는 반응형 HTML로 변환합니다.
+        </p>
+        <div class="hero-buttons">
+            <a href="#demo" class="btn btn-primary">무료 체험하기</a>
+            <a href="#portfolio" class="btn btn-secondary">포트폴리오 보기</a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">변환 완료</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">카테고리</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">99%</div>
+                <div class="stat-label">고객 만족도</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24h</div>
+                <div class="stat-label">빠른 응대</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="section-header">
+            <h2>포트폴리오</h2>
+            <p>실제 고객사의 PDF를 변환한 결과물입니다.<br>이미지를 클릭하면 실제 페이지를 확인할 수 있습니다.</p>
+        </div>
+
+        <div class="category-filter">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn" data-filter="church">⛪ 교회 주보</button>
+            <button class="filter-btn" data-filter="election">🗳️ 선거 공보물</button>
+            <button class="filter-btn" data-filter="lecture">🎓 강의자료</button>
+            <button class="filter-btn" data-filter="newsletter">📰 소식지</button>
+        </div>
+
+        <div class="portfolio-grid">
+            <!-- 교회 주보 - 여의도순복음교회 -->
+            <div class="portfolio-card" data-category="church" onclick="openModal('../Church/여의도순복음교회/2025-12-14.html')">
+                <div class="portfolio-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8B5CF6, #EC4899); display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 4rem;">⛪</span>
+                    </div>
+                    <span class="portfolio-category">교회 주보</span>
+                    <div class="portfolio-overlay">
+                        <span>미리보기 →</span>
+                    </div>
+                </div>
+                <div class="portfolio-info">
+                    <h3>여의도순복음교회</h3>
+                    <p>2025년 12월 14일 주보를 모바일 최적화 웹페이지로 변환. 예배 안내, 교회 소식, 성경 구절 팝업 기능 포함.</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">반응형</span>
+                        <span class="portfolio-tag">다크모드</span>
+                        <span class="portfolio-tag">성경 팝업</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 교회 주보 - 명성교회 -->
+            <div class="portfolio-card" data-category="church" onclick="openModal('../Church/명성교회/2025-12-07.html')">
+                <div class="portfolio-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #6366F1, #8B5CF6); display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 4rem;">⛪</span>
+                    </div>
+                    <span class="portfolio-category">교회 주보</span>
+                    <div class="portfolio-overlay">
+                        <span>미리보기 →</span>
+                    </div>
+                </div>
+                <div class="portfolio-info">
+                    <h3>명성교회</h3>
+                    <p>2025년 12월 7일 주보 변환. 예배 순서, 광고, 교회 소식을 모바일에서 편리하게 확인.</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">반응형</span>
+                        <span class="portfolio-tag">다크모드</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 선거 공보물 - 민주당 류삼영 -->
+            <div class="portfolio-card" data-category="election" onclick="openModal('../Election/Minjoo/류삼영/류삼영.html')">
+                <div class="portfolio-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #3B82F6, #1D4ED8); display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 4rem;">🗳️</span>
+                    </div>
+                    <span class="portfolio-category">선거 공보물</span>
+                    <div class="portfolio-overlay">
+                        <span>미리보기 →</span>
+                    </div>
+                </div>
+                <div class="portfolio-info">
+                    <h3>류삼영 후보 (더불어민주당)</h3>
+                    <p>국회의원 선거 공보물을 모바일 최적화. 후보 소개, 공약, 경력 사항을 인터랙티브하게 표현.</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">정당 테마</span>
+                        <span class="portfolio-tag">공약 정리</span>
+                        <span class="portfolio-tag">SNS 공유</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 선거 공보물 - 민주당 김병욱 -->
+            <div class="portfolio-card" data-category="election" onclick="openModal('../Election/Minjoo/김병욱/김병욱.html')">
+                <div class="portfolio-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2563EB, #1E40AF); display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 4rem;">🗳️</span>
+                    </div>
+                    <span class="portfolio-category">선거 공보물</span>
+                    <div class="portfolio-overlay">
+                        <span>미리보기 →</span>
+                    </div>
+                </div>
+                <div class="portfolio-info">
+                    <h3>김병욱 후보 (더불어민주당)</h3>
+                    <p>성남시 분당구을 국회의원 후보 공보물. 지역 공약과 정책을 모바일에서 쉽게 확인.</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">정당 테마</span>
+                        <span class="portfolio-tag">지역 공약</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 소식지 - KOSME 웹진 -->
+            <div class="portfolio-card" data-category="newsletter" onclick="openModal('../KOSME/KOSME_Webzine_Vol49_No6_All_In_One.html')">
+                <div class="portfolio-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #10B981, #059669); display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 4rem;">📰</span>
+                    </div>
+                    <span class="portfolio-category">소식지</span>
+                    <div class="portfolio-overlay">
+                        <span>미리보기 →</span>
+                    </div>
+                </div>
+                <div class="portfolio-info">
+                    <h3>KOSME 웹진 Vol.49 No.6</h3>
+                    <p>중소벤처기업진흥공단 웹진을 모바일 최적화. 기업 소식, 정책 안내, 성공 사례 등 다양한 콘텐츠.</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">반응형</span>
+                        <span class="portfolio-tag">이미지 최적화</span>
+                        <span class="portfolio-tag">목차 네비게이션</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 소식지 - 진보당 너머 -->
+            <div class="portfolio-card" data-category="newsletter" onclick="openModal('../Newsletter/진보당/neomeo_55_2025_12.html')">
+                <div class="portfolio-image">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #F59E0B, #D97706); display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 4rem;">📰</span>
+                    </div>
+                    <span class="portfolio-category">소식지</span>
+                    <div class="portfolio-overlay">
+                        <span>미리보기 →</span>
+                    </div>
+                </div>
+                <div class="portfolio-info">
+                    <h3>진보당 소식지 '너머' 55호</h3>
+                    <p>정당 소식지를 모바일에서 편리하게 읽을 수 있도록 변환. 기사별 구분과 이미지 최적화.</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">반응형</span>
+                        <span class="portfolio-tag">기사 구분</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2>주요 기능</h2>
+            <p>AI 기반 PDF 변환의 핵심 기능을 소개합니다</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI 레이아웃 분석</h3>
+                <p>Claude Vision AI가 PDF 구조를 자동 분석하여 최적의 모바일 레이아웃을 생성합니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>완벽한 반응형</h3>
+                <p>스마트폰, 태블릿, PC 등 모든 기기에서 최적화된 화면으로 표시됩니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌙</div>
+                <h3>다크모드 지원</h3>
+                <p>눈의 피로를 줄이는 다크모드와 글꼴 크기 조절 기능을 제공합니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>성경/찬송가 팝업</h3>
+                <p>교회 주보의 성경 구절과 찬송가 번호 클릭 시 내용이 팝업으로 표시됩니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>카테고리별 테마</h3>
+                <p>교회, 선거, 강의, 소식지 등 카테고리에 맞는 최적화된 디자인을 적용합니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>간편한 공유</h3>
+                <p>카카오톡, 문자, 이메일 등으로 손쉽게 공유할 수 있는 URL을 제공합니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo" id="demo">
+        <div class="demo-container">
+            <h2>무료 체험하기</h2>
+            <p>PDF 파일을 업로드하면 AI가 모바일 최적화 HTML로 변환해 드립니다</p>
+
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📄</div>
+                <h3>PDF 파일을 드래그하거나 클릭하세요</h3>
+                <p>최대 10MB / PDF 파일만 가능</p>
+                <input type="file" id="fileInput" accept=".pdf">
+                <div id="fileName"></div>
+            </div>
+
+            <div class="category-select">
+                <button class="category-btn active" data-category="church">⛪ 교회 주보</button>
+                <button class="category-btn" data-category="election">🗳️ 선거 공보물</button>
+                <button class="category-btn" data-category="lecture">🎓 강의자료</button>
+                <button class="category-btn" data-category="newsletter">📰 소식지</button>
+            </div>
+
+            <button class="convert-btn" id="convertBtn" disabled>변환 시작하기</button>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-header">
+            <h2>문의하기</h2>
+            <p>서비스에 대해 궁금한 점이 있으시면 편하게 연락주세요</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <h4>이메일</h4>
+                <a href="mailto:jmyangkr@gmail.com">jmyangkr@gmail.com</a>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">💬</div>
+                <h4>카카오톡</h4>
+                <a href="#" target="_blank">채널 상담하기</a>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <h4>전화</h4>
+                <a href="tel:010-8665-8150">010-8665-8150</a>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📝</div>
+                <h4>문의 폼</h4>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScycVWiwej6urOV4uYezaME557XenAGeJZG-w6I9FpzKdOidQ/viewform" target="_blank">문의서 작성</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">FlowGen 홈</a>
+            <a href="studysnap.html">StudySnap</a>
+            <a href="https://foreign-language.netlify.app/">JobLingo</a>
+            <a href="#contact">문의하기</a>
+        </div>
+        <p>© 2025 FlowGen. makes you comfortable. All rights reserved.</p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <iframe class="modal-iframe" id="modalIframe" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        function openModal(url) {
+            document.getElementById('modalIframe').src = url;
+            document.getElementById('previewModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('previewModal').classList.remove('active');
+            document.getElementById('modalIframe').src = '';
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('previewModal').addEventListener('click', (e) => {
+            if (e.target.id === 'previewModal') closeModal();
+        });
+
+        // Portfolio Filter
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.portfolio-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // File Upload
+        const fileInput = document.getElementById('fileInput');
+        const convertBtn = document.getElementById('convertBtn');
+        const fileName = document.getElementById('fileName');
+        let selectedFile = null;
+        let selectedCategory = 'church';
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('파일 크기는 10MB 이하여야 합니다.');
+                    return;
+                }
+                selectedFile = file;
+                fileName.textContent = '📎 ' + file.name;
+                convertBtn.disabled = false;
+            }
+        });
+
+        // Category Selection
+        document.querySelectorAll('.category-select .category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-select .category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedCategory = btn.dataset.category;
+            });
+        });
+
+        // Convert Button
+        convertBtn.addEventListener('click', () => {
+            if (!selectedFile) return;
+            alert('현재 데모 서버가 연결되지 않았습니다.\n\n정식 서비스를 이용하시려면 문의해 주세요!');
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
