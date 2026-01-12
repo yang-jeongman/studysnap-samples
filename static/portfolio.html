@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포트폴리오 - StudySnap PDF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4facfe;
+            --dark: #1e3c72;
+            --light: #f8f9fa;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--light);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            background: var(--gradient-primary);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            max-width: 1200px;
+            margin: -2rem auto 3rem;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-tab {
+            padding: 1rem 2rem;
+            background: white;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-tab.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Portfolio Grid */
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .portfolio-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .portfolio-image-container {
+            height: 250px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .portfolio-content {
+            padding: 2rem;
+        }
+
+        .portfolio-category {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: #f0f4ff;
+            color: var(--primary);
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .portfolio-description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .portfolio-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .portfolio-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--gradient-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-link:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Featured Project */
+        .featured-project {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 4rem;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .featured-image {
+            background: var(--gradient-primary);
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: white;
+        }
+
+        .featured-content {
+            padding: 4rem;
+        }
+
+        .featured-tag {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: var(--gradient-accent);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .featured-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .featured-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .featured-stat {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .featured-stat-label {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .featured-stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .challenge-solution {
+            margin-top: 2rem;
+        }
+
+        .challenge-solution h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .challenge-solution ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .challenge-solution li {
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .challenge-solution li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-image {
+                min-height: 300px;
+            }
+
+            .featured-content {
+                padding: 2rem;
+            }
+
+            .featured-title {
+                font-size: 1.8rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-tabs {
+                margin: -1rem auto 2rem;
+            }
+
+            .filter-tab {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">StudySnap PDF</a>
+            <ul class="nav-menu">
+                <li><a href="index.html#features">기능</a></li>
+                <li><a href="portfolio.html">포트폴리오</a></li>
+                <li><a href="pricing.html">가격</a></li>
+                <li><a href="contact.html">문의</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>포트폴리오</h1>
+        <p>실제 프로젝트로 검증된 품질과 성과</p>
+    </section>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">전체</button>
+        <button class="filter-tab" data-filter="academic">학술지/저널</button>
+        <button class="filter-tab" data-filter="newsletter">뉴스레터</button>
+        <button class="filter-tab" data-filter="education">교육 자료</button>
+        <button class="filter-tab" data-filter="corporate">기업 문서</button>
+    </div>
+
+    <!-- Portfolio Container -->
+    <div class="portfolio-container">
+        <!-- Featured Project -->
+        <div class="featured-project">
+            <div class="featured-grid">
+                <div class="featured-image">📚</div>
+                <div class="featured-content">
+                    <span class="featured-tag">⭐ Featured Case Study</span>
+                    <h2 class="featured-title">한국마린엔지니어링학회 웹진</h2>
+                    <p class="featured-description">
+                        56페이지 학술지를 4개 섹션(Phase 1-4)으로 최적화하여 100% 모바일 반응형 웹진으로 변환.
+                        복잡한 학술 콘텐츠를 직관적인 네비게이션 시스템으로 재구성했습니다.
+                    </p>
+
+                    <div class="featured-stats">
+                        <div class="featured-stat">
+                            <div class="featured-stat-label">로딩 속도 개선</div>
+                            <div class="featured-stat-value">3초 → 0.8초</div>
+                        </div>
+                        <div class="featured-stat">
+                            <div class="featured-stat-label">모바일 접근성</div>
+                            <div class="featured-stat-value">65% → 95%</div>
+                        </div>
+                        <div class="featured-stat">
+                            <div class="featured-stat-label">고객 만족도</div>
+                            <div class="featured-stat-value">⭐ 5/5</div>
+                        </div>
+                        <div class="featured-stat">
+                            <div class="featured-stat-label">프로젝트 기간</div>
+                            <div class="featured-stat-value">2주</div>
+                        </div>
+                    </div>
+
+                    <div class="challenge-solution">
+                        <h3>🎯 도전 과제</h3>
+                        <ul>
+                            <li>복잡한 학술 콘텐츠의 가독성 확보</li>
+                            <li>모바일에서도 빠른 로딩 속도 유지</li>
+                            <li>섹션별 독립적 탐색 기능 구현</li>
+                        </ul>
+
+                        <h3>💡 솔루션</h3>
+                        <ul>
+                            <li>Phase별 콘텐츠 분리로 초기 로딩 시간 단축</li>
+                            <li>직관적인 섹션 네비게이션 시스템</li>
+                            <li>모던한 그라디언트 디자인 적용</li>
+                            <li>반응형 레이아웃으로 모든 기기 지원</li>
+                        </ul>
+                    </div>
+
+                    <a href="/outputs/KOSME/webzine_vol49_phase1_mobile.html" class="portfolio-link" target="_blank">라이브 데모 보기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Grid -->
+        <div class="portfolio-grid">
+            <!-- Academic Journal -->
+            <div class="portfolio-card" data-category="academic">
+                <div class="portfolio-image-container">
+                    <span class="portfolio-badge">NEW</span>
+                    📚
+                </div>
+                <div class="portfolio-content">
+                    <span class="portfolio-category">학술지</span>
+                    <h3 class="portfolio-title">KOSME 학회지 Vol.49</h3>
+                    <p class="portfolio-description">
+                        한국마린엔지니어링학회의 학술지를 모바일 웹진으로 변환. 4개 Phase로 구성.
+                    </p>
+                    <div class="portfolio-metrics">
+                        <div class="metric">
+                            <span class="metric-value">56</span>
+                            <span class="metric-label">페이지</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">4</span>
+                            <span class="metric-label">섹션</span>
+                        </div>
+                    </div>
+                    <a href="/outputs/KOSME/webzine_vol49_phase1_mobile.html" class="portfolio-link" target="_blank">보기 →</a>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="portfolio-card" data-category="newsletter">
+                <div class="portfolio-image-container" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    📰
+                </div>
+                <div class="portfolio-content">
+                    <span class="portfolio-category">뉴스레터</span>
+                    <h3 class="portfolio-title">진보당 뉴스레터</h3>
+                    <p class="portfolio-description">
+                        정당 뉴스레터를 인터랙티브 웹진으로 변환. 정보 구조화 및 가독성 개선.
+                    </p>
+                    <div class="portfolio-metrics">
+                        <div class="metric">
+                            <span class="metric-value">300%</span>
+                            <span class="metric-label">열람률 증가</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">95%</span>
+                            <span class="metric-label">만족도</span>
+                        </div>
+                    </div>
+                    <a href="#" class="portfolio-link">보기 →</a>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="portfolio-card" data-category="education">
+                <div class="portfolio-image-container" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    📖
+                </div>
+                <div class="portfolio-content">
+                    <span class="portfolio-category">교육 자료</span>
+                    <h3 class="portfolio-title">대학교 강의 교재</h3>
+                    <p class="portfolio-description">
+                        PDF 강의 교재를 검색 가능한 웹북으로 변환. 학생 접근성 대폭 향상.
+                    </p>
+                    <div class="portfolio-metrics">
+                        <div class="metric">
+                            <span class="metric-value">95%</span>
+                            <span class="metric-label">학생 만족도</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">200</span>
+                            <span class="metric-label">페이지</span>
+                        </div>
+                    </div>
+                    <a href="#" class="portfolio-link">보기 →</a>
+                </div>
+            </div>
+
+            <!-- Corporate -->
+            <div class="portfolio-card" data-category="corporate">
+                <div class="portfolio-image-container" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    📊
+                </div>
+                <div class="portfolio-content">
+                    <span class="portfolio-category">기업 문서</span>
+                    <h3 class="portfolio-title">기업 연례 보고서</h3>
+                    <p class="portfolio-description">
+                        정적인 PDF 보고서를 인터랙티브 웹 문서로 전환. 데이터 시각화 강화.
+                    </p>
+                    <div class="portfolio-metrics">
+                        <div class="metric">
+                            <span class="metric-value">400%</span>
+                            <span class="metric-label">검색 효율</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">120</span>
+                            <span class="metric-label">페이지</span>
+                        </div>
+                    </div>
+                    <a href="#" class="portfolio-link">보기 →</a>
+                </div>
+            </div>
+
+            <!-- Church Bulletin -->
+            <div class="portfolio-card" data-category="newsletter">
+                <div class="portfolio-image-container" style="background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);">
+                    ⛪
+                </div>
+                <div class="portfolio-content">
+                    <span class="portfolio-category">주보</span>
+                    <h3 class="portfolio-title">교회 주보 웹진</h3>
+                    <p class="portfolio-description">
+                        여의도순복음교회 주보를 8개국어 지원 인터랙티브 웹진으로 변환.
+                    </p>
+                    <div class="portfolio-metrics">
+                        <div class="metric">
+                            <span class="metric-value">8</span>
+                            <span class="metric-label">다국어 지원</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">5/5</span>
+                            <span class="metric-label">만족도</span>
+                        </div>
+                    </div>
+                    <a href="/outputs/Church/여의도순복음교회/index.html" class="portfolio-link" target="_blank">보기 →</a>
+                </div>
+            </div>
+
+            <!-- Election -->
+            <div class="portfolio-card" data-category="corporate">
+                <div class="portfolio-image-container" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);">
+                    🗳️
+                </div>
+                <div class="portfolio-content">
+                    <span class="portfolio-category">선거 공보</span>
+                    <h3 class="portfolio-title">선거 공보물 웹진</h3>
+                    <p class="portfolio-description">
+                        후보자 선거 공보물을 인터랙티브 웹 페이지로 변환. 접근성 향상.
+                    </p>
+                    <div class="portfolio-metrics">
+                        <div class="metric">
+                            <span class="metric-value">350%</span>
+                            <span class="metric-label">조회수 증가</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">100%</span>
+                            <span class="metric-label">모바일 최적화</span>
+                        </div>
+                    </div>
+                    <a href="/outputs/Election/Minjoo/류삼영/RYU.html" class="portfolio-link" target="_blank">보기 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const portfolioCards = document.querySelectorAll('.portfolio-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const filter = tab.dataset.filter;
+
+                // Filter cards
+                portfolioCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, 100);
+                    } else {
+                        card.classList.remove('visible');
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        portfolioCards.forEach(card => {
+            observer.observe(card);
+        });
+
+        // Initialize all cards as visible
+        portfolioCards.forEach(card => card.classList.add('visible'));
+    </script>
+</body>
+</html>

@@ -81,6 +81,556 @@ class VisionOCR:
             logger.error(f"Vision OCR 텍스트 추출 오류: {str(e)}", exc_info=True)
             return ""
 
+    def extract_newsletter_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1, total_pages: int = 12) -> dict:
+        """지자체 소식지에서 구조화된 정보 추출"""
+        if not self.client:
+            return {"text": "", "structured": {}}
+
+        try:
+            if "base64," in image_base64:
+                image_base64 = image_base64.split("base64,")[1]
+
+            # 페이지별 맞춤 프롬프트 (광명소식 649호 구조 기반)
+            if page_number == 1:
+                prompt = """이 지자체 소식지 표지(1페이지)를 분석하세요.
+
+**추출 형식 (정확히 따라주세요):**
+
+[기본정보]
+제목: 광명소식
+호수: 제649호
+발행일: 2025년 10월 29일
+발행인: 광명시장 박승원
+
+[인트로]
+대분류: 인트로
+메인타이틀: (표지의 큰 제목, 예: 똑똑한 광명 생활)
+서브타이틀: (부제목이나 설명문)
+소개문구: (표지에 있는 짧은 소개 문구들)
+
+[이미지설명]
+표지이미지: (표지 사진/그래픽 설명)"""
+
+            elif page_number == 2:
+                prompt = """이 소식지 2페이지를 분석하세요. (스마트 도시 광명 특집)
+
+**중요: 텍스트를 정확하게 추출하세요!**
+- 모든 글자를 원본 그대로 추출 (오타, 추측 금지)
+- 한글 맞춤법 확인하며 추출
+- 불확실한 글자는 [?]로 표시
+- "취재현장" 또는 "현장취재" 섹션은 [현장취재]로 분류
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 스마트 도시 광명
+페이지제목: 똑똑하게 잘 생겼다
+페이지설명: (페이지 상단의 설명문 - 정확히)
+
+[기사목록]
+기사1:
+- 제목: (기사 제목 - 정확히)
+- 소제목: (있으면)
+- 내용: (기사 본문 전체 - 글자 하나하나 정확하게)
+- 담당부서: (부서명)
+- 연락처: (전화번호)
+
+기사2:
+- 제목:
+- 소제목:
+- 내용:
+- 담당부서:
+- 연락처:
+
+(모든 기사를 순서대로 추출)
+
+[현장취재] (있으면 - "취재현장" 박스)
+- 제목: (현장취재 제목)
+- 내용: (현장취재 본문 전체 - 정확하게)
+- 기자: (시민기자 또는 작성자 이름)
+
+[인터뷰] (있으면)
+- 인물: (이름, 직함)
+- 발언: (인터뷰 내용)"""
+
+            elif page_number == 3:
+                prompt = """이 소식지 3페이지를 분석하세요. (스마트 도시 광명 특집)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 스마트 도시 광명
+페이지제목: 똑똑하게 지켜줘요
+페이지설명: (페이지 상단의 설명문)
+
+[기사목록]
+기사1:
+- 제목: (기사 제목)
+- 소제목: (있으면)
+- 내용: (기사 본문 전체 - 최대한 상세히)
+- 담당부서:
+- 연락처:
+
+(모든 기사를 순서대로 추출)
+
+[인터뷰] (있으면)
+- 인물:
+- 발언:"""
+
+            elif page_number == 4:
+                prompt = """이 소식지 4페이지를 분석하세요. (스마트 도시 광명 특집)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 스마트 도시 광명
+페이지제목: 배움도 돌봄도 스마트하게
+페이지설명: (페이지 상단의 설명문)
+
+[기사목록]
+기사1:
+- 제목:
+- 소제목:
+- 내용: (기사 본문 전체)
+- 담당부서:
+- 연락처:
+
+(모든 기사를 순서대로 추출)"""
+
+            elif page_number == 5:
+                prompt = """이 소식지 5페이지를 분석하세요. (스마트 도시 광명 특집 - 복지관)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 스마트 도시 광명
+페이지제목: 녹색 비타민 '인생정원'
+페이지설명: 노년 일상의 활력 충전
+
+[기사목록]
+기사1:
+- 제목:
+- 소제목:
+- 내용: (기사 본문 전체 - 복지관 프로그램 등 상세히)
+- 시설명:
+- 위치:
+- 연락처:
+
+[인터뷰] (있으면)
+- 인물:
+- 발언:"""
+
+            elif page_number in [6, 7]:
+                prompt = f"""이 소식지 {page_number}페이지를 분석하세요. (배려하는 공동체 광명)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 배려하는 공동체 광명
+페이지제목: (층간소음 갈등 해소 관련 제목)
+페이지설명: (상단 설명문)
+
+[기사목록]
+기사1:
+- 제목:
+- 소제목:
+- 내용: (기사 본문 전체 - 층간소음 갈등해소 활동 상세히)
+- 성과: (수치, 통계 등)
+- 담당부서:
+- 연락처:
+
+[인터뷰/소감] (있으면)
+- 인물:
+- 발언:"""
+
+            elif page_number == 8:
+                prompt = """이 소식지 8페이지를 분석하세요. (장애인이 살기 좋은 도시 광명)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 장애인이 살기 좋은 도시 광명
+페이지제목: (메인 제목)
+페이지설명: (상단 설명문)
+
+[기사목록]
+기사1:
+- 제목:
+- 소제목:
+- 내용: (장애인 복지 관련 본문 전체)
+- 시설명: (있으면)
+- 위치:
+- 연락처:
+
+[시설정보] (있으면)
+- 시설명:
+- 주소:
+- 운영시간:
+- 프로그램:"""
+
+            elif page_number == 9:
+                prompt = """이 소식지 9페이지를 분석하세요. (누구나 살기 좋은 도시 광명)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 누구나 살기 좋은 도시 광명
+페이지제목: (메인 제목)
+페이지설명: (상단 설명문)
+
+[기사목록]
+기사1:
+- 제목:
+- 소제목:
+- 내용: (복지 정책 관련 본문 전체)
+- 담당부서:
+- 연락처:"""
+
+            elif page_number in [10, 11]:
+                prompt = f"""이 소식지 {page_number}페이지를 분석하세요. (광명 생활정보)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 광명 생활정보
+페이지제목: 광명 생활정보 {'가득' if page_number == 11 else ''}
+
+[생활정보목록]
+정보1:
+- 제목: (정보 제목)
+- 내용: (상세 내용 전체)
+- 기간: (있으면)
+- 장소: (있으면)
+- 대상: (있으면)
+- 문의: (담당부서, 전화번호)
+
+정보2:
+- 제목:
+- 내용:
+- 기간:
+- 장소:
+- 대상:
+- 문의:
+
+(모든 생활정보를 빠짐없이 추출)
+
+[안내사항]
+- (중요 공지 리스트)"""
+
+            elif page_number == 12:
+                prompt = """이 소식지 12페이지를 분석하세요. (광명시 캐릭터 탄생)
+
+**추출 형식:**
+
+[페이지정보]
+대분류: 캐릭터
+페이지제목: 광명시 캐릭터 탄생
+페이지설명: 짜잔~ 광명의 귀요미 4총사 탄생!
+
+[캐릭터소개]
+캐릭터1:
+- 이름: (캐릭터 이름)
+- 특징: (캐릭터 설명)
+
+캐릭터2:
+- 이름:
+- 특징:
+
+캐릭터3:
+- 이름:
+- 특징:
+
+캐릭터4:
+- 이름:
+- 특징:
+
+[추가정보]
+활용방안: (캐릭터 활용 계획)"""
+
+            else:
+                # 범용 프롬프트 (모든 지자체 소식지에 사용 가능)
+                prompt = f"""이 지자체 소식지 {page_number}페이지를 상세히 분석하세요.
+
+**추출 형식 (이 형식을 정확히 따라주세요):**
+
+[페이지정보]
+대분류: (이 페이지의 대주제, 예: 시정뉴스, 복지, 교육, 문화, 생활정보 등)
+페이지제목: (페이지 상단의 큰 제목)
+페이지설명: (부제목이나 설명문)
+
+[기사목록]
+기사1:
+- 제목: (기사 제목)
+- 소제목: (있으면)
+- 내용: (기사 본문 전체 - 최대한 상세히 추출)
+- 담당부서: (있으면)
+- 연락처: (전화번호)
+
+기사2:
+- 제목:
+- 소제목:
+- 내용:
+- 담당부서:
+- 연락처:
+
+(페이지에 있는 모든 기사를 순서대로 추출)
+
+[인터뷰] (있으면)
+- 인물: (이름, 직함)
+- 발언: (인터뷰 내용 또는 소감)
+
+[안내사항] (있으면)
+- 일정, 모집, 공지 등 중요 정보"""
+
+            message = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=4096,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": media_type,
+                                    "data": image_base64,
+                                },
+                            },
+                            {
+                                "type": "text",
+                                "text": prompt
+                            }
+                        ],
+                    }
+                ],
+            )
+
+            text = message.content[0].text.strip()
+            structured = self._parse_newsletter_response(text, page_number)
+
+            return {
+                "text": text,
+                "structured": structured
+            }
+
+        except Exception as e:
+            logger.error(f"소식지 정보 추출 오류 (페이지 {page_number}): {str(e)}", exc_info=True)
+            return {"text": "", "structured": {}}
+
+    def _parse_newsletter_response(self, text: str, page_number: int) -> dict:
+        """소식지 응답 파싱 (유연한 파싱)"""
+        import re
+
+        result = {
+            "page_num": page_number,
+            "category": "",        # 대분류
+            "page_title": "",      # 페이지 제목
+            "page_desc": "",       # 페이지 설명
+            "main_title": "",
+            "subtitle": "",
+            "articles": [],
+            "field_reports": [],
+            "interviews": [],
+            "info_items": [],
+            "characters": []       # 캐릭터 정보
+        }
+
+        lines = text.split('\n')
+        current_section = None
+        current_article = {}
+        current_report = {}
+        current_interview = {}
+        current_info = {}
+        in_article = False
+
+        for i, line in enumerate(lines):
+            line = line.strip()
+            if not line:
+                continue
+
+            # 기사N: 형식 감지 (기사1:, 기사2: 등)
+            article_match = re.match(r'^기사\s*(\d+)\s*:', line)
+            if article_match:
+                # 이전 기사 저장
+                if current_article and current_article.get('title'):
+                    result['articles'].append(current_article)
+                current_article = {}
+                in_article = True
+                current_section = 'article'
+                continue
+
+            # 섹션 헤더 감지 ([...] 형식)
+            if line.startswith('[') and ']' in line:
+                # 이전 항목 저장
+                if current_article and current_article.get('title'):
+                    result['articles'].append(current_article)
+                    current_article = {}
+                    in_article = False
+                if current_report and current_report.get('title'):
+                    result['field_reports'].append(current_report)
+                    current_report = {}
+                if current_interview and (current_interview.get('person') or current_interview.get('quote')):
+                    result['interviews'].append(current_interview)
+                    current_interview = {}
+                if current_info and current_info.get('title'):
+                    result['info_items'].append(current_info)
+                    current_info = {}
+
+                section_name = line.split(']')[0][1:]
+                current_section = section_name.lower()
+
+                # 기사목록 섹션
+                if '기사' in current_section:
+                    in_article = False  # 기사목록 시작, 개별 기사는 아직 아님
+                continue
+
+            # **제목** 형식 (마크다운 볼드)
+            bold_match = re.match(r'\*\*(.+?)\*\*', line)
+            if bold_match:
+                title_text = bold_match.group(1)
+                if in_article or '기사' in str(current_section):
+                    current_article['title'] = title_text
+                    in_article = True
+                elif not result.get('main_title'):
+                    result['main_title'] = title_text
+                continue
+
+            # 키: 값 파싱 (유연하게)
+            # "- 제목: 값" 또는 "• 제목: 값" 또는 "제목: 값" 형식 모두 지원
+            clean_line = re.sub(r'^[-•*]\s*', '', line)  # 앞의 불릿 제거
+            if ':' in clean_line and not clean_line.startswith('http'):
+                parts = clean_line.split(':', 1)
+                if len(parts) == 2:
+                    key = parts[0].strip().replace('-', '').replace('*', '').strip()
+                    value = parts[1].strip()
+
+                    if not value:
+                        continue
+
+                    key_lower = key.lower()
+
+                    # 대분류
+                    if key == '대분류':
+                        result['category'] = value
+
+                    # 페이지 제목
+                    elif key in ['페이지제목', '페이지 제목']:
+                        result['page_title'] = value
+
+                    # 페이지 설명
+                    elif key in ['페이지설명', '페이지 설명']:
+                        result['page_desc'] = value
+
+                    # 카테고리 (기존 호환)
+                    elif '카테고리' in key_lower or '페이지 카테고리' in key_lower:
+                        result['category'] = value
+
+                    # 메인 타이틀
+                    elif key in ['제목', '메인타이틀', '메인 타이틀'] and not in_article:
+                        result['main_title'] = value
+
+                    # 기사 제목 (현재 기사 내에서)
+                    elif key in ['제목'] and (in_article or '기사' in str(current_section) or 'article' in str(current_section)):
+                        if current_article and current_article.get('title'):
+                            result['articles'].append(current_article)
+                        current_article = {'title': value}
+                        in_article = True
+
+                    # 소제목 (기사 내)
+                    elif key in ['소제목'] and in_article:
+                        current_article['subtitle'] = value
+
+                    # 부제목/서브타이틀
+                    elif key in ['서브타이틀', '부제목', '부제']:
+                        if in_article:
+                            current_article['subtitle'] = value
+                        else:
+                            result['subtitle'] = value
+
+                    # 내용/요약
+                    elif key in ['내용요약', '요약', '내용', '상세내용', '본문']:
+                        if '현장' in str(current_section) or '취재' in str(current_section):
+                            current_report['content'] = value
+                        elif '인터뷰' in str(current_section):
+                            current_interview['quote'] = value
+                        elif '생활정보' in str(current_section) or '정보' in str(current_section):
+                            current_info['details'] = current_info.get('details', []) + [value]
+                        elif in_article or current_article:
+                            current_article['summary'] = current_article.get('summary', '') + value
+
+                    # 연락처
+                    elif key in ['담당부서', '연락처', '문의', '전화번호', '전화']:
+                        if current_article:
+                            current_article['contact'] = value
+                        elif current_info:
+                            current_info['details'] = current_info.get('details', []) + [f"문의: {value}"]
+
+                    # 기자/작성자
+                    elif key in ['기자', '작성자', '시민기자']:
+                        current_report['reporter'] = value
+
+                    # 인터뷰 대상
+                    elif key in ['인터뷰이', '이름', '대상', '인물']:
+                        current_interview['person'] = value
+
+                    # 발언/소감
+                    elif key in ['소감', '발언', '코멘트']:
+                        current_interview['quote'] = value
+
+                    # 아이콘
+                    elif key in ['아이콘', '이모지']:
+                        current_info['icon'] = value
+
+                    # 정보 제목
+                    elif key in ['정보명', '항목'] and '정보' in str(current_section):
+                        if current_info and current_info.get('title'):
+                            result['info_items'].append(current_info)
+                        current_info = {'title': value, 'details': []}
+
+                    # 호수/발행일
+                    elif key == '호수':
+                        result['issue'] = value
+                    elif key == '발행일':
+                        result['date'] = value
+                    elif key == '발행인':
+                        result['publisher'] = value
+
+            # 번호가 붙은 항목 (1. 제목, 2. 제목 등)
+            elif re.match(r'^\d+[\.\)]\s*', line):
+                # 새 기사일 가능성
+                item_text = re.sub(r'^\d+[\.\)]\s*', '', line)
+                if item_text and len(item_text) > 5:
+                    if current_article and current_article.get('title'):
+                        result['articles'].append(current_article)
+                    current_article = {'title': item_text}
+                    in_article = True
+
+        # 마지막 항목 저장
+        if current_article and current_article.get('title'):
+            result['articles'].append(current_article)
+        if current_report and current_report.get('title'):
+            result['field_reports'].append(current_report)
+        if current_interview and (current_interview.get('person') or current_interview.get('quote')):
+            result['interviews'].append(current_interview)
+        if current_info and current_info.get('title'):
+            result['info_items'].append(current_info)
+
+        # 카테고리가 없으면 텍스트에서 추출 시도
+        if not result['category']:
+            cat_patterns = [
+                r'카테고리[:\s]+([^\n]+)',
+                r'\[페이지 카테고리\]\s*\n*([^\n\[]+)',
+                r'(스마트 도시|복지|교육|생활정보|특집)',
+            ]
+            for pattern in cat_patterns:
+                match = re.search(pattern, text)
+                if match:
+                    result['category'] = match.group(1).strip()
+                    break
+
+        return result
+
     def extract_election_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1) -> dict:
         """선거 공보물에서 구조화된 정보 추출"""
         if not self.client:
@@ -418,10 +968,14 @@ class VisionOCR:
                 prompt = """**중요: 이 페이지에서 '오늘의 말씀' 또는 '금주의 말씀' 섹션을 찾아 정확히 추출하세요.**
 
 [오늘의 말씀]
-**절대 규칙: 이 PDF 페이지에 표시된 성경 말씀을 그대로 추출하세요.**
-**가상 예시나 다른 문서의 내용을 절대 사용하지 마세요!**
+**절대 규칙 (반드시 지켜야 함):**
+1. PDF에 보이는 성경 말씀을 **글자 그대로** 추출하세요.
+2. **말줄임표(…)가 있으면 그대로 "…" 로 출력**하세요. 절대로 뒷부분을 완성하지 마세요!
+3. PDF에 없는 단어나 문장을 **절대 추가하지 마세요**.
+4. 원본에 "…"로 끝나면 반드시 "…"로 끝내세요. **성경 본문을 완성하려 하지 마세요!**
+5. 가상 예시나 다른 문서의 내용을 절대 사용하지 마세요!
 
-본문: (이 페이지에 보이는 말씀 전체 텍스트 - 한 글자도 빠뜨리지 말고 그대로 추출)
+본문: (PDF에 보이는 말씀 텍스트 **글자 그대로** - 줄임표 포함, 완성하지 않음)
 출처: (PDF에 표시된 성경 구절 참조 그대로)
 
 [수요예배순]
@@ -1174,180 +1728,6 @@ class VisionOCR:
                 elif current_section == "questions":
                     if line.startswith("-") or line.startswith("•"):
                         result["questions"].append(line.lstrip("-•").strip())
-
-        return result
-
-    def extract_newsletter_info(self, image_base64: str, media_type: str = "image/jpeg", page_number: int = 1) -> dict:
-        """뉴스레터에서 구조화된 정보 추출"""
-        if not self.client:
-            return {"text": "", "structured": {}}
-
-        try:
-            if "base64," in image_base64:
-                image_base64 = image_base64.split("base64,")[1]
-
-            message = self.client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=8192,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "image",
-                                "source": {
-                                    "type": "base64",
-                                    "media_type": media_type,
-                                    "data": image_base64,
-                                },
-                            },
-                            {
-                                "type": "text",
-                                "text": f"""이 뉴스레터/소식지 이미지(페이지 {page_number})를 분석하여 구조화된 정보를 추출해주세요.
-
-**추출 형식:**
-
-[뉴스레터 정보]
-발행처: (조직/회사명)
-발행호: (예: 2024년 12월호, Vol.5)
-발행일: (날짜)
-
-[헤드라인 기사]
-제목: (메인 기사 제목)
-부제: (있는 경우)
-내용: (기사 전문)
-
-[서브 기사들]
-기사1:
-- 제목:
-- 카테고리: (사내소식/업계동향/인사/행사 등)
-- 요약:
-- 내용:
-
-기사2:
-- 제목:
-- 카테고리:
-- 요약:
-- 내용:
-
-[인터뷰/인물 소개] (있는 경우)
-대상:
-직위:
-내용:
-
-[이벤트/일정] (있는 경우)
-- 이벤트1: 날짜, 장소, 내용
-- 이벤트2: 날짜, 장소, 내용
-
-[공지사항] (있는 경우)
-- 공지1
-- 공지2
-
-[광고/배너] (있는 경우)
-- 광고1: 내용 설명
-- 광고2: 내용 설명
-
-**주의:**
-- 모든 텍스트를 순서대로 추출하세요
-- 기사별로 명확히 구분하세요
-- 이미지 캡션도 추출하세요"""
-                            }
-                        ],
-                    }
-                ],
-            )
-
-            raw_text = message.content[0].text.strip()
-            return {
-                "text": raw_text,
-                "structured": self._parse_newsletter_response(raw_text),
-                "page_number": page_number
-            }
-
-        except Exception as e:
-            logger.error(f"뉴스레터 정보 추출 오류: {str(e)}", exc_info=True)
-            return {"text": "", "structured": {}, "page_number": page_number}
-
-    def _parse_newsletter_response(self, text: str) -> dict:
-        """뉴스레터 응답을 구조화된 데이터로 파싱"""
-        result = {
-            "publisher": "",
-            "issue": "",
-            "date": "",
-            "headline": {"title": "", "subtitle": "", "content": ""},
-            "articles": [],
-            "interviews": [],
-            "events": [],
-            "announcements": [],
-            "ads": []
-        }
-
-        current_section = None
-        current_article = None
-        lines = text.split("\n")
-
-        for line in lines:
-            line = line.strip()
-            if not line:
-                continue
-
-            # 섹션 헤더
-            if "[뉴스레터 정보]" in line:
-                current_section = "info"
-            elif "[헤드라인" in line:
-                current_section = "headline"
-            elif "[서브 기사" in line:
-                current_section = "articles"
-            elif "[인터뷰" in line or "[인물" in line:
-                current_section = "interviews"
-            elif "[이벤트" in line or "[일정" in line:
-                current_section = "events"
-            elif "[공지" in line:
-                current_section = "announcements"
-            elif "[광고" in line or "[배너" in line:
-                current_section = "ads"
-            else:
-                if current_section == "info":
-                    if "발행처:" in line:
-                        result["publisher"] = line.split(":", 1)[1].strip()
-                    elif "발행호:" in line:
-                        result["issue"] = line.split(":", 1)[1].strip()
-                    elif "발행일:" in line:
-                        result["date"] = line.split(":", 1)[1].strip()
-                elif current_section == "headline":
-                    if "제목:" in line:
-                        result["headline"]["title"] = line.split(":", 1)[1].strip()
-                    elif "부제:" in line:
-                        result["headline"]["subtitle"] = line.split(":", 1)[1].strip()
-                    elif "내용:" in line:
-                        result["headline"]["content"] = line.split(":", 1)[1].strip()
-                elif current_section == "articles":
-                    if line.startswith("기사") and ":" in line:
-                        if current_article:
-                            result["articles"].append(current_article)
-                        current_article = {"title": "", "category": "", "summary": "", "content": ""}
-                    elif current_article:
-                        if "- 제목:" in line:
-                            current_article["title"] = line.split(":", 1)[1].strip()
-                        elif "- 카테고리:" in line:
-                            current_article["category"] = line.split(":", 1)[1].strip()
-                        elif "- 요약:" in line:
-                            current_article["summary"] = line.split(":", 1)[1].strip()
-                        elif "- 내용:" in line:
-                            current_article["content"] = line.split(":", 1)[1].strip()
-                elif current_section == "events":
-                    if line.startswith("-"):
-                        result["events"].append(line.lstrip("-•").strip())
-                elif current_section == "announcements":
-                    if line.startswith("-"):
-                        result["announcements"].append(line.lstrip("-•").strip())
-                elif current_section == "ads":
-                    if line.startswith("-"):
-                        result["ads"].append(line.lstrip("-•").strip())
-
-        # 마지막 기사 추가
-        if current_article and current_article.get("title"):
-            result["articles"].append(current_article)
 
         return result
 

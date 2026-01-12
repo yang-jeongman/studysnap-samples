@@ -1,6 +1,33 @@
 [build]
-  publish = "outputs"
+  publish = "StudySnap-Deploy"
   command = "echo 'No build needed'"
 
 [build.environment]
   NODE_VERSION = "18"
+
+# 성능 최적화 헤더
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # 캐싱 (1시간)
+    Cache-Control = "public, max-age=3600, s-maxage=86400"
+    # 압축 힌트
+    Accept-Encoding = "gzip, br"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    # HTML 파일 더 짧은 캐시 (5분)
+    Cache-Control = "public, max-age=300"
+    # 프리로드 힌트
+    Link = "</assets/favicon.png>; rel=preload; as=image"
+
+[[headers]]
+  for = "/samples/*"
+  [headers.values]
+    # 샘플 페이지 캐싱 (1일)
+    Cache-Control = "public, max-age=86400, immutable"
+
+# Edge 함수로 더 빠른 응답 (선택적)
+# [functions]
+#   directory = "netlify/functions"

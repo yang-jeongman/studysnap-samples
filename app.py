@@ -4421,37 +4421,28 @@ async def convert_church_bulletin_ai(
     church_name: str = Form(...),
     bulletin_date: str = Form(...),
     theme: str = Form("default"),
-    license_key: Optional[str] = Form(None)
+    license_key: Optional[str] = Form(None),
+    use_bulletin_ai: bool = Form(True)  # BulletinAI v4.0 사용 여부
 ):
     """
     Claude Vision AI를 사용한 교회 주보 PDF 변환
 
-    기존 regex 기반 변환 대신 Claude Vision API로 이미지 분석하여
-    고품질 구조화된 데이터 추출 후 HTML 생성
+    BulletinAI v4.0: Vision API 통합으로 섹션별 맞춤 추출
+    - 섹션별 최적화된 프롬프트
+    - 환각 감지 및 재시도
+    - 원본 텍스트 보존
 
     Args:
         license_key: 라이선스 키 (체험판 사용 시 필수)
+        use_bulletin_ai: BulletinAI v4.0 사용 여부 (기본값: True)
     """
     import fitz
-    from vision_ocr import VisionOCR
+    from learning_data.church_bulletin import get_bulletin_ai, reset_bulletin_ai
 
     if not file.filename.lower().endswith('.pdf'):
         raise HTTPException(status_code=400, detail="PDF 파일만 지원됩니다")
 
-    # 라이선스 검증 비활성화 (개발 모드)
-    # license_check = check_license_and_record_usage(license_key, "church_convert")
-    # if license_key and not license_check["valid"]:
-    #     raise HTTPException(
-    #         status_code=403,
-    #         detail=f"라이선스 오류: {license_check['message']}"
-    #     )
-
     try:
-        # Vision OCR 초기화
-        vision_ocr = VisionOCR()
-        if not vision_ocr.client:
-            raise HTTPException(status_code=500, detail="ANTHROPIC_API_KEY가 설정되지 않았습니다")
-
         # 교회 폴더 생성
         church_folder = OUTPUT_DIR / "Church" / church_name
         church_folder.mkdir(parents=True, exist_ok=True)
@@ -4465,51 +4456,94 @@ async def convert_church_bulletin_ai(
         with open(upload_path, "wb") as f:
             f.write(content)
 
-        # PDF 페이지를 이미지로 변환하고 Claude Vision으로 분석
-        doc = fitz.open(str(upload_path))
-        page_count = len(doc)
+        # BulletinAI v4.0 사용
+        if use_bulletin_ai:
+            logger.info(f"[BulletinAI v4.0] AI 변환 시작: {church_name}")
 
-        all_extracted_data = []
-        combined_text = ""
+            # 새 인스턴스로 시작 (이전 캐시 제거)
+            reset_bulletin_ai()
+            bulletin_ai = get_bulletin_ai()
 
-        logger.info(f"AI 변환 시작: {church_name}, {page_count}페이지")
+            if not bulletin_ai.client:
+                raise HTTPException(status_code=500, detail="ANTHROPIC_API_KEY가 설정되지 않았습니다")
 
-        for page_num in range(page_count):
-            page = doc[page_num]
+            # PDF 로드
+            if not bulletin_ai.load_pdf(content):
+                raise HTTPException(status_code=500, detail="PDF 로드 실패")
 
-            # 페이지를 이미지로 변환 (DPI 150)
-            mat = fitz.Matrix(150/72, 150/72)
-            pix = page.get_pixmap(matrix=mat)
-            img_data = pix.tobytes("jpeg")
+            # 페이지 수 설정 (BulletinAI에서 로드된 이미지 수)
+            page_count = len(bulletin_ai.page_images)
+            logger.info(f"[BulletinAI v4.0] PDF 로드 완료: {page_count}페이지")
 
-            # Base64 인코딩
-            import base64
-            image_base64 = base64.b64encode(img_data).decode('utf-8')
+            # 모든 섹션 추출
+            logger.info("[BulletinAI v4.0] 섹션별 데이터 추출 시작...")
+            extracted_sections = bulletin_ai.extract_all()
 
-            # Claude Vision으로 분석
-            logger.info(f"페이지 {page_num + 1}/{page_count} 분석 중...")
-            result = vision_ocr.extract_church_bulletin_info(
-                image_base64=image_base64,
-                media_type="image/jpeg",
-                page_number=page_num + 1
-            )
+            # merged_data 구성
+            merged_data = {
+                "today_verse": extracted_sections.get("today_verse", {}),
+                "worship_services": extracted_sections.get("worship_services", {}).get("services", []),
+                "common_order": extracted_sections.get("worship_services", {}).get("common_order", {}),
+                "sermon": extracted_sections.get("sermon_word", {}),
+                "devotional": extracted_sections.get("devotional", {}),
+                "news": extracted_sections.get("church_news", {}),
+                "choir": extracted_sections.get("choir", {}),
+                "church_info": {"name": church_name, "date": bulletin_date},
+            }
 
-            all_extracted_data.append({
-                "page": page_num + 1,
-                "text": result.get("text", ""),
-                "structured": result.get("structured", {})
-            })
-            combined_text += result.get("text", "") + "\n\n"
+            combined_text = ""  # BulletinAI는 구조화된 데이터 사용
+            logger.info(f"[BulletinAI v4.0] 추출 완료: {list(extracted_sections.keys())}")
 
-        doc.close()
+        else:
+            # 기존 방식 (vision_ocr.py 사용)
+            from vision_ocr import VisionOCR
 
-        # 추출된 데이터 통합
-        merged_data = _merge_church_bulletin_data(all_extracted_data)
+            vision_ocr = VisionOCR()
+            if not vision_ocr.client:
+                raise HTTPException(status_code=500, detail="ANTHROPIC_API_KEY가 설정되지 않았습니다")
+
+            doc = fitz.open(str(upload_path))
+            page_count = len(doc)
+
+            all_extracted_data = []
+            combined_text = ""
+
+            logger.info(f"AI 변환 시작 (레거시 모드): {church_name}, {page_count}페이지")
+
+            for page_num in range(page_count):
+                page = doc[page_num]
+                mat = fitz.Matrix(150/72, 150/72)
+                pix = page.get_pixmap(matrix=mat)
+                img_data = pix.tobytes("jpeg")
+
+                import base64
+                image_base64 = base64.b64encode(img_data).decode('utf-8')
+
+                logger.info(f"페이지 {page_num + 1}/{page_count} 분석 중...")
+                result = vision_ocr.extract_church_bulletin_info(
+                    image_base64=image_base64,
+                    media_type="image/jpeg",
+                    page_number=page_num + 1
+                )
+
+                all_extracted_data.append({
+                    "page": page_num + 1,
+                    "text": result.get("text", ""),
+                    "structured": result.get("structured", {})
+                })
+                combined_text += result.get("text", "") + "\n\n"
+
+            doc.close()
+
+            # 추출된 데이터 통합
+            merged_data = _merge_church_bulletin_data(all_extracted_data)
 
         # 다국어 번역 수행 (선택적 - API 호출 비용 고려)
         try:
             logger.info("다국어 번역 시작...")
-            translations = vision_ocr.translate_church_bulletin_content(merged_data)
+            from vision_ocr import VisionOCR
+            vision_ocr_for_translation = VisionOCR()
+            translations = vision_ocr_for_translation.translate_church_bulletin_content(merged_data)
             merged_data['translations'] = translations
             logger.info(f"번역 완료: {len(translations)} 언어")
         except Exception as trans_error:

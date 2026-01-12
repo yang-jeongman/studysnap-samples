@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가격 정책 - StudySnap PDF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4facfe;
+            --dark: #1e3c72;
+            --light: #f8f9fa;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--light);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            background: var(--gradient-primary);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Calculator Section */
+        .calculator-section {
+            max-width: 800px;
+            margin: -3rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .calculator-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .calculator-group {
+            margin-bottom: 2rem;
+        }
+
+        .calculator-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .slider-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .slider-value {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #f0f4ff;
+            color: var(--primary);
+            border-radius: 10px;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-label:hover {
+            background: #f0f4ff;
+        }
+
+        .checkbox-label input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .radio-label:hover {
+            border-color: var(--primary);
+        }
+
+        .radio-label input:checked + span {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .radio-label input {
+            display: none;
+        }
+
+        /* Result */
+        .calculator-result {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+        }
+
+        .result-label {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .result-price {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-duration {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .result-cta {
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .result-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Pricing Plans */
+        .pricing-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-card.featured {
+            border: 3px solid var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            padding: 0.5rem 1.5rem;
+            background: var(--gradient-accent);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .pricing-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-price small {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .pricing-cta {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Additional Services */
+        .additional-services {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-price {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .calculator-card {
+                padding: 2rem;
+            }
+
+            .result-price {
+                font-size: 2rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">StudySnap PDF</a>
+            <ul class="nav-menu">
+                <li><a href="index.html#features">기능</a></li>
+                <li><a href="portfolio.html">포트폴리오</a></li>
+                <li><a href="pricing.html">가격</a></li>
+                <li><a href="contact.html">문의</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>가격 정책</h1>
+        <p>투명하고 합리적인 가격으로 최고의 품질을 제공합니다</p>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="calculator-section">
+        <div class="calculator-card">
+            <h2 class="calculator-title">💰 즉시 견적 받기</h2>
+
+            <div class="calculator-group">
+                <label class="calculator-label">페이지 수</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="200" value="20" class="slider" id="pageSlider">
+                    <div class="slider-value">
+                        <span id="pageValue">20</span> 페이지
+                    </div>
+                </div>
+            </div>
+
+            <div class="calculator-group">
+                <label class="calculator-label">섹션 수</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="10" value="1" class="slider" id="sectionSlider">
+                    <div class="slider-value">
+                        <span id="sectionValue">1</span> 섹션
+                    </div>
+                </div>
+            </div>
+
+            <div class="calculator-group">
+                <label class="calculator-label">추가 옵션</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="customDesign">
+                        <span>커스텀 디자인 (+₩500,000)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="multilingual">
+                        <span>다국어 지원 (+₩800,000)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="interactive">
+                        <span>고급 인터랙션 (+₩600,000)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="cms">
+                        <span>CMS 통합 (+₩1,000,000)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="calculator-group">
+                <label class="calculator-label">긴급도</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="urgency" value="1" checked>
+                        <span>1개월</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="urgency" value="1.3">
+                        <span>2주<br>(+30%)</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="urgency" value="1.5">
+                        <span>1주<br>(+50%)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="calculator-result">
+                <div class="result-label">예상 금액</div>
+                <div class="result-price" id="totalPrice">₩1,500,000</div>
+                <div class="result-duration">예상 기간: <span id="duration">14일</span></div>
+                <a href="contact.html" class="result-cta">상세 견적서 받기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section class="pricing-section">
+        <div class="section-header">
+            <h2 class="section-title">패키지 플랜</h2>
+            <p class="section-subtitle">프로젝트 규모에 맞는 최적의 플랜을 선택하세요</p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Basic -->
+            <div class="pricing-card">
+                <div class="pricing-icon">🥉</div>
+                <h3 class="pricing-name">Basic</h3>
+                <div class="pricing-price">
+                    ₩1,500,000
+                    <small>부터</small>
+                </div>
+                <ul class="pricing-features">
+                    <li>20페이지 이하</li>
+                    <li>기본 템플릿</li>
+                    <li>모바일 반응형</li>
+                    <li>1회 수정</li>
+                    <li>7일 배포</li>
+                </ul>
+                <a href="contact.html" class="pricing-cta">문의하기</a>
+            </div>
+
+            <!-- Professional -->
+            <div class="pricing-card featured">
+                <span class="pricing-badge">인기</span>
+                <div class="pricing-icon">🥈</div>
+                <h3 class="pricing-name">Professional</h3>
+                <div class="pricing-price">
+                    ₩3,000,000
+                    <small>부터</small>
+                </div>
+                <ul class="pricing-features">
+                    <li>50페이지 이하</li>
+                    <li>커스텀 디자인</li>
+                    <li>인터랙티브 요소</li>
+                    <li>3회 수정</li>
+                    <li>섹션별 네비게이션</li>
+                    <li>14일 배포</li>
+                </ul>
+                <a href="contact.html" class="pricing-cta">문의하기</a>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="pricing-card">
+                <div class="pricing-icon">🥇</div>
+                <h3 class="pricing-name">Enterprise</h3>
+                <div class="pricing-price">
+                    ₩5,000,000
+                    <small>부터</small>
+                </div>
+                <ul class="pricing-features">
+                    <li>무제한 페이지</li>
+                    <li>완전 커스텀 디자인</li>
+                    <li>고급 인터랙션</li>
+                    <li>무제한 수정</li>
+                    <li>CMS 통합</li>
+                    <li>다국어 지원</li>
+                    <li>전담 PM 배정</li>
+                    <li>30일 배포</li>
+                </ul>
+                <a href="contact.html" class="pricing-cta">문의하기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Services -->
+    <section class="additional-services">
+        <div class="section-header">
+            <h2 class="section-title">추가 서비스</h2>
+            <p class="section-subtitle">필요한 서비스를 선택하여 추가할 수 있습니다</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <h3 class="service-name">유지보수</h3>
+                <div class="service-price">월 ₩300,000~</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📝</div>
+                <h3 class="service-name">콘텐츠 업데이트</h3>
+                <div class="service-price">건당 ₩100,000~</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📄</div>
+                <h3 class="service-name">추가 페이지</h3>
+                <div class="service-price">10p당 ₩500,000~</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌏</div>
+                <h3 class="service-name">다국어 추가</h3>
+                <div class="service-price">언어당 ₩800,000~</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Calculator logic
+        const pageSlider = document.getElementById('pageSlider');
+        const sectionSlider = document.getElementById('sectionSlider');
+        const pageValue = document.getElementById('pageValue');
+        const sectionValue = document.getElementById('sectionValue');
+        const totalPrice = document.getElementById('totalPrice');
+        const duration = document.getElementById('duration');
+
+        const customDesign = document.getElementById('customDesign');
+        const multilingual = document.getElementById('multilingual');
+        const interactive = document.getElementById('interactive');
+        const cms = document.getElementById('cms');
+
+        function calculatePrice() {
+            const pages = parseInt(pageSlider.value);
+            const sections = parseInt(sectionSlider.value);
+
+            // Base price calculation
+            let basePrice = 0;
+            if (pages <= 20) {
+                basePrice = 1500000;
+            } else if (pages <= 50) {
+                basePrice = 3000000;
+            } else if (pages <= 100) {
+                basePrice = 5000000;
+            } else {
+                basePrice = 5000000 + ((pages - 100) * 50000);
+            }
+
+            // Section multiplier
+            basePrice += (sections - 1) * 500000;
+
+            // Add-ons
+            if (customDesign.checked) basePrice += 500000;
+            if (multilingual.checked) basePrice += 800000;
+            if (interactive.checked) basePrice += 600000;
+            if (cms.checked) basePrice += 1000000;
+
+            // Urgency multiplier
+            const urgency = parseFloat(document.querySelector('input[name="urgency"]:checked').value);
+            basePrice *= urgency;
+
+            // Calculate duration
+            let days = 14;
+            if (pages > 50) days = 21;
+            if (pages > 100) days = 30;
+            if (urgency > 1.2) days = Math.floor(days / urgency);
+
+            // Update display
+            totalPrice.textContent = '₩' + basePrice.toLocaleString('ko-KR');
+            duration.textContent = days + '일';
+        }
+
+        // Event listeners
+        pageSlider.addEventListener('input', (e) => {
+            pageValue.textContent = e.target.value;
+            calculatePrice();
+        });
+
+        sectionSlider.addEventListener('input', (e) => {
+            sectionValue.textContent = e.target.value;
+            calculatePrice();
+        });
+
+        customDesign.addEventListener('change', calculatePrice);
+        multilingual.addEventListener('change', calculatePrice);
+        interactive.addEventListener('change', calculatePrice);
+        cms.addEventListener('change', calculatePrice);
+
+        document.querySelectorAll('input[name="urgency"]').forEach(radio => {
+            radio.addEventListener('change', calculatePrice);
+        });
+
+        // Initialize
+        calculatePrice();
+    </script>
+</body>
+</html>

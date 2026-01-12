@@ -91,6 +91,130 @@
         "'새벽' → '새벽기도회'로 변경"
       ],
       "result": "명확한 예배 구분 표시"
+    },
+    {
+      "phase": "BulletinAI 기반 UI 생성 체계 구축",
+      "date": "2026-01-09",
+      "issues": [
+        "전문가가 직접 코드를 수정하여 학습 체계가 없었음",
+        "오늘의 말씀 섹션 UI 개선 요청 (따옴표, 좌측정렬, 괄호, 흰색, 아코디언)"
+      ],
+      "solutions": [
+        "ui_rules.json 학습 규칙 파일 생성",
+        "BulletinAI에 generate_todays_verse_html() 메서드 추가",
+        "church_html_generator.py에서 BulletinAI 호출로 변경",
+        "전문가 직접 수정 금지 원칙 수립"
+      ],
+      "result": "BulletinAI가 학습된 규칙에 따라 UI를 생성하는 체계 구축",
+      "learning_notes": [
+        "모든 UI 변경은 BulletinAI가 학습하고 작업한다",
+        "새로운 기능 요청 시 먼저 학습 데이터에 규칙 저장",
+        "이전의 잘못된 데이터는 남기지 않고 새롭게 개선된 기능으로 대체",
+        "fg-converter.html ↔ church_html_generator.py 연동이 원칙"
+      ],
+      "ui_rules": {
+        "todays_verse": {
+          "wrap_with_quotes": true,
+          "text_align": "left",
+          "reference_in_parentheses": true,
+          "text_color": "white",
+          "accordion_enabled": true
+        }
+      }
+    },
+    {
+      "phase": "예배순서 섹션 BulletinAI 학습 체계 구축",
+      "date": "2026-01-09",
+      "issues": [
+        "예배순서 섹션 제목이 하드코딩되어 절기/행사별 변경 불가",
+        "이전 주보 데이터가 재활용되어 정확하지 않은 정보 표시",
+        "부별 예배 정보(찬송, 성경봉독, 설교)가 정확히 분리되지 않음"
+      ],
+      "solutions": [
+        "ui_rules.json에 worship_order 섹션 규칙 추가",
+        "BulletinAI에 generate_worship_order_html() 메서드 추가",
+        "extract_worship_services 프롬프트 전면 개선 (섹션 제목, 순서, 부별 정보 추출)",
+        "church_html_generator.py에서 BulletinAI 호출로 변경"
+      ],
+      "result": "예배순서가 PDF 원본에서 정확하게 추출되어 동적으로 생성됨",
+      "learning_notes": [
+        "섹션 제목은 절대 하드코딩하지 않고 PDF 원본에서 그대로 추출",
+        "예배 순서는 위→아래 순서를 정확히 유지",
+        "부별로 다른 정보(찬송, 성경봉독, 설교)는 탭으로 전환 가능",
+        "이전 주보 데이터 재활용 금지 - 오직 현재 PDF에서만 추출"
+      ],
+      "ui_rules": {
+        "worship_order": {
+          "title_dynamic": true,
+          "title_from_pdf": true,
+          "order_preserve_sequence": true,
+          "service_tabs_enabled": true,
+          "no_data_reuse": true
+        }
+      }
+    },
+    {
+      "phase": "BulletinAI 데이터 구조 호환성 수정",
+      "date": "2026-01-09",
+      "issues": [
+        "AttributeError: 'str' object has no attribute 'get'",
+        "BulletinAI의 새 worship_services 구조(dict with services key)와 기존 코드(list 예상) 불일치"
+      ],
+      "solutions": [
+        "_extract_bulletin_info에서 BulletinAI 새 구조 감지 및 변환 로직 추가",
+        "services dict를 list로 변환하여 _convert_structured_services 호출",
+        "_convert_structured_services에 타입 안전성 검사 추가",
+        "worship_section_title, worship_section_title_en을 info에 저장",
+        "_build_worship_section에서 동적 섹션 제목 사용"
+      ],
+      "result": "BulletinAI 새 구조와 기존 코드가 호환되어 정상 동작",
+      "code_changes": {
+        "file": "church_html_generator.py",
+        "lines_modified": ["361-385 (_extract_bulletin_info)", "420-440 (structured_data)", "826-847 (_convert_structured_services)", "4820-4836 (_build_worship_section)"]
+      },
+      "learning_notes": [
+        "데이터 구조 변경 시 호환성 레이어 필요",
+        "타입 안전성 검사로 런타임 에러 방지",
+        "BulletinAI 구조: {section_title, services: {'1부': {...}, ...}}",
+        "기존 구조: [{name: '1부', ...}, ...]"
+      ]
+    },
+    {
+      "phase": "예배순서 PDF 원본 형식 출력",
+      "date": "2026-01-09",
+      "issues": [
+        "성경봉독과 설교가 부별로 다른데 구분 표시 안됨",
+        "PDF 원본의 점선(·····) 형식이 반영되지 않음",
+        "부별 정보가 한눈에 파악되지 않음"
+      ],
+      "solutions": [
+        "generate_worship_order_html() 메서드 전면 재작성",
+        "_build_order_item_row() 헬퍼 메서드 추가 (점선 구분자 스타일)",
+        "_build_scripture_details() 헬퍼 메서드 추가 (부별 성경봉독 표시)",
+        "_build_sermon_details() 헬퍼 메서드 추가 (부별 설교 표시)",
+        "ui_rules.json에 pdf_original_format 규칙 추가"
+      ],
+      "result": "예배순서가 PDF 원본 형식(점선, 부별 서브로우)으로 정확하게 출력됨",
+      "learning_notes": [
+        "PDF 원본 형식: 항목명 ···· 내용/구절 ···· 담당자",
+        "부별로 다른 항목(성경봉독, 설교)은 메인 행 아래 들여쓰기된 서브로우로 표시",
+        "sermon_pastor 또는 preacher 둘 다 지원하도록 호환성 확보",
+        "점선 스타일: letter-spacing: 2px, color: rgba(0,0,0,0.3)"
+      ],
+      "code_changes": {
+        "file": "learning_data/church_bulletin/bulletin_ai.py",
+        "methods_added": ["_build_order_item_row()", "_build_scripture_details()", "_build_sermon_details()"],
+        "methods_modified": ["generate_worship_order_html()"]
+      },
+      "ui_rules": {
+        "pdf_original_format": {
+          "enabled": true,
+          "separator": "dotted_line",
+          "sub_row_for_services": true,
+          "scripture_reading_by_service": true,
+          "sermon_by_service": true
+        }
+      }
     }
   ],
   "church_presets": {

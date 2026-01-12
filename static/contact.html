@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 - StudySnap PDF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4facfe;
+            --dark: #1e3c72;
+            --light: #f8f9fa;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--light);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            background: var(--gradient-primary);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Contact Container */
+        .contact-container {
+            max-width: 1200px;
+            margin: -3rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .info-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .info-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .info-content p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .contact-hours {
+            padding: 1.5rem;
+            background: #f0f4ff;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .contact-hours h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .contact-hours p {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Form */
+        .contact-form {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: #f5576c;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 2rem;
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: #f0f4ff;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-text {
+            color: var(--text-light);
+        }
+
+        .file-name {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: #f0f4ff;
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            display: none;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .radio-label {
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .radio-label:hover {
+            border-color: var(--primary);
+            background: #f0f4ff;
+        }
+
+        .radio-label input {
+            display: none;
+        }
+
+        .radio-label input:checked + span {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            padding: 2rem;
+            background: var(--gradient-success);
+            color: white;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .faq-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: #f8f9fa;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 2rem 1.5rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form,
+            .contact-info {
+                padding: 2rem;
+            }
+
+            .radio-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">StudySnap PDF</a>
+            <ul class="nav-menu">
+                <li><a href="index.html#features">기능</a></li>
+                <li><a href="portfolio.html">포트폴리오</a></li>
+                <li><a href="pricing.html">가격</a></li>
+                <li><a href="contact.html">문의</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>문의하기</h1>
+        <p>프로젝트에 대해 상담해 드립니다</p>
+    </section>
+
+    <!-- Contact Container -->
+    <div class="contact-container">
+        <div class="contact-grid">
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <h2 class="info-title">연락처 정보</h2>
+
+                <div class="info-item">
+                    <div class="info-icon">📧</div>
+                    <div class="info-content">
+                        <h3>이메일</h3>
+                        <p>info@studysnap.com<br>support@studysnap.com</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📞</div>
+                    <div class="info-content">
+                        <h3>전화</h3>
+                        <p>02-1234-5678<br>평일 09:00 - 18:00</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">💬</div>
+                    <div class="info-content">
+                        <h3>실시간 채팅</h3>
+                        <p>평일 09:00 - 18:00<br>평균 응답 시간: 5분</p>
+                    </div>
+                </div>
+
+                <div class="contact-hours">
+                    <h3>📅 영업 시간</h3>
+                    <p>평일: 09:00 - 18:00<br>
+                    점심시간: 12:00 - 13:00<br>
+                    주말 및 공휴일: 휴무</p>
+                </div>
+
+                <div class="info-item" style="margin-top: 2rem;">
+                    <div class="info-icon">⚡</div>
+                    <div class="info-content">
+                        <h3>빠른 응답 보장</h3>
+                        <p>영업시간 내 문의는 24시간 이내 답변<br>긴급 프로젝트 우선 대응</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <h2 class="form-title">프로젝트 의뢰서</h2>
+
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label class="form-label required">이름</label>
+                        <input type="text" class="form-input" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">회사/기관</label>
+                        <input type="text" class="form-input" name="company" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">이메일</label>
+                        <input type="email" class="form-input" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">전화번호</label>
+                        <input type="tel" class="form-input" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">프로젝트 유형</label>
+                        <select class="form-select" name="projectType" required>
+                            <option value="">선택하세요</option>
+                            <option value="academic">학술지/저널</option>
+                            <option value="newsletter">기업 뉴스레터</option>
+                            <option value="education">교육 자료</option>
+                            <option value="technical">기술 문서</option>
+                            <option value="church">교회 주보</option>
+                            <option value="election">선거 공보</option>
+                            <option value="other">기타</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">PDF 파일 첨부</label>
+                        <div class="file-upload" id="fileUpload">
+                            <input type="file" accept=".pdf" name="pdfFile" id="pdfFile">
+                            <div class="file-upload-icon">📄</div>
+                            <div class="file-upload-text">
+                                클릭하여 PDF 파일 선택<br>
+                                <small>또는 드래그 앤 드롭</small>
+                            </div>
+                            <div class="file-name" id="fileName"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">상세 요구사항</label>
+                        <textarea class="form-textarea" name="requirements" required placeholder="프로젝트에 대한 상세한 요구사항을 작성해 주세요.&#10;&#10;예시:&#10;- 페이지 수: 50페이지&#10;- 섹션 구분: 4개 섹션&#10;- 특별 요구사항: 다국어 지원 필요"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">예산 범위</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="budget" value="1-3M">
+                                <span>₩1M - ₩3M</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="budget" value="3-5M">
+                                <span>₩3M - ₩5M</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="budget" value="5M+">
+                                <span>₩5M+</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">제출하기</button>
+
+                    <div class="success-message" id="successMessage">
+                        <h3>✅ 문의가 성공적으로 접수되었습니다!</h3>
+                        <p>영업일 기준 24시간 이내 답변 드리겠습니다.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <h2 class="faq-title">자주 묻는 질문</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>작업 기간은 얼마나 걸리나요?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    프로젝트 규모에 따라 다르지만, 일반적으로 20페이지 이하는 7일, 50페이지 이하는 14일,
+                    100페이지 이상은 21-30일이 소요됩니다. 긴급 프로젝트는 추가 비용으로 기간 단축이 가능합니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>수정은 몇 번까지 가능한가요?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Basic 패키지는 1회, Professional 패키지는 3회, Enterprise 패키지는 무제한 수정이 가능합니다.
+                    초과 수정은 건당 별도 비용이 발생합니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>어떤 형식의 PDF도 변환 가능한가요?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    대부분의 PDF 형식을 지원합니다. 단, 스캔 이미지로만 구성된 PDF는 OCR 작업이 필요하여
+                    추가 비용 및 시간이 소요될 수 있습니다. 사전에 파일을 보내주시면 정확한 견적을 드립니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>호스팅도 제공하나요?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    네, Netlify, AWS 등 클라우드 플랫폼에 배포해 드립니다. 호스팅 비용은 별도이며,
+                    무료 티어 사용 또는 유료 플랜 중 선택하실 수 있습니다. 고객사 자체 서버에 배포도 가능합니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>다국어 번역의 품질은 어떤가요?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    AI 기반 자동 번역을 사용하며, 필요시 전문 번역가의 검수를 거칩니다.
+                    교회 주보의 경우 성경 구절, 찬송가 등은 공인된 번역본을 사용합니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>결제 방식은 어떻게 되나요?</span>
+                <span class="faq-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    계약금 50% 선입금, 작업 완료 후 잔금 50% 후불 방식입니다.
+                    세금계산서 발행 가능하며, 계좌이체 또는 카드 결제를 지원합니다.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // File upload handling
+        const fileUpload = document.getElementById('fileUpload');
+        const pdfFile = document.getElementById('pdfFile');
+        const fileName = document.getElementById('fileName');
+
+        pdfFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                fileName.textContent = '📄 ' + file.name;
+                fileName.style.display = 'block';
+            }
+        });
+
+        // Drag and drop
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.style.borderColor = 'var(--primary)';
+            fileUpload.style.background = '#f0f4ff';
+        });
+
+        fileUpload.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            fileUpload.style.borderColor = '#cbd5e0';
+            fileUpload.style.background = 'transparent';
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.style.borderColor = '#cbd5e0';
+            fileUpload.style.background = 'transparent';
+
+            if (e.dataTransfer.files.length > 0) {
+                pdfFile.files = e.dataTransfer.files;
+                const file = e.dataTransfer.files[0];
+                fileName.textContent = '📄 ' + file.name;
+                fileName.style.display = 'block';
+            }
+        });
+
+        // Form submission
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Show success message
+            successMessage.classList.add('show');
+
+            // Reset form
+            contactForm.reset();
+            fileName.style.display = 'none';
+
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 5000);
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const wasActive = faqItem.classList.contains('active');
+
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Open clicked item if it wasn't active
+                if (!wasActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

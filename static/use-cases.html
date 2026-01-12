@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>활용 분야 - StudySnap PDF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4facfe;
+            --dark: #1e3c72;
+            --light: #f8f9fa;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--light);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            background: var(--gradient-primary);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Use Cases Container */
+        .use-cases-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .use-case-section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .use-case-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .use-case-grid.reverse {
+            direction: rtl;
+        }
+
+        .use-case-grid.reverse > * {
+            direction: ltr;
+        }
+
+        .use-case-image {
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: white;
+            background: var(--gradient-primary);
+        }
+
+        .use-case-content {
+            padding: 3rem;
+        }
+
+        .use-case-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .use-case-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .use-case-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list li {
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .price-range {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #f0f4ff;
+            color: var(--primary);
+            border-radius: 15px;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .use-case-cta {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--gradient-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .use-case-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .use-case-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .use-case-grid.reverse {
+                direction: ltr;
+            }
+
+            .use-case-content {
+                padding: 2rem;
+            }
+
+            .use-case-image {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">StudySnap PDF</a>
+            <ul class="nav-menu">
+                <li><a href="index.html#features">기능</a></li>
+                <li><a href="portfolio.html">포트폴리오</a></li>
+                <li><a href="pricing.html">가격</a></li>
+                <li><a href="contact.html">문의</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>활용 분야</h1>
+        <p>다양한 산업에서 PDF를 웹진으로 혁신하세요</p>
+    </section>
+
+    <!-- Use Cases -->
+    <div class="use-cases-container">
+        <!-- Academic/Association -->
+        <div class="use-case-section">
+            <div class="use-case-grid">
+                <div class="use-case-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    🎓
+                </div>
+                <div class="use-case-content">
+                    <div class="use-case-icon">🎓</div>
+                    <h2 class="use-case-title">학회/협회</h2>
+                    <p class="use-case-subtitle">한국마린엔지니어링학회 등</p>
+
+                    <ul class="benefits-list">
+                        <li><strong>솔루션:</strong> 학술지 → 모바일 웹진</li>
+                        <li><strong>회원 접근성 향상:</strong> 언제 어디서나 모바일로 열람</li>
+                        <li><strong>종이 인쇄 비용 절감:</strong> 연간 수백만 원 절약</li>
+                        <li><strong>검색 및 공유 용이:</strong> 논문 검색, SNS 공유 가능</li>
+                        <li><strong>아카이브 구축:</strong> 과거 학술지 디지털 보관</li>
+                    </ul>
+
+                    <div class="price-range">예상 가격: ₩1,500,000 ~ ₩3,000,000</div>
+                    <br>
+                    <a href="contact.html" class="use-case-cta">문의하기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- University/Research -->
+        <div class="use-case-section">
+            <div class="use-case-grid reverse">
+                <div class="use-case-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    🏫
+                </div>
+                <div class="use-case-content">
+                    <div class="use-case-icon">🏫</div>
+                    <h2 class="use-case-title">대학/연구기관</h2>
+                    <p class="use-case-subtitle">대학교, 연구소</p>
+
+                    <ul class="benefits-list">
+                        <li><strong>솔루션:</strong> 연구 보고서 → 인터랙티브 웹 문서</li>
+                        <li><strong>데이터 시각화 강화:</strong> 차트, 그래프 인터랙티브 표시</li>
+                        <li><strong>참고문헌 하이퍼링크:</strong> 클릭 한 번에 참고 문헌 이동</li>
+                        <li><strong>다국어 지원:</strong> 국제 학술 교류 활성화</li>
+                        <li><strong>온라인 강의 자료:</strong> 학생 편의성 극대화</li>
+                    </ul>
+
+                    <div class="price-range">예상 가격: ₩2,000,000 ~ ₩5,000,000</div>
+                    <br>
+                    <a href="contact.html" class="use-case-cta">문의하기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Corporate -->
+        <div class="use-case-section">
+            <div class="use-case-grid">
+                <div class="use-case-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    🏢
+                </div>
+                <div class="use-case-content">
+                    <div class="use-case-icon">🏢</div>
+                    <h2 class="use-case-title">기업</h2>
+                    <p class="use-case-subtitle">중소기업, 대기업</p>
+
+                    <ul class="benefits-list">
+                        <li><strong>솔루션:</strong> 보고서/뉴스레터 → 브랜드 웹진</li>
+                        <li><strong>브랜드 이미지 향상:</strong> 전문적인 디지털 보고서</li>
+                        <li><strong>분석 데이터 수집:</strong> 방문자 통계, 읽기 패턴 분석</li>
+                        <li><strong>마케팅 효과 극대화:</strong> SNS 공유, SEO 최적화</li>
+                        <li><strong>실시간 업데이트:</strong> 콘텐츠 즉시 수정 가능</li>
+                    </ul>
+
+                    <div class="price-range">예상 가격: ₩3,000,000 ~ ₩10,000,000</div>
+                    <br>
+                    <a href="contact.html" class="use-case-cta">문의하기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publishing -->
+        <div class="use-case-section">
+            <div class="use-case-grid reverse">
+                <div class="use-case-image" style="background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);">
+                    📚
+                </div>
+                <div class="use-case-content">
+                    <div class="use-case-icon">📚</div>
+                    <h2 class="use-case-title">출판사</h2>
+                    <p class="use-case-subtitle">전문 출판사</p>
+
+                    <ul class="benefits-list">
+                        <li><strong>솔루션:</strong> 전자책 → 인터랙티브 웹북</li>
+                        <li><strong>멀티미디어 삽입:</strong> 동영상, 오디오 삽입 가능</li>
+                        <li><strong>실시간 업데이트:</strong> 오류 수정 즉시 반영</li>
+                        <li><strong>구독 모델 적용:</strong> 월간/연간 구독 서비스</li>
+                        <li><strong>독자 분석:</strong> 읽기 패턴, 체류 시간 분석</li>
+                    </ul>
+
+                    <div class="price-range">예상 가격: ₩5,000,000 ~ ₩15,000,000</div>
+                    <br>
+                    <a href="contact.html" class="use-case-cta">문의하기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Government -->
+        <div class="use-case-section">
+            <div class="use-case-grid">
+                <div class="use-case-image" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);">
+                    🏛️
+                </div>
+                <div class="use-case-content">
+                    <div class="use-case-icon">🏛️</div>
+                    <h2 class="use-case-title">정부/공공기관</h2>
+                    <p class="use-case-subtitle">정부 부처, 공공기관</p>
+
+                    <ul class="benefits-list">
+                        <li><strong>솔루션:</strong> 정부 보고서 → 국민 열람용 웹 문서</li>
+                        <li><strong>투명성 강화:</strong> 누구나 쉽게 접근 가능</li>
+                        <li><strong>접근성 준수:</strong> 웹 접근성 표준 준수</li>
+                        <li><strong>모바일 친화적:</strong> 스마트폰으로 즉시 확인</li>
+                        <li><strong>비용 절감:</strong> 인쇄/배포 비용 대폭 절감</li>
+                    </ul>
+
+                    <div class="price-range">예상 가격: ₩2,000,000 ~ ₩7,000,000</div>
+                    <br>
+                    <a href="contact.html" class="use-case-cta">문의하기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Church -->
+        <div class="use-case-section">
+            <div class="use-case-grid reverse">
+                <div class="use-case-image" style="background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);">
+                    ⛪
+                </div>
+                <div class="use-case-content">
+                    <div class="use-case-icon">⛪</div>
+                    <h2 class="use-case-title">교회/종교단체</h2>
+                    <p class="use-case-subtitle">여의도순복음교회 등</p>
+
+                    <ul class="benefits-list">
+                        <li><strong>솔루션:</strong> 주보 → 다국어 인터랙티브 웹진</li>
+                        <li><strong>다국어 지원:</strong> 8개 국어 자동 번역</li>
+                        <li><strong>성경 구절 팝업:</strong> 클릭으로 말씀 확인</li>
+                        <li><strong>찬송가 가사:</strong> 찬송가 번호 클릭 시 가사 표시</li>
+                        <li><strong>온라인 헌금 연동:</strong> ARS/온라인 헌금 버튼</li>
+                    </ul>
+
+                    <div class="price-range">예상 가격: ₩2,500,000 ~ ₩6,000,000</div>
+                    <br>
+                    <a href="contact.html" class="use-case-cta">문의하기 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        document.querySelectorAll('.use-case-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

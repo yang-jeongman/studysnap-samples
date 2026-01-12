@@ -47,15 +47,23 @@ build/
 uploads/*
 !uploads/.gitkeep
 
-# Outputs (generated HTML files - optional, can remove if you want to track)
-# outputs/*
-# !outputs/.gitkeep
+# Outputs (generated HTML files - too many, ignore)
+outputs/Church/
+outputs/Election/
+outputs/Newsletter/
+outputs/KOSME/
+outputs/Minjoo/
+outputs/PPP/
+outputs/*.pptx
+outputs/*.pdf
 
 # Learning data - keep Python files, ignore data files
 learning_data/*.json
 learning_data/*.jsonl
 learning_data/*.pkl
 learning_data/*.db
+learning_data/church_bulletin/*.json
+learning_data/newsletter/*.json
 !learning_data/__init__.py
 !learning_data/schema.py
 !learning_data/classifier.py
@@ -70,3 +78,69 @@ nul
 NUL
 con
 CON
+
+# Local Netlify folder
+.netlify/
+
+# Backup and archived folders
+_backup_local/
+_archived_failed_engines/
+
+# StudySnap-Deploy (separate repo)
+StudySnap-Deploy/
+
+# Temporary test/page files
+page_*.txt
+all_pages.json
+*.bat
+
+# GEMINI folder
+GEMINI 2.5/
+
+# Docs folder (if not needed)
+docs/
+
+# PDF files in main directory
+*.pdf
+
+# Temporary markdown docs
+ARCHITECTURE_OPTIONS.md
+EMERGENCY_FIX_STRATEGY.md
+INTEGRATION_MASTER_PLAN.md
+NETLIFY_GUIDE.md
+PORTFOLIO_WEBSITE_README.md
+THUMBNAIL_GUIDE.md
+SERVER_MANAGEMENT_GUIDE.md
+SERVER_MANAGER_GUIDE.md
+README_*.md
+
+# Temporary text files
+*.txt
+QUICK_START.txt
+pptx_comparison_report.txt
+vision_ocr_*.txt
+
+# Test files
+test_*.py
+
+# Temporary Python scripts
+direct_convert_*.py
+save_fgfc_*.py
+fix_*.py
+check_*.py
+init_*.py
+update_*.py
+validate_and_fix_*.py
+create_*.py
+extract_*.py
+analyze_*.py
+fill_*.py
+get_*.py
+build_complete_*.py
+
+# Server config
+servers.json
+
+# Korean text files
+사용법.txt
+서버관리_사용법.txt

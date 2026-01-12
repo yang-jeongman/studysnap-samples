@@ -232,6 +232,9 @@ class ChurchBulletinGenerator:
         # 주보 정보 추출
         info = self._extract_bulletin_info(extracted_data)
 
+        # BulletinAI용: 원본 extracted_data 보존
+        info["_extracted_data"] = extracted_data
+
         # 테마 선택
         theme_vars = self.THEMES.get(theme, self.THEMES["default"])
         is_harvest = theme_vars.get("is_harvest", False)
@@ -356,9 +359,30 @@ class ChurchBulletinGenerator:
             info["news"] = top_level_news
 
         # 예배 순서 (worship_services) - 최상위 레벨에서 직접 읽기
-        top_level_services = extracted_data.get("worship_services", [])
+        # BulletinAI 새 구조: {"section_title", "services": {"1부": {...}, ...}}
+        # 기존 구조: [{"name": "1부", ...}, ...]
+        top_level_services = extracted_data.get("worship_services", {})
         if top_level_services:
-            info["worship_services"] = self._convert_structured_services(top_level_services)
+            # BulletinAI 새 구조인지 확인 (dict with "services" key)
+            if isinstance(top_level_services, dict) and "services" in top_level_services:
+                # BulletinAI 구조: section_title, services 저장
+                info["worship_section_title"] = top_level_services.get("section_title", "주일예배순")
+                info["worship_section_title_en"] = top_level_services.get("section_title_en", "Sunday Worship Service")
+                info["worship_order_items"] = top_level_services.get("order_items", [])
+
+                # services dict를 list로 변환
+                services_dict = top_level_services.get("services", {})
+                services_list = []
+                for service_name, service_data in services_dict.items():
+                    service_entry = {"name": service_name}
+                    service_entry.update(service_data)
+                    services_list.append(service_entry)
+
+                if services_list:
+                    info["worship_services"] = self._convert_structured_services(services_list)
+            elif isinstance(top_level_services, list):
+                # 기존 리스트 구조
+                info["worship_services"] = self._convert_structured_services(top_level_services)
 
         # 교회 정보 (church_info) - 최상위 레벨에서 직접 읽기
         top_level_church = extracted_data.get("church_info", {})
@@ -393,10 +417,27 @@ class ChurchBulletinGenerator:
             if today_verse.get("reference"):
                 info["verse"]["reference"] = today_verse["reference"]
 
-            # 예배 순서
-            services = structured.get("worship_services", [])
+            # 예배 순서 (structured_data에서도 BulletinAI 새 구조 지원)
+            services = structured.get("worship_services", {})
             if services:
-                info["worship_services"] = self._convert_structured_services(services)
+                if isinstance(services, dict) and "services" in services:
+                    # BulletinAI 구조
+                    if not info.get("worship_section_title"):
+                        info["worship_section_title"] = services.get("section_title", "주일예배순")
+                        info["worship_section_title_en"] = services.get("section_title_en", "Sunday Worship Service")
+                        info["worship_order_items"] = services.get("order_items", [])
+
+                    services_dict = services.get("services", {})
+                    services_list = []
+                    for service_name, service_data in services_dict.items():
+                        service_entry = {"name": service_name}
+                        service_entry.update(service_data)
+                        services_list.append(service_entry)
+
+                    if services_list:
+                        info["worship_services"] = self._convert_structured_services(services_list)
+                elif isinstance(services, list):
+                    info["worship_services"] = self._convert_structured_services(services)
 
             # 설교 (새로운 points 구조 지원)
             sermon = structured.get("sermon", {})
@@ -787,9 +828,24 @@ class ChurchBulletinGenerator:
 
         v2.0 개선: 입력 데이터의 leader, time, items를 보존
         parse_bulletin_text()에서 추출한 데이터를 그대로 사용
+
+        v2.1 개선: BulletinAI 새 구조 지원 (dict -> list 변환은 호출부에서 처리)
         """
         result = []
+
+        # 타입 안전성 검사
+        if not services:
+            return result
+        if not isinstance(services, list):
+            logger.warning(f"[_convert_structured_services] services가 리스트가 아닙니다: {type(services)}")
+            return result
+
         for svc in services:
+            # svc가 dict인지 확인
+            if not isinstance(svc, dict):
+                logger.warning(f"[_convert_structured_services] 예배 항목이 dict가 아닙니다: {type(svc)} - {svc}")
+                continue
+
             name = svc.get("name", "예배")
 
             # 시간: 입력 데이터 우선 사용, 없으면 추정
@@ -947,6 +1003,23 @@ class ChurchBulletinGenerator:
     def _build_html(self, info: Dict, theme: Dict, theme_name: str, is_harvest: bool) -> str:
         """HTML 구조 생성 - 전문가 템플릿 기반"""
 
+        # ========== BulletinAI v3.0: 섹션별 데이터 추출 ==========
+        from learning_data.church_bulletin import get_bulletin_ai
+        ai = get_bulletin_ai()
+
+        # 원본 extracted_data 가져오기 (info에 저장되어 있음)
+        extracted_data = info.get("_extracted_data", {})
+
+        # 섹션 1: 오늘의 말씀
+        verse_data = ai.get_today_verse(extracted_data)
+        info["verse"] = verse_data
+        print(f"[BulletinAI] 오늘의 말씀: {verse_data.get('reference', '없음')}")
+
+        # 섹션 2: 생명의 말씀 (4페이지 설교 전문)
+        sermon_word_data = ai.get_sermon_word(extracted_data)
+        info["sermon_word"] = sermon_word_data
+        print(f"[BulletinAI] 생명의 말씀: {sermon_word_data.get('title', '없음')}")
+
         # 명성교회: '지난주 말씀'을 '새벽기도회' 뒤에 배치
         show_sermon_card = self.preset.get("show_sermon_card", True)
 
@@ -976,20 +1049,41 @@ class ChurchBulletinGenerator:
     {self._build_dark_mode_toggle()}
 
     <main class="container">
-        {self._build_sermon_word_section(info, theme_name)}
-        {self._build_worship_section(info, is_harvest, theme_name)}
-        {self._build_sermon_card(info, theme_name)}
-        {last_week_sermon_early}
-        {self._build_choir_section(info, is_harvest)}
-        {self._build_news_section(info, theme_name)}
-        {self._build_prayer_table_section(info, theme_name)}
-        {self._build_member_news_section(info)}
-        {self._build_dawn_prayer_section(info)}
-        {last_week_sermon_late}
-        {self._build_weekly_service_section(info)}
-        {self._build_devotional_section(info)}
+        <!-- 오늘의 말씀 (BulletinAI 생성) -->
+        <section id="todays-word" class="section" style="padding: 0;">
+            {self._generate_verse_section_via_bulletinai(info, theme)}
+        </section>
+
+        <!-- 예배 안내 (BulletinAI 생성) -->
+        <section id="worship" class="section" style="padding: 0;">
+            {self._generate_worship_section_via_bulletinai(info, theme)}
+        </section>
+
+        <!-- 📖 생명의 말씀 (4페이지 설교 전문 - BulletinAI 생성) -->
+        {self._build_life_word_section(info, theme_name)}
+
+        <!-- 🎧 지난 설교 다시듣기 -->
+        {self._build_sermon_replay_section(info, theme_name)}
+
+        <!-- 오늘의 양식 (빈 섹션) -->
+        <section id="devotional" class="section">
+            <div class="section-header"><h2 class="section-title">🌿 오늘의 양식</h2></div>
+            <div class="section-body"><p style="color:#999; text-align:center;">내용 없음</p></div>
+        </section>
+
+        <!-- FGTV 라디오 (빈 섹션) -->
+        <section id="fgtv-radio" class="section">
+            <div class="section-header"><h2 class="section-title">📻 FGTV 라디오</h2></div>
+            <div class="section-body"><p style="color:#999; text-align:center;">내용 없음</p></div>
+        </section>
+
+        <!-- 교회 소식 (빈 섹션) -->
+        <section id="news" class="section">
+            <div class="section-header"><h2 class="section-title">📢 교회 소식</h2></div>
+            <div class="section-body"><p style="color:#999; text-align:center;">내용 없음</p></div>
+        </section>
+
         {self._build_contact_section(info)}
-        {self._build_staff_section(info, theme_name)}
         {self._build_sns_offering_section()}
         {self._build_share_section(is_harvest, theme_name)}
     </main>
@@ -1555,6 +1649,268 @@ class ChurchBulletinGenerator:
             font-weight: 600;
             color: var(--primary);
             font-size: 0.95em;
+        }}
+
+        /* 📖 생명의 말씀 (4페이지 설교 전문) */
+        .life-word-section {{
+            background: linear-gradient(135deg, #f8f6ff 0%, #fff 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(91, 75, 158, 0.1);
+        }}
+
+        .life-word-header {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }}
+
+        .life-word-header:hover {{
+            background: #4a3d8f;
+        }}
+
+        .life-word-titles {{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+
+        .life-word-titles .section-title {{
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: white;
+        }}
+
+        .life-word-subtitle {{
+            font-size: 0.75em;
+            opacity: 0.85;
+            font-style: italic;
+            color: rgba(255,255,255,0.9);
+        }}
+
+        .life-word-toggle {{
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+            color: white;
+        }}
+
+        .life-word-section.expanded .life-word-toggle {{
+            transform: rotate(180deg);
+        }}
+
+        .life-word-preview {{
+            padding: 16px 20px;
+            text-align: center;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }}
+
+        .life-word-title-ko {{
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }}
+
+        .life-word-title-en {{
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 8px;
+        }}
+
+        .life-word-scripture {{
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 6px 14px;
+            border-radius: 16px;
+            display: inline-block;
+        }}
+
+        .life-word-content {{
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: white;
+        }}
+
+        .life-word-section.expanded .life-word-content {{
+            max-height: 10000px;
+            transition: max-height 0.8s ease-in;
+        }}
+
+        .life-word-intro {{
+            padding: 20px 20px 16px;
+            line-height: 1.9;
+            color: #333;
+            font-size: 0.95em;
+            text-align: justify;
+            word-break: keep-all;
+            background: var(--primary-light);
+            margin: 0;
+        }}
+
+        .life-word-points {{
+            padding: 0;
+        }}
+
+        .life-word-point {{
+            border-bottom: 1px solid var(--border);
+        }}
+
+        .life-word-point:last-child {{
+            border-bottom: none;
+        }}
+
+        .life-word-point-header {{
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            cursor: pointer;
+            background: #fafafa;
+            transition: background 0.2s ease;
+        }}
+
+        .life-word-point-header:hover {{
+            background: var(--primary-light);
+        }}
+
+        .life-word-point-num {{
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 8px;
+            font-size: 1em;
+        }}
+
+        .life-word-point-title {{
+            flex: 1;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }}
+
+        .life-word-point-toggle {{
+            font-size: 0.7em;
+            color: #999;
+            transition: transform 0.3s ease;
+        }}
+
+        .life-word-point.expanded .life-word-point-toggle {{
+            transform: rotate(180deg);
+        }}
+
+        .life-word-point-content {{
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }}
+
+        .life-word-point.expanded .life-word-point-content {{
+            max-height: 5000px;
+            transition: max-height 0.6s ease-in;
+        }}
+
+        .life-word-point-content p {{
+            margin: 0;
+            padding: 16px 20px 20px;
+            line-height: 1.9;
+            color: #444;
+            font-size: 0.92em;
+            text-align: justify;
+            word-break: keep-all;
+            background: white;
+        }}
+
+        .life-word-author {{
+            padding: 16px 20px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.95em;
+            background: #fafafa;
+            border-top: 1px solid var(--border);
+        }}
+
+        /* 🎧 지난 설교 다시듣기 섹션 */
+        .sermon-replay-card {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }}
+
+        .replay-header {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }}
+
+        .replay-icon {{
+            font-size: 1.8em;
+        }}
+
+        .replay-title {{
+            font-size: 1.2em;
+            font-weight: 700;
+        }}
+
+        .replay-description {{
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }}
+
+        .replay-btn {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: white;
+            color: #667eea;
+            padding: 14px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }}
+
+        .replay-btn:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }}
+
+        .replay-btn:active {{
+            transform: translateY(0);
+        }}
+
+        .replay-btn .btn-icon {{
+            font-size: 1.2em;
+        }}
+
+        .replay-btn .btn-arrow {{
+            margin-left: auto;
+            font-size: 1.1em;
+        }}
+
+        .replay-info {{
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.85em;
+            opacity: 0.85;
         }}
 
         /* 예배별 탭 버튼 */
@@ -4448,6 +4804,71 @@ class ChurchBulletinGenerator:
         </button>
     </div>'''
 
+    def _generate_verse_section_via_bulletinai(self, info: Dict, theme: Dict) -> str:
+        """
+        BulletinAI를 통해 오늘의 말씀 섹션 생성
+
+        원칙: 전문가가 직접 코드를 작성하지 않고 BulletinAI가 학습된 규칙에 따라 생성
+        """
+        try:
+            from learning_data.church_bulletin import get_bulletin_ai
+            ai = get_bulletin_ai()
+            verse_data = info.get("verse", {})
+            return ai.generate_todays_verse_html(verse_data, theme)
+        except Exception as e:
+            import logging
+            logging.error(f"[ChurchBulletinGenerator] BulletinAI 호출 실패: {e}")
+            # 폴백: 기본 텍스트 표시
+            verse = info.get("verse", {})
+            text = verse.get("text", "")
+            ref = verse.get("reference", "")
+            if text:
+                return f'<div style="padding:20px;"><p>{text}</p><p style="text-align:right;">{ref}</p></div>'
+            return '<p style="color:#999; text-align:center;">내용 없음</p>'
+
+    def _generate_worship_section_via_bulletinai(self, info: Dict, theme: Dict) -> str:
+        """
+        BulletinAI를 통해 예배순서 섹션 생성
+
+        원칙:
+        1. 섹션 제목은 PDF에서 추출 (하드코딩 금지)
+        2. 예배 순서는 PDF 원본의 위→아래 순서 유지
+        3. 부별로 다른 정보는 탭으로 전환
+        4. 이전 데이터 재활용 금지
+        """
+        try:
+            from learning_data.church_bulletin import get_bulletin_ai
+            ai = get_bulletin_ai()
+
+            # BulletinAI에서 추출된 예배 순서 데이터 가져오기
+            worship_data = ai.extracted_data.get("worship_services", {})
+
+            # 데이터가 없으면 info에서 가져오기 시도
+            if not worship_data or not worship_data.get("section_title"):
+                worship_data = info.get("worship_services", {})
+
+            # 여전히 데이터가 없으면 폴백
+            if not worship_data or not worship_data.get("order_items"):
+                import logging
+                logging.warning("[ChurchBulletinGenerator] 예배순서 데이터 없음, 기본 메시지 표시")
+                return '''
+                    <div style="padding: 40px 20px; text-align: center;">
+                        <p style="color: #999; font-size: 1.1em;">예배순서 정보를 불러오는 중입니다...</p>
+                    </div>
+                '''
+
+            return ai.generate_worship_order_html(worship_data, theme)
+
+        except Exception as e:
+            import logging
+            logging.error(f"[ChurchBulletinGenerator] BulletinAI 예배순서 호출 실패: {e}")
+            # 폴백: 기본 메시지 표시
+            return '''
+                <div style="padding: 40px 20px; text-align: center;">
+                    <p style="color: #999;">예배 순서를 불러올 수 없습니다.</p>
+                </div>
+            '''
+
     def _build_verse_section(self, info: Dict, is_harvest: bool, theme_name: str = "default") -> str:
         """오늘의 말씀 섹션 - 전문가 템플릿 스타일 (fg-2025-12-14 기준)"""
         # 프리셋에서 '오늘의 말씀' 표시 여부 확인 (명성교회는 비활성화)
@@ -4595,6 +5016,133 @@ class ChurchBulletinGenerator:
             </div>
         </section>'''
 
+    def _build_life_word_section(self, info: Dict, theme_name: str = "default") -> str:
+        """📖 생명의 말씀 섹션 - 4페이지 설교 전문 아코디언 형식"""
+        # sermon_word에서 데이터 가져오기 (PDF 4페이지)
+        sermon_word = info.get("sermon_word", {})
+
+        # 기본 정보
+        title = sermon_word.get("title", "")
+        title_en = sermon_word.get("english_title", "") or sermon_word.get("title_en", "")
+        scripture = sermon_word.get("scripture", "")
+        author = sermon_word.get("author", "")
+        intro = sermon_word.get("intro", "")
+        points = sermon_word.get("points", [])
+
+        # 데이터가 없으면 빈 섹션 반환
+        if not title and not intro and not points:
+            return ""
+
+        # 성경 참조 오류 수정
+        if scripture:
+            scripture = self._correct_bible_reference(scripture)
+
+        # 서론 HTML
+        intro_html = ""
+        if intro:
+            intro_html = f'<div class="life-word-intro">{intro}</div>'
+
+        # 소제목별 내용 HTML (아코디언)
+        points_html = ""
+        import re
+        for i, point in enumerate(points):
+            subtitle = point.get("subtitle", "")
+            content = point.get("content", "")
+            if subtitle or content:
+                # 소제목에서 번호 분리 (예: "1. 마음의 골짜기를 메우라" → "1." + "마음의 골짜기를 메우라")
+                num_match = re.match(r'^(\d+)\.\s*(.*)$', subtitle)
+                if num_match:
+                    point_num = num_match.group(1) + "."
+                    point_title = num_match.group(2)
+                else:
+                    point_num = f"{i + 1}."
+                    point_title = subtitle
+
+                # 본문에서도 번호 중복 제거 (예: "1. 마음의 골짜기를..." 시작 부분 제거)
+                content_cleaned = re.sub(r'^\d+\.\s*', '', content.strip())
+
+                points_html += f'''
+                <div class="life-word-point">
+                    <div class="life-word-point-header" onclick="toggleLifeWordPoint(this)">
+                        <span class="life-word-point-num">{point_num}</span>
+                        <span class="life-word-point-title">{point_title}</span>
+                        <span class="life-word-point-toggle">▼</span>
+                    </div>
+                    <div class="life-word-point-content">
+                        <p>{content_cleaned}</p>
+                    </div>
+                </div>'''
+
+        # 설교자 HTML
+        author_html = ""
+        if author:
+            author_html = f'<div class="life-word-author">— {author}</div>'
+
+        return f'''
+        <!-- 📖 생명의 말씀 (4페이지 설교 전문) -->
+        <section id="life-word" class="section life-word-section">
+            <div class="life-word-header" onclick="toggleLifeWord(this.parentElement)">
+                <div class="life-word-titles">
+                    <h2 class="section-title">📖 생명의 말씀</h2>
+                    <span class="life-word-subtitle">The Word of Life</span>
+                </div>
+                <span class="life-word-toggle">▼</span>
+            </div>
+            <div class="life-word-preview">
+                <div class="life-word-title-ko">{title}</div>
+                {f'<div class="life-word-title-en">({title_en})</div>' if title_en else ''}
+                {f'<div class="life-word-scripture">📖 {scripture}</div>' if scripture else ''}
+            </div>
+            <div class="life-word-content">
+                {intro_html}
+                <div class="life-word-points">
+                    {points_html}
+                </div>
+                {author_html}
+            </div>
+        </section>'''
+
+    def _build_sermon_replay_section(self, info: Dict, theme_name: str = "default") -> str:
+        """🎧 지난 설교 다시듣기 섹션 - FGTV 연동 (여의도순복음교회 DB/홈페이지 연동 예정)"""
+        # 여의도순복음교회 전용 섹션
+        church_name = info.get("church_name", "") or self.preset.get("name", "")
+        is_fgfc = "여의도" in church_name or "순복음" in church_name
+
+        if not is_fgfc:
+            return ""  # 여의도순복음교회가 아니면 표시 안함
+
+        # FGTV 설교 다시듣기 URL (추후 교회 DB 연동 시 동적 변경)
+        fgtv_sermon_url = "https://www.fgtv.com/fgtv/f1/default.asp?ctgy=fg301"
+        church_homepage_url = "https://www.fgtv.com"
+
+        return f'''
+        <!-- 🎧 지난 설교 다시듣기 -->
+        <section id="sermon-replay" class="section">
+            <div class="section-header">
+                <span class="section-icon">🎧</span>
+                <h2 class="section-title">지난 설교 다시듣기</h2>
+            </div>
+            <div class="section-body">
+                <div class="sermon-replay-card">
+                    <div class="replay-header">
+                        <span class="replay-icon">📺</span>
+                        <span class="replay-title">전주 설교 말씀</span>
+                    </div>
+                    <p class="replay-description">
+                        지난주에 전하신 생명의 말씀을 다시 들으실 수 있습니다.
+                    </p>
+                    <a href="{fgtv_sermon_url}" target="_blank" class="replay-btn">
+                        <span class="btn-icon">▶️</span>
+                        <span class="btn-text">FGTV에서 듣기</span>
+                        <span class="btn-arrow">→</span>
+                    </a>
+                    <div class="replay-info">
+                        <small>※ 예배 당일 기준 2주 전 설교는 <a href="{church_homepage_url}" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: underline;">교회 홈페이지</a>에서 확인하실 수 있습니다.</small>
+                    </div>
+                </div>
+            </div>
+        </section>'''
+
     def _build_worship_section(self, info: Dict, is_harvest: bool, theme_name: str = "default") -> str:
         """예배 안내 섹션 - 공통순서 + 개별 예배 카드 형식"""
         services = info.get("worship_services", [])
@@ -4657,12 +5205,17 @@ class ChurchBulletinGenerator:
         for service in services:
             worship_cards_html += self._build_single_worship_card(service)
 
+        # BulletinAI에서 추출한 동적 섹션 제목 사용
+        section_title = info.get("worship_section_title", "주일예배순")
+        section_title_en = info.get("worship_section_title_en", "Sunday Worship Service")
+
         return f'''
         <!-- 예배 안내 -->
         <section id="worship" class="section">
             <div class="section-header">
                 <span class="section-icon">⛪</span>
-                <h2 class="section-title" data-i18n="section_worship">주일예배 안내</h2>
+                <h2 class="section-title" data-i18n="section_worship">{section_title}</h2>
+                <span class="section-subtitle-en">{section_title_en}</span>
             </div>
             <div class="section-body">
                 {common_order_html}
@@ -7006,6 +7559,17 @@ class ChurchBulletinGenerator:
         // 오늘의 말씀 아코디언 토글
         function toggleSermonWord(element) {{
             element.classList.toggle('expanded');
+        }}
+
+        // 생명의 말씀 (4페이지) 아코디언 토글
+        function toggleLifeWord(element) {{
+            element.classList.toggle('expanded');
+        }}
+
+        // 생명의 말씀 소제목별 아코디언 토글
+        function toggleLifeWordPoint(header) {{
+            const point = header.parentElement;
+            point.classList.toggle('expanded');
         }}
 
         // 지난주 말씀 모달 열기
