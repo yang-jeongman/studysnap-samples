@@ -87,7 +87,7 @@ _backup_local/
 _archived_failed_engines/
 
 # StudySnap-Deploy (separate repo)
-StudySnap-Deploy/
+# StudySnap-Deploy/
 
 # Temporary test/page files
 page_*.txt
