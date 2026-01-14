@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교회 주보 - StudySnap</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .card-desc {
+            color: #666;
+            font-size: 14px;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>교회 주보</h1>
+        <p class="subtitle">모바일 최적화 교회 주보 샘플</p>
+
+        <div class="card-grid">
+            <a href="여의도순복음교회_2026-01-11_모바일주보.html" class="card">
+                <div class="card-icon">⛪</div>
+                <div class="card-title">여의도순복음교회</div>
+                <div class="card-desc">2026년 1월 11일 주보 (최신)</div>
+            </a>
+            <a href="여의도순복음교회_2025-11-23_모바일주보.html" class="card">
+                <div class="card-icon">⛪</div>
+                <div class="card-title">여의도순복음교회</div>
+                <div class="card-desc">2025년 11월 23일 주보</div>
+            </a>
+            <a href="여의도순복음교회_2025-11-16_모바일주보.html" class="card">
+                <div class="card-icon">⛪</div>
+                <div class="card-title">여의도순복음교회</div>
+                <div class="card-desc">2025년 11월 16일 주보</div>
+            </a>
+            <a href="혈통교회_2025-06-15_완전판_standalone.html" class="card">
+                <div class="card-icon">✝️</div>
+                <div class="card-title">혈통교회 (완전판)</div>
+                <div class="card-desc">2025년 6월 15일 주보</div>
+            </a>
+            <a href="혈통교회_2025-06-15_standalone.html" class="card">
+                <div class="card-icon">✝️</div>
+                <div class="card-title">혈통교회</div>
+                <div class="card-desc">2025년 6월 15일 주보</div>
+            </a>
+        </div>
+
+        <a href="/" class="back-link">← 메인으로 돌아가기</a>
+    </div>
+</body>
+</html>

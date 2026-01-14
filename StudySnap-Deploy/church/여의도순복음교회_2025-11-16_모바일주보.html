@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>여의도순복음교회 추수감사주일 - 2025.11.16</title>
+    <meta name="description" content="여의도순복음교회 2025년 11월 16일 추수감사주일 - 절대 감사의 삶">
+    <!-- PWA 전체화면 지원 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="여의도순복음교회">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛪</text></svg>">
+    <meta name="theme-color" content="#8B6914">
+    <style>
+        :root {
+            --primary: #5B4B9E;
+            --primary-dark: #4A3D82;
+            --primary-light: #E8E4F4;
+            --accent: #C9A857;
+            --accent-warm: #D4883E;
+            --text-dark: #1a1a2e;
+            --text-gray: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-gray: #F5F3FA;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --harvest: #8B6914;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 헤더 - 추수감사절 테마 - 스크롤 시 숨김/표시 */
+        .header {
+            background: linear-gradient(135deg, #8B6914 0%, #C9A857 50%, #D4883E 100%);
+            color: white;
+            padding: 20px;
+            padding-top: env(safe-area-inset-top, 20px);
+            position: relative;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(139, 105, 20, 0.4);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .harvest-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .church-name {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .church-name-en {
+            font-size: 0.7em;
+            font-weight: 400;
+            opacity: 0.9;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .jubo-date {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-top: 8px;
+        }
+
+        .theme-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        /* 네비게이션 탭 - 항상 상단 고정 */
+        .nav-tabs {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tabs-inner {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 8px;
+            justify-content: space-around;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .nav-tab.active,
+        .nav-tab:hover {
+            color: var(--harvest);
+            border-bottom-color: var(--harvest);
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+            padding-bottom: 30px;
+        }
+
+        /* 섹션 */
+        .section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header.harvest {
+            background: linear-gradient(135deg, #FEF3C7 0%, #fff 100%);
+        }
+
+        .section-icon {
+            font-size: 1.5em;
+        }
+
+        .section-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .section-title.harvest {
+            color: var(--harvest);
+        }
+
+        .section-body {
+            padding: 20px;
+        }
+
+        /* 오늘의 말씀 - 추수감사절 테마 */
+        .verse-card {
+            background: linear-gradient(135deg, #8B6914 0%, #C9A857 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verse-card::before {
+            content: "🌾";
+            position: absolute;
+            font-size: 4em;
+            opacity: 0.15;
+            top: -10px;
+            right: -10px;
+        }
+
+        .verse-card::after {
+            content: "🌾";
+            position: absolute;
+            font-size: 3em;
+            opacity: 0.15;
+            bottom: -5px;
+            left: -5px;
+        }
+
+        .verse-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+
+        .verse-text {
+            font-size: 1.05em;
+            line-height: 1.8;
+            font-weight: 500;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .verse-ref {
+            font-size: 0.95em;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+
+        /* 예배 정보 카드 */
+        .worship-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .worship-header {
+            background: var(--harvest);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .worship-title {
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .worship-time {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .worship-body {
+            padding: 16px;
+        }
+
+        .worship-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .worship-item:last-child {
+            border-bottom: none;
+        }
+
+        .worship-item-label {
+            color: var(--text-gray);
+            font-size: 0.9em;
+        }
+
+        .worship-item-value {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+            text-align: right;
+        }
+
+        .sermon-highlight {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+            border-left: 4px solid var(--harvest);
+        }
+
+        .sermon-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--harvest);
+            margin-bottom: 4px;
+        }
+
+        .sermon-preacher {
+            font-size: 0.9em;
+            color: var(--text-gray);
+        }
+
+        /* 설교 본문 */
+        .sermon-content {
+            line-height: 1.9;
+            font-size: 1em;
+            color: var(--text-dark);
+        }
+
+        .sermon-content h3 {
+            font-size: 1.1em;
+            color: var(--harvest);
+            margin: 24px 0 12px 0;
+            padding-left: 12px;
+            border-left: 4px solid var(--harvest);
+        }
+
+        .sermon-content p {
+            margin-bottom: 16px;
+            text-align: justify;
+            word-break: keep-all;
+        }
+
+        .sermon-author {
+            text-align: right;
+            margin-top: 24px;
+            font-weight: 600;
+            color: var(--harvest);
+        }
+
+        /* 교회 소식 */
+        .news-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .news-category.worship { background: var(--harvest); }
+        .news-category.recruit { background: var(--success); }
+        .news-category.info { background: var(--warning); }
+        .news-category.special { background: #E11D48; }
+
+        .news-title {
+            font-weight: 700;
+            font-size: 1em;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .news-content {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* 찬양대 정보 */
+        .choir-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .choir-item {
+            background: linear-gradient(135deg, #FEF3C7 0%, #fff 100%);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #FDE68A;
+        }
+
+        .choir-service {
+            font-size: 0.8em;
+            color: var(--harvest);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .choir-name {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .choir-song {
+            font-size: 0.75em;
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+
+        /* 오늘의 양식 */
+        .devotional-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--harvest);
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #FDE68A;
+        }
+
+        .devotional-content {
+            font-size: 0.95em;
+            line-height: 1.9;
+            color: var(--text-dark);
+            text-align: justify;
+            word-break: keep-all;
+        }
+
+        .devotional-content p {
+            margin-bottom: 16px;
+            text-indent: 1em;
+        }
+
+        /* 연락처 */
+        .contact-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-gray);
+            border-radius: 10px;
+        }
+
+        .contact-icon {
+            font-size: 1.2em;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.8em;
+            color: var(--text-gray);
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .contact-value a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* 성경/찬송가 링크 스타일 */
+        .bible-link, .hymn-link {
+            color: var(--harvest);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--harvest);
+            transition: all 0.2s;
+        }
+
+        .bible-link:hover, .hymn-link:hover {
+            background: #FEF3C7;
+            border-bottom-style: solid;
+        }
+
+        .verse-ref a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(255,255,255,0.5);
+        }
+
+        .verse-ref a:hover {
+            border-bottom-style: solid;
+        }
+
+        /* 모달 팝업 스타일 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--harvest) 0%, #C9A857 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header.hymn {
+            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+        }
+
+        .modal-title {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .bible-verse-content {
+            font-size: 1.05em;
+            line-height: 1.9;
+            color: var(--text-dark);
+        }
+
+        .bible-verse-content .verse-num {
+            color: var(--harvest);
+            font-weight: 700;
+            font-size: 0.85em;
+            vertical-align: super;
+            margin-right: 2px;
+        }
+
+        .bible-verse-content p {
+            margin-bottom: 12px;
+        }
+
+        .hymn-content {
+            text-align: center;
+        }
+
+        .hymn-number {
+            font-size: 2em;
+            font-weight: 800;
+            color: #D97706;
+            margin-bottom: 8px;
+        }
+
+        .hymn-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .hymn-lyrics {
+            font-size: 1em;
+            line-height: 1.8;
+            color: var(--text-dark);
+            text-align: left;
+            white-space: pre-line;
+        }
+
+        .hymn-lyrics .verse-label {
+            font-weight: 700;
+            color: #D97706;
+            margin-top: 16px;
+            display: block;
+        }
+
+        body.dark-mode .modal-content {
+            background: var(--bg-white);
+        }
+
+        /* 설교 오디오 플레이어 스타일 */
+        .sermon-audio-section {
+            background: linear-gradient(135deg, #FEF3C7 0%, #fff 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+            border: 1px solid #FDE68A;
+        }
+
+        .audio-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .audio-icon {
+            font-size: 1.4em;
+        }
+
+        .audio-title {
+            font-weight: 700;
+            color: var(--harvest);
+            font-size: 0.95em;
+        }
+
+        .audio-player {
+            width: 100%;
+            height: 44px;
+            border-radius: 8px;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .audio-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--harvest);
+            background: white;
+            color: var(--harvest);
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: var(--harvest);
+            color: white;
+        }
+
+        .audio-btn.download {
+            background: var(--harvest);
+            color: white;
+        }
+
+        .audio-btn.download:hover {
+            background: #6B4E13;
+        }
+
+        /* 주보 저장 버튼 스타일 */
+        .save-jubo-section {
+            background: linear-gradient(135deg, #E8F5E9 0%, #fff 100%);
+            border: 2px dashed #4CAF50;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .save-title {
+            font-weight: 700;
+            color: #2E7D32;
+            margin-bottom: 8px;
+        }
+
+        .save-desc {
+            font-size: 0.85em;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+        }
+
+        .save-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #388E3C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        body.dark-mode .sermon-audio-section {
+            background: var(--bg-white);
+        }
+
+        body.dark-mode .save-jubo-section {
+            background: var(--bg-white);
+            border-color: #388E3C;
+        }
+
+        /* 공유 섹션 */
+        .share-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .share-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .share-btn {
+            flex: 1;
+            max-width: 140px;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+            background: var(--bg-gray);
+        }
+
+        .share-btn.kakao {
+            background: #FEE500;
+            border-color: #FEE500;
+            color: #3C1E1E;
+        }
+
+        /* 푸터 */
+        .footer {
+            background: var(--harvest);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .footer-address {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .footer-copyright {
+            font-size: 0.75em;
+            opacity: 0.7;
+        }
+
+        /* 하단 고정 네비게이션 - 삭제됨 */
+        .bottom-nav {
+            display: none;
+        }
+
+        .bottom-nav-inner,
+        .bottom-nav-item,
+        .bottom-nav-icon {
+            display: none;
+        }
+
+        /* 다크모드 토글 */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 80px;
+            right: 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 998;
+            transition: all 0.2s;
+        }
+
+        /* 다크모드 */
+        body.dark-mode {
+            --bg-gray: #1a1a2e;
+            --bg-white: #252540;
+            --text-dark: #ffffff;
+            --text-gray: #a0a0b0;
+            --border: #3a3a50;
+            --primary-light: #3a3a50;
+        }
+
+        body.dark-mode .section,
+        body.dark-mode .worship-card,
+        body.dark-mode .share-section,
+        body.dark-mode .nav-tabs,
+        body.dark-mode .bottom-nav {
+            background: var(--bg-white);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background: var(--bg-white);
+        }
+
+        body.dark-mode .choir-item {
+            background: var(--bg-white);
+            border-color: #3a3a50;
+        }
+
+        body.dark-mode .sermon-highlight {
+            background: #3a3a50;
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* 반응형 */
+        @media (max-width: 375px) {
+            .church-name {
+                font-size: 1.4em;
+            }
+
+            .nav-tab {
+                padding: 12px 12px;
+                font-size: 0.85em;
+            }
+
+            .choir-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="harvest-badge">🌾 2025 추수감사절</div>
+            <h1 class="church-name">
+                여의도순복음교회
+                <span class="church-name-en">YOIDO FULL GOSPEL CHURCH</span>
+            </h1>
+            <div class="jubo-date">2025년 11월 16일 추수감사주일</div>
+            <div class="theme-badge">기쁨으로 거두리로다</div>
+        </div>
+    </header>
+
+    <!-- 네비게이션 탭 -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-inner">
+            <a href="#verse" class="nav-tab active">말씀</a>
+            <a href="#worship" class="nav-tab">예배</a>
+            <a href="#sermon" class="nav-tab">설교</a>
+            <a href="#choir" class="nav-tab">찬양</a>
+            <a href="#news" class="nav-tab">소식</a>
+            <a href="#devotional" class="nav-tab">양식</a>
+        </div>
+    </nav>
+
+    <!-- 다크모드 토글 -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="다크모드">
+        🌙
+    </button>
+
+    <main class="container">
+        <!-- 오늘의 말씀 -->
+        <section id="verse" class="verse-card">
+            <div class="verse-label">🌾 추수감사주일 말씀</div>
+            <p class="verse-text">
+                "야훼는 나의 목자시니 내게 부족함이 없으리로다
+                그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다
+                내 영혼을 소생시키시고 자기 이름을 위하여 의의 길로 인도하시는도다"
+            </p>
+            <span class="verse-ref"><a href="javascript:void(0)" onclick="openBibleModal('psa-23-1')">시편 23:1~3</a></span>
+        </section>
+
+        <!-- 예배 안내 -->
+        <section id="worship" class="section">
+            <div class="section-header harvest">
+                <span class="section-icon">⛪</span>
+                <h2 class="section-title harvest">추수감사주일 예배</h2>
+            </div>
+            <div class="section-body">
+                <!-- 1부 예배 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title">1부 예배</span>
+                        <span class="worship-time">오전 7:00</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label">사회</span>
+                            <span class="worship-item-value">서광석 목사</span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('psa-116-12')" class="bible-link">시편 116:12, 17</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">대표기도</span>
+                            <span class="worship-item-value">유창선 장로</span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">찬송</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8장</a>(통9장), <a href="javascript:void(0)" onclick="openHymnModal('589')" class="hymn-link">589장</a>(통308장)</span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title">감사 신앙이 왜 축복일까요?</div>
+                            <div class="sermon-preacher">양승호 목사</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2·3·4부 예배 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title">2·3·4부 예배</span>
+                        <span class="worship-time">9:00 / 11:00 / 13:00</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label">사회</span>
+                            <span class="worship-item-value">정용훈, 김영석, 이준희B 목사</span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('psa-23-1')" class="bible-link">시편 23:1~3</a></span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">대표기도</span>
+                            <span class="worship-item-value">김달위, 박경규, 경욱현 장로</span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">찬송</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openHymnModal('8')" class="hymn-link">8장</a>(통9장), <a href="javascript:void(0)" onclick="openHymnModal('212')" class="hymn-link">212장</a>(통347장)</span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title">절대 감사의 삶</div>
+                            <div class="sermon-preacher">이영훈 목사</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5부 대학청년 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title">5부 대학청년</span>
+                        <span class="worship-time">오후 2:30</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label">사회</span>
+                            <span class="worship-item-value">이지영B 목사</span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('1th-5-16')" class="bible-link">데살로니가전서 5:16~18</a></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title">Спасибо (감사합니다)</div>
+                            <div class="sermon-preacher">오수황 목사</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 주일저녁 -->
+                <div class="worship-card">
+                    <div class="worship-header">
+                        <span class="worship-title">주일저녁 예배</span>
+                        <span class="worship-time">오후 5:00</span>
+                    </div>
+                    <div class="worship-body">
+                        <div class="worship-item">
+                            <span class="worship-item-label">사회</span>
+                            <span class="worship-item-value">고현철 목사</span>
+                        </div>
+                        <div class="worship-item">
+                            <span class="worship-item-label">성경봉독</span>
+                            <span class="worship-item-value"><a href="javascript:void(0)" onclick="openBibleModal('col-1-12')" class="bible-link">골로새서 1:12</a></span>
+                        </div>
+                        <div class="sermon-highlight">
+                            <div class="sermon-title">영원한 감사의 제목</div>
+                            <div class="sermon-preacher">홍승원 목사</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 설교 말씀 -->
+        <section id="sermon" class="section">
+            <div class="section-header harvest">
+                <span class="section-icon">📖</span>
+                <h2 class="section-title harvest">생명의 말씀</h2>
+            </div>
+            <div class="section-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 1.3em; font-weight: 700; color: var(--harvest);">절대 감사의 삶</div>
+                    <div style="font-size: 0.9em; color: var(--text-gray); margin-top: 4px;">A Life of Absolute Gratitude</div>
+                    <div style="font-size: 0.9em; color: var(--text-gray); margin-top: 8px;"><a href="javascript:void(0)" onclick="openBibleModal('psa-23-1')" class="bible-link">시편 23:1~3</a></div>
+                </div>
+                <div class="sermon-content">
+                    <p>오늘은 한 해 동안 우리에게 베풀어주신 은혜를 기억하며 하나님께 넘치는 감사와 영광을 올려드리는 추수감사절입니다. 1620년, 신앙의 자유를 찾아 신대륙으로 향했던 청교도들은 낯선 땅에서 첫 수확을 거두고 그 기쁨을 하나님께 감사로 올려드렸습니다. 오늘 우리도 그 믿음의 전통을 이어 이 한 해도 함께하신 주님의 은혜를 돌아보며 감사의 마음으로 예배드리기 원합니다.</p>
+
+                    <h3>1. 목자 되신 하나님</h3>
+                    <p>양의 삶은 온전히 목자에게 달려있습니다. 좋은 목자를 만나면 풍성하고 평안한 삶을 누리지만 나쁜 목자를 만나면 상처와 결핍 속에서 방황하게 됩니다. 우리의 인생도 이와 같습니다. 악한 원수 마귀는 나쁜 목자처럼 우리를 속이고 멸망의 길로 이끌지만 선한 목자이신 예수님은 우리를 위해 자신의 생명까지 내어주셨습니다(요 10:10~11). 예수님의 희생적 사랑으로 우리는 구원받았고 하나님의 자녀가 되었습니다. 하나님은 우리를 택하시고 지명하여 부르셔서 평생토록 돌봐주시는 참 좋으신 하나님이십니다. 연약하고 보잘 것 없던 우리를 '너는 내 것이라' 말씀하시는 하나님의 사랑 안에서 우리는 참된 평안을 누리게 됩니다(사 43:1).</p>
+
+                    <h3>2. 우리의 인도자 되시는 하나님</h3>
+                    <p>하나님은 우리를 일평생 주님이 예비하신 은혜의 길로 인도하십니다. 다윗이 평생에 하나님만 의지했듯 우리도 광야 같은 세상 속에서 가장 선한 길로 인도하시는 하나님만 신뢰해야 합니다. 그렇게 할 때 우리의 인도자 되시는 하나님께서 우리가 믿음으로 승리하도록 붙드십니다. 또한 연약한 자를 품으시는 주님은 사랑의 팔로 우리를 감싸시며 날마다 의의 길로 이끄십니다(사 40:11). 삶의 모든 순간을 세심히 살피시며 영혼을 새롭게 하시는 주님의 은혜 앞에 날마다 감사의 고백이 흘러나오기를 소망합니다.</p>
+
+                    <h3>3. 우리의 공급자 되시는 하나님</h3>
+                    <p>하나님은 우리의 목자가 되셔서 삶에 필요한 모든 것을 공급해 주십니다. 우리를 날마다 푸른 풀밭과 쉴 만한 물가로 인도하셔서 주님 안에서 부족함이 없는 인생을 살아가게 하십니다(시 23:1~2). 성령의 생수가 흘러넘치는 물가로 우리를 이끄셔서 영혼의 갈급함을 채워 주시고 성령으로 충만케 하십니다. 하나님을 경외하며 주를 찾는 자에게 아무 부족함이 없도록 가장 좋은 것으로 채워 주십니다(시 34:9~10). 좋은 목자이신 주님은 원수의 목전에서도 상을 베푸시고 기름 부으심으로 우리의 잔을 넘치게 하십니다. 이처럼 풍성한 은혜를 베푸시는 하나님께 날마다 감사하며 살아가는 우리 모두가 되기를 축원합니다.</p>
+
+                    <div class="sermon-author">여의도순복음교회 이영훈 위임목사</div>
+                </div>
+
+                <!-- 설교 음성 듣기 -->
+                <div class="sermon-audio-section">
+                    <div class="audio-header">
+                        <span class="audio-icon">🎧</span>
+                        <span class="audio-title">추수감사절 설교 음성 듣기</span>
+                    </div>
+                    <audio class="audio-player" controls>
+                        <source src="sermon_2025-11-16.mp3" type="audio/mpeg">
+                        브라우저가 오디오를 지원하지 않습니다.
+                    </audio>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="changePlaybackRate()">
+                            <span id="speedLabel">1.0x</span> 속도
+                        </button>
+                        <button class="audio-btn download" onclick="downloadSermon()">
+                            ⬇️ 다운로드
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 금주의 찬양 -->
+        <section id="choir" class="section">
+            <div class="section-header harvest">
+                <span class="section-icon">🎵</span>
+                <h2 class="section-title harvest">추수감사절 찬양</h2>
+            </div>
+            <div class="section-body">
+                <div class="choir-grid">
+                    <div class="choir-item">
+                        <div class="choir-service">주일 1부</div>
+                        <div class="choir-name">베다니 찬양대</div>
+                        <div class="choir-song">감사하라</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 2부</div>
+                        <div class="choir-name">베들레헴 찬양대</div>
+                        <div class="choir-song">감사의 축제 찬송</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 3부</div>
+                        <div class="choir-name">예루살렘 찬양대</div>
+                        <div class="choir-song">추수 감사절 찬송</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 4부</div>
+                        <div class="choir-name">나사렛 찬양대</div>
+                        <div class="choir-song">다 감사드리세</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">5부 대학청년</div>
+                        <div class="choir-name">임마누엘 찬양대</div>
+                        <div class="choir-song">찬양과 감사를</div>
+                    </div>
+                    <div class="choir-item">
+                        <div class="choir-service">주일 저녁</div>
+                        <div class="choir-name">에벤에셀 찬양대</div>
+                        <div class="choir-song">감사드리세</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 교회 소식 -->
+        <section id="news" class="section">
+            <div class="section-header">
+                <span class="section-icon">📢</span>
+                <h2 class="section-title">교회 소식</h2>
+            </div>
+            <div class="section-body">
+                <div class="news-item">
+                    <span class="news-category special">추수감사절</span>
+                    <div class="news-title">추수감사주일 안내</div>
+                    <div class="news-content">
+                        오늘은 '추수감사주일'입니다. 한 해 동안 베풀어 주신 하나님의 크신 은혜와 사랑에 감사드리는 복된 추수감사주일 되시길 바랍니다.
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category worship">예배</span>
+                    <div class="news-title">11월 셋째주 새벽예배</div>
+                    <div class="news-content">
+                        일시: 11월 17일(월)~22일(토) 새벽 5시 30분 (토요일은 새벽 6시 30분)<br>
+                        장소: 대성전<br>
+                        설교: 이영훈 목사(18일 제직특화), 차진호 목사(19일~21일), 김정대 목사(17일, 22일)
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category worship">예배</span>
+                    <div class="news-title">장로회 11월 장로기도회</div>
+                    <div class="news-content">
+                        일시: 11월 21일(금) 오후 7시<br>
+                        장소: 벧엘성전<br>
+                        설교: 손달익 목사
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">이웃사랑 나눔 바자회</div>
+                    <div class="news-content">
+                        일시: 11월 21일(금)~23일(주일) 오전 10시<br>
+                        장소: 베다니 광장 및 십자가 탑 외, CCMM 빌딩 1층
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category recruit">모집</span>
+                    <div class="news-title">베다니 찬양대(주일 1부) 대원 및 앙상블 모집</div>
+                    <div class="news-content">
+                        자격: 본 교회 1년 이상 출석, 물·성령 침례 받은 성도<br>
+                        모집파트: 소프라노, 알토, 테너, 베이스, 앙상블<br>
+                        문의: ☎ 02-6181-6702, 6704
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">새가족 환영회</div>
+                    <div class="news-content">
+                        오늘 결신한 분들을 위한 새가족 환영회가 베들레헴성전에서 있습니다.<br>
+                        온라인 새가족분들은 교회 홈페이지와 모바일 앱으로 등록 및 교육에 참여하실 수 있습니다.
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <span class="news-category info">안내</span>
+                    <div class="news-title">이영훈 목사님 신간 출간</div>
+                    <div class="news-content">
+                        2026년 「감사QT 365」가 출간되었습니다.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 오늘의 양식 -->
+        <section id="devotional" class="section">
+            <div class="section-header">
+                <span class="section-icon">🌿</span>
+                <h2 class="section-title">오늘의 양식</h2>
+            </div>
+            <div class="section-body">
+                <div class="devotional-title">실패를 품다</div>
+                <div class="devotional-content">
+                    <p>1986년 1월 28일, 미국의 챌린저호가 발사 73초 만에 폭발했습니다. 전 세계가 지켜보는 가운데 일곱 명의 우주비행사가 목숨을 잃었습니다. 그날 저녁 레이건 대통령이 국민 앞에 섰습니다. 많은 이들이 NASA를 비난하며 책임자를 찾아 나섰지만, 대통령의 첫마디는 뜻밖이었습니다. "오늘 우리는 일곱 명의 영웅을 잃었습니다. 그들의 용기를 기억합시다." 그는 실패의 원인을 캐묻기보다 희생자들의 도전정신을 기렸고, NASA의 우주 탐사는 계속되어야 한다고 강조했습니다.</p>
+
+                    <p>사고 조사가 진행되면서 기술적 결함과 의사결정의 오류가 드러났습니다. 그러나 레이건은 개인을 희생양으로 삼지 않았습니다. 대신 시스템 개선과 안전 절차 강화에 집중했습니다. 그 결과, NASA는 더욱 안전하고 정교한 우주 프로그램을 구축했습니다. 2년 뒤 디스커버리호가 성공적으로 발사되며 인류의 우주 탐사는 계속될 수 있었습니다.</p>
+
+                    <p>우리는 누군가의 실패 앞에서 쉽게 심판자가 됩니다. 잘못을 파헤치고 책임을 묻는 데 급급합니다. 하지만 실패는 성공의 원료입니다. 챌린저호의 잔해에서 더 안전한 우주왕복선이 탄생했듯이, 오늘의 실수는 내일의 지혜가 됩니다. 중요한 것은 실패 그 자체가 아니라 그것을 대하는 우리의 태도입니다. 비난보다는 개선을, 낙인보다는 재도전의 기회를 선택할 때, 진정한 성공이 시작됩니다. 오늘 실패한 누군가의 가능성을 믿고 기다려주는 사람이 되어보기를 소망합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 연락처 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📞</span>
+                <h2 class="section-title">교회 연락처</h2>
+            </div>
+            <div class="section-body">
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div class="contact-info">
+                            <div class="contact-label">주소</div>
+                            <div class="contact-value">서울특별시 영등포구 국회대로76길 15</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <div class="contact-info">
+                            <div class="contact-label">대표전화 (주간)</div>
+                            <div class="contact-value"><a href="tel:02-6181-9191">02-6181-9191</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌙</span>
+                        <div class="contact-info">
+                            <div class="contact-label">대표전화 (야간)</div>
+                            <div class="contact-value"><a href="tel:02-6181-9000">02-6181-9000~3</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌐</span>
+                        <div class="contact-info">
+                            <div class="contact-label">홈페이지</div>
+                            <div class="contact-value"><a href="https://www.fgtv.com" target="_blank">www.fgtv.com</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 주보 저장 섹션 -->
+        <div class="save-jubo-section">
+            <div class="save-title">📱 스마트폰에 주보 저장하기</div>
+            <div class="save-desc">홈 화면에 추가하면 언제든지 주보를 다시 볼 수 있어요</div>
+            <button class="save-btn" onclick="saveToHomeScreen()">
+                📥 홈 화면에 추가
+            </button>
+        </div>
+
+        <!-- 공유 섹션 -->
+        <div class="share-section">
+            <div class="share-title">🌾 추수감사주일 주보를 공유해 보세요</div>
+            <div class="share-buttons">
+                <button class="share-btn kakao" onclick="shareKakao()">카카오톡</button>
+                <button class="share-btn" onclick="shareLink()">링크 복사</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-logo">🌾 여의도순복음교회</div>
+        <div class="footer-address">
+            서울특별시 영등포구 국회대로76길 15<br>
+            1958년 5월 18일 창립 (설립자 조용기 목사)
+        </div>
+        <div class="footer-copyright">
+            © 2025 여의도순복음교회. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- 하단 네비게이션 -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <a href="#verse" class="bottom-nav-item active">
+                <span class="bottom-nav-icon">📖</span>
+                말씀
+            </a>
+            <a href="#worship" class="bottom-nav-item">
+                <span class="bottom-nav-icon">⛪</span>
+                예배
+            </a>
+            <a href="#sermon" class="bottom-nav-item">
+                <span class="bottom-nav-icon">🎤</span>
+                설교
+            </a>
+            <a href="#news" class="bottom-nav-item">
+                <span class="bottom-nav-icon">📢</span>
+                소식
+            </a>
+        </div>
+    </nav>
+
+    <!-- 성경/찬송가 모달 -->
+    <div class="modal-overlay" id="bibleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="bibleModalTitle">📖 성경 말씀</span>
+                <button class="modal-close" onclick="closeModal('bibleModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="bible-verse-content" id="bibleModalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="hymnModal">
+        <div class="modal-content">
+            <div class="modal-header hymn">
+                <span class="modal-title" id="hymnModalTitle">🎵 찬송가</span>
+                <button class="modal-close" onclick="closeModal('hymnModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="hymn-content" id="hymnModalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 성경 구절 데이터
+        const bibleVerses = {
+            'psa-23-1': {
+                title: '시편 23:1~3',
+                content: `<p><span class="verse-num">1</span>야훼는 나의 목자시니 내게 부족함이 없으리로다</p>
+<p><span class="verse-num">2</span>그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다</p>
+<p><span class="verse-num">3</span>내 영혼을 소생시키시고 자기 이름을 위하여 의의 길로 인도하시는도다</p>`
+            },
+            'psa-116-12': {
+                title: '시편 116:12, 17',
+                content: `<p><span class="verse-num">12</span>내가 야훼께서 내게 주신 모든 은혜를 무엇으로 보답할꼬</p>
+<p><span class="verse-num">17</span>내가 감사제를 주께 드리고 야훼의 이름을 부르리로다</p>`
+            },
+            '1th-5-16': {
+                title: '데살로니가전서 5:16~18',
+                content: `<p><span class="verse-num">16</span>항상 기뻐하라</p>
+<p><span class="verse-num">17</span>쉬지 말고 기도하라</p>
+<p><span class="verse-num">18</span>범사에 감사하라 이것이 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라</p>`
+            },
+            'col-1-12': {
+                title: '골로새서 1:12',
+                content: `<p><span class="verse-num">12</span>우리로 하여금 빛 가운데서 성도의 기업의 부분을 얻기에 합당하게 하신 아버지께 감사하게 하시기를 원하노라</p>`
+            }
+        };
+
+        // 찬송가 데이터
+        const hymns = {
+            '8': {
+                title: '전능왕 오셔서',
+                lyrics: `<span class="verse-label">1절</span>
+전능왕 오셔서 우리를 도우사
+영원히 함께 계시사 지켜 주소서
+주의 보좌 앞에 온 세상 절하며
+하늘의 무리와 함께 주를 찬양해
+
+<span class="verse-label">후렴</span>
+거룩 거룩 거룩 전능하신 주
+하늘과 땅에 주의 영광 가득해`
+            },
+            '589': {
+                title: '다 감사 드리세',
+                lyrics: `<span class="verse-label">1절</span>
+다 감사 드리세 온 천하 만물
+주의 크신 은혜 찬송하라
+나실 때부터 오늘까지
+한량없는 은혜 입었도다
+
+<span class="verse-label">후렴</span>
+다 감사 드리세 다 감사 드리세
+영화와 존귀와 능력과 권세
+영원히 주께 있사오니
+다 감사 드리세 아멘`
+            },
+            '212': {
+                title: '내 평생에 가는 길',
+                lyrics: `<span class="verse-label">1절</span>
+내 평생에 가는 길 순탄하여
+즐거움에 넘치나 괴로움과 큰 근심이
+파도처럼 밀려와 내 영혼을 쓸어가도
+내 영혼아 주께 감사하라
+
+<span class="verse-label">후렴</span>
+내 영혼아 잊지 말아라
+주 은혜를 내 영혼아 잊지 말아라
+하나님의 큰 은혜를`
+            }
+        };
+
+        // 모달 열기
+        function openBibleModal(verseKey) {
+            const verse = bibleVerses[verseKey];
+            if (verse) {
+                document.getElementById('bibleModalTitle').textContent = '📖 ' + verse.title;
+                document.getElementById('bibleModalContent').innerHTML = verse.content;
+                document.getElementById('bibleModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function openHymnModal(hymnNum) {
+            const hymn = hymns[hymnNum];
+            if (hymn) {
+                document.getElementById('hymnModalTitle').textContent = '🎵 찬송가 ' + hymnNum + '장';
+                document.getElementById('hymnModalContent').innerHTML = `
+                    <div class="hymn-number">${hymnNum}장</div>
+                    <div class="hymn-title">${hymn.title}</div>
+                    <div class="hymn-lyrics">${hymn.lyrics}</div>
+                `;
+                document.getElementById('hymnModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // 오디오 재생 속도 변경
+        let currentSpeed = 1.0;
+        const speeds = [1.0, 1.25, 1.5, 1.75, 2.0, 0.75];
+
+        function changePlaybackRate() {
+            const audio = document.querySelector('.audio-player');
+            const speedLabel = document.getElementById('speedLabel');
+            const currentIndex = speeds.indexOf(currentSpeed);
+            const nextIndex = (currentIndex + 1) % speeds.length;
+            currentSpeed = speeds[nextIndex];
+            audio.playbackRate = currentSpeed;
+            speedLabel.textContent = currentSpeed + 'x';
+        }
+
+        // 설교 음성 다운로드
+        function downloadSermon() {
+            // 실제 운영 시 교회 서버의 음성 파일 URL로 변경
+            const sermonUrl = 'sermon_2025-11-16.mp3';
+            const link = document.createElement('a');
+            link.href = sermonUrl;
+            link.download = '여의도순복음교회_설교_2025-11-16_절대감사의삶.mp3';
+            link.click();
+
+            // 데모용 안내 메시지
+            alert('설교 음성 파일이 다운로드됩니다.\n\n실제 운영 시 교회 서버에서 음성 파일을 제공합니다.');
+        }
+
+        // 홈 화면에 추가 (PWA 설치 안내)
+        function saveToHomeScreen() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isAndroid = /Android/.test(navigator.userAgent);
+
+            if (isIOS) {
+                alert('📱 iPhone/iPad에서 저장하기\n\n1. 하단의 공유 버튼(□↑)을 탭하세요\n2. "홈 화면에 추가"를 선택하세요\n3. "추가"를 탭하면 완료!');
+            } else if (isAndroid) {
+                alert('📱 Android에서 저장하기\n\n1. 브라우저 메뉴(⋮)를 탭하세요\n2. "홈 화면에 추가" 또는 "앱 설치"를 선택하세요\n3. 확인을 탭하면 완료!');
+            } else {
+                alert('📱 스마트폰에서 저장하기\n\n브라우저 메뉴에서 "홈 화면에 추가"를 선택하시면\n언제든지 이 주보를 다시 보실 수 있습니다.');
+            }
+        }
+
+        // 다크모드 토글
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.dark-mode-toggle');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // 다크모드 설정 불러오기
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.dark-mode-toggle').textContent = '☀️';
+        }
+
+        // 네비게이션 활성화
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+
+        function setActiveNav(hash) {
+            navTabs.forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('href') === hash);
+            });
+            bottomNavItems.forEach(item => {
+                item.classList.toggle('active', item.getAttribute('href') === hash);
+            });
+        }
+
+        // 스크롤 시 네비게이션 활성화
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            if (current) {
+                setActiveNav('#' + current);
+            }
+        });
+
+        // 카카오톡 공유
+        function shareKakao() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '여의도순복음교회 추수감사주일 - 2025.11.16',
+                    text: '절대 감사의 삶 - 이영훈 목사',
+                    url: window.location.href
+                });
+            } else {
+                alert('카카오톡 공유는 모바일에서 이용 가능합니다.');
+            }
+        }
+
+        // 링크 복사
+        function shareLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('링크가 복사되었습니다.');
+            });
+        }
+
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerHeight = 60;
+                    const targetPosition = target.offsetTop - headerHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    setActiveNav(this.getAttribute('href'));
+                }
+            });
+        });
+
+        // 스크롤 시 헤더 숨김/표시
+        let lastScrollY = 0;
+        let ticking = false;
+        const header = document.querySelector('.header');
+        const scrollThreshold = 150; // 이 높이 이상 스크롤하면 헤더 숨김
+
+        function updateHeader() {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > scrollThreshold) {
+                // 스크롤이 threshold 이상이면 헤더 숨김
+                header.classList.add('hidden');
+            } else {
+                // 스크롤이 threshold 이하면 헤더 표시
+                header.classList.remove('hidden');
+            }
+
+            lastScrollY = currentScrollY;
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        });
+    </script>
+</body>
+</html>

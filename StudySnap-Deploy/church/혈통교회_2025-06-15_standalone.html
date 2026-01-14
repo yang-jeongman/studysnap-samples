@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>혈통교회 - 2025-06-15 주보</title>
+    <style>
+        :root {
+            --primary-color: #4a5568;
+            --accent-color: #805ad5;
+            --text-color: #2D3748;
+            --background-color: #F7FAFC;
+            --card-background: #FFFFFF;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* 헤더 */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 40px 20px 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .church-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            background: white;
+            padding: 5px;
+        }
+
+        .church-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .jubo-date {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .sunday-type {
+            font-size: 14px;
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 섹션 카드 */
+        .section-card {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+        }
+
+        .section-card:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .section-description {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+        }
+
+        .section-preview {
+            font-size: 13px;
+            color: #A0AEC0;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #EDF2F7;
+        }
+
+        /* 공유 버튼 */
+        .share-section {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .share-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .share-btn {
+            flex: 1;
+            max-width: 140px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+            background: var(--background-color);
+        }
+
+        /* 푸터 */
+        .footer {
+            background: var(--card-background);
+            border-top: 1px solid var(--border-color);
+            padding: 30px 20px;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .footer-info {
+            margin-bottom: 8px;
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* 반응형 */
+        @media (max-width: 375px) {
+            .church-name {
+                font-size: 22px;
+            }
+
+            .jubo-date {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <div class="header">
+        
+        <h1 class="church-name">혈통교회</h1>
+        <div class="jubo-date">2025-06-15</div>
+        
+        <div class="sunday-type">삼위일체주일</div>
+        
+        
+        <div class="sunday-type">성령강림 후 제1주</div>
+        
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <!-- 예배 순서 -->
+        
+        
+        <a href="/jubo/혈통교회_2025-06-15/worship_order.html#1" class="section-card">
+            <div class="section-icon">📖</div>
+            <h2 class="section-title">주일예배</h2>
+            <p class="section-description">오전 11시</p>
+            <div class="section-preview">
+                
+                17개 순서
+                
+            </div>
+        </a>
+        
+        
+
+        <!-- 설교 말씀 -->
+        
+        <a href="/jubo/혈통교회_2025-06-15/sermon.html" class="section-card">
+            <div class="section-icon">🎤</div>
+            <h2 class="section-title">설교 말씀</h2>
+            <p class="section-description">
+                
+                본문: 요한복음 16:12-15
+                
+            </p>
+            <div class="section-preview">
+                
+            </div>
+        </a>
+        
+
+        <!-- 교회 소식 -->
+        
+        <a href="/jubo/혈통교회_2025-06-15/news.html" class="section-card">
+            <div class="section-icon">📢</div>
+            <h2 class="section-title">교회 소식</h2>
+            <p class="section-description">이번 주 교회 소식과 광고</p>
+            <div class="section-preview">
+                
+                2개 소식
+                
+            </div>
+        </a>
+        
+
+        <!-- 주간 일정 -->
+        
+
+        <!-- 기도 제목 -->
+        
+
+        <!-- 헌금 안내 -->
+        
+
+        <!-- 공유하기 -->
+        <div class="share-section">
+            <h3 class="share-title">스마트 주보 공유하기</h3>
+            <div class="share-buttons">
+                <button class="share-btn" onclick="shareKakao()">
+                    카카오톡
+                </button>
+                <button class="share-btn" onclick="copyLink()">
+                    링크 복사
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <div class="footer">
+        
+        <div class="footer-info">춘천시</div>
+        
+        
+        <div class="footer-info">04723231234</div>
+        
+        
+        <div class="footer-info" style="margin-top: 16px; font-size: 12px; color: #A0AEC0;">
+            스마트 주보 by 더소통
+        </div>
+    </div>
+
+    <script>
+        function shareKakao() {
+            // 카카오톡 공유 (실제 구현 시 Kakao SDK 필요)
+            alert('카카오톡 공유 기능은 Kakao SDK 연동 후 사용 가능합니다.');
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('링크가 복사되었습니다!');
+                });
+            } else {
+                // 구형 브라우저 대응
+                const textarea = document.createElement('textarea');
+                textarea.value = url;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('링크가 복사되었습니다!');
+            }
+        }
+    </script>
+
+    <script>
+        // 우클릭 방지
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 텍스트 선택 방지
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 드래그 방지
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Ctrl+S, Ctrl+U, F12 등 단축키 방지
+        document.addEventListener('keydown', function(e) {
+            // F12 (개발자 도구)
+            if (e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+S (저장)
+            if (e.ctrlKey && e.keyCode === 83) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+U (소스 보기)
+            if (e.ctrlKey && e.keyCode === 85) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I (개발자 도구)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+J (개발자 도구)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+C (요소 검사)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 개발자 도구 열림 감지
+        var devtools = {open: false, orientation: null};
+        var threshold = 160;
+        var emitEvent = function(state, orientation) {
+            window.dispatchEvent(new CustomEvent('devtoolschange', {
+                detail: {
+                    open: state,
+                    orientation: orientation
+                }
+            }));
+        };
+
+        setInterval(function() {
+            var widthThreshold = window.outerWidth - window.innerWidth > threshold;
+            var heightThreshold = window.outerHeight - window.innerHeight > threshold;
+            var orientation = widthThreshold ? 'vertical' : 'horizontal';
+
+            if (!(heightThreshold && widthThreshold) &&
+                ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || widthThreshold || heightThreshold)) {
+                if (!devtools.open || devtools.orientation !== orientation) {
+                    emitEvent(true, orientation);
+                    // 페이지 흐리게 처리
+                    document.body.style.filter = 'blur(10px)';
+                    document.body.style.pointerEvents = 'none';
+                }
+                devtools.open = true;
+                devtools.orientation = orientation;
+            } else {
+                if (devtools.open) {
+                    emitEvent(false, null);
+                    document.body.style.filter = '';
+                    document.body.style.pointerEvents = '';
+                }
+                devtools.open = false;
+                devtools.orientation = null;
+            }
+        }, 500);
+
+        // 워터마크 추가
+        window.addEventListener('load', function() {
+            var watermark = document.createElement('div');
+            watermark.style.cssText = 'position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 8px 15px; border-radius: 20px; font-size: 12px; z-index: 99999; pointer-events: none; user-select: none;';
+            watermark.textContent = '© 혈통교회 - 스마트주보변환기 by 더소통';
+            document.body.appendChild(watermark);
+        });
+
+        console.log('%c⚠️ 경고', 'color: red; font-size: 40px; font-weight: bold;');
+        console.log('%c이 주보는 저작권으로 보호됩니다.\n무단 복제, 수정, 배포를 금지합니다.', 'font-size: 16px;');
+    </script>
+
+    <style>
+        /* 이미지 보호 */
+        img {
+            pointer-events: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-drag: none;
+            user-drag: none;
+        }
+
+        /* 텍스트 선택 방지 */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 링크와 버튼은 클릭 가능하도록 */
+        a, button {
+            pointer-events: auto;
+        }
+    </style>
+    
+</body>
+</html>
