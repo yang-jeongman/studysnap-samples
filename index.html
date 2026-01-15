@@ -26,16 +26,44 @@
             color: white;
             padding: 60px 20px;
             text-align: center;
+            position: relative;
         }
         .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
         .header p { opacity: 0.9; font-size: 1.1rem; }
+
+        /* Language Selector */
+        .lang-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+        .lang-selector:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .lang-selector option {
+            color: #333;
+            background: white;
+        }
+
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         .section-title {
             font-size: 1.5rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+        .section-title .icon { font-size: 1.3rem; }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -60,6 +88,7 @@
             font-size: 1.1rem;
         }
         .church { background: linear-gradient(135deg, #8B5CF6, #EC4899); }
+        .church-new { background: linear-gradient(135deg, #5B4B9E, #7C3AED); }
         .election-minjoo { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
         .election-ppp { background: linear-gradient(135deg, #EF4444, #DC2626); }
         .election-prog { background: linear-gradient(135deg, #F59E0B, #D97706); }
@@ -77,6 +106,39 @@
             transition: background 0.3s;
         }
         .btn:hover { background: #5B21B6; }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 8px;
+        }
+        .badge-new {
+            background: #10B981;
+            color: white;
+        }
+        .badge-multilang {
+            background: #F59E0B;
+            color: white;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .feature-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: var(--bg-gray);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+
         .footer {
             text-align: center;
             padding: 30px;
@@ -84,83 +146,147 @@
             border-top: 1px solid #E5E7EB;
         }
         .footer a { color: var(--primary); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .lang-selector { top: 10px; right: 10px; padding: 6px 10px; font-size: 0.8rem; }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="header">
-        <h1>StudySnap AI Portfolio</h1>
-        <p>PDF to Mobile-Optimized HTML Conversion Samples</p>
+        <!-- Language Selector -->
+        <select class="lang-selector" onchange="changeLanguage(this.value)" title="Select Language">
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="es">Español</option>
+            <option value="ru">Русский</option>
+            <option value="fr">Français</option>
+        </select>
+
+        <h1 data-i18n="title">StudySnap AI Portfolio</h1>
+        <p data-i18n="subtitle">PDF to Mobile-Optimized HTML Conversion Samples</p>
     </header>
 
     <main class="container">
         <!-- Church Bulletins -->
-        <h2 class="section-title">Church Bulletins</h2>
+        <h2 class="section-title">
+            <span class="icon">⛪</span>
+            <span data-i18n="church_title">Church Bulletins</span>
+        </h2>
         <div class="grid">
+            <!-- NEW: YFGC 2026-01-11 with Multilingual -->
             <div class="card">
-                <div class="card-header church">Yoido Full Gospel Church (12/14)</div>
+                <div class="card-header church-new">
+                    <span data-i18n="yfgc_new">YFGC Bulletin (01/11)</span>
+                    <span class="badge badge-new">NEW</span>
+                    <span class="badge badge-multilang">8 Languages</span>
+                </div>
                 <div class="card-body">
-                    <p>2025-12-14 Sunday bulletin with responsive design, dark mode, Bible verse popups.</p>
-                    <a href="outputs/Church/여의도순복음교회/2025-12-14.html" class="btn">View Sample</a>
+                    <p data-i18n="yfgc_new_desc">2026-01-11 Sunday bulletin with 8-language support, dark mode, Bible verse popups.</p>
+                    <div class="features">
+                        <span class="feature-tag">한국어</span>
+                        <span class="feature-tag">English</span>
+                        <span class="feature-tag">中文</span>
+                        <span class="feature-tag">日本語</span>
+                        <span class="feature-tag">+4</span>
+                    </div>
+                    <a href="outputs/Church/YFGC/2026-01-11일 주보.html" class="btn" style="margin-top: 15px;" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
+
             <div class="card">
-                <div class="card-header church">Yoido Full Gospel Church (11/16)</div>
+                <div class="card-header church">
+                    <span data-i18n="yfgc_1214">YFGC Bulletin (12/14)</span>
+                </div>
                 <div class="card-body">
-                    <p>2025-11-16 Sunday bulletin with worship schedule and church news.</p>
-                    <a href="outputs/Church/여의도순복음교회/2025-11-16.html" class="btn">View Sample</a>
+                    <p data-i18n="yfgc_1214_desc">2025-12-14 Sunday bulletin with responsive design, dark mode, Bible verse popups.</p>
+                    <a href="outputs/Church/여의도순복음교회/2025-12-14.html" class="btn" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
+
             <div class="card">
-                <div class="card-header church">Myungsung Church (12/07)</div>
+                <div class="card-header church">
+                    <span data-i18n="yfgc_1116">YFGC Bulletin (11/16)</span>
+                </div>
                 <div class="card-body">
-                    <p>2025-12-07 Sunday bulletin with worship order and announcements.</p>
-                    <a href="outputs/Church/명성교회/2025-12-07.html" class="btn">View Sample</a>
+                    <p data-i18n="yfgc_1116_desc">2025-11-16 Sunday bulletin with worship schedule and church news.</p>
+                    <a href="outputs/Church/여의도순복음교회/2025-11-16.html" class="btn" data-i18n="view_sample">View Sample</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header church">
+                    <span data-i18n="myungsung">Myungsung Church (12/07)</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="myungsung_desc">2025-12-07 Sunday bulletin with worship order and announcements.</p>
+                    <a href="outputs/Church/명성교회/2025-12-07.html" class="btn" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
         </div>
 
         <!-- Election Pamphlets -->
-        <h2 class="section-title">Election Pamphlets</h2>
+        <h2 class="section-title">
+            <span class="icon">🗳️</span>
+            <span data-i18n="election_title">Election Pamphlets</span>
+        </h2>
         <div class="grid">
             <div class="card">
-                <div class="card-header election-minjoo">Ryu Sam-young (Democratic Party)</div>
+                <div class="card-header election-minjoo">
+                    <span data-i18n="ryu">Ryu Sam-young (Democratic Party)</span>
+                </div>
                 <div class="card-body">
-                    <p>National Assembly candidate pamphlet with policies and career highlights.</p>
-                    <a href="outputs/Election/Minjoo/류삼영/류삼영.html" class="btn">View Sample</a>
+                    <p data-i18n="ryu_desc">National Assembly candidate pamphlet with policies and career highlights.</p>
+                    <a href="outputs/Election/Minjoo/류삼영/류삼영.html" class="btn" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
             <div class="card">
-                <div class="card-header election-prog">Jang Ji-hwa (Progressive Party)</div>
+                <div class="card-header election-prog">
+                    <span data-i18n="jang">Jang Ji-hwa (Progressive Party)</span>
+                </div>
                 <div class="card-body">
-                    <p>Progressive party candidate pamphlet with policy vision.</p>
-                    <a href="outputs/Election/Progressive/장지화.html" class="btn">View Sample</a>
+                    <p data-i18n="jang_desc">Progressive party candidate pamphlet with policy vision.</p>
+                    <a href="outputs/Election/Progressive/장지화.html" class="btn" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
             <div class="card">
-                <div class="card-header election-ppp">PPP Candidate</div>
+                <div class="card-header election-ppp">
+                    <span data-i18n="ppp">PPP Candidate</span>
+                </div>
                 <div class="card-body">
-                    <p>People Power Party candidate pamphlet with pledges.</p>
-                    <a href="outputs/Election/PPP/NA.html" class="btn">View Sample</a>
+                    <p data-i18n="ppp_desc">People Power Party candidate pamphlet with pledges.</p>
+                    <a href="outputs/Election/PPP/NA.html" class="btn" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
         </div>
 
         <!-- Lecture Materials -->
-        <h2 class="section-title">Lecture Materials</h2>
+        <h2 class="section-title">
+            <span class="icon">🎓</span>
+            <span data-i18n="lecture_title">Lecture Materials</span>
+        </h2>
         <div class="grid">
             <div class="card">
-                <div class="card-header lecture">Test Lecture Sample</div>
+                <div class="card-header lecture">
+                    <span data-i18n="lecture1">Test Lecture Sample</span>
+                </div>
                 <div class="card-body">
-                    <p>Academic lecture material converted to mobile-friendly format.</p>
-                    <a href="test_lecture.html" class="btn">View Sample</a>
+                    <p data-i18n="lecture1_desc">Academic lecture material converted to mobile-friendly format.</p>
+                    <a href="test_lecture.html" class="btn" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
             <div class="card">
-                <div class="card-header lecture">Upgraded Lecture Sample</div>
+                <div class="card-header lecture">
+                    <span data-i18n="lecture2">Upgraded Lecture Sample</span>
+                </div>
                 <div class="card-body">
-                    <p>Enhanced lecture material with improved layout and navigation.</p>
-                    <a href="test_lecture_upgraded.html" class="btn">View Sample</a>
+                    <p data-i18n="lecture2_desc">Enhanced lecture material with improved layout and navigation.</p>
+                    <a href="test_lecture_upgraded.html" class="btn" data-i18n="view_sample">View Sample</a>
                 </div>
             </div>
         </div>
@@ -170,5 +296,117 @@
         <p>StudySnap AI - PDF to Mobile HTML Conversion</p>
         <p><a href="https://studysnap-pdf.netlify.app/">Main Site</a> | <a href="mailto:jmyangkr@gmail.com">Contact</a></p>
     </footer>
+
+    <script>
+        const translations = {
+            ko: {
+                title: "StudySnap AI 포트폴리오",
+                subtitle: "PDF를 모바일 최적화 HTML로 변환",
+                church_title: "교회 주보",
+                election_title: "선거 공보물",
+                lecture_title: "강의자료",
+                view_sample: "샘플 보기",
+                yfgc_new: "여의도순복음교회 (01/11)",
+                yfgc_new_desc: "2026년 1월 11일 주보. 8개국어 지원, 다크모드, 성경 구절 팝업 포함.",
+                yfgc_1214: "여의도순복음교회 (12/14)",
+                yfgc_1214_desc: "2025년 12월 14일 주보. 반응형 디자인, 다크모드, 성경 구절 팝업 포함.",
+                yfgc_1116: "여의도순복음교회 (11/16)",
+                yfgc_1116_desc: "2025년 11월 16일 주보. 예배 일정과 교회 소식 포함.",
+                myungsung: "명성교회 (12/07)",
+                myungsung_desc: "2025년 12월 7일 주보. 예배 순서와 광고 포함.",
+                ryu: "류삼영 후보 (더불어민주당)",
+                ryu_desc: "국회의원 후보 공보물. 정책과 경력 하이라이트 포함.",
+                jang: "장지화 후보 (진보당)",
+                jang_desc: "진보당 후보 공보물. 정책 비전 포함.",
+                ppp: "국민의힘 후보",
+                ppp_desc: "국민의힘 후보 공보물. 공약 포함.",
+                lecture1: "강의자료 샘플 1",
+                lecture1_desc: "모바일 친화적 형식으로 변환된 학술 강의자료.",
+                lecture2: "강의자료 샘플 2",
+                lecture2_desc: "개선된 레이아웃과 네비게이션이 적용된 강의자료."
+            },
+            en: {
+                title: "StudySnap AI Portfolio",
+                subtitle: "PDF to Mobile-Optimized HTML Conversion Samples",
+                church_title: "Church Bulletins",
+                election_title: "Election Pamphlets",
+                lecture_title: "Lecture Materials",
+                view_sample: "View Sample",
+                yfgc_new: "YFGC Bulletin (01/11)",
+                yfgc_new_desc: "2026-01-11 Sunday bulletin with 8-language support, dark mode, Bible verse popups.",
+                yfgc_1214: "YFGC Bulletin (12/14)",
+                yfgc_1214_desc: "2025-12-14 Sunday bulletin with responsive design, dark mode, Bible verse popups.",
+                yfgc_1116: "YFGC Bulletin (11/16)",
+                yfgc_1116_desc: "2025-11-16 Sunday bulletin with worship schedule and church news.",
+                myungsung: "Myungsung Church (12/07)",
+                myungsung_desc: "2025-12-07 Sunday bulletin with worship order and announcements.",
+                ryu: "Ryu Sam-young (Democratic Party)",
+                ryu_desc: "National Assembly candidate pamphlet with policies and career highlights.",
+                jang: "Jang Ji-hwa (Progressive Party)",
+                jang_desc: "Progressive party candidate pamphlet with policy vision.",
+                ppp: "PPP Candidate",
+                ppp_desc: "People Power Party candidate pamphlet with pledges.",
+                lecture1: "Test Lecture Sample",
+                lecture1_desc: "Academic lecture material converted to mobile-friendly format.",
+                lecture2: "Upgraded Lecture Sample",
+                lecture2_desc: "Enhanced lecture material with improved layout and navigation."
+            },
+            zh: {
+                title: "StudySnap AI 作品集",
+                subtitle: "PDF转移动优化HTML示例",
+                church_title: "教会周报",
+                election_title: "选举宣传册",
+                lecture_title: "讲义资料",
+                view_sample: "查看示例",
+                yfgc_new: "汝矣岛纯福音教会 (01/11)",
+                yfgc_new_desc: "2026年1月11日周报。支持8种语言、深色模式、圣经经文弹窗。",
+                yfgc_1214: "汝矣岛纯福音教会 (12/14)",
+                yfgc_1214_desc: "2025年12月14日周报。响应式设计、深色模式、圣经经文弹窗。",
+                yfgc_1116: "汝矣岛纯福音教会 (11/16)",
+                yfgc_1116_desc: "2025年11月16日周报。礼拜日程和教会消息。",
+                myungsung: "明成教会 (12/07)",
+                myungsung_desc: "2025年12月7日周报。礼拜顺序和公告。"
+            },
+            ja: {
+                title: "StudySnap AI ポートフォリオ",
+                subtitle: "PDFからモバイル最適化HTMLへの変換サンプル",
+                church_title: "教会週報",
+                election_title: "選挙パンフレット",
+                lecture_title: "講義資料",
+                view_sample: "サンプルを見る",
+                yfgc_new: "ヨイド純福音教会 (01/11)",
+                yfgc_new_desc: "2026年1月11日週報。8言語対応、ダークモード、聖書ポップアップ。",
+                yfgc_1214: "ヨイド純福音教会 (12/14)",
+                yfgc_1214_desc: "2025年12月14日週報。レスポンシブデザイン、ダークモード、聖書ポップアップ。",
+                yfgc_1116: "ヨイド純福音教会 (11/16)",
+                yfgc_1116_desc: "2025年11月16日週報。礼拝スケジュールと教会ニュース。",
+                myungsung: "明成教会 (12/07)",
+                myungsung_desc: "2025年12月7日週報。礼拝順序とお知らせ。"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const text = (translations[lang] && translations[lang][key])
+                          || (translations.en && translations.en[key])
+                          || el.textContent;
+                el.textContent = text;
+            });
+            localStorage.setItem('portfolio_lang', lang);
+        }
+
+        // Load saved language
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('portfolio_lang');
+            if (savedLang) {
+                document.querySelector('.lang-selector').value = savedLang;
+                changeLanguage(savedLang);
+            }
+        });
+    </script>
 </body>
 </html>
