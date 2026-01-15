@@ -1,15 +1,45 @@
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#10B981"/>
-      <stop offset="100%" style="stop-color:#059669"/>
+      <stop offset="0%" style="stop-color:#4F46E5"/>
+      <stop offset="100%" style="stop-color:#7C3AED"/>
     </linearGradient>
   </defs>
+  <!-- Background -->
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <text x="600" y="200" font-family="Arial, sans-serif" font-size="120" fill="white" text-anchor="middle">🎓</text>
-  <text x="600" y="320" font-family="Arial, sans-serif" font-size="48" fill="white" text-anchor="middle" font-weight="bold">강의자료 샘플</text>
-  <text x="600" y="400" font-family="Arial, sans-serif" font-size="36" fill="rgba(255,255,255,0.9)" text-anchor="middle">모바일 최적화 강의 교재</text>
-  <text x="600" y="520" font-family="Arial, sans-serif" font-size="24" fill="rgba(255,255,255,0.7)" text-anchor="middle">스마트폰에서 학습 내용 확인</text>
-  <rect x="50" y="580" width="200" height="30" rx="15" fill="rgba(255,255,255,0.2)"/>
-  <text x="150" y="602" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle">StudySnap AI</text>
+
+  <!-- Header Card -->
+  <rect x="100" y="80" width="1000" height="400" rx="20" fill="white" opacity="0.98"/>
+
+  <!-- Subject Badge -->
+  <rect x="450" y="110" width="300" height="44" rx="22" fill="url(#bg)" opacity="0.15"/>
+  <text x="490" y="140" font-family="Arial, sans-serif" font-size="20" fill="#4F46E5" text-anchor="middle">📚</text>
+  <text x="600" y="140" font-family="Arial, sans-serif" font-size="18" fill="#4F46E5" text-anchor="middle" font-weight="600">수학 · 미적분</text>
+
+  <!-- Lecture Title -->
+  <text x="600" y="220" font-family="Arial, sans-serif" font-size="52" fill="#1a1a2e" text-anchor="middle" font-weight="800">미적분학 개론</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="24" fill="#6B7280" text-anchor="middle">Introduction to Calculus</text>
+
+  <!-- Meta Info -->
+  <rect x="350" y="320" width="500" height="50" rx="10" fill="#F9FAFB"/>
+  <text x="600" y="352" font-family="Arial, sans-serif" font-size="18" fill="#6B7280" text-anchor="middle">강의 1 · 12페이지 · 수식 지원</text>
+
+  <!-- Features -->
+  <rect x="380" y="400" width="120" height="36" rx="18" fill="url(#bg)" opacity="0.1"/>
+  <text x="440" y="424" font-family="Arial, sans-serif" font-size="14" fill="#4F46E5" text-anchor="middle" font-weight="600">반응형</text>
+
+  <rect x="520" y="400" width="160" height="36" rx="18" fill="url(#bg)" opacity="0.1"/>
+  <text x="600" y="424" font-family="Arial, sans-serif" font-size="14" fill="#4F46E5" text-anchor="middle" font-weight="600">다크모드</text>
+
+  <rect x="700" y="400" width="120" height="36" rx="18" fill="url(#bg)" opacity="0.1"/>
+  <text x="760" y="424" font-family="Arial, sans-serif" font-size="14" fill="#4F46E5" text-anchor="middle" font-weight="600">MathJax</text>
+
+  <!-- Footer -->
+  <rect x="100" y="520" width="200" height="36" rx="18" fill="rgba(255,255,255,0.2)"/>
+  <text x="200" y="545" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="500">StudySnap AI</text>
+
+  <!-- Icon -->
+  <text x="1050" y="580" font-family="Arial, sans-serif" font-size="48" fill="rgba(255,255,255,0.3)" text-anchor="middle">🎓</text>
 </svg>
