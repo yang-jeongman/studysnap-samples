@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap AI - PDF to Mobile HTML Portfolio</title>
+    <meta name="description" content="AI powered PDF to mobile-optimized HTML conversion samples">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --secondary: #EC4899;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --bg-gray: #F9FAFB;
+        }
+        body {
+            font-family: 'Noto Sans KR', -apple-system, sans-serif;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 1.1rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .card-header {
+            padding: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .church { background: linear-gradient(135deg, #8B5CF6, #EC4899); }
+        .election-minjoo { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
+        .election-ppp { background: linear-gradient(135deg, #EF4444, #DC2626); }
+        .election-prog { background: linear-gradient(135deg, #F59E0B, #D97706); }
+        .lecture { background: linear-gradient(135deg, #10B981, #059669); }
+        .card-body { padding: 20px; }
+        .card-body p { color: var(--text-gray); margin-bottom: 15px; font-size: 0.9rem; }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        .btn:hover { background: #5B21B6; }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-gray);
+            border-top: 1px solid #E5E7EB;
+        }
+        .footer a { color: var(--primary); text-decoration: none; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <h1>StudySnap AI Portfolio</h1>
+        <p>PDF to Mobile-Optimized HTML Conversion Samples</p>
+    </header>
+
+    <main class="container">
+        <!-- Church Bulletins -->
+        <h2 class="section-title">Church Bulletins</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-header church">Yoido Full Gospel Church (12/14)</div>
+                <div class="card-body">
+                    <p>2025-12-14 Sunday bulletin with responsive design, dark mode, Bible verse popups.</p>
+                    <a href="outputs/Church/여의도순복음교회/2025-12-14.html" class="btn">View Sample</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header church">Yoido Full Gospel Church (11/16)</div>
+                <div class="card-body">
+                    <p>2025-11-16 Sunday bulletin with worship schedule and church news.</p>
+                    <a href="outputs/Church/여의도순복음교회/2025-11-16.html" class="btn">View Sample</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header church">Myungsung Church (12/07)</div>
+                <div class="card-body">
+                    <p>2025-12-07 Sunday bulletin with worship order and announcements.</p>
+                    <a href="outputs/Church/명성교회/2025-12-07.html" class="btn">View Sample</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Election Pamphlets -->
+        <h2 class="section-title">Election Pamphlets</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-header election-minjoo">Ryu Sam-young (Democratic Party)</div>
+                <div class="card-body">
+                    <p>National Assembly candidate pamphlet with policies and career highlights.</p>
+                    <a href="outputs/Election/Minjoo/류삼영/류삼영.html" class="btn">View Sample</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header election-prog">Jang Ji-hwa (Progressive Party)</div>
+                <div class="card-body">
+                    <p>Progressive party candidate pamphlet with policy vision.</p>
+                    <a href="outputs/Election/Progressive/장지화.html" class="btn">View Sample</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header election-ppp">PPP Candidate</div>
+                <div class="card-body">
+                    <p>People Power Party candidate pamphlet with pledges.</p>
+                    <a href="outputs/Election/PPP/NA.html" class="btn">View Sample</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lecture Materials -->
+        <h2 class="section-title">Lecture Materials</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-header lecture">Test Lecture Sample</div>
+                <div class="card-body">
+                    <p>Academic lecture material converted to mobile-friendly format.</p>
+                    <a href="test_lecture.html" class="btn">View Sample</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header lecture">Upgraded Lecture Sample</div>
+                <div class="card-body">
+                    <p>Enhanced lecture material with improved layout and navigation.</p>
+                    <a href="test_lecture_upgraded.html" class="btn">View Sample</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>StudySnap AI - PDF to Mobile HTML Conversion</p>
+        <p><a href="https://studysnap-pdf.netlify.app/">Main Site</a> | <a href="mailto:jmyangkr@gmail.com">Contact</a></p>
+    </footer>
+</body>
+</html>
