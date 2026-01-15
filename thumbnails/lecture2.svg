@@ -1,0 +1,15 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1"/>
+      <stop offset="100%" style="stop-color:#4F46E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="200" font-family="Arial, sans-serif" font-size="120" fill="white" text-anchor="middle">🎓</text>
+  <text x="600" y="320" font-family="Arial, sans-serif" font-size="48" fill="white" text-anchor="middle" font-weight="bold">강의자료 샘플 2</text>
+  <text x="600" y="400" font-family="Arial, sans-serif" font-size="36" fill="rgba(255,255,255,0.9)" text-anchor="middle">업그레이드 버전</text>
+  <text x="600" y="520" font-family="Arial, sans-serif" font-size="24" fill="rgba(255,255,255,0.7)" text-anchor="middle">개선된 레이아웃 · 네비게이션 · 수식 지원</text>
+  <rect x="50" y="580" width="200" height="30" rx="15" fill="rgba(255,255,255,0.2)"/>
+  <text x="150" y="602" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle">StudySnap AI</text>
+</svg>
