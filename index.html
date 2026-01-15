@@ -147,6 +147,43 @@
         }
         .footer a { color: var(--primary); text-decoration: none; }
 
+        /* Share button styles */
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-share {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 14px;
+            background: #6B7280;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-share:hover { background: #4B5563; }
+        .btn-share.copied {
+            background: #10B981;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1F2937;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        .toast.show { opacity: 1; }
+
         @media (max-width: 768px) {
             .header h1 { font-size: 1.8rem; }
             .lang-selector { top: 10px; right: 10px; padding: 6px 10px; font-size: 0.8rem; }
@@ -187,7 +224,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="yfgc_new_desc">2026-01-11 Sunday bulletin with dark mode and Bible verse popups.</p>
-                    <a href="outputs/Church/YFGC/2026-01-11일 주보.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="outputs/Church/YFGC/2026-01-11일 주보.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('yfgc-0111')">Share</button>
+                    </div>
                 </div>
             </div>
 
@@ -197,7 +237,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="yfgc_1214_desc">2025-12-14 Sunday bulletin with responsive design, dark mode, Bible verse popups.</p>
-                    <a href="outputs/Church/여의도순복음교회/2025-12-14.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="outputs/Church/여의도순복음교회/2025-12-14.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('yfgc-1214')">Share</button>
+                    </div>
                 </div>
             </div>
 
@@ -207,7 +250,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="yfgc_1116_desc">2025-11-16 Sunday bulletin with worship schedule and church news.</p>
-                    <a href="outputs/Church/여의도순복음교회/2025-11-16.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="outputs/Church/여의도순복음교회/2025-11-16.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('yfgc-1116')">Share</button>
+                    </div>
                 </div>
             </div>
 
@@ -217,7 +263,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="myungsung_desc">2025-12-07 Sunday bulletin with worship order and announcements.</p>
-                    <a href="outputs/Church/명성교회/2025-12-07.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="outputs/Church/명성교회/2025-12-07.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('myungsung')">Share</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -234,7 +283,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="ryu_desc">National Assembly candidate pamphlet with policies and career highlights.</p>
-                    <a href="outputs/Election/Minjoo/류삼영/류삼영.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="outputs/Election/Minjoo/류삼영/류삼영.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('ryu')">Share</button>
+                    </div>
                 </div>
             </div>
             <div class="card">
@@ -243,7 +295,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="jang_desc">Progressive party candidate pamphlet with policy vision.</p>
-                    <a href="outputs/Election/Progressive/장지화.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="outputs/Election/Progressive/장지화.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('jang')">Share</button>
+                    </div>
                 </div>
             </div>
             <div class="card">
@@ -252,7 +307,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="ppp_desc">People Power Party candidate pamphlet with pledges.</p>
-                    <a href="outputs/Election/PPP/NA.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="outputs/Election/PPP/NA.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('ppp')">Share</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -269,7 +327,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="lecture1_desc">Academic lecture material converted to mobile-friendly format.</p>
-                    <a href="test_lecture.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="test_lecture.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('lecture1')">Share</button>
+                    </div>
                 </div>
             </div>
             <div class="card">
@@ -278,7 +339,10 @@
                 </div>
                 <div class="card-body">
                     <p data-i18n="lecture2_desc">Enhanced lecture material with improved layout and navigation.</p>
-                    <a href="test_lecture_upgraded.html" class="btn" data-i18n="view_sample">View Sample</a>
+                    <div class="btn-group">
+                        <a href="test_lecture_upgraded.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('lecture2')">Share</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -288,6 +352,9 @@
         <p>StudySnap AI - PDF to Mobile HTML Conversion</p>
         <p><a href="https://studysnap-pdf.netlify.app/">Main Site</a> | <a href="mailto:jmyangkr@gmail.com">Contact</a></p>
     </footer>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
 
     <script>
         const translations = {
@@ -399,6 +466,41 @@
                 changeLanguage(savedLang);
             }
         });
+
+        // Short URL sharing
+        const BASE_URL = 'https://yang-jeongman.github.io/studysnap-samples/s/';
+
+        function copyShareUrl(shortCode) {
+            const url = BASE_URL + shortCode + '.html';
+            navigator.clipboard.writeText(url).then(() => {
+                showToast(currentLang === 'ko' ? 'URL이 복사되었습니다!' : 'URL copied!');
+                // Visual feedback on button
+                event.target.classList.add('copied');
+                event.target.textContent = currentLang === 'ko' ? '복사됨!' : 'Copied!';
+                setTimeout(() => {
+                    event.target.classList.remove('copied');
+                    event.target.textContent = 'Share';
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = url;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast(currentLang === 'ko' ? 'URL이 복사되었습니다!' : 'URL copied!');
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
     </script>
 </body>
 </html>
