@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="장지화 - 성남시장 후보 | 진보당">
+    <title>장지화 - 성남시장 후보</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --party-color: #10B981;
+            --party-color-light: #D1FAE5;
+            --party-color-dark: #059669;
+            --party-gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            --party-accent: #34D399;
+            --text-on-primary: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Fixed Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar .candidate-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .nav-bar .party-badge {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 60px;
+            background: var(--party-gradient);
+            color: var(--text-on-primary);
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-slogan {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .hero-name {
+            font-size: 3em;
+            font-weight: 900;
+            margin: 20px 0;
+            letter-spacing: -1px;
+        }
+
+        .hero-position {
+            font-size: 1.2em;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        /* Vision Section */
+        .vision-section {
+            background: white;
+            margin: 0;
+            padding: 30px 20px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .vision-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--party-color);
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 18px;
+            background: var(--party-color-light);
+            border-radius: 12px;
+            line-height: 1.5;
+        }
+
+        .vision-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .vision-item {
+            background: #f9fafb;
+            border-left: 4px solid var(--party-color);
+            border-radius: 8px;
+            padding: 18px 20px;
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: #374151;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Quick Highlights */
+        .quick-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 25px 20px;
+            background: white;
+        }
+
+        .highlight-card {
+            display: flex;
+            align-items: center;
+            padding: 18px 22px;
+            border-radius: 15px;
+            background: var(--party-color-light);
+            border: 2px solid var(--party-color);
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .highlight-card .icon {
+            font-size: 2.2em;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .highlight-card .content {
+            flex: 1;
+        }
+
+        .highlight-card .number {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .highlight-card .label {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* Section Container */
+        .section {
+            background: white;
+            margin: 15px 0;
+            padding: 30px 20px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--party-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+
+        /* Promise Cards */
+        .promise-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .promise-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .promise-card:hover {
+            border-color: var(--party-color);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+        }
+
+        .promise-header {
+            padding: 22px;
+            background: var(--party-color-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .promise-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--party-color);
+            min-width: 50px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .promise-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--party-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 28px;
+            padding-left: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            background: var(--party-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--party-color);
+        }
+
+        .timeline-content {
+            font-size: 1.05em;
+            color: #374151;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            background: var(--party-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Contact Section */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .contact-link.phone {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 0.75em;
+            padding: 5px 15px;
+            transition: all 0.3s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--party-color);
+        }
+
+        .bottom-nav .nav-icon {
+            font-size: 1.6em;
+            margin-bottom: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 35px 20px;
+            background: white;
+            margin-top: 15px;
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: var(--party-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* 추가 스타일 */
+        .intro-text {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #78350f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Top Navigation -->
+    <nav class="nav-bar">
+        <span class="candidate-name">장지화</span>
+        <span class="party-badge">진보당</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <div class="hero-slogan">차별 없이 함께 사는 성남의 꿈!<br>멈출 수 없습니다</div>
+            <h1 class="hero-name">장지화</h1>
+            <p class="hero-position">성남시장 후보</p>
+        </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section class="vision-section" id="vision">
+        <div class="vision-title">부패무능 7기 시정 극복!<br>장지화로 새로고침!</div>
+        <div class="vision-items">
+            <div class="vision-item">진보정치가 힘을 합쳐 특권 없는 혁신 시정을 펼치겠습니다.</div>
+            <div class="vision-item">청렴과 복지도시, 성남의 명예를 회복하겠습니다.</div>
+        </div>
+    </section>
+
+    <!-- Quick Highlights -->
+    <div class="quick-highlights">
+        <div class="highlight-card">
+            <span class="icon">🎯</span>
+            <div class="content">
+                <span class="number">10개</span>
+                <div class="label">핵심 공약</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">📋</span>
+            <div class="content">
+                <span class="number">8건</span>
+                <div class="label">주요 경력</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Introduction -->
+    <section class="section">
+        <div class="intro-text">
+            <strong>부패로 잇속 챙기고 특권을 누리는 데에는 여야 두 당이 따로 없습니다.</strong><br>
+            회초리를 분명히 들어야 합니다.<br><br>
+            진보정당들이 힘을 합쳤습니다.<br>
+            성남에서 진보정치 한길 달려온 <strong>장지화</strong>가 있습니다.<br>
+            장지화를 선택해주십시오!
+        </div>
+    </section>
+
+    <!-- Pledges Section -->
+    <section class="section" id="pledges">
+        <h2 class="section-title"><span class="icon">📋</span> 핵심 공약</h2>
+        <div class="promise-list">
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">1</span>
+                    <div class="promise-title">시장·시의원·고위공직자 판공비, 관용차, 개인사무실 폐지</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">2</span>
+                    <div class="promise-title">시정개혁위원회 설치 - 청년·시민·노동·환경·여성 부시장제 도입</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">3</span>
+                    <div class="promise-title">공공기관 인사권·감사권·예산권 시민참여 강화</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">4</span>
+                    <div class="promise-title">성남도시개발공사 해체, 사회주택 공사로 전환</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">5</span>
+                    <div class="promise-title">성남시의원·고위공직자 부동산 특별감사 실시 - 불로소득 전액 환수</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">6</span>
+                    <div class="promise-title">지속가능한 재생에너지 보급 확대 | 기후정의조례 제정</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">7</span>
+                    <div class="promise-title">공공기관 비정규직 정규직으로 전환, 건설노동자 주휴수당 연 1000만원</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">8</span>
+                    <div class="promise-title">차별없는 돌봄 - 아이, 노인, 장애인 돌봄 확대, 돌봄노동자 고용안정과 처우개선</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">9</span>
+                    <div class="promise-title">공공의료 강화 - 시민주치의제 실시 및 동별 공공산후조리원 설립</div>
+                </div>
+            </div>
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">10</span>
+                    <div class="promise-title">성남형 단일임금체계 도입 - 사회복지사와 사회복지시설 종사자 등</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COVID Recovery Section -->
+    <section class="section">
+        <h2 class="section-title"><span class="icon">💰</span> 일상회복 지원</h2>
+        <div class="promise-card">
+            <div class="promise-header">
+                <span class="promise-number">✓</span>
+                <div class="promise-title">일상회복에 수천억씩 남는 세금 아낌없이 쓰겠습니다</div>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <div class="promise-card">
+                <div class="promise-header">
+                    <div class="promise-title">시민 누구나 일상회복 지원금 10만원</div>
+                </div>
+            </div>
+            <div class="promise-card" style="margin-top: 10px;">
+                <div class="promise-header">
+                    <div class="promise-title">성남시의료원에 코로나 후유증 치료 클리닉 신설</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Section -->
+    <section class="section" id="career">
+        <h2 class="section-title"><span class="icon">📜</span> 주요 경력</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">성남시 초등학교 학부모회 회장 <span class="timeline-badge">전</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">사과나무도서관 관장 <span class="timeline-badge">전</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">성남학부모칼리지 단장 <span class="timeline-badge">전</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">성남형교육 유공자상 수상</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">민중당(여성엄마당) 공동대표 <span class="timeline-badge">전</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">한국양성평등교육진흥원 전문강사 <span class="timeline-badge">전</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">전국건설노조 경기도건설지부 교육위원 <span class="timeline-badge">현</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">진보당 성남수정구지역위원회 위원장 <span class="timeline-badge">현</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <h2 class="section-title"><span class="icon">📞</span> 연락처</h2>
+        <div class="contact-links">
+            <a href="tel:010-5300-0518" class="contact-link phone">📞 010-5300-0518</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>2022년 제8회 전국동시지방선거 성남시장 후보</strong></p>
+        <p style="margin-top: 10px;">본 페이지는 PDF 선거공보물에서 생성되었습니다.</p>
+        <p style="margin-top: 10px;"><a href="https://studysnap.kr" target="_blank">StudySnap</a> | 선거공보 변환 서비스</p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#home" class="active">
+            <span class="nav-icon">🏠</span>
+            홈
+        </a>
+        <a href="#pledges">
+            <span class="nav-icon">📋</span>
+            공약
+        </a>
+        <a href="#career">
+            <span class="nav-icon">📜</span>
+            경력
+        </a>
+        <a href="#contact">
+            <span class="nav-icon">📞</span>
+            연락처
+        </a>
+    </nav>
+
+    <script>
+        // Bottom navigation scroll spy
+        const sections = ['home', 'vision', 'pledges', 'career', 'contact'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {
+                    current = id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

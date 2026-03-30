@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap AI - 샘플 포트폴리오</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #ec4899;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-white: #f8fafc;
+            --text-gray: #94a3b8;
+            --border: #334155;
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .category {
+            margin-bottom: 50px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        .category-icon.church { background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); }
+        .category-icon.election { background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); }
+        .category-icon.lecture { background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%); }
+        .category-icon.newsletter { background: linear-gradient(135deg, #0ea5e9 0%, #2dd4bf 100%); }
+
+        .category h2 {
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+
+        .category h2 span {
+            color: var(--text-gray);
+            font-weight: 400;
+            font-size: 0.6em;
+            margin-left: 10px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .card-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            opacity: 0.5;
+            overflow: hidden;
+        }
+
+        .card-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+        }
+
+        .card-preview.has-thumb {
+            opacity: 1;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .badge-church { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+        .badge-minjoo { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .badge-ppp { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .badge-progressive { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge-lecture { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .badge-newsletter { background: rgba(14, 165, 233, 0.2); color: #38bdf8; }
+
+        .card h3 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        .card-link {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-link::after {
+            content: '→';
+            transition: transform 0.2s;
+        }
+
+        .card:hover .card-link::after {
+            transform: translateX(5px);
+        }
+
+        .share-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .share-section h3 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-dark);
+            padding: 15px 20px;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .link-item .label {
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .link-item .url {
+            flex: 1;
+            color: var(--text-gray);
+            font-size: 0.85em;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-gray);
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8em; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .link-item { flex-direction: column; align-items: flex-start; }
+            .link-item .url { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>StudySnap AI 포트폴리오</h1>
+        <p>PDF를 인터랙티브 모바일 페이지로 변환한 실제 샘플들을 확인하세요</p>
+    </div>
+
+    <div class="container">
+        <!-- 소식지 & 기관지 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon newsletter">📰</div>
+                <h2>소식지 & 기관지 <span>Newsletter & Corporation</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="newsletter/hoengseong-2026-04.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb">
+                        <img src="newsletter/thumbnail.jpg" alt="횡성군 소식지 표지">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-badge badge-newsletter">횡성군청</span>
+                        <h3>행복 담은 횡성 · 4월호</h3>
+                        <p>32페이지 소식지 · 좌우 슬라이드 · 검색 · 목차 · 이미지 줌 · 전화 걸기</p>
+                        <div class="card-meta">
+                            <span>2026년 4월 (Vol.38)</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 교회 주보 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon church">⛪</div>
+                <h2>교회 주보 <span>Church Bulletin</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="church/fgfc-2025-12-14.html" class="card" target="_blank">
+                    <div class="card-preview">⛪</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-church">여의도순복음교회</span>
+                        <h3>주일예배 주보 (다국어)</h3>
+                        <p>8개국어 자동 번역, 성경구절 팝업, 찬송가 가사 팝업 지원</p>
+                        <div class="card-meta">
+                            <span>2025-12-14</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="church/myungsung-2025-12-07.html" class="card" target="_blank">
+                    <div class="card-preview">⛪</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-church">명성교회</span>
+                        <h3>주일예배 주보</h3>
+                        <p>예배순서, 교회소식, 다크모드 지원</p>
+                        <div class="card-meta">
+                            <span>2025-12-07</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 선거 공보물 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon election">🗳️</div>
+                <h2>선거 공보물 <span>Election Pamphlet</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="election/minjoo/ryu-samyoung.html" class="card" target="_blank">
+                    <div class="card-preview">🗳️</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>류삼영 후보</h3>
+                        <p>후보 프로필, 공약 정보, 정책 비교</p>
+                        <div class="card-meta">
+                            <span>국회의원</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/progressive/jang-jihwa.html" class="card" target="_blank">
+                    <div class="card-preview">🗳️</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-progressive">진보당</span>
+                        <h3>장지화 후보</h3>
+                        <p>후보 프로필, 공약 정보, 정책 비교</p>
+                        <div class="card-meta">
+                            <span>국회의원</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/ppp/kim-yeonsik.html" class="card" target="_blank">
+                    <div class="card-preview">🗳️</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-ppp">국민의힘</span>
+                        <h3>김연식 후보</h3>
+                        <p>후보 프로필, 공약 정보, 시장 후보</p>
+                        <div class="card-meta">
+                            <span>태백시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 강의자료 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon lecture">📚</div>
+                <h2>강의자료 <span>Lecture Materials</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="lecture/medical.html" class="card" target="_blank">
+                    <div class="card-preview">🏥</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-lecture">의료</span>
+                        <h3>의료 강의자료</h3>
+                        <p>의료 관련 PDF를 인터랙티브 학습 자료로 변환</p>
+                        <div class="card-meta">
+                            <span>Medical</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="lecture/economics.html" class="card" target="_blank">
+                    <div class="card-preview">📊</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-lecture">경제</span>
+                        <h3>경제학 강의자료</h3>
+                        <p>경제학 PDF를 인터랙티브 학습 자료로 변환</p>
+                        <div class="card-meta">
+                            <span>Economics</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="lecture/math.html" class="card" target="_blank">
+                    <div class="card-preview">📐</div>
+                    <div class="card-content">
+                        <span class="card-badge badge-lecture">수학</span>
+                        <h3>수학 강의자료</h3>
+                        <p>수학 PDF를 인터랙티브 학습 자료로 변환</p>
+                        <div class="card-meta">
+                            <span>Mathematics</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 공유 링크 섹션 -->
+        <section class="share-section">
+            <h3>🔗 외부 공유 링크</h3>
+            <p style="color: var(--text-gray); margin-bottom: 20px;">아래 링크를 복사하여 외부에 공유하세요. 클릭 시 바로 해당 페이지가 열립니다.</p>
+            <div class="link-list">
+                <div class="link-item">
+                    <span class="label">횡성군 소식지 4월호</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/newsletter/hoengseong-2026-04.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/newsletter/hoengseong-2026-04.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">여의도순복음교회</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/church/fgfc-2025-12-14.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/church/fgfc-2025-12-14.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">명성교회</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/church/myungsung-2025-12-07.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/church/myungsung-2025-12-07.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">류삼영 (민주당)</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/election/minjoo/ryu-samyoung.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/election/minjoo/ryu-samyoung.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">장지화 (진보당)</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/election/progressive/jang-jihwa.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/election/progressive/jang-jihwa.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">김연식 (국민의힘)</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/election/ppp/kim-yeonsik.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/election/ppp/kim-yeonsik.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">의료 강의자료</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/lecture/medical.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/lecture/medical.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">경제학 강의자료</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/lecture/economics.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/lecture/economics.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">수학 강의자료</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/lecture/math.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/lecture/math.html')">복사</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>StudySnap AI - PDF를 스마트하게 변환</p>
+        <p><a href="https://studysnap-pdf.netlify.app">메인 페이지로 돌아가기</a></p>
+    </footer>
+
+    <script>
+        function copyLink(btn, url) {
+            navigator.clipboard.writeText(url).then(() => {
+                btn.textContent = '복사됨!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '복사';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

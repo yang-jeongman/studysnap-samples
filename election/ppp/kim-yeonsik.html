@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="김연식 - 강원도 태백시장 후보 | 국민의힘 | 깨끗함이 좋다">
+    <meta name="theme-color" content="#E11D48">
+    <title>김연식 | 태백시장 후보 | 국민의힘</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--party:#E11D48;--party-light:#FEE2E2;--party-dark:#BE123C}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;line-height:1.6;color:#333;background:#f5f5f5;padding-bottom:70px}
+        .nav{position:fixed;top:0;left:0;right:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:1000;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+        .nav .name{font-size:1.1em;font-weight:bold;color:var(--party)}
+        .nav .badge{background:var(--party);color:#fff;padding:5px 12px;border-radius:20px;font-size:.85em;font-weight:600}
+        .hero{margin-top:56px;background:linear-gradient(135deg,#E11D48,#BE123C);color:#fff;padding:50px 20px 40px;text-align:center}
+        .hero .num{display:inline-block;background:rgba(255,255,255,.2);padding:10px 30px;border-radius:30px;font-size:1.3em;font-weight:900;margin-bottom:15px}
+        .hero .slogan{font-size:1.5em;font-weight:700;margin-bottom:15px}
+        .hero h1{font-size:3em;font-weight:900;letter-spacing:5px;margin:15px 0}
+        .hero .pos{font-size:1em;background:rgba(255,255,255,.15);display:inline-block;padding:8px 20px;border-radius:20px}
+        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px;background:#fff}
+        .stat{text-align:center;padding:15px;background:var(--party-light);border-radius:12px}
+        .stat .n{font-size:1.5em;font-weight:900;color:var(--party)}
+        .stat .l{font-size:.8em;color:#666;margin-top:5px}
+        .banner{background:linear-gradient(135deg,#E11D48,#BE123C);color:#fff;text-align:center;padding:30px 20px;margin:15px 0}
+        .banner h2{font-size:1.6em}
+        .banner .proj{font-size:2em;font-weight:900}
+        .banner .proj span{color:#FFD700}
+        .vcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px;background:#fff}
+        .vcard{text-align:center;padding:20px 10px;border-radius:15px;background:#f8f9fa;border:2px solid #e0e0e0;cursor:pointer;transition:.3s}
+        .vcard:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.1)}
+        .vcard.c{border-top:4px solid #3B82F6}
+        .vcard.g{border-top:4px solid #10B981}
+        .vcard.h{border-top:4px solid #8B5CF6}
+        .vcard .i{font-size:2em;margin-bottom:10px}
+        .vcard .t{font-size:1em;font-weight:bold}
+        .vcard.c .t{color:#3B82F6}
+        .vcard.g .t{color:#10B981}
+        .vcard.h .t{color:#8B5CF6}
+        .vcard .s{font-size:.7em;color:#666;margin-top:3px}
+        .sec{background:#fff;margin:15px 0;padding:25px 20px}
+        .sec-t{font-size:1.2em;font-weight:bold;color:var(--party);margin-bottom:20px;padding-bottom:10px;border-bottom:3px solid var(--party);display:flex;align-items:center;gap:10px}
+        .card{background:#f8f9fa;border-radius:12px;margin-bottom:10px;border:2px solid #e0e0e0;overflow:hidden;transition:.3s}
+        .card.exp{border-color:var(--party)}
+        .card-h{padding:15px 20px;display:flex;align-items:center;gap:15px;cursor:pointer;background:#fff}
+        .card-n{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#fff;font-size:1.1em;flex-shrink:0}
+        .card:nth-child(1) .card-n{background:#10B981}
+        .card:nth-child(2) .card-n{background:#3B82F6}
+        .card:nth-child(3) .card-n{background:#F59E0B}
+        .card:nth-child(4) .card-n{background:#8B5CF6}
+        .card:nth-child(5) .card-n{background:#EC4899}
+        .card:nth-child(6) .card-n{background:#EF4444}
+        .card-tt{flex:1;font-weight:600;font-size:.95em}
+        .card-a{color:#999;transition:.3s}
+        .card.exp .card-a{transform:rotate(180deg);color:var(--party)}
+        .card-c{padding:0 20px 15px;display:none}
+        .card.exp .card-c{display:block}
+        .card-i{padding:8px 0 8px 18px;position:relative;border-bottom:1px solid #e0e0e0;font-size:.9em}
+        .card-i:last-child{border-bottom:none}
+        .card-i::before{content:'▶';position:absolute;left:0;color:var(--party);font-size:.7em}
+        .ach{background:linear-gradient(135deg,#1e3a5f,#2d4a6f);color:#fff;padding:30px 20px;margin:15px 0}
+        .ach h2{text-align:center;font-size:1.3em;margin-bottom:20px}
+        .ach h2 span{color:#FFD700}
+        .ach-c{background:rgba(255,255,255,.1);border-radius:12px;padding:20px;margin-bottom:15px}
+        .ach-c h4{color:#FFD700;margin-bottom:10px}
+        .ach-c .v{font-size:2em;font-weight:900}
+        .ach-c .lb{font-size:.85em;opacity:.8;margin-top:5px}
+        .ach-l{margin-top:10px}
+        .ach-l div{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.9em}
+        .rcard{background:#fff;border-radius:12px;border-left:5px solid var(--party);margin-bottom:10px;overflow:hidden}
+        .rcard:nth-child(1){border-left-color:#E11D48}
+        .rcard:nth-child(2){border-left-color:#3B82F6}
+        .rcard:nth-child(3){border-left-color:#10B981}
+        .rcard:nth-child(4){border-left-color:#F59E0B}
+        .rcard:nth-child(5){border-left-color:#8B5CF6}
+        .rcard:nth-child(6){border-left-color:#EC4899}
+        .rcard-h{padding:15px;display:flex;align-items:center;gap:12px;cursor:pointer;background:#f8f9fa}
+        .rcard-n{width:28px;height:28px;border-radius:50%;background:#333;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.85em}
+        .rcard-nm{flex:1;font-weight:600;font-size:.95em}
+        .rcard-tg{color:#999;transition:.3s}
+        .rcard.exp .rcard-tg{transform:rotate(180deg)}
+        .rcard-c{padding:0;max-height:0;overflow:hidden;transition:.3s}
+        .rcard.exp .rcard-c{max-height:400px;padding:15px}
+        .rcard-i{padding:6px 0 6px 15px;position:relative;font-size:.85em;color:#555}
+        .rcard-i::before{content:'-';position:absolute;left:0;color:var(--party)}
+        .quote{background:linear-gradient(135deg,#E11D48,#BE123C);color:#fff;padding:40px 20px;text-align:center;margin:15px 0}
+        .quote p{font-size:1.5em;font-weight:700;line-height:1.4}
+        .quote .au{font-size:1em;margin-top:15px;opacity:.9}
+        .why-i{padding:12px 0 12px 25px;position:relative;border-bottom:1px solid #e0e0e0;font-size:.95em}
+        .why-i:last-child{border-bottom:none}
+        .why-i::before{content:'✓';position:absolute;left:0;color:var(--party);font-weight:bold}
+        .tl{padding-left:25px;position:relative}
+        .tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:3px;background:var(--party)}
+        .tl-i{position:relative;margin-bottom:18px;padding-left:20px}
+        .tl-i::before{content:'';position:absolute;left:-21px;top:5px;width:12px;height:12px;background:var(--party);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--party)}
+        .tl-cat{font-size:.7em;color:var(--party);font-weight:600}
+        .tl-txt{font-size:.9em;color:#333}
+        .books{display:flex;gap:15px;overflow-x:auto;padding:10px 0}
+        .book{min-width:130px;background:#f8f9fa;border-radius:10px;padding:15px;text-align:center;border:2px solid #e0e0e0}
+        .book .i{font-size:2em;margin-bottom:8px}
+        .book .t{font-size:.85em;font-weight:600}
+        .book .y{font-size:.75em;color:#666}
+        .ct-info{background:#f8f9fa;border-radius:12px;padding:20px;margin-bottom:15px}
+        .ct-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e0e0e0}
+        .ct-row:last-child{border-bottom:none}
+        .ct-ic{font-size:1.2em}
+        .ct-lb{font-size:.8em;color:#666}
+        .ct-vl{font-weight:600}
+        .ct-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+        .ct-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:12px;text-decoration:none;font-weight:600;color:#fff}
+        .ct-btn.call{background:var(--party)}
+        .ct-btn.blog{background:#03C75A}
+        .bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -2px 10px rgba(0,0,0,.1);display:flex;justify-content:space-around;padding:8px 0;z-index:1000}
+        .bnav a{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#666;font-size:.65em;padding:5px 10px}
+        .bnav a.act{color:var(--party)}
+        .bnav .ic{font-size:1.4em;margin-bottom:2px}
+        .fab{position:fixed;bottom:80px;right:15px;width:50px;height:50px;background:var(--party);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3em;box-shadow:0 4px 15px rgba(225,29,72,.4);cursor:pointer;z-index:999}
+        .footer{text-align:center;padding:25px 20px;background:#333;color:#999;font-size:.75em}
+        .footer a{color:var(--party);text-decoration:none}
+    </style>
+</head>
+<body>
+    <nav class="nav"><span class="name">김연식</span><span class="badge">국민의힘</span></nav>
+
+    <section class="hero" id="home">
+        <div class="num">기호 1번</div>
+        <p class="slogan">깨끗함이 좋다</p>
+        <h1>김연식</h1>
+        <p class="pos">강원도 태백시장 후보</p>
+    </section>
+
+    <div class="stats">
+        <div class="stat"><div class="n">3대</div><div class="l">비전</div></div>
+        <div class="stat"><div class="n">5대</div><div class="l">실천과제</div></div>
+        <div class="stat"><div class="n">6대</div><div class="l">권역개발</div></div>
+    </div>
+
+    <section class="banner">
+        <h2>희망 태백</h2>
+        <div class="proj"><span>365</span> 프로젝트</div>
+        <p style="margin-top:10px;font-size:.9em">더 큰 태백, 더 강한 태백을 만들겠습니다</p>
+    </section>
+
+    <div class="vcards">
+        <div class="vcard c"><div class="i">🏙️</div><div class="t">클린시티</div><div class="s">깨끗한 태백</div></div>
+        <div class="vcard g"><div class="i">🌲</div><div class="t">그린시티</div><div class="s">산소도시 태백</div></div>
+        <div class="vcard h"><div class="i">👨‍👩‍👧‍👦</div><div class="t">휴먼시티</div><div class="s">행복한 태백</div></div>
+    </div>
+
+    <section class="sec" id="vision">
+        <h2 class="sec-t">🎯 3대 비전</h2>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n" style="background:#3B82F6">1</div><div class="card-tt">클린시티 - 깨끗한 태백 만들기</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">전봇대 없는 도심지 조성</div><div class="card-i">강남스타일 인도 블럭 교체</div><div class="card-i">깨끗한 태백 만들기 운동 본부 구성</div></div></div>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n" style="background:#10B981">2</div><div class="card-tt">그린시티 - 산소도시 태백 만들기</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">100만 그루 나무 심기</div><div class="card-i">소규모 도심공원 조성</div><div class="card-i">도심지 녹지공간 확충</div></div></div>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n" style="background:#8B5CF6">3</div><div class="card-tt">휴먼시티 - 행복하고 안전한 태백</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">상가·재래시장 활성화</div><div class="card-i">기업유치 및 일자리 창출</div><div class="card-i">국제 청소년 재난안전기구 설립</div></div></div>
+    </section>
+
+    <section class="sec" id="pledges">
+        <h2 class="sec-t">📋 5대 실천과제</h2>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n">1</div><div class="card-tt">으뜸 교육 실현</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">교육비 예산 15%→20% 인상 추진</div><div class="card-i">고등학교 무상교육·무상급식 실현</div><div class="card-i">교육시설 상수도 요금 30% 지원</div><div class="card-i">공립 어린이집 확충 및 보육교사 인건비 인상</div></div></div>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n">2</div><div class="card-tt">행복하고 건강한 노인 복지</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">실버 스포츠 센터 건립</div><div class="card-i">경로당 난방비 연간 200만원 지원</div><div class="card-i">경로당 운영비 3만7천원→5만원 인상</div><div class="card-i">어르신 공경 조례 제정</div></div></div>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n">3</div><div class="card-tt">서민 생활경제 활성화</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">노인 및 주부 적합형 일자리 창출</div><div class="card-i">전통시장 상권 활성화 지원</div><div class="card-i">인구 10만명 규모 상권 구축</div></div></div>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n">4</div><div class="card-tt">고소득 농업 경제 창출</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">농정예산 3%(90억) 상향 조정</div><div class="card-i">곰취·오미자 농가 연간 각 2억원 지원</div><div class="card-i">한우농가 확대 지원</div></div></div>
+        <div class="card"><div class="card-h" onclick="tog(this)"><div class="card-n">5</div><div class="card-tt">유럽풍 관광문화도시 구현</div><span class="card-a">▼</span></div><div class="card-c"><div class="card-i">CGV개봉영화 지속 확대 상영</div><div class="card-i">관내 동아리 소규모 공연 확대 지원</div><div class="card-i">뮤지컬, 대중음악회 등 문화·예술 기회 확대</div></div></div>
+    </section>
+
+    <section class="ach">
+        <h2>"임기 4년 <span>쉼없이 달렸습니다</span>"</h2>
+        <div class="ach-c"><h4>자체 부채</h4><div class="v">제로!</div><div class="lb">489억(2010) → 0(2014)</div></div>
+        <div class="ach-c"><h4>국·도비 확보</h4><div class="v">2,991억</div><div class="lb">국비 2,179억 / 도비 812억</div></div>
+        <div class="ach-c"><h4>주요 성과</h4><div class="ach-l"><div>✓ 정부합동평가 강원도 1위 (2012)</div><div>✓ 재정자립도 강원도 1위 (2013)</div><div>✓ 재정균형집행 전국 최우수 (2013)</div></div></div>
+    </section>
+
+    <section class="sec" id="regions">
+        <h2 class="sec-t">🗺️ 6대 권역별 개발계획</h2>
+        <div class="rcard"><div class="rcard-h" onclick="togR(this)"><div class="rcard-n">1</div><div class="rcard-nm">황지 상장 도심 지구</div><span class="rcard-tg">▼</span></div><div class="rcard-c"><div class="rcard-i">문화경제, 관광, 정주기능 시민광장 조성</div><div class="rcard-i">낙동강 발원지 물길 조성</div><div class="rcard-i">전선 지중화 사업</div><div class="rcard-i">황지연못~중앙로 관광산업벨트 추진</div></div></div>
+        <div class="rcard"><div class="rcard-h" onclick="togR(this)"><div class="rcard-n">2</div><div class="rcard-nm">삼수 화전 지구</div><span class="rcard-tg">▼</span></div><div class="rcard-c"><div class="rcard-i">주차장 조성 등 시가지 정비</div><div class="rcard-i">농정예산 확충 및 농업인 복지</div><div class="rcard-i">산타파크, 바람의 언덕 주차장 조성</div></div></div>
+        <div class="rcard"><div class="rcard-h" onclick="togR(this)"><div class="rcard-n">3</div><div class="rcard-nm">황연 통리 백산 지구</div><span class="rcard-tg">▼</span></div><div class="rcard-c"><div class="rcard-i">백산 종합 게이트볼구장, 체육공원 조성</div><div class="rcard-i">100억원 규모 통리 재개발</div><div class="rcard-i">270억 규모 통리 관광문화사업</div></div></div>
+        <div class="rcard"><div class="rcard-h" onclick="togR(this)"><div class="rcard-n">4</div><div class="rcard-nm">문곡 소도 지구</div><span class="rcard-tg">▼</span></div><div class="rcard-c"><div class="rcard-i">100억 규모 스포츠 메디컬 센터 설립</div><div class="rcard-i">KAIST 강원캠퍼스 추진</div><div class="rcard-i">태백산 도립공원 종합 정비</div></div></div>
+        <div class="rcard"><div class="rcard-h" onclick="togR(this)"><div class="rcard-n">5</div><div class="rcard-nm">장성 구문소 지구</div><span class="rcard-tg">▼</span></div><div class="rcard-c"><div class="rcard-i">장성 화광아파트 32층 규모 추가 건립</div><div class="rcard-i">360억 규모 신소재스포츠산업단지 조성</div><div class="rcard-i">국제청소년재난안전기구 설립</div></div></div>
+        <div class="rcard"><div class="rcard-h" onclick="togR(this)"><div class="rcard-n">6</div><div class="rcard-nm">철암 지구</div><span class="rcard-tg">▼</span></div><div class="rcard-c"><div class="rcard-i">1조8천억 규모 LNG 발전소 유치</div><div class="rcard-i">600억 규모 프라즈마 발전소 유치</div><div class="rcard-i">철암시장 60~70년대 복고풍 재개발</div></div></div>
+    </section>
+
+    <section class="quote"><p>"태백을<br>다시 한번<br>부탁해"</p><div class="au">- 김연식 드림</div></section>
+
+    <section class="sec" id="why">
+        <h2 class="sec-t">❓ 왜? 김연식인가?</h2>
+        <div class="why-i">젊었습니다.</div>
+        <div class="why-i">깨끗합니다.</div>
+        <div class="why-i">4년동안 시정을 운영한 경험이 있습니다.</div>
+        <div class="why-i">순수합니다. 진실합니다. 거짓이 없습니다.</div>
+        <div class="why-i">지역개발에 대한 뚜렷한 철학이 있습니다.</div>
+        <div class="why-i">강원도와 중앙정부의 인맥이 풍부합니다.</div>
+        <div class="why-i">한다면 하는 사람입니다.</div>
+    </section>
+
+    <section class="sec" id="career">
+        <h2 class="sec-t">📜 학력 / 경력</h2>
+        <div class="tl">
+            <div class="tl-i"><div class="tl-cat">학력</div><div class="tl-txt">황지고등학교 졸업</div></div>
+            <div class="tl-i"><div class="tl-cat">학력</div><div class="tl-txt">연세대학교 정경대학원 정치학과 졸업 (정치학 석사)</div></div>
+            <div class="tl-i"><div class="tl-cat">경력</div><div class="tl-txt">강원일보 정치부 기자 (전)</div></div>
+            <div class="tl-i"><div class="tl-cat">경력</div><div class="tl-txt">KBS 춘천방송총국 정치해설 (전)</div></div>
+            <div class="tl-i"><div class="tl-cat">경력</div><div class="tl-txt">강원도의회 의원, 예산결산특별위원장 (전)</div></div>
+            <div class="tl-i"><div class="tl-cat">경력</div><div class="tl-txt">연세대학교 총동문회 상임이사 (현)</div></div>
+            <div class="tl-i"><div class="tl-cat">경력</div><div class="tl-txt">태백시장 (현)</div></div>
+            <div class="tl-i"><div class="tl-cat">병역</div><div class="tl-txt">육군 백골부대 병장 전역</div></div>
+        </div>
+    </section>
+
+    <section class="sec">
+        <h2 class="sec-t">📚 저서</h2>
+        <div class="books">
+            <div class="book"><div class="i">📖</div><div class="t">비탈길 그사람</div><div class="y">2010년</div></div>
+            <div class="book"><div class="i">📖</div><div class="t">이장님 아들</div><div class="y">2013년</div></div>
+        </div>
+    </section>
+
+    <section class="sec" id="contact">
+        <h2 class="sec-t">📞 선거사무소</h2>
+        <div class="ct-info">
+            <div class="ct-row"><span class="ct-ic">📍</span><div><div class="ct-lb">주소</div><div class="ct-vl">강원도 태백시 번영길 205 2층</div></div></div>
+            <div class="ct-row"><span class="ct-ic">📞</span><div><div class="ct-lb">전화</div><div class="ct-vl">553-6699</div></div></div>
+        </div>
+        <div class="ct-btns">
+            <a href="tel:553-6699" class="ct-btn call">📞 전화하기</a>
+            <a href="http://yeonsik2014.blog.me/" target="_blank" class="ct-btn blog">📝 블로그</a>
+        </div>
+    </section>
+
+    <section class="quote" style="background:linear-gradient(135deg,#10B981,#059669)">
+        <p style="font-size:.9em;margin-bottom:10px">유럽풍 복지 문화도시</p>
+        <p style="font-size:1.6em">"한국의 스위스"<br>태백</p>
+    </section>
+
+    <footer class="footer">
+        <p>본 페이지는 PDF 선거공보물에서 자동 생성되었습니다.</p>
+        <p style="margin-top:8px"><a href="https://studysnap.kr">StudySnap</a> | AI 선거공보 변환</p>
+    </footer>
+
+    <nav class="bnav">
+        <a href="#home" class="act"><span class="ic">🏠</span>홈</a>
+        <a href="#pledges"><span class="ic">📋</span>공약</a>
+        <a href="#regions"><span class="ic">🗺️</span>권역</a>
+        <a href="#career"><span class="ic">📜</span>경력</a>
+        <a href="#contact"><span class="ic">📞</span>연락</a>
+    </nav>
+
+    <div class="fab" onclick="shr()">📤</div>
+
+    <script>
+        function tog(e){e.parentElement.classList.toggle('exp')}
+        function togR(e){e.parentElement.classList.toggle('exp')}
+        function shr(){navigator.share?navigator.share({title:'김연식 - 태백시장 후보',text:'깨끗함이 좋다!',url:location.href}):(navigator.clipboard.writeText(location.href),alert('링크가 복사되었습니다!'))}
+        const secs=['home','pledges','regions','career','contact'],navs=document.querySelectorAll('.bnav a');
+        window.addEventListener('scroll',()=>{let c='';secs.forEach(id=>{const s=document.getElementById(id);s&&scrollY>=s.offsetTop-100&&(c=id)});navs.forEach(l=>{l.classList.remove('act');l.getAttribute('href')==='#'+c&&l.classList.add('act')})});
+        navs.forEach(l=>l.addEventListener('click',e=>{e.preventDefault();const t=document.getElementById(l.getAttribute('href').slice(1));t&&scrollTo({top:t.offsetTop-60,behavior:'smooth'})}));
+    </script>
+</body>
+</html>
