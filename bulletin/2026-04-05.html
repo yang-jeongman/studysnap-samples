@@ -7,7 +7,7 @@
     <meta name="description" content="여의도순복음교회 2026. 4. 5. 주보 - 살아 있는 자를 죽은 자 가운데서 찾느냐">
     <!-- PWA 전체화면 지원 (2026-01-28 강화) -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="여의도순복음교회">
     <link rel="apple-touch-icon" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='#9370DB' width='100' height='100' rx='20'/><text y='.75em' x='50%' text-anchor='middle' font-size='60' fill='white'>&#9962;</text></svg>">
@@ -4203,9 +4203,7 @@
                         word-break: keep-all;
                         margin: 0;
                         padding: 16px 0;
-                    ">"계명을 따라 안식일에 쉬더라
-안식 후 첫날 새벽에 이 여자들이 그 준비한 향품을 가지고 무덤에 가서 
-돌이 무덤에서 굴려 옮겨진 것을 보고 들어가니..."</p>
+                    ">"계명을 따라 안식일에 쉬더라. 안식 후 첫날 새벽에 이 여자들이 그 준비한 향품을 가지고 무덤에 가서 돌이 무덤에서 굴려 옮겨진 것을 보고 들어가니..."</p>
                 </div>
             </div>
             <style>
@@ -5204,7 +5202,7 @@
                             <span class="news-item-arrow">▼</span>
                         </summary>
                         <div class="news-item-detail-content">
-                            일시: 4월 6일(월)~4월 8일(수) 새벽 5시 30후<br>장소: 대성전<br>설교: 엄태욱 목사(7일 제직특화, 8일), 서광석 목사(6일)
+                            일시: 4월 6일(월)~4월 8일(수) 새벽 5시 30후<br>장소: 대성전<br>설교: 엄태욱 목사(7일 제직 특화, 8일), 서광석 목사(6일)
                         </div>
                     </details>
                     <details class="news-item-detail-accordion">
@@ -5306,7 +5304,7 @@
                             <span class="news-item-arrow">▼</span>
                         </summary>
                         <div class="news-item-detail-content">
-                            일시: 4월 16일(목)<br>장소: 충주호 외
+                            일시: 4월 16일(목)<br>장소: 충주호
                         </div>
                     </details>
                     <details class="news-item-detail-accordion">
@@ -5667,9 +5665,7 @@
         // ========== 성경 구절 데이터 ==========
         const bibleVerses = {
             'main-verse': {
-                ko: { title: '누가복음 24:1~6', content: `계명을 따라 안식일에 쉬더라
-안식 후 첫날 새벽에 이 여자들이 그 준비한 향품을 가지고 무덤에 가서 
-돌이 무덤에서 굴려 옮겨진 것을 보고 들어가니...` },
+                ko: { title: '누가복음 24:1~6', content: `계명을 따라 안식일에 쉬더라. 안식 후 첫날 새벽에 이 여자들이 그 준비한 향품을 가지고 무덤에 가서 돌이 무덤에서 굴려 옮겨진 것을 보고 들어가니...` },
                 en: { title: 'Luke 24:1~6', content: `` },
                 zh: { title: '路加福音 24:1~6', content: '' },
                 ja: { title: 'ルカによる福音書 24:1~6', content: '' },
@@ -6613,7 +6609,8 @@
         // ============================================================
         // PWA: 서비스 워커 등록 + 앱 설치 프롬프트 + Push 알림 구독
         // ============================================================
-        if ('serviceWorker' in navigator) {
+        // 서비스워커: /bulletin/ 또는 루트에서만 등록 (/api/convert/ 경로에서는 스코프 불일치로 오류 발생)
+        if ('serviceWorker' in navigator && (location.pathname === '/' || location.pathname.startsWith('/bulletin') || location.pathname.startsWith('/static'))) {
             // navigator.serviceWorker.register('/static/sw.js').catch(function() {});
         }
 
@@ -6695,6 +6692,8 @@
         // Push 알림 구독
         function initPublicPush() {
             if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+            // /api/convert/ 경로에서는 서비스워커 스코프 불일치로 Push 비활성화
+            if (location.pathname.startsWith('/api/convert/')) return;
 
             // 이미 구독 완료 표시가 있으면 배너 표시 안 함
             if (localStorage.getItem('pwa_push_subscribed') === 'true') return;
@@ -6802,7 +6801,7 @@
     </script>
 <script>
 (function(){ try { var ref = new URLSearchParams(window.location.search).get('ref') || 'direct';
-// fetch('/api/track/view/19?ref=' + ref, { method:'POST', credentials:'include' });
+// fetch('/api/track/view/20?ref=' + ref, { method:'POST', credentials:'include' });
 } catch(e){} })();
 </script></body>
 </html>
