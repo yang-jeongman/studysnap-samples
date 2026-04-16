@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>정원오 - 서울시장 후보 선거공보물</title>
+
+    <!-- Open Graph (카카오톡, 페이스북, 슬랙 등) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="기호 1번 정원오 | 더불어민주당 서울시장 후보">
+    <meta property="og:description" content="오직 시민의 불편과 싸우겠다. 문화경제 수도 서울을 만들 일 잘하는 구청장, 정원오의 핵심 공약과 서울 소식을 확인하세요.">
+    <meta property="og:url" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/jeong-wono-seoul.html">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:site_name" content="정원오 서울시장 후보">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="기호 1번 정원오 | 더불어민주당 서울시장 후보">
+    <meta name="twitter:description" content="오직 시민의 불편과 싸우겠다. 문화경제 수도 서울을 만들 일 잘하는 구청장.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%231B3A8C'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-weight='bold'>1</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1B3A8C;
+            --primary-light: #2E5BB8;
+            --primary-dark: #0F2460;
+            --accent: #E8443A;
+            --accent-light: #FF6B5E;
+            --green: #2D8B4E;
+            --green-light: #E8F5E9;
+            --gold: #D4930D;
+            --gold-light: #FFF8E1;
+            --sky: #E3F0FC;
+            --warm: #FFF3E8;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #EEEEEE;
+            --gray-300: #E0E0E0;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--gray-900);
+            background: var(--gray-100);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        section { padding: 48px 24px; }
+
+        /* ===== NAV ===== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .top-nav .logo { font-weight: 800; font-size: 1.1em; color: var(--primary); }
+        .top-nav .party {
+            background: var(--primary);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            font-weight: 600;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--primary-light) 100%);
+            color: white;
+            padding: 100px 28px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+        }
+        .hero .number-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            font-size: 1.8em; font-weight: 900;
+            line-height: 56px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+        .hero .candidate-name {
+            font-size: 2.8em; font-weight: 900;
+            letter-spacing: -1px; margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .hero .position { font-size: 1.15em; font-weight: 500; opacity: 0.9; margin-bottom: 24px; }
+        .hero .slogan { font-size: 1.5em; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+        .hero .slogan em { font-style: normal; color: #FFD54F; }
+        .hero .sub-slogan { font-size: 0.95em; opacity: 0.85; font-weight: 300; }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .section-title .label {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75em; font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .section-title h2 { font-size: 1.6em; font-weight: 800; color: var(--gray-900); line-height: 1.3; }
+        .section-title h2 .highlight { color: var(--primary); }
+        .section-title p { color: var(--gray-600); font-size: 0.9em; margin-top: 8px; }
+
+        /* ===== PROFILE ===== */
+        .profile-section { background: var(--gray-50); }
+        .profile-photo {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 4em; font-weight: 900;
+            box-shadow: 0 8px 30px rgba(27,58,140,0.25);
+            border: 4px solid white;
+            overflow: hidden;
+        }
+        .profile-info { text-align: center; margin-bottom: 28px; }
+        .profile-info .name { font-size: 1.5em; font-weight: 800; margin-bottom: 4px; }
+        .profile-info .desc { color: var(--gray-600); font-size: 0.9em; }
+        .career-list {
+            list-style: none;
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .career-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9em;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .career-list li:last-child { border: none; }
+        .career-list li .dot {
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            flex-shrink: 0; margin-top: 9px;
+        }
+
+        /* ===== LOCAL NEWS (지역 소식 카드) ===== */
+        .local-news {
+            background: linear-gradient(180deg, #F0F6FF 0%, #E8F1FB 100%);
+            padding: 40px 24px;
+        }
+        .local-news .news-header { text-align: center; margin-bottom: 24px; }
+        .local-news .news-header .tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: white; color: var(--primary);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.8em; font-weight: 600;
+            box-shadow: var(--shadow-sm); margin-bottom: 10px;
+        }
+        .local-news .news-header h3 { font-size: 1.2em; font-weight: 700; color: var(--primary-dark); }
+        .local-news .news-header p { font-size: 0.82em; color: var(--gray-600); margin-top: 4px; }
+
+        .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .news-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none; color: inherit; display: block;
+        }
+        .news-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .news-card .card-img {
+            width: 100%; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5em;
+        }
+        .news-card .card-img.festival { background: linear-gradient(135deg, #FF9A9E, #FAD0C4); }
+        .news-card .card-img.nature { background: linear-gradient(135deg, #A8E6CF, #88D8B0); }
+        .news-card .card-img.food { background: linear-gradient(135deg, #FFECD2, #FCB69F); }
+        .news-card .card-img.market { background: linear-gradient(135deg, #C9B1FF, #A18CD1); }
+        .news-card .card-img.culture { background: linear-gradient(135deg, #89CFF0, #667EEA); }
+        .news-card .card-img.city { background: linear-gradient(135deg, #F6D365, #FDA085); }
+        .news-card .card-body { padding: 12px; }
+        .news-card .card-body .category {
+            font-size: 0.68em; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .news-card .card-body h4 {
+            font-size: 0.85em; font-weight: 700; margin: 4px 0;
+            line-height: 1.3; color: var(--gray-900);
+        }
+        .news-card .card-body p {
+            font-size: 0.72em; color: var(--gray-600); line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* ===== ACHIEVEMENT ===== */
+        .achievement-section { background: var(--gray-900); color: white; }
+        .achievement-section .section-title .label { background: var(--accent); }
+        .achievement-section .section-title h2 { color: white; }
+        .achievement-section .section-title p { color: rgba(255,255,255,0.6); }
+        .achievement-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+        }
+        .achievement-card .icon { font-size: 2em; margin-bottom: 12px; }
+        .achievement-card h3 { font-size: 1.1em; font-weight: 700; margin-bottom: 8px; }
+        .achievement-card p { font-size: 0.88em; color: rgba(255,255,255,0.7); line-height: 1.6; }
+        .achievement-card .stat {
+            display: inline-block;
+            background: var(--accent);
+            padding: 4px 12px; border-radius: 6px;
+            font-size: 0.85em; font-weight: 700; margin-top: 10px;
+        }
+
+        /* ===== STRATEGY ===== */
+        .strategy-section { background: white; }
+        .strategy-pillars { display: flex; gap: 10px; margin-bottom: 28px; }
+        .pillar {
+            flex: 1; text-align: center;
+            padding: 20px 10px; border-radius: var(--radius);
+            background: var(--sky);
+        }
+        .pillar .icon { font-size: 2em; margin-bottom: 8px; }
+        .pillar h4 { font-size: 0.82em; font-weight: 700; color: var(--primary); }
+        .pillar p { font-size: 0.7em; color: var(--gray-600); margin-top: 4px; }
+
+        /* ===== PLEDGES ===== */
+        .pledge-section { background: var(--gray-50); }
+        .pledge-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+        .pledge-card.culture { border-left-color: var(--gold); }
+        .pledge-card.life { border-left-color: var(--green); }
+        .pledge-card.future { border-left-color: var(--primary); }
+        .pledge-card.welfare { border-left-color: var(--accent); }
+        .pledge-card .pledge-number {
+            display: inline-block;
+            width: 28px; height: 28px;
+            border-radius: 50%; background: var(--primary);
+            color: white; text-align: center; line-height: 28px;
+            font-size: 0.8em; font-weight: 700; margin-bottom: 10px;
+        }
+        .pledge-card.culture .pledge-number { background: var(--gold); }
+        .pledge-card.life .pledge-number { background: var(--green); }
+        .pledge-card.future .pledge-number { background: var(--primary); }
+        .pledge-card.welfare .pledge-number { background: var(--accent); }
+        .pledge-card h3 { font-size: 1.05em; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .pledge-card p { font-size: 0.85em; color: var(--gray-700); line-height: 1.6; }
+        .pledge-card .kpi {
+            display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 10px; padding: 4px 12px;
+            border-radius: 6px; font-size: 0.78em; font-weight: 600;
+        }
+        .pledge-card.culture .kpi { background: var(--gold-light); color: var(--gold); }
+        .pledge-card.life .kpi { background: var(--green-light); color: var(--green); }
+        .pledge-card.future .kpi { background: var(--sky); color: var(--primary); }
+        .pledge-card.welfare .kpi { background: #FFF0EF; color: var(--accent); }
+
+        /* ===== VISION ===== */
+        .vision-section { background: linear-gradient(135deg, #FFF5F5 0%, #FFF0EF 100%); }
+        .vision-section .section-title .label { background: var(--accent); }
+        .vision-section .section-title h2 .highlight { color: var(--accent); }
+        .vision-list { list-style: none; }
+        .vision-list li {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 16px 20px; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.9em; font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+        .vision-list li .check {
+            width: 24px; height: 24px;
+            background: var(--accent); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 0.75em; flex-shrink: 0;
+        }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-section { background: white; }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before {
+            content: ''; position: absolute;
+            left: 10px; top: 0; bottom: 0;
+            width: 2px; background: var(--gray-300);
+        }
+        .timeline-item { position: relative; margin-bottom: 28px; }
+        .timeline-item::before {
+            content: ''; position: absolute;
+            left: -24px; top: 4px;
+            width: 12px; height: 12px;
+            border-radius: 50%; background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .timeline-item .year { font-size: 0.78em; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .timeline-item h4 { font-size: 0.95em; font-weight: 700; margin-bottom: 4px; }
+        .timeline-item p { font-size: 0.82em; color: var(--gray-600); }
+
+        /* ===== KPI ===== */
+        .kpi-section { background: var(--primary); color: white; text-align: center; }
+        .kpi-section .section-title .label { background: rgba(255,255,255,0.2); }
+        .kpi-section .section-title h2 { color: white; }
+        .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .kpi-item {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius); padding: 24px 16px;
+        }
+        .kpi-item .number { font-size: 2em; font-weight: 900; color: #FFD54F; line-height: 1; margin-bottom: 8px; }
+        .kpi-item .unit { font-size: 0.7em; font-weight: 400; }
+        .kpi-item .desc { font-size: 0.8em; opacity: 0.85; }
+
+        /* ===== CLOSING ===== */
+        .closing-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white; text-align: center; padding: 56px 28px;
+        }
+        .closing-section .closing-initial {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 2.8em; font-weight: 900;
+            border: 3px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .closing-section .quote { font-size: 1.6em; font-weight: 800; line-height: 1.4; margin-bottom: 16px; }
+        .closing-section .quote em { font-style: normal; color: #FFD54F; }
+        .closing-section .message { font-size: 0.92em; opacity: 0.85; line-height: 1.7; margin-bottom: 28px; }
+        .closing-section .cta-badge {
+            display: inline-block;
+            background: var(--accent); color: white;
+            padding: 14px 36px; border-radius: 50px;
+            font-size: 1.1em; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.5);
+            text-align: center; padding: 24px;
+            font-size: 0.72em; line-height: 1.8;
+        }
+        .footer strong { color: rgba(255,255,255,0.8); }
+        .footer .disclaimer { margin-top: 8px; font-size: 0.95em; color: rgba(255,255,255,0.4); }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 380px) {
+            .hero .candidate-name { font-size: 2.2em; }
+            .hero .slogan { font-size: 1.25em; }
+            .news-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .strategy-pillars { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+        <span class="logo">정원오</span>
+        <span class="party">더불어민주당</span>
+    </nav>
+
+    <!-- ===== 1. HERO (표지) ===== -->
+    <section class="hero">
+        <div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--primary-light),var(--primary-dark));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;color:white;font-size:3.2em;font-weight:900;border:3px solid rgba(255,255,255,0.5);box-shadow:0 4px 20px rgba(0,0,0,0.3);">정</div>
+        <div class="number-badge">1</div>
+        <div class="candidate-name">정원오</div>
+        <div class="position">더불어민주당 서울시장 후보</div>
+        <div class="slogan">오직 <em>시민의 불편</em>과<br>싸우겠습니다</div>
+        <div class="sub-slogan">일 잘하는 구청장, 서울을 바꾸다</div>
+    </section>
+
+    <!-- ===== 2. 프로필 ===== -->
+    <section class="profile-section fade-in">
+        <div class="section-title">
+            <span class="label">PROFILE</span>
+            <h2>서울을 아는 사람,<br><span class="highlight">서울을 바꿀 사람</span></h2>
+        </div>
+
+        <div class="profile-photo">정</div>
+
+        <div class="profile-info">
+            <div class="name">정원오</div>
+            <div class="desc">1968년 전라남도 여천군 소라면 출생</div>
+        </div>
+
+        <ul class="career-list">
+            <li><span class="dot"></span>서울특별시 성동구청장 3선 (민선 6&middot;7&middot;8기, 2014~현재)</li>
+            <li><span class="dot"></span>젠트리피케이션 방지 지방정부협의회 회장</li>
+            <li><span class="dot"></span>전국자치분권민주지도자회의 상임대표</li>
+            <li><span class="dot"></span>임종석 국회의원 보좌관 (2000~2008)</li>
+            <li><span class="dot"></span>양재호 양천구청장 비서실장 (1995~1998)</li>
+            <li><span class="dot"></span>서울시립대학교 경제학 학사</li>
+            <li><span class="dot"></span>한양대학교 공공정책대학원 사회복지학 석사</li>
+            <li><span class="dot"></span>한양대학교 도시대학원 도시개발경영 박사(수료)</li>
+            <li><span class="dot"></span>여수고등학교 졸업</li>
+        </ul>
+    </section>
+
+    <!-- ===== 지역소식 1: 서울의 축제와 문화 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127982; 내가 사랑하는 서울</div>
+            <h3>서울의 축제와 문화</h3>
+            <p>천만 시민이 함께 즐기는 서울의 대표 축제</p>
+        </div>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="card-img festival">&#127878;</div>
+                <div class="card-body">
+                    <span class="category">가을 축제</span>
+                    <h4>서울 세계불꽃축제</h4>
+                    <p>한강을 수놓는 화려한 불꽃쇼, 매년 10월 여의도 일대</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img culture">&#127982;</div>
+                <div class="card-body">
+                    <span class="category">겨울 축제</span>
+                    <h4>서울빛초롱축제</h4>
+                    <p>청계천을 밝히는 빛의 향연, 매년 11~12월</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img nature">&#127753;</div>
+                <div class="card-body">
+                    <span class="category">여름 축제</span>
+                    <h4>한강 야경 페스티벌</h4>
+                    <p>한강공원에서 즐기는 음악, 음식, 야경의 어울림</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img market">&#127905;</div>
+                <div class="card-body">
+                    <span class="category">문화</span>
+                    <h4>성수동 카페거리</h4>
+                    <p>정원오가 만든 한국의 브루클린, 힙한 문화 공간</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 3. 성동구 업적 ===== -->
+    <section class="achievement-section fade-in">
+        <div class="section-title">
+            <span class="label">TRACK RECORD</span>
+            <h2>"일 잘하는 구청장"<br>성동구에서 증명하다</h2>
+            <p>3선 구청장, 12년의 현장 행정 성과</p>
+        </div>
+
+        <div class="achievement-card">
+            <div class="icon">&#127970;</div>
+            <h3>젠트리피케이션 방지 조례</h3>
+            <p>전국 최초로 젠트리피케이션 방지 조례를 추진하여 소상공인과 지역 상권을 보호했습니다. 성수동을 지키면서 성장시킨 대표 사례입니다.</p>
+            <span class="stat">전국 최초 조례 추진</span>
+        </div>
+
+        <div class="achievement-card">
+            <div class="icon">&#128119;</div>
+            <h3>필수노동자 보호 정책</h3>
+            <p>코로나 시기 가장 먼저 필수노동자 보호 정책을 시행하여, 택배기사, 환경미화원 등 사회 필수인력의 권리를 보장했습니다.</p>
+            <span class="stat">선도적 노동자 보호</span>
+        </div>
+
+        <div class="achievement-card">
+            <div class="icon">&#9749;</div>
+            <h3>성수동 = 한국의 브루클린</h3>
+            <p>낙후된 준공업지역을 문화와 창업이 공존하는 핫플레이스로 탈바꿈시켰습니다. 성수동은 이제 서울을 대표하는 문화경제 허브입니다.</p>
+            <span class="stat">문화경제 모델 도시</span>
+        </div>
+    </section>
+
+    <!-- ===== 4. 핵심 전략 ===== -->
+    <section class="strategy-section fade-in">
+        <div class="section-title">
+            <span class="label">STRATEGY</span>
+            <h2><span class="highlight">3대 전략</span>으로<br>서울을 바꾸겠습니다</h2>
+        </div>
+
+        <div class="strategy-pillars">
+            <div class="pillar">
+                <div class="icon">&#127912;</div>
+                <h4>문화경제<br>수도</h4>
+                <p>문화 &middot; 산업</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#127968;</div>
+                <h4>시민 불편<br>해결</h4>
+                <p>생활 &middot; 복지</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#128640;</div>
+                <h4>미래<br>서울</h4>
+                <p>혁신 &middot; 청년</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 5. 핵심 공약 ===== -->
+    <section class="pledge-section fade-in">
+        <div class="section-title">
+            <span class="label">PLEDGES</span>
+            <h2>정원오의<br><span class="highlight">핵심 공약</span></h2>
+        </div>
+
+        <div class="pledge-card culture">
+            <div class="pledge-number">1</div>
+            <h3>문화경제 수도 서울 실현</h3>
+            <p>성수동 성공 모델을 서울 전역으로 확대합니다. 문화예술도시위원회(1,000명+)를 중심으로 문화가 경제를 이끄는 도시를 만들겠습니다.</p>
+            <span class="kpi">&#127912; 문화예술도시위원회 출범</span>
+        </div>
+
+        <div class="pledge-card culture">
+            <div class="pledge-number">2</div>
+            <h3>젠트리피케이션 없는 상권 보호</h3>
+            <p>성동구에서 검증된 젠트리피케이션 방지 모델을 서울 전역에 적용하여 소상공인과 골목상권을 지키겠습니다.</p>
+            <span class="kpi">&#127978; 서울 전역 상권 보호</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">3</div>
+            <h3>시민 불편 제로 프로젝트</h3>
+            <p>교통, 주거, 안전 등 시민이 매일 겪는 불편을 데이터로 찾아내고, 현장에서 직접 해결하는 행정을 펼치겠습니다.</p>
+            <span class="kpi">&#128736; 현장 중심 문제 해결</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">4</div>
+            <h3>필수노동자 권리 보장 확대</h3>
+            <p>성동구에서 시작한 필수노동자 보호를 서울시 차원으로 확대하여, 사회를 지탱하는 분들의 처우를 개선하겠습니다.</p>
+            <span class="kpi">&#128588; 필수노동자 처우 개선</span>
+        </div>
+
+        <div class="pledge-card future">
+            <div class="pledge-number">5</div>
+            <h3>마곡 &middot; 용산 글로벌 혁신 허브</h3>
+            <p>마곡 R&amp;D 클러스터와 용산 국제업무지구를 세계적 혁신 거점으로 육성하여 글로벌 기업과 인재를 유치하겠습니다.</p>
+            <span class="kpi">&#127758; 글로벌 혁신 거점</span>
+        </div>
+
+        <div class="pledge-card welfare">
+            <div class="pledge-number">6</div>
+            <h3>청년 주거 &amp; 창업 지원</h3>
+            <p>청년 공공임대주택을 확대하고, 창업 생태계를 조성하여 청년이 서울에서 꿈을 키울 수 있도록 지원하겠습니다.</p>
+            <span class="kpi">&#128161; 청년 정주 환경 조성</span>
+        </div>
+    </section>
+
+    <!-- ===== 지역소식 2: 서울의 전통시장 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127978; 서울 시장 나들이</div>
+            <h3>서울의 대표 전통시장</h3>
+            <p>활기 넘치는 서울의 전통시장을 소개합니다</p>
+        </div>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="card-img market">&#127977;</div>
+                <div class="card-body">
+                    <span class="category">서울 최대</span>
+                    <h4>남대문시장</h4>
+                    <p>600년 역사, 1만여 점포가 밀집한 대한민국 대표 종합시장</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img food">&#129367;</div>
+                <div class="card-body">
+                    <span class="category">먹거리</span>
+                    <h4>광장시장</h4>
+                    <p>빈대떡, 마약김밥, 육회 등 전통 먹거리의 천국</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img festival">&#128717;</div>
+                <div class="card-body">
+                    <span class="category">도시락</span>
+                    <h4>통인시장</h4>
+                    <p>엽전 도시락 카페로 유명한 서촌의 정겨운 시장</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img city">&#127981;</div>
+                <div class="card-body">
+                    <span class="category">혁신</span>
+                    <h4>마곡 R&amp;D 클러스터</h4>
+                    <p>LG, 코오롱 등 대기업 연구소가 모인 서울 서남부 혁신 거점</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 6. 비전: 문화경제 수도 서울 ===== -->
+    <section class="vision-section fade-in">
+        <div class="section-title">
+            <span class="label">VISION</span>
+            <h2><span class="highlight">문화경제 수도</span><br>서울을 만들겠습니다</h2>
+            <p>성동구의 성공을 서울 전역으로</p>
+        </div>
+
+        <ul class="vision-list">
+            <li><span class="check">&#10003;</span>문화예술도시위원회 출범 (1,000명 이상)</li>
+            <li><span class="check">&#10003;</span>성수 모델 25개 자치구 확산</li>
+            <li><span class="check">&#10003;</span>소상공인 상생 임대차 모델 도입</li>
+            <li><span class="check">&#10003;</span>필수노동자 종합지원센터 설치</li>
+            <li><span class="check">&#10003;</span>청년 창업 허브 권역별 조성</li>
+        </ul>
+    </section>
+
+    <!-- ===== 7. 실행 로드맵 ===== -->
+    <section class="roadmap-section fade-in">
+        <div class="section-title">
+            <span class="label">ROADMAP</span>
+            <h2>4년 <span class="highlight">실행 로드맵</span></h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="year">1년차 (2026~2027)</div>
+                <h4>기반 구축</h4>
+                <p>문화예술도시위원회 출범, 시민 불편 데이터 플랫폼 구축, 상권 보호 조례 제정</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">2년차 (2027~2028)</div>
+                <h4>성과 창출</h4>
+                <p>성수 모델 5개 자치구 확산, 필수노동자 지원센터 개소, 청년 임대주택 착공</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">3년차 (2028~2029)</div>
+                <h4>가속 확대</h4>
+                <p>문화경제 특구 15개 자치구 지정, 마곡&middot;용산 글로벌 허브 본격 운영</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">4년차 (2029~2030)</div>
+                <h4>완성과 도약</h4>
+                <p>서울 전역 문화경제 수도 실현, 시민 체감 삶의 질 획기적 개선</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 8. 성과 KPI ===== -->
+    <section class="kpi-section fade-in">
+        <div class="section-title">
+            <span class="label">GOALS</span>
+            <h2>숫자로 약속합니다</h2>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-item">
+                <div class="number">3<span class="unit">선</span></div>
+                <div class="desc">검증된 구청장 경력</div>
+            </div>
+            <div class="kpi-item">
+                <div class="number">25<span class="unit">개구</span></div>
+                <div class="desc">성수 모델 전역 확산</div>
+            </div>
+            <div class="kpi-item">
+                <div class="number">1,000<span class="unit">명+</span></div>
+                <div class="desc">문화예술도시위원회</div>
+            </div>
+            <div class="kpi-item">
+                <div class="number">12<span class="unit">년</span></div>
+                <div class="desc">현장 행정 경험</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 9. 마무리 CTA ===== -->
+    <section class="closing-section fade-in">
+        <div class="closing-initial">정</div>
+        <div class="quote">오직 <em>시민의 불편</em>과<br>싸우겠습니다</div>
+        <div class="message">
+            성동구에서 12년, 현장에서 증명한 실력으로<br>
+            천만 서울시민의 삶을 바꾸겠습니다.<br>
+            문화경제 수도 서울, 정원오가 만들겠습니다.
+        </div>
+        <div class="cta-badge">기호 1번 정원오</div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <strong>정원오</strong> | 더불어민주당 서울시장 후보<br>
+        이 선거공보물은 공직선거법 규정에 따라 제작되었습니다.<br>
+        <span class="disclaimer">이 공보물은 후보자 캠프 제공 자료 없이 공개 정보를 기반으로 제작되었습니다.</span><br>
+        &copy; 2026 정원오 선거캠프
+    </footer>
+
+</div>
+
+<!-- Scroll Animation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+    });
+</script>
+
+</body>
+</html>

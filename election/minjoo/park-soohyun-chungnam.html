@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>박수현 - 충남도지사 후보 선거공보물</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="기호 1번 박수현 | 더불어민주당 충남도지사 후보">
+    <meta property="og:description" content="소통으로 충남을 바꾸겠습니다. 소통의 달인 박수현의 핵심 공약과 충남 지역 소식을 확인하세요.">
+    <meta property="og:image" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/images/park-soohyun.jpg">
+    <meta property="og:url" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/park-soohyun-chungnam.html">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:site_name" content="박수현 충남도지사 후보">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="기호 1번 박수현 | 더불어민주당 충남도지사 후보">
+    <meta name="twitter:description" content="소통으로 충남을 바꾸겠습니다. 소통의 달인 박수현.">
+    <meta name="twitter:image" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/images/park-soohyun.jpg">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%231B3A8C'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-weight='bold'>1</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1B3A8C;
+            --primary-light: #2E5BB8;
+            --primary-dark: #0F2460;
+            --accent: #E8443A;
+            --accent-light: #FF6B5E;
+            --green: #2D8B4E;
+            --green-light: #E8F5E9;
+            --gold: #D4930D;
+            --gold-light: #FFF8E1;
+            --sky: #E3F0FC;
+            --warm: #FFF3E8;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #EEEEEE;
+            --gray-300: #E0E0E0;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--gray-900);
+            background: var(--gray-100);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        section { padding: 48px 24px; }
+
+        /* ===== NAV ===== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .top-nav .logo { font-weight: 800; font-size: 1.1em; color: var(--primary); }
+        .top-nav .party {
+            background: var(--primary);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            font-weight: 600;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--primary-light) 100%);
+            color: white;
+            padding: 100px 28px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+        }
+        .hero .number-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            font-size: 1.8em; font-weight: 900;
+            line-height: 56px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+        .hero .candidate-name {
+            font-size: 2.8em; font-weight: 900;
+            letter-spacing: -1px; margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .hero .position { font-size: 1.15em; font-weight: 500; opacity: 0.9; margin-bottom: 24px; }
+        .hero .slogan { font-size: 1.5em; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+        .hero .slogan em { font-style: normal; color: #FFD54F; }
+        .hero .sub-slogan { font-size: 0.95em; opacity: 0.85; font-weight: 300; }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .section-title .label {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75em; font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .section-title h2 { font-size: 1.6em; font-weight: 800; color: var(--gray-900); line-height: 1.3; }
+        .section-title h2 .highlight { color: var(--primary); }
+        .section-title p { color: var(--gray-600); font-size: 0.9em; margin-top: 8px; }
+
+        /* ===== PROFILE ===== */
+        .profile-section { background: var(--gray-50); }
+        .profile-photo {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 4em; font-weight: 900;
+            box-shadow: 0 8px 30px rgba(27,58,140,0.25);
+            border: 4px solid white;
+            overflow: hidden;
+        }
+        .profile-info { text-align: center; margin-bottom: 28px; }
+        .profile-info .name { font-size: 1.5em; font-weight: 800; margin-bottom: 4px; }
+        .profile-info .desc { color: var(--gray-600); font-size: 0.9em; }
+        .career-list {
+            list-style: none;
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .career-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9em;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .career-list li:last-child { border: none; }
+        .career-list li .dot {
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            flex-shrink: 0; margin-top: 9px;
+        }
+
+        /* ===== LOCAL NEWS ===== */
+        .local-news {
+            background: linear-gradient(180deg, #F0F6FF 0%, #E8F1FB 100%);
+            padding: 40px 24px;
+        }
+        .local-news .news-header { text-align: center; margin-bottom: 24px; }
+        .local-news .news-header .tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: white; color: var(--primary);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.8em; font-weight: 600;
+            box-shadow: var(--shadow-sm); margin-bottom: 10px;
+        }
+        .local-news .news-header h3 { font-size: 1.2em; font-weight: 700; color: var(--primary-dark); }
+        .local-news .news-header p { font-size: 0.82em; color: var(--gray-600); margin-top: 4px; }
+
+        .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .news-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none; color: inherit; display: block;
+        }
+        .news-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .news-card .card-img {
+            width: 100%; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5em;
+        }
+        .news-card .card-img.festival { background: linear-gradient(135deg, #FF9A9E, #FAD0C4); }
+        .news-card .card-img.nature { background: linear-gradient(135deg, #A8E6CF, #88D8B0); }
+        .news-card .card-img.food { background: linear-gradient(135deg, #FFECD2, #FCB69F); }
+        .news-card .card-img.market { background: linear-gradient(135deg, #C9B1FF, #A18CD1); }
+        .news-card .card-img.industry { background: linear-gradient(135deg, #89CFF0, #667EEA); }
+        .news-card .card-img.heritage { background: linear-gradient(135deg, #F6D365, #FDA085); }
+        .news-card .card-body { padding: 12px; }
+        .news-card .card-body .category {
+            font-size: 0.68em; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .news-card .card-body h4 {
+            font-size: 0.85em; font-weight: 700; margin: 4px 0;
+            line-height: 1.3; color: var(--gray-900);
+        }
+        .news-card .card-body p {
+            font-size: 0.72em; color: var(--gray-600); line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* ===== VISION / STRATEGY ===== */
+        .strategy-section { background: white; }
+        .strategy-pillars { display: flex; gap: 10px; margin-bottom: 28px; }
+        .pillar {
+            flex: 1; text-align: center;
+            padding: 20px 10px; border-radius: var(--radius);
+            background: var(--sky);
+        }
+        .pillar .icon { font-size: 2em; margin-bottom: 8px; }
+        .pillar h4 { font-size: 0.82em; font-weight: 700; color: var(--primary); }
+        .pillar p { font-size: 0.7em; color: var(--gray-600); margin-top: 4px; }
+
+        /* ===== PLEDGES ===== */
+        .pledge-section { background: var(--gray-50); }
+        .pledge-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+        .pledge-card.economy { border-left-color: var(--gold); }
+        .pledge-card.life { border-left-color: var(--green); }
+        .pledge-card.future { border-left-color: var(--primary); }
+        .pledge-card.communicate { border-left-color: var(--accent); }
+        .pledge-card .pledge-number {
+            display: inline-block;
+            width: 28px; height: 28px;
+            border-radius: 50%; background: var(--primary);
+            color: white; text-align: center; line-height: 28px;
+            font-size: 0.8em; font-weight: 700; margin-bottom: 10px;
+        }
+        .pledge-card.economy .pledge-number { background: var(--gold); }
+        .pledge-card.life .pledge-number { background: var(--green); }
+        .pledge-card.future .pledge-number { background: var(--primary); }
+        .pledge-card.communicate .pledge-number { background: var(--accent); }
+        .pledge-card h3 { font-size: 1.05em; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .pledge-card p { font-size: 0.85em; color: var(--gray-700); line-height: 1.6; }
+        .pledge-card .kpi {
+            display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 10px; padding: 4px 12px;
+            border-radius: 6px; font-size: 0.78em; font-weight: 600;
+        }
+        .pledge-card.economy .kpi { background: var(--gold-light); color: var(--gold); }
+        .pledge-card.life .kpi { background: var(--green-light); color: var(--green); }
+        .pledge-card.future .kpi { background: var(--sky); color: var(--primary); }
+        .pledge-card.communicate .kpi { background: #FFF0EF; color: var(--accent); }
+
+        /* ===== CLOSING ===== */
+        .closing-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white; text-align: center; padding: 56px 28px;
+        }
+        .closing-section .closing-initial {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), rgba(255,255,255,0.2));
+            margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 2.8em; font-weight: 900;
+            border: 3px solid rgba(255,255,255,0.4);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .closing-section .quote { font-size: 1.6em; font-weight: 800; line-height: 1.4; margin-bottom: 16px; }
+        .closing-section .quote em { font-style: normal; color: #FFD54F; }
+        .closing-section .message { font-size: 0.92em; opacity: 0.85; line-height: 1.7; margin-bottom: 28px; }
+        .closing-section .cta-badge {
+            display: inline-block;
+            background: var(--accent); color: white;
+            padding: 14px 36px; border-radius: 50px;
+            font-size: 1.1em; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.5);
+            text-align: center; padding: 24px;
+            font-size: 0.72em; line-height: 1.8;
+        }
+        .footer strong { color: rgba(255,255,255,0.8); }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 380px) {
+            .hero .candidate-name { font-size: 2.2em; }
+            .hero .slogan { font-size: 1.25em; }
+            .news-grid { grid-template-columns: 1fr; }
+            .strategy-pillars { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+        <span class="logo">박수현</span>
+        <span class="party">더불어민주당</span>
+    </nav>
+
+    <!-- ===== 1. HERO ===== -->
+    <section class="hero">
+        <div class="profile-photo" style="width:120px;height:120px;margin:0 auto 20px;font-size:3em;border:3px solid rgba(255,255,255,0.5);box-shadow:0 4px 20px rgba(0,0,0,0.3);">박</div>
+        <div class="number-badge">1</div>
+        <div class="candidate-name">박수현</div>
+        <div class="position">더불어민주당 충남도지사 후보</div>
+        <div class="slogan"><em>소통</em>으로<br>충남을 바꾸겠습니다</div>
+        <div class="sub-slogan">소통의 달인, 충남의 미래를 열다</div>
+    </section>
+
+    <!-- ===== 2. PROFILE ===== -->
+    <section class="profile-section fade-in">
+        <div class="section-title">
+            <span class="label">PROFILE</span>
+            <h2>충남을 아는 사람,<br><span class="highlight">충남을 바꿀 사람</span></h2>
+        </div>
+
+        <div class="profile-photo">박</div>
+
+        <div class="profile-info">
+            <div class="name">박수현</div>
+            <div class="desc">재선 국회의원 (충남 공주 &middot; 부여 &middot; 청양)</div>
+        </div>
+
+        <ul class="career-list">
+            <li><span class="dot"></span>제20 &middot; 21대 국회의원 (충남 공주 &middot; 부여 &middot; 청양)</li>
+            <li><span class="dot"></span>청와대 대변인 역임</li>
+            <li><span class="dot"></span>국민소통수석비서관 역임</li>
+            <li><span class="dot"></span>더불어민주당 충남도지사 후보 (당내 결선투표 승리)</li>
+            <li><span class="dot"></span>"소통의 달인"으로 평가받는 현장형 정치인</li>
+        </ul>
+    </section>
+
+    <!-- ===== 지역소식 1: 충남의 축제 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127982; 내가 사랑하는 충남</div>
+            <h3>충남의 대표 축제</h3>
+            <p>대한민국이 주목하는 충남의 사계절 축제</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://www.bfrmc.or.kr" target="_blank">
+                <div class="card-img festival">&#127754;</div>
+                <div class="card-body">
+                    <span class="category">여름 축제</span>
+                    <h4>보령 머드축제</h4>
+                    <p>세계적인 여름 축제, 매년 수백만 명이 찾는 대한민국 대표 축제</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.buyeo.go.kr" target="_blank">
+                <div class="card-img nature">&#127800;</div>
+                <div class="card-body">
+                    <span class="category">여름 축제</span>
+                    <h4>부여 서동연꽃축제</h4>
+                    <p>궁남지의 아름다운 연꽃, 백제 서동왕자의 사랑 이야기</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.baekje.org" target="_blank">
+                <div class="card-img market">&#127984;</div>
+                <div class="card-body">
+                    <span class="category">가을 축제</span>
+                    <h4>공주 백제문화제</h4>
+                    <p>1,500년 백제 역사를 재현하는 대한민국 최대 역사문화축제</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img food">&#129476;</div>
+                <div class="card-body">
+                    <span class="category">가을 축제</span>
+                    <h4>예산 윤봉길 축제</h4>
+                    <p>의로운 정신을 기리는 역사 축제, 예산 사과도 함께</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 3. VISION ===== -->
+    <section class="strategy-section fade-in">
+        <div class="section-title">
+            <span class="label">VISION</span>
+            <h2><span class="highlight">3대 비전</span>으로<br>충남을 바꾸겠습니다</h2>
+        </div>
+
+        <div class="strategy-pillars">
+            <div class="pillar">
+                <div class="icon">&#128172;</div>
+                <h4>소통하는<br>충남</h4>
+                <p>도민 참여 &middot; 열린 행정</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#128176;</div>
+                <h4>성장하는<br>충남</h4>
+                <p>산업 &middot; 일자리</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#127793;</div>
+                <h4>함께 사는<br>충남</h4>
+                <p>균형발전 &middot; 복지</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 4. 핵심 공약 ===== -->
+    <section class="pledge-section fade-in">
+        <div class="section-title">
+            <span class="label">PLEDGES</span>
+            <h2>박수현의<br><span class="highlight">핵심 공약</span></h2>
+        </div>
+
+        <div class="pledge-card economy">
+            <div class="pledge-number">1</div>
+            <h3>천안 &middot; 아산 첨단산업 벨트 강화</h3>
+            <p>삼성디스플레이 중심의 천안 &middot; 아산 첨단산업 클러스터를 확대하고, 반도체 &middot; 바이오 등 미래 산업을 유치하여 충남을 첨단산업 허브로 도약시키겠습니다.</p>
+            <span class="kpi">&#127919; 첨단기업 100개 유치</span>
+        </div>
+
+        <div class="pledge-card economy">
+            <div class="pledge-number">2</div>
+            <h3>당진 제철산업 친환경 전환</h3>
+            <p>당진 제철소를 중심으로 수소환원제철 기술을 도입하고, 탄소중립 산업단지로 전환하여 친환경 일자리를 창출하겠습니다.</p>
+            <span class="kpi">&#9851; 탄소중립 산업단지 조성</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">3</div>
+            <h3>충남 농업 브랜드 세계화</h3>
+            <p>서산 6쪽마늘, 당진 해나루쌀, 부여 딸기, 예산 사과 등 충남 대표 농산물의 브랜드 가치를 높이고 수출 판로를 확대하겠습니다.</p>
+            <span class="kpi">&#127822; 농산물 수출 2배 확대</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">4</div>
+            <h3>도농 균형발전 &amp; 생활 인프라</h3>
+            <p>15개 시 &middot; 군 간 격차를 해소하고, 농어촌 의료 &middot; 교통 &middot; 교육 인프라를 확충하여 어디서나 살기 좋은 충남을 만들겠습니다.</p>
+            <span class="kpi">&#128653; 농어촌 공공교통 확대</span>
+        </div>
+
+        <div class="pledge-card future">
+            <div class="pledge-number">5</div>
+            <h3>백제역사유적지구 관광 활성화</h3>
+            <p>유네스코 세계유산인 공주 &middot; 부여 백제역사유적지구를 중심으로 체류형 관광 인프라를 구축하고, 충남을 역사문화 관광의 메카로 만들겠습니다.</p>
+            <span class="kpi">&#127983; 관광객 500만 명 달성</span>
+        </div>
+
+        <div class="pledge-card communicate">
+            <div class="pledge-number">6</div>
+            <h3>도민 소통 플랫폼 구축</h3>
+            <p>도민이 직접 참여하는 정책 제안 플랫폼을 구축하고, 매월 현장 소통의 날을 운영하여 도민의 목소리가 정책에 반영되는 열린 도정을 실현하겠습니다.</p>
+            <span class="kpi">&#128227; 도민 직접 소통 시스템</span>
+        </div>
+    </section>
+
+    <!-- ===== 지역소식 2: 충남의 특산물 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127858; 충남의 맛</div>
+            <h3>충남 대표 특산물</h3>
+            <p>풍요로운 충남의 자랑스러운 먹거리</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img food">&#129476;</div>
+                <div class="card-body">
+                    <span class="category">서산</span>
+                    <h4>서산 6쪽마늘</h4>
+                    <p>전국 최대 산지, 알이 굵고 저장성 뛰어난 지리적표시 특산물</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img nature">&#127806;</div>
+                <div class="card-body">
+                    <span class="category">당진</span>
+                    <h4>당진 해나루쌀</h4>
+                    <p>서해안 간척지의 비옥한 토양에서 자란 최고품질 쌀</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img festival">&#127827;</div>
+                <div class="card-body">
+                    <span class="category">부여</span>
+                    <h4>부여 딸기</h4>
+                    <p>당도 높고 과즙이 풍부한 프리미엄 딸기, 수출 효자</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img market">&#127822;</div>
+                <div class="card-body">
+                    <span class="category">예산</span>
+                    <h4>예산 사과</h4>
+                    <p>일교차가 큰 내포 지역의 달콤하고 아삭한 명품 사과</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 지역소식 3: 산업과 유산 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127981; 충남의 힘</div>
+            <h3>산업 &amp; 세계유산</h3>
+            <p>충남의 경제력과 문화유산을 소개합니다</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img industry">&#128187;</div>
+                <div class="card-body">
+                    <span class="category">천안 &middot; 아산</span>
+                    <h4>삼성디스플레이</h4>
+                    <p>세계 최대 OLED 생산기지, 충남 첨단산업의 핵심</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img industry">&#128293;</div>
+                <div class="card-body">
+                    <span class="category">당진</span>
+                    <h4>당진 제철소</h4>
+                    <p>현대제철 당진제철소, 대한민국 철강산업의 중심</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.baekje-heritage.or.kr" target="_blank">
+                <div class="card-img heritage">&#127983;</div>
+                <div class="card-body">
+                    <span class="category">유네스코</span>
+                    <h4>백제역사유적지구</h4>
+                    <p>공주 공산성 &middot; 송산리고분군, 부여 관북리유적 &middot; 부소산성</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.chungnam.go.kr" target="_blank">
+                <div class="card-img nature">&#127796;</div>
+                <div class="card-body">
+                    <span class="category">태안</span>
+                    <h4>태안해안국립공원</h4>
+                    <p>서해안의 아름다운 해변과 갯벌, 자연생태의 보고</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 5. CLOSING ===== -->
+    <section class="closing-section fade-in">
+        <div class="closing-initial">박</div>
+        <div class="quote"><em>소통</em>이 곧<br>변화의 시작입니다</div>
+        <div class="message">
+            국회의원으로, 청와대 대변인으로<br>
+            쌓아온 소통의 경험을 충남 도정에 쏟겠습니다.<br>
+            도민 여러분의 선택이 충남의 미래를 바꿉니다.
+        </div>
+        <div class="cta-badge">기호 1번 박수현</div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <strong>박수현</strong> | 더불어민주당 충남도지사 후보<br>
+        이 공보물은 후보자 캠프 제공 자료 없이 공개 정보를 기반으로 제작되었습니다.<br>
+        &copy; 2026 박수현 선거캠프
+    </footer>
+
+</div>
+
+<!-- Scroll Animation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+    });
+</script>
+
+</body>
+</html>

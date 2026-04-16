@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>조용익 - 부천시장 후보 선거공보물</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="기호 1번 조용익 | 더불어민주당 부천시장 후보">
+    <meta property="og:description" content="사통팔달 교통 요충지, 과학과 첨단 교육도시 부천! 현직 시장 조용익의 핵심 공약과 부천 지역 소식을 확인하세요.">
+    <meta property="og:url" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/cho-yongik-bucheon.html">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:site_name" content="조용익 부천시장 후보">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="기호 1번 조용익 | 더불어민주당 부천시장 후보">
+    <meta name="twitter:description" content="사통팔달 교통 요충지, 과학과 첨단 교육도시 부천!">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%231B3A8C'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-weight='bold'>1</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1B3A8C;
+            --primary-light: #2E5BB8;
+            --primary-dark: #0F2460;
+            --accent: #E8443A;
+            --accent-light: #FF6B5E;
+            --green: #2D8B4E;
+            --green-light: #E8F5E9;
+            --gold: #D4930D;
+            --gold-light: #FFF8E1;
+            --sky: #E3F0FC;
+            --warm: #FFF3E8;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #EEEEEE;
+            --gray-300: #E0E0E0;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--gray-900);
+            background: var(--gray-100);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        section { padding: 48px 24px; }
+
+        /* ===== NAV ===== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .top-nav .logo { font-weight: 800; font-size: 1.1em; color: var(--primary); }
+        .top-nav .party {
+            background: var(--primary);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            font-weight: 600;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--primary-light) 100%);
+            color: white;
+            padding: 100px 28px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+        }
+        .hero .number-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            font-size: 1.8em; font-weight: 900;
+            line-height: 56px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+        .hero .candidate-name {
+            font-size: 2.8em; font-weight: 900;
+            letter-spacing: -1px; margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .hero .position { font-size: 1.15em; font-weight: 500; opacity: 0.9; margin-bottom: 24px; }
+        .hero .slogan { font-size: 1.5em; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+        .hero .slogan em { font-style: normal; color: #FFD54F; }
+        .hero .sub-slogan { font-size: 0.95em; opacity: 0.85; font-weight: 300; }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .section-title .label {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75em; font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .section-title h2 { font-size: 1.6em; font-weight: 800; color: var(--gray-900); line-height: 1.3; }
+        .section-title h2 .highlight { color: var(--primary); }
+        .section-title p { color: var(--gray-600); font-size: 0.9em; margin-top: 8px; }
+
+        /* ===== PROFILE ===== */
+        .profile-section { background: var(--gray-50); }
+        .profile-photo {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 4em; font-weight: 900;
+            box-shadow: 0 8px 30px rgba(27,58,140,0.25);
+            border: 4px solid white;
+            overflow: hidden;
+        }
+        .profile-info { text-align: center; margin-bottom: 28px; }
+        .profile-info .name { font-size: 1.5em; font-weight: 800; margin-bottom: 4px; }
+        .profile-info .desc { color: var(--gray-600); font-size: 0.9em; }
+        .career-list {
+            list-style: none;
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .career-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9em;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .career-list li:last-child { border: none; }
+        .career-list li .dot {
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            flex-shrink: 0; margin-top: 9px;
+        }
+
+        /* ===== LOCAL NEWS ===== */
+        .local-news {
+            background: linear-gradient(180deg, #F0F6FF 0%, #E8F1FB 100%);
+            padding: 40px 24px;
+        }
+        .local-news .news-header { text-align: center; margin-bottom: 24px; }
+        .local-news .news-header .tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: white; color: var(--primary);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.8em; font-weight: 600;
+            box-shadow: var(--shadow-sm); margin-bottom: 10px;
+        }
+        .local-news .news-header h3 { font-size: 1.2em; font-weight: 700; color: var(--primary-dark); }
+        .local-news .news-header p { font-size: 0.82em; color: var(--gray-600); margin-top: 4px; }
+
+        .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .news-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none; color: inherit; display: block;
+        }
+        .news-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .news-card .card-img {
+            width: 100%; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5em;
+        }
+        .news-card .card-img.festival { background: linear-gradient(135deg, #FF9A9E, #FAD0C4); }
+        .news-card .card-img.nature { background: linear-gradient(135deg, #A8E6CF, #88D8B0); }
+        .news-card .card-img.food { background: linear-gradient(135deg, #FFECD2, #FCB69F); }
+        .news-card .card-img.market { background: linear-gradient(135deg, #C9B1FF, #A18CD1); }
+        .news-card .card-img.tech { background: linear-gradient(135deg, #89CFF0, #667EEA); }
+        .news-card .card-body { padding: 12px; }
+        .news-card .card-body .category {
+            font-size: 0.68em; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .news-card .card-body h4 {
+            font-size: 0.85em; font-weight: 700; margin: 4px 0;
+            line-height: 1.3; color: var(--gray-900);
+        }
+        .news-card .card-body p {
+            font-size: 0.72em; color: var(--gray-600); line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* ===== STRATEGY ===== */
+        .strategy-section { background: white; }
+        .strategy-pillars { display: flex; gap: 10px; margin-bottom: 28px; }
+        .pillar {
+            flex: 1; text-align: center;
+            padding: 20px 10px; border-radius: var(--radius);
+            background: var(--sky);
+        }
+        .pillar .icon { font-size: 2em; margin-bottom: 8px; }
+        .pillar h4 { font-size: 0.82em; font-weight: 700; color: var(--primary); }
+        .pillar p { font-size: 0.7em; color: var(--gray-600); margin-top: 4px; }
+
+        /* ===== PLEDGES ===== */
+        .pledge-section { background: var(--gray-50); }
+        .pledge-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+        .pledge-card.city { border-left-color: var(--gold); }
+        .pledge-card.transport { border-left-color: var(--green); }
+        .pledge-card.industry { border-left-color: var(--primary); }
+        .pledge-card .pledge-number {
+            display: inline-block;
+            width: 28px; height: 28px;
+            border-radius: 50%; background: var(--primary);
+            color: white; text-align: center; line-height: 28px;
+            font-size: 0.8em; font-weight: 700; margin-bottom: 10px;
+        }
+        .pledge-card.city .pledge-number { background: var(--gold); }
+        .pledge-card.transport .pledge-number { background: var(--green); }
+        .pledge-card.industry .pledge-number { background: var(--primary); }
+        .pledge-card h3 { font-size: 1.05em; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .pledge-card p { font-size: 0.85em; color: var(--gray-700); line-height: 1.6; }
+        .pledge-card .kpi {
+            display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 10px; padding: 4px 12px;
+            border-radius: 6px; font-size: 0.78em; font-weight: 600;
+        }
+        .pledge-card.city .kpi { background: var(--gold-light); color: var(--gold); }
+        .pledge-card.transport .kpi { background: var(--green-light); color: var(--green); }
+        .pledge-card.industry .kpi { background: var(--sky); color: var(--primary); }
+
+        /* ===== CLOSING ===== */
+        .closing-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white; text-align: center; padding: 56px 28px;
+        }
+        .closing-section .closing-initial {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 3px solid rgba(255,255,255,0.4);
+            margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.8em; font-weight: 900; color: white;
+        }
+        .closing-section .quote { font-size: 1.6em; font-weight: 800; line-height: 1.4; margin-bottom: 16px; }
+        .closing-section .quote em { font-style: normal; color: #FFD54F; }
+        .closing-section .message { font-size: 0.92em; opacity: 0.85; line-height: 1.7; margin-bottom: 28px; }
+        .closing-section .cta-badge {
+            display: inline-block;
+            background: var(--accent); color: white;
+            padding: 14px 36px; border-radius: 50px;
+            font-size: 1.1em; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.5);
+            text-align: center; padding: 24px;
+            font-size: 0.72em; line-height: 1.8;
+        }
+        .footer strong { color: rgba(255,255,255,0.8); }
+        .footer .disclaimer { margin-top: 8px; font-size: 0.92em; color: rgba(255,255,255,0.4); }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 380px) {
+            .hero .candidate-name { font-size: 2.2em; }
+            .hero .slogan { font-size: 1.25em; }
+            .news-grid { grid-template-columns: 1fr; }
+            .strategy-pillars { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+        <span class="logo">조용익</span>
+        <span class="party">더불어민주당</span>
+    </nav>
+
+    <!-- ===== 1. HERO ===== -->
+    <section class="hero">
+        <div class="profile-photo" style="width:120px;height:120px;margin:0 auto 20px;border:3px solid rgba(255,255,255,0.5);box-shadow:0 4px 20px rgba(0,0,0,0.3);font-size:3em;">조</div>
+        <div class="number-badge">1</div>
+        <div class="candidate-name">조용익</div>
+        <div class="position">더불어민주당 부천시장 후보 (현직)</div>
+        <div class="slogan">사통팔달 교통 요충지,<br><em>과학과 첨단</em> 교육도시 부천</div>
+        <div class="sub-slogan">변호사 출신 현직 시장, 재선 도전</div>
+    </section>
+
+    <!-- ===== 2. PROFILE ===== -->
+    <section class="profile-section fade-in">
+        <div class="section-title">
+            <span class="label">PROFILE</span>
+            <h2>부천을 아는 사람,<br><span class="highlight">부천을 바꾸는 사람</span></h2>
+        </div>
+
+        <div class="profile-photo">조</div>
+
+        <div class="profile-info">
+            <div class="name">조용익</div>
+            <div class="desc">1966년 전남 순천시 승주읍 출생</div>
+        </div>
+
+        <ul class="career-list">
+            <li><span class="dot"></span>현 부천시장 (재선 도전)</li>
+            <li><span class="dot"></span>순천고 졸업 (1984)</li>
+            <li><span class="dot"></span>성균관대 법대 졸업 (1989)</li>
+            <li><span class="dot"></span>제31회 사법시험 합격</li>
+            <li><span class="dot"></span>변호사 조용익 법률사무소 개업 (부천, 1995)</li>
+            <li><span class="dot"></span>법무법인 카이로스 변호사</li>
+            <li><span class="dot"></span>문재인정부 청와대 정무수석실 행정관</li>
+            <li><span class="dot"></span>이재명 대선 후보 선대위 공동위원장</li>
+            <li><span class="dot"></span>더불어민주당 전략기획위원장 부위원장</li>
+            <li><span class="dot"></span>남북평화협력 지방정부협의회 회장</li>
+            <li><span class="dot"></span>경기서부권문화관광협의회 회장</li>
+            <li><span class="dot"></span>대한민국 건강도시협의회 부의장</li>
+        </ul>
+    </section>
+
+    <!-- ===== 지역소식: 부천의 문화 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127916; 내가 사랑하는 부천</div>
+            <h3>문화도시 부천</h3>
+            <p>콘텐츠와 축제의 도시, 부천의 자랑</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://www.bifan.kr" target="_blank">
+                <div class="card-img festival">&#127909;</div>
+                <div class="card-body">
+                    <span class="category">영화제</span>
+                    <h4>부천국제판타스틱영화제</h4>
+                    <p>BIFAN, 아시아 최대 장르영화제로 매년 7월 개최</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.bucheon.go.kr" target="_blank">
+                <div class="card-img market">&#128214;</div>
+                <div class="card-body">
+                    <span class="category">만화축제</span>
+                    <h4>부천만화축제</h4>
+                    <p>한국만화의 메카, 부천만화정보센터와 함께하는 축제</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.bucheon.go.kr" target="_blank">
+                <div class="card-img tech">&#127908;</div>
+                <div class="card-body">
+                    <span class="category">산업</span>
+                    <h4>영상문화산업단지</h4>
+                    <p>부천 영상산업 클러스터, 한국 콘텐츠 산업의 거점</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.bucheon.go.kr" target="_blank">
+                <div class="card-img nature">&#129302;</div>
+                <div class="card-body">
+                    <span class="category">기술</span>
+                    <h4>부천 로봇산업</h4>
+                    <p>로봇산업 특구, 첨단 기술 기업이 모이는 혁신 허브</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 3. VISION ===== -->
+    <section class="strategy-section fade-in">
+        <div class="section-title">
+            <span class="label">VISION</span>
+            <h2><span class="highlight">3대 비전</span>으로<br>부천을 바꾸겠습니다</h2>
+        </div>
+
+        <div class="strategy-pillars">
+            <div class="pillar">
+                <div class="icon">&#127961;</div>
+                <h4>도시 재생<br>뉴타운</h4>
+                <p>재건축 &middot; 재개발</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#128646;</div>
+                <h4>사통팔달<br>교통</h4>
+                <p>GTX &middot; 광역버스</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#128300;</div>
+                <h4>과학 첨단<br>교육도시</h4>
+                <p>과학고 &middot; 기업 유치</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 지역소식: 부천의 자연 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127795; 부천의 자연</div>
+            <h3>도심 속 녹지와 공원</h3>
+            <p>조용익이 지키고 가꾸는 부천의 쉼터</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://www.bucheon.go.kr" target="_blank">
+                <div class="card-img nature">&#9968;</div>
+                <div class="card-body">
+                    <span class="category">산</span>
+                    <h4>원미산</h4>
+                    <p>진달래 군락지, 시민 등산로와 자연학습장 운영</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.bucheon.go.kr" target="_blank">
+                <div class="card-img festival">&#127800;</div>
+                <div class="card-body">
+                    <span class="category">산</span>
+                    <h4>도당산</h4>
+                    <p>도심 가까운 산책 명소, 부천 시내 전경 조망</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.bucheon.go.kr" target="_blank">
+                <div class="card-img food">&#127803;</div>
+                <div class="card-body">
+                    <span class="category">공원</span>
+                    <h4>부천 중앙공원</h4>
+                    <p>도심 속 대규모 공원, 시민 휴식과 여가의 중심</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.bucheon.go.kr" target="_blank">
+                <div class="card-img tech">&#127981;</div>
+                <div class="card-body">
+                    <span class="category">기술</span>
+                    <h4>부천 테크노파크</h4>
+                    <p>첨단 산업 지원, 기술 혁신 기업의 성장 거점</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 4. PLEDGES ===== -->
+    <section class="pledge-section fade-in">
+        <div class="section-title">
+            <span class="label">PLEDGES</span>
+            <h2>조용익의<br><span class="highlight">핵심 공약</span></h2>
+        </div>
+
+        <div class="pledge-card city">
+            <div class="pledge-number">1</div>
+            <h3>도시 재건축 &middot; 재개발로 부천 대변신</h3>
+            <p>미니 뉴타운 조성, 역세권 개발, LH 도심 공공복합사업 추진, 중동 신도시 재건축을 통해 노후 주거환경을 획기적으로 개선합니다.</p>
+            <span class="kpi">&#127961; 미니 뉴타운 &middot; 역세권 개발</span>
+        </div>
+
+        <div class="pledge-card city">
+            <div class="pledge-number">2</div>
+            <h3>중동 신도시 재건축 &amp; LH 도심 공공복합사업</h3>
+            <p>1기 신도시 중동의 재건축을 본격 추진하고, LH 공공복합사업을 통해 주거 &middot; 상업 &middot; 문화가 어우러진 복합 도심을 만듭니다.</p>
+            <span class="kpi">&#127968; 1기 신도시 재건축 추진</span>
+        </div>
+
+        <div class="pledge-card transport">
+            <div class="pledge-number">3</div>
+            <h3>GTX-B &middot; 대장홍대선 &middot; 제2경인선 교통 혁신</h3>
+            <p>GTX-B 조기 완공, 대장홍대선 개통, 제2경인선 유치로 부천을 수도권 최고의 교통 요충지로 만들겠습니다.</p>
+            <span class="kpi">&#128646; GTX-B 조기 완공 추진</span>
+        </div>
+
+        <div class="pledge-card transport">
+            <div class="pledge-number">4</div>
+            <h3>소사역 KTX-이음 &amp; 강남 연결 광역버스</h3>
+            <p>소사역에 KTX-이음 정차를 유치하고, 강남 직행 광역버스 노선을 신설하여 시민의 출퇴근 부담을 줄이겠습니다.</p>
+            <span class="kpi">&#128645; 소사역 KTX-이음 정차 유치</span>
+        </div>
+
+        <div class="pledge-card industry">
+            <div class="pledge-number">5</div>
+            <h3>부천 과학고 유치 &amp; 첨단 교육도시 조성</h3>
+            <p>부천 과학고를 유치하고, 대한항공 &middot; SK 등 대기업 유치와 첨단 과학 교육 인프라를 구축하여 미래 인재를 키우겠습니다.</p>
+            <span class="kpi">&#128300; 과학고 유치 &middot; 기업 유치</span>
+        </div>
+
+        <div class="pledge-card industry">
+            <div class="pledge-number">6</div>
+            <h3>대한항공 &middot; SK 기업 유치로 일자리 창출</h3>
+            <p>부천에 대한항공 MRO(정비) 시설과 SK 첨단 사업장을 유치하여 양질의 일자리를 만들고 지역 경제를 활성화합니다.</p>
+            <span class="kpi">&#127981; 대기업 유치 &middot; 일자리 확대</span>
+        </div>
+    </section>
+
+    <!-- ===== 5. CLOSING ===== -->
+    <section class="closing-section fade-in">
+        <div class="closing-initial">조</div>
+        <div class="quote">현장에서 <em>결과</em>로<br>증명하겠습니다</div>
+        <div class="message">
+            변호사에서 시장으로, 부천에서 30년.<br>
+            시민 여러분과 함께 만들어 온 변화를<br>
+            재선을 통해 완성하겠습니다.
+        </div>
+        <div class="cta-badge">기호 1번 조용익</div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <strong>조용익</strong> | 더불어민주당 부천시장 후보<br>
+        이 선거공보물은 공직선거법 규정에 따라 제작되었습니다.<br>
+        <span class="disclaimer">이 공보물은 후보자 캠프 제공 자료 없이 공개 정보를 기반으로 제작되었습니다.</span><br>
+        &copy; 2026 조용익 선거캠프
+    </footer>
+
+</div>
+
+<!-- Scroll Animation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+    });
+</script>
+
+</body>
+</html>
