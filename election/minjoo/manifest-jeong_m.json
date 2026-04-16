@@ -1,0 +1,24 @@
+{
+  "name": "정명근 | 화성시장 후보",
+  "short_name": "정명근",
+  "description": "정명근 더불어민주당 화성시장 후보",
+  "start_url": "/studysnap-samples/election/minjoo/jeong-myeonggeun-hwaseong.html",
+  "display": "standalone",
+  "background_color": "#1B3A8C",
+  "theme_color": "#1B3A8C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "pwa/jeong_m-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "pwa/jeong_m-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "조용익 | 부천시장 후보",
+  "short_name": "조용익",
+  "description": "조용익 더불어민주당 부천시장 후보",
+  "start_url": "/studysnap-samples/election/minjoo/cho-yongik-bucheon.html",
+  "display": "standalone",
+  "background_color": "#1B3A8C",
+  "theme_color": "#1B3A8C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "pwa/cho-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "pwa/cho-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
