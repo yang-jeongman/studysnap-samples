@@ -850,43 +850,82 @@
         }
     }
 
-    // ===== Push Notification =====
+    
+    // ===== Push Notification (VAPID + Admin Backend) =====
+    const VAPID_PUBLIC_KEY = 'BJhM676WZfP3-M0vichq1j9Yd8DYg2WTF8KT04dqp5laWgTnkWkGmzpbBhjAXl0HMYhGzscNMajznJYU94ezdGw';
+    const ADMIN_BACKEND = 'http://localhost:5050';
+    const CANDIDATE_ID = 'jeong_w';
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length %% 4) %% 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; i++) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
     function pushSubscribe() {
         var statusEl = document.getElementById('push-status');
         var btn = document.getElementById('pwa-push-btn');
 
-        if (!('Notification' in window)) {
-            statusEl.textContent = '이 브라우저는 알림을 지원하지 않습니다.';
+        if (!('Notification' in window) || !('PushManager' in window)) {
+            statusEl.textContent = '이 브라우저는 푸시 알림을 지원하지 않습니다.';
             return;
         }
 
         Notification.requestPermission().then(function(permission) {
-            if (permission === 'granted') {
-                btn.textContent = '알림 구독됨 ✓';
-                btn.style.background = '#27AE60';
-                btn.style.borderColor = '#27AE60';
-                statusEl.textContent = '알림이 활성화되었습니다. 새 소식을 바로 받아보세요!';
-
-                var toast = document.getElementById('push-toast');
-                toast.style.display = 'block';
-                setTimeout(function() { toast.style.display = 'none'; }, 3000);
-
-                if ('serviceWorker' in navigator && 'PushManager' in window) {
-                    navigator.serviceWorker.ready.then(function(reg) {
-                        return reg.pushManager.getSubscription();
-                    }).then(function(sub) {
-                        if (!sub) {
-                            statusEl.textContent = '알림 권한이 허용되었습니다. 서버 연동 시 푸시 알림을 받을 수 있습니다.';
-                        }
-                    });
-                }
-
-                localStorage.setItem('push-subscribed-jeong_w', '1');
-            } else if (permission === 'denied') {
-                statusEl.textContent = '알림이 차단되었습니다. 브라우저 설정에서 허용해주세요.';
+            if (permission !== 'granted') {
+                statusEl.textContent = permission === 'denied'
+                    ? '알림이 차단되었습니다. 브라우저 설정에서 허용해주세요.'
+                    : '알림 권한이 필요합니다.';
+                return;
             }
-        }).catch(function(err) {
-            statusEl.textContent = '알림 설정 중 오류: ' + err.message;
+
+            statusEl.textContent = '알림 구독 처리 중...';
+
+            navigator.serviceWorker.ready.then(function(reg) {
+                return reg.pushManager.getSubscription().then(function(existing) {
+                    if (existing) return existing;
+                    return reg.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+                    });
+                });
+            }).then(function(subscription) {
+                // Send subscription to admin backend (tenant-scoped)
+                return fetch(ADMIN_BACKEND + '/api/subscribe', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_id: CANDIDATE_ID,
+                        subscription: subscription.toJSON()
+                    })
+                }).then(function(res) {
+                    return { ok: res.ok, data: subscription };
+                });
+            }).then(function(result) {
+                if (result.ok) {
+                    btn.textContent = '알림 구독됨 ✓';
+                    btn.style.background = '#27AE60';
+                    btn.style.borderColor = '#27AE60';
+                    statusEl.textContent = '알림이 활성화되었습니다! 후보 캠프의 소식을 받아보세요.';
+                    localStorage.setItem('push-subscribed-jeong_w', '1');
+
+                    var toast = document.getElementById('push-toast');
+                    toast.style.display = 'block';
+                    setTimeout(function() { toast.style.display = 'none'; }, 3000);
+                } else {
+                    statusEl.textContent = '서버 등록 실패. 잠시 후 다시 시도해주세요.';
+                    console.warn('Subscription submit failed');
+                }
+            }).catch(function(err) {
+                console.error('Push subscribe error:', err);
+                statusEl.textContent = '알림 구독 중 오류: ' + err.message;
+            });
         });
     }
 

@@ -1,26 +1,27 @@
 // Service Worker for Election Pamphlet PWA
-const CACHE_NAME = 'election-pamphlet-v1';
+// - Caches pages (network-first)
+// - Handles Web Push events
+// - Shows notifications with image attachment and action buttons
 
-// Install event
+const CACHE_NAME = 'election-pamphlet-v2';
+
 self.addEventListener('install', event => {
   console.log('[SW] Install');
   self.skipWaiting();
 });
 
-// Activate event
 self.addEventListener('activate', event => {
   console.log('[SW] Activate');
   event.waitUntil(
     caches.keys().then(names =>
-      Promise.all(
-        names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n))
-      )
+      Promise.all(names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n)))
     ).then(() => self.clients.claim())
   );
 });
 
-// Fetch event - network first, fallback to cache
 self.addEventListener('fetch', event => {
+  // Only cache GET requests
+  if (event.request.method !== 'GET') return;
   event.respondWith(
     fetch(event.request)
       .then(response => {
@@ -34,10 +35,13 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// Push event
+// === Push event (from admin backend via webpush) ===
 self.addEventListener('push', event => {
   console.log('[SW] Push received');
-  let data = { title: '선거공보물 알림', body: '새로운 소식이 있습니다.', icon: '' };
+  let data = {
+    title: '선거공보물 알림',
+    body: '새로운 소식이 있습니다.',
+  };
 
   if (event.data) {
     try {
@@ -48,29 +52,32 @@ self.addEventListener('push', event => {
   }
 
   const options = {
-    body: data.body,
+    body: data.body || '',
     icon: data.icon || '/studysnap-samples/election/minjoo/pwa/jeong_w-192.png',
-    badge: data.badge || '/studysnap-samples/election/minjoo/pwa/jeong_w-192.png',
+    badge: data.badge || data.icon || '/studysnap-samples/election/minjoo/pwa/jeong_w-192.png',
+    image: data.image || undefined,   // big image attachment
     vibrate: [200, 100, 200],
+    requireInteraction: !!data.image,
     data: {
-      url: data.url || self.registration.scope
+      url: data.url || self.registration.scope,
+      action_label: data.action_label
     },
     actions: data.actions || [
-      { action: 'open', title: '확인하기' }
-    ]
+      { action: 'open', title: data.action_label || '확인하기' }
+    ],
+    tag: data.tag || 'election-message-' + Date.now()
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
+    self.registration.showNotification(data.title || '선거공보물 알림', options)
   );
 });
 
-// Notification click event
 self.addEventListener('notificationclick', event => {
-  console.log('[SW] Notification clicked');
+  console.log('[SW] Notification clicked', event.action);
   event.notification.close();
 
-  const url = event.notification.data && event.notification.data.url
+  const url = (event.notification.data && event.notification.data.url)
     ? event.notification.data.url
     : '/';
 
@@ -85,4 +92,9 @@ self.addEventListener('notificationclick', event => {
         return clients.openWindow(url);
       })
   );
+});
+
+// Handle pushsubscriptionchange (Chrome re-subscribes)
+self.addEventListener('pushsubscriptionchange', event => {
+  console.log('[SW] Subscription changed, re-subscribe needed');
 });
