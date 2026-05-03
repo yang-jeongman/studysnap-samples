@@ -2650,7 +2650,7 @@
   }
 
   function openBibleModal(reference) {
-    var ref = reference.replace(/\([A-Za-z\.]+\)/g, '').trim();
+    var ref = reference.replace(/\([A-Za-z0-9\.\s]+\)/g, '').trim();
     var modal = document.getElementById('bibleModal');
     var titleEl = document.getElementById('bibleModalTitle');
     var contentEl = document.getElementById('bibleModalContent');
@@ -2769,16 +2769,16 @@
 
   // ─── 성경 구절 + 찬송가 자동 링크 + 신앙고백 ───
   function _autoLinkScripture(html) {
-    // 한글 책명(2~3자) + 영문약어(선택) + 장:절(범위 선택)
-    // 예: "골 3:12~14", "고후 5:17", "요(John) 4:24", "마 18:1"
+    // 한글 책명(2~3자) + 영문약어(선택, 숫자 포함 허용 — 1Cor./2Pet./1John 등) + 장:절(범위 선택)
+    // 예: "골 3:12~14", "고전(1Cor.) 3:16", "벧전(1Pet.) 5:7", "요(John) 4:24"
     var bookPattern = '(?:[가-힣]{1,3})';
-    var fullPattern = '(' + bookPattern + '(?:\\s*\\([A-Za-z\\.]+\\))?\\s*\\d+\\s*[:장]\\s*\\d+(?:\\s*[~\\-∼]\\s*\\d+)?)';
+    var fullPattern = '(' + bookPattern + '(?:\\s*\\([A-Za-z0-9\\.\\s]+\\))?\\s*\\d+\\s*[:장]\\s*\\d+(?:\\s*[~\\-∼]\\s*\\d+)?)';
     var re = new RegExp(fullPattern, 'g');
     return html.replace(re, function(m, ref) {
       // 이미 링크인 경우 스킵
       if (m.includes('<a ')) return m;
-      // 책명 검증 (가나다 + 영문 같은 경우만)
-      var bookOnly = ref.replace(/\([A-Za-z\.]+\)/g, '').trim().split(/\s+/)[0].split(/[:장]/)[0];
+      // 책명 검증 (영문약어 괄호 부분 제거 후 한글 약어만 추출)
+      var bookOnly = ref.replace(/\([A-Za-z0-9\.\s]+\)/g, '').trim().split(/\s+/)[0].split(/[:장]/)[0];
       if (!BIBLE_BOOKS[bookOnly]) return m;
       var safe = ref.replace(/'/g, "\\'");
       return '<a class="bible-link" href="javascript:void(0)" onclick="openBibleModal(\'' + safe + '\')">' + ref + '</a>';
