@@ -40,17 +40,7 @@
       font-size: 15px;
       line-height: 1.7;
       -webkit-text-size-adjust: 100%;
-      /* 전체 텍스트 1.5배 확대 (모바일 기본 가독성 강화) — A+/A/A- 로 추가 조절 */
-      zoom: 1.5;
-    }
-    /* iOS Safari 는 zoom 미지원 시 transform 폴백 */
-    @supports not (zoom: 1) {
-      body {
-        zoom: unset;
-        transform: scale(1.5);
-        transform-origin: 0 0;
-        width: 66.6667%;
-      }
+      /* 본문 영역 기본 zoom 110% — A+/A/A- 로 90~140% 조절 (JS 에서 적용) */
     }
 
     /* ─── 헤더 ─── */
@@ -397,15 +387,46 @@
     .share-kakao { background: #FEE500; color: #191919; }
     .share-copy  { background: #eee; color: #333; }
 
+    /* ─── 푸터 풀업 핸들 (스크롤 끝에서 사용자가 핸들 탭/스와이프 시 펼침) ─── */
+    .footer-handle {
+      background: #f6f6f6;
+      border-top: 1px solid #e0e0e0;
+      text-align: center;
+      padding: 14px 16px 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+      margin-top: 60px;          /* 컨트롤(peek)과 겹침 방지 */
+    }
+    .footer-handle:active { background: #ececec; }
+    .footer-handle-bar {
+      display: block;
+      width: 38px; height: 4px;
+      background: #c8c8c8;
+      margin: 0 auto 8px;
+      border-radius: 2px;
+    }
+    .footer-handle-text {
+      font-size: 12px; color: #888; font-weight: 600;
+    }
+    .footer-handle.open .footer-handle-bar { background: #999; }
+    .footer-handle.open .footer-handle-text::after { content: ' (닫기)'; }
+
     /* ─── 푸터 ─── */
     .footer {
       background: #1a1a1a;
       color: #aaa;
       text-align: center;
-      padding: 26px 16px 22px;
+      padding: 0 16px;
       font-size: 12px;
       line-height: 1.85;
-      margin-top: 24px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.42s cubic-bezier(.2,.7,.3,1), padding 0.32s;
+    }
+    .footer.open {
+      max-height: 360px;
+      padding: 26px 16px 22px;
     }
     .footer-logo {
       display: flex; justify-content: center; margin-bottom: 12px;
@@ -568,16 +589,57 @@
     .bh-player { width:100%; display:none; }
     .bh-player.show { display:block; }
 
-    /* ─── 화면 확대/축소 floating 컨트롤 (우측 하단 고정) ─── */
+    /* ─── 좌우 스와이프 시각 피드백 ─── */
+    .swipe-flash {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.6);
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 700;
+      z-index: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .swipe-flash.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* ─── 화면 확대/축소 (peek + expand floating, 화면 항상 보임) ─── */
     .text-size-controls {
-      position: fixed; bottom: 80px; right: 14px; z-index: 600;
-      display: flex; flex-direction: column; gap: 8px; align-items: center;
-      background: rgba(255,255,255,0.92);
-      padding: 10px 8px;
-      border-radius: 26px;
-      box-shadow: 0 4px 14px rgba(0,0,0,.15);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      position: fixed;
+      bottom: -34px;             /* peek: 컨트롤 머리만 보임 */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 600;
+      display: flex; flex-direction: row; gap: 10px; align-items: center;
+      justify-content: center;
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 28px;
+      box-shadow: 0 -3px 14px rgba(0,0,0,.18);
+      border: 1px solid #e2e2e2;
+      cursor: pointer;
+      transition: bottom 0.32s cubic-bezier(.2,.7,.3,1);
+      touch-action: manipulation;
+    }
+    .text-size-controls::before {
+      content: "";
+      position: absolute;
+      top: 5px; left: 50%;
+      transform: translateX(-50%);
+      width: 42px; height: 4px;
+      background: #d0d0d0;
+      border-radius: 2px;
+      opacity: 0.85;
+    }
+    .text-size-controls.expanded { bottom: 16px; }
+    @media (hover: hover) {
+      .text-size-controls:hover { bottom: 16px; }
     }
     .text-size-btn {
       width: 42px; height: 42px; border-radius: 50%;
@@ -585,24 +647,23 @@
       color: var(--season-primary); font-size: 15px; font-weight: 700;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,.12);
-      transition: transform 0.1s, background 0.1s;
+      transition: transform 0.1s, background 0.1s, opacity 0.1s;
     }
-    .text-size-btn:hover {
+    .text-size-btn:hover:not(:disabled) {
       background: var(--season-primary);
       color: #fff;
     }
     .text-size-btn:active { transform: scale(0.92); }
+    .text-size-btn:disabled { opacity: 0.35; cursor: not-allowed; }
     .text-size-btn.reset { font-size: 13px; }
     .zoom-level-label {
-      font-size: 11px;
-      color: #666;
-      font-weight: 600;
-      min-width: 38px;
+      font-size: 12px;
+      color: #555;
+      font-weight: 700;
+      min-width: 44px;
       text-align: center;
       padding: 2px 0;
     }
-    /* zoom 컨트롤은 zoom 변환의 영향을 받지 않도록 — fixed 는 viewport 기준 */
-    body { /* zoom 적용 시 fixed 도 영향 받음, 보정 위해 컨트롤은 별도 처리 */ }
 
     /* ─── 부별 설교 (PDF 원본 형식 적용) ─── */
     .sermon-list { padding: 0; }
@@ -1045,8 +1106,7 @@
       <div class="church-name-en">Yoido Full Gospel Church</div>
     </div>
     <div class="view-toggle">
-      <button class="view-btn active" onclick="setView('bulletin')" id="btn-bulletin">주보</button>
-      <button class="view-btn" onclick="setView('cover')" id="btn-cover">표지보기</button>
+      <button class="view-btn cover-toggle-btn" onclick="toggleCover()" id="btn-cover-toggle">표지 보기</button>
     </div>
   </div>
   <div class="date-nav">
@@ -2075,24 +2135,32 @@
       📥 PDF 다운로드
     </a>
   </div>
-
-  <div class="footer">
-    <div class="footer-logo">
-      <img src="assets/icons/church_logo.jpg" alt="여의도순복음교회 주보" loading="lazy">
-    </div>
-    <div class="footer-name">여의도순복음교회</div>
-    <div class="footer-addr">서울특별시 영등포구 국회대로76길 15</div>
-    <div class="footer-est">1958년 5월 18일 창립</div>
-    <div class="footer-copy">© 2026 여의도순복음교회. All rights reserved.</div>
-  </div>
 </div>
 
-<!-- ─── 화면 확대/축소 (우측 하단 고정 floating) ─── -->
-<div class="text-size-controls">
-  <button class="text-size-btn" onclick="changeTextSize(1)" title="화면 크게" aria-label="화면 확대">A+</button>
-  <span id="zoomLevelLabel" class="zoom-level-label" title="현재 배율">150%</span>
+<!-- ─── 푸터 풀업 핸들 (탭/스와이프로 펼침, 모든 탭에서 항상 표시) ─── -->
+<div class="footer-handle" id="footerHandle" onclick="toggleFooter()" role="button" tabindex="0"
+     aria-expanded="false" aria-controls="footerWrap" aria-label="교회 정보 펼치기/닫기">
+  <span class="footer-handle-bar" aria-hidden="true"></span>
+  <span class="footer-handle-text">▲ 위로 밀어 정보 보기</span>
+</div>
+
+<!-- ─── 푸터 (handle 토글로 노출) ─── -->
+<div class="footer" id="footerWrap">
+  <div class="footer-logo">
+    <img src="assets/icons/church_logo.jpg" alt="여의도순복음교회 주보" loading="lazy">
+  </div>
+  <div class="footer-name">여의도순복음교회</div>
+  <div class="footer-addr">서울특별시 영등포구 국회대로76길 15</div>
+  <div class="footer-est">1958년 5월 18일 창립</div>
+  <div class="footer-copy">© 2026 여의도순복음교회. All rights reserved.</div>
+</div>
+
+<!-- ─── 화면 확대/축소 (peek+expand floating, 모든 탭에서 항상 표시) ─── -->
+<div class="text-size-controls" role="group" aria-label="화면 크기 조절">
+  <button id="btnZoomDown" class="text-size-btn" onclick="changeTextSize(-1)" title="화면 작게" aria-label="화면 축소">A-</button>
   <button class="text-size-btn reset" onclick="changeTextSize(0)" title="기본 배율" aria-label="기본 배율">A</button>
-  <button class="text-size-btn" onclick="changeTextSize(-1)" title="화면 작게" aria-label="화면 축소">A-</button>
+  <span id="zoomLevelLabel" class="zoom-level-label" title="현재 배율">110%</span>
+  <button id="btnZoomUp" class="text-size-btn" onclick="changeTextSize(1)" title="화면 크게" aria-label="화면 확대">A+</button>
 </div>
 
 <!-- ─── 찬송가 모달 ─── -->
@@ -2190,26 +2258,41 @@
     try { localStorage.setItem('jubo_last_tab', id); } catch (e) {}
   }
 
-  // ─── 뷰 전환 (주보 / 표지보기) ───
-  function setView(v) {
-    ['bulletin','cover'].forEach(k => {
-      var b = document.getElementById('btn-'+k); if (b) b.classList.remove('active');
-    });
-    var ab = document.getElementById('btn-'+v); if (ab) ab.classList.add('active');
-    localStorage.setItem('jubo_view_preference', v);
-
+  // ─── 뷰 토글 (표지 보기 ↔ 표지 닫기) ───
+  function toggleCover() {
     var coverDiv = document.getElementById('cover-view');
     var tabsEl   = document.getElementById('tabs');
+    var btn      = document.getElementById('btn-cover-toggle');
+    if (!coverDiv || !btn) return;
 
-    if (v === 'cover') {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      if (coverDiv) coverDiv.style.display = 'block';
-      if (tabsEl)   tabsEl.style.display   = 'none';
-    } else {
-      if (coverDiv) coverDiv.style.display = 'none';
-      if (tabsEl)   tabsEl.style.display   = '';
+    var isOpen = coverDiv.style.display === 'block';
+    if (isOpen) {
+      // 닫기 — 원래 주보 화면으로
+      coverDiv.style.display = 'none';
+      if (tabsEl) tabsEl.style.display = '';
       if (!document.querySelector('.tab-content.active')) {
         showTab(localStorage.getItem('jubo_last_tab') || 'tab-worship');
+      }
+      btn.textContent = '표지 보기';
+      btn.classList.remove('active');
+    } else {
+      // 열기 — 표지 화면으로
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      coverDiv.style.display = 'block';
+      if (tabsEl) tabsEl.style.display = 'none';
+      btn.textContent = '표지 닫기';
+      btn.classList.add('active');
+      // 표지 화면 진입 시 페이지 상단으로
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+  // 하위호환: setView('bulletin'/'cover') 도 동작
+  function setView(v) {
+    if (v === 'cover' || v === 'bulletin') {
+      var coverDiv = document.getElementById('cover-view');
+      var isOpen = coverDiv && coverDiv.style.display === 'block';
+      if ((v === 'cover' && !isOpen) || (v === 'bulletin' && isOpen)) {
+        toggleCover();
       }
     }
   }
@@ -2760,36 +2843,198 @@
     }
   });
 
-  // ─── A+/A/A- 화면 확대/축소 (기본 zoom 1.5, 범위 1.0~2.5, 0.1 step) ───
-  var _zoomLevel = parseFloat(localStorage.getItem('fgjubo_zoom') || '1.5');
-  if (isNaN(_zoomLevel) || _zoomLevel < 1.0 || _zoomLevel > 2.5) _zoomLevel = 1.5;
+  // ─── A+/A/A- 화면 확대/축소 ───
+  // 본문 영역(.tab-content, #cover-view) 에만 zoom 적용 — 헤더와 탭바는 viewport 기준 유지
+  // 단계: 90% / 100% / 110%(기본A) / 120% / 130% / 140%
+  var ZOOM_STEPS = [0.9, 1.0, 1.1, 1.2, 1.3, 1.4];
+  var ZOOM_DEFAULT_INDEX = 2;  // 1.1 = 110%
+  var _zoomIndex = parseInt(localStorage.getItem('fgjubo_zoom_idx') || ZOOM_DEFAULT_INDEX);
+  if (isNaN(_zoomIndex) || _zoomIndex < 0 || _zoomIndex >= ZOOM_STEPS.length) {
+    _zoomIndex = ZOOM_DEFAULT_INDEX;
+  }
 
   function _applyZoom() {
-    document.body.style.zoom = _zoomLevel;
-    var pct = Math.round(_zoomLevel * 100);
+    var z = ZOOM_STEPS[_zoomIndex];
+    // 본문 영역만 — 헤더/탭/floating 컨트롤은 영향 안 받음
+    document.querySelectorAll('.tab-content, #cover-view').forEach(function(el) {
+      el.style.zoom = z;
+    });
+    var pct = Math.round(z * 100);
     var label = document.getElementById('zoomLevelLabel');
     if (label) label.textContent = pct + '%';
-    // 컨트롤 위젯과 PWA 배너는 body 자식이라 zoom 영향 받음 — 역배율로 보정
-    var inverseZoom = (1 / _zoomLevel).toFixed(3);
-    var ctrl = document.querySelector('.text-size-controls');
-    if (ctrl) ctrl.style.zoom = inverseZoom;
-    var banner = document.getElementById('pwa-banner');
-    if (banner) banner.style.zoom = inverseZoom;
+    // 버튼 활성화 상태 — 더이상 줄이거나 늘릴 수 없을 때 disable
+    var btnDown = document.getElementById('btnZoomDown');
+    var btnUp = document.getElementById('btnZoomUp');
+    if (btnDown) btnDown.disabled = (_zoomIndex <= 0);
+    if (btnUp) btnUp.disabled = (_zoomIndex >= ZOOM_STEPS.length - 1);
   }
-  // 초기 적용 — DOMContentLoaded 후 보정도 적용 (역배율 컨트롤)
   document.addEventListener('DOMContentLoaded', _applyZoom);
 
   function changeTextSize(dir) {
     if (dir === 0) {
-      _zoomLevel = 1.5;
+      _zoomIndex = ZOOM_DEFAULT_INDEX;
     } else {
-      _zoomLevel = Math.max(1.0, Math.min(2.5, _zoomLevel + dir * 0.1));
-      // 부동소수점 정밀도 보정
-      _zoomLevel = Math.round(_zoomLevel * 10) / 10;
+      _zoomIndex = Math.max(0, Math.min(ZOOM_STEPS.length - 1, _zoomIndex + dir));
     }
-    localStorage.setItem('fgjubo_zoom', String(_zoomLevel));
+    localStorage.setItem('fgjubo_zoom_idx', String(_zoomIndex));
     _applyZoom();
+    _zoomKeepAlive();
   }
+
+  // 확대/축소 컨트롤 peek↔expand — 컨테이너 빈 영역 클릭 시 토글, 버튼 클릭 시 펼친 상태 유지 + 자동 접힘
+  var _zoomCollapseTimer = null;
+  function _zoomKeepAlive() {
+    var ctrl = document.querySelector('.text-size-controls');
+    if (!ctrl) return;
+    ctrl.classList.add('expanded');
+    if (_zoomCollapseTimer) clearTimeout(_zoomCollapseTimer);
+    _zoomCollapseTimer = setTimeout(function() {
+      ctrl.classList.remove('expanded');
+    }, 4000);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var ctrl = document.querySelector('.text-size-controls');
+    if (!ctrl) return;
+    ctrl.addEventListener('click', function(e) {
+      if (e.target.closest('.text-size-btn')) {
+        _zoomKeepAlive();
+        return;
+      }
+      if (ctrl.classList.contains('expanded')) {
+        ctrl.classList.remove('expanded');
+        if (_zoomCollapseTimer) { clearTimeout(_zoomCollapseTimer); _zoomCollapseTimer = null; }
+      } else {
+        _zoomKeepAlive();
+      }
+    });
+    // 바깥 영역 탭 시 접기
+    document.addEventListener('click', function(e) {
+      if (!ctrl.classList.contains('expanded')) return;
+      if (e.target.closest('.text-size-controls')) return;
+      ctrl.classList.remove('expanded');
+      if (_zoomCollapseTimer) { clearTimeout(_zoomCollapseTimer); _zoomCollapseTimer = null; }
+    });
+  });
+
+  // ─── 좌우 스와이프 탭 전환 (상하 스크롤과 공존) ───
+  // 탭 순서: 예배순서 → 말씀 → 교회소식 → 교회 안내
+  var TAB_ORDER = ['tab-worship', 'tab-word', 'tab-news', 'tab-info'];
+  var SWIPE_MIN_X = 60;        // 최소 가로 이동 (px)
+  var SWIPE_MAX_VERTICAL = 50; // 허용 세로 이동 (px) — 이상이면 스크롤로 간주
+  var SWIPE_MAX_DURATION = 600;// 스와이프 최대 지속 시간 (ms)
+
+  function _swipeShouldIgnore(target) {
+    if (!target) return true;
+    // 모달, 탭바 자체, 가로 스크롤 영역, 인터랙티브 요소는 제외
+    if (target.closest('.modal-overlay')) return true;
+    if (target.closest('.tabs')) return true;
+    if (target.closest('audio, video, iframe')) return true;
+    if (target.closest('.text-size-controls')) return true;
+    if (target.closest('input, textarea, select, button, a')) {
+      // 버튼/링크 자체는 클릭이 우선 — 단, 부모가 카드면 카드 위 스와이프는 OK
+      // 충분히 큰 dx 라면 스와이프로 인식, 아니면 클릭
+      // 여기서는 무시하지 않음 (touchend 에서 dx 검사)
+    }
+    if (target.closest('[data-no-swipe]')) return true;
+    // 가로 스크롤 가능한 컨테이너 (raw_choir_table 등)
+    var el = target;
+    while (el && el !== document.body) {
+      if (el.scrollWidth > el.clientWidth + 4) {
+        var cs = getComputedStyle(el);
+        if (cs && (cs.overflowX === 'auto' || cs.overflowX === 'scroll')) return true;
+      }
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  (function initSwipeNav() {
+    var sx = 0, sy = 0, st = 0, active = false;
+    document.addEventListener('touchstart', function(e) {
+      if (e.touches.length !== 1) { active = false; return; }
+      if (_swipeShouldIgnore(e.target)) { active = false; return; }
+      // 표지 화면이거나 활성 탭이 없으면 무시
+      var cover = document.getElementById('cover-view');
+      if (cover && cover.style.display === 'block') { active = false; return; }
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+      st = Date.now();
+      active = true;
+    }, { passive: true });
+    document.addEventListener('touchend', function(e) {
+      if (!active) return;
+      active = false;
+      var dx = e.changedTouches[0].clientX - sx;
+      var dy = e.changedTouches[0].clientY - sy;
+      var dt = Date.now() - st;
+      if (dt > SWIPE_MAX_DURATION) return;
+      if (Math.abs(dy) > SWIPE_MAX_VERTICAL) return;
+      if (Math.abs(dx) < SWIPE_MIN_X) return;
+      var activeTab = document.querySelector('.tab-content.active');
+      if (!activeTab) return;
+      var idx = TAB_ORDER.indexOf(activeTab.id);
+      if (idx === -1) return;
+      if (dx < 0 && idx < TAB_ORDER.length - 1) {
+        showTab(TAB_ORDER[idx + 1]);
+        _swipeFlash('▶');
+      } else if (dx > 0 && idx > 0) {
+        showTab(TAB_ORDER[idx - 1]);
+        _swipeFlash('◀');
+      }
+    });
+  })();
+
+  // 스와이프 시 짧은 시각 피드백
+  function _swipeFlash(arrow) {
+    var t = document.createElement('div');
+    t.className = 'swipe-flash';
+    t.textContent = arrow;
+    document.body.appendChild(t);
+    setTimeout(function() { t.classList.add('show'); }, 10);
+    setTimeout(function() { t.classList.remove('show'); }, 350);
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 700);
+  }
+
+  // ─── 푸터 풀업 토글 + 스와이프 ───
+  function toggleFooter() {
+    var h = document.getElementById('footerHandle');
+    var f = document.getElementById('footerWrap');
+    if (!h || !f) return;
+    var open = f.classList.toggle('open');
+    h.classList.toggle('open', open);
+    h.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var t = h.querySelector('.footer-handle-text');
+    if (t) t.textContent = open ? '▼ 정보 닫기' : '▲ 위로 밀어 정보 보기';
+    if (open) {
+      // 펼친 직후 푸터로 부드럽게 스크롤
+      setTimeout(function() {
+        f.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 80);
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var h = document.getElementById('footerHandle');
+    if (!h) return;
+    // 키보드 접근성
+    h.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFooter(); }
+    });
+    // 스와이프(위로) 인식 — handle 위에서 위로 드래그하면 펼침
+    var sy = 0, dragging = false;
+    h.addEventListener('touchstart', function(e) {
+      sy = e.changedTouches[0].clientY; dragging = true;
+    }, { passive: true });
+    h.addEventListener('touchend', function(e) {
+      if (!dragging) return;
+      var dy = sy - e.changedTouches[0].clientY;
+      dragging = false;
+      var f = document.getElementById('footerWrap');
+      if (!f) return;
+      var open = f.classList.contains('open');
+      if (dy > 28 && !open) toggleFooter();      // 위로 28px+ → 펼침
+      else if (dy < -28 && open) toggleFooter(); // 아래로 28px+ → 닫기
+    });
+  });
 
   // ─── 지도 토글 ───
   function toggleMap(btn) {
