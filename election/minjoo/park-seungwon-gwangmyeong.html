@@ -3,6 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<script>
+// 다른 후보 페이지(예: 조용익)가 등록한 /election/minjoo/ 스코프의 Service Worker가
+// 이 페이지를 가로채 캐시된 콘텐츠를 잠깐 보여주는 문제 방지.
+(function() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(regs) {
+      regs.forEach(function(reg) {
+        if (reg.scope && reg.scope.indexOf('/election/minjoo/') >= 0) {
+          reg.unregister();
+        }
+      });
+    }).catch(function(){});
+  }
+  if ('caches' in window) {
+    caches.keys().then(function(keys) {
+      keys.forEach(function(k) {
+        if (/election|pamphlet/i.test(k)) caches.delete(k);
+      });
+    }).catch(function(){});
+  }
+})();
+</script>
+
 <title>박승원 - 광명시장 후보 선거공보물</title>
 
 <!-- Open Graph -->
