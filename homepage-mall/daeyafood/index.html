@@ -5,99 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>대야식품 쇼핑몰 검토 — daeyafood.co.kr</title>
 <style>
-:root {
-  --brown: #2a2018;
-  --red: #a23a2a;
-  --beige: #f5ecd9;
-  --light: #faf7f3;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif; background: var(--light); color: var(--brown); }
-
-/* NAV */
-.sidenav { position: fixed; left: 0; top: 0; width: 220px; height: 100vh; background: var(--brown); color: #f5ecd9; overflow-y: auto; z-index: 100; padding: 24px 0 40px; }
-.sidenav .logo { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px; }
-.sidenav .logo h1 { font-size: 1rem; font-weight: 700; line-height: 1.4; }
-.sidenav .logo p { font-size: .7rem; color: #c8b89a; margin-top: 3px; }
-.sidenav a { display: flex; align-items: center; gap: 10px; padding: 11px 20px; font-size: .8375rem; color: #c8b89a; text-decoration: none; border-left: 3px solid transparent; transition: all .2s; }
-.sidenav a:hover, .sidenav a.active { color: #fff; background: rgba(255,255,255,.08); border-left-color: var(--red); }
-.sidenav a .icon { font-size: 1rem; width: 22px; text-align: center; flex-shrink: 0; }
-.sidenav .section-label { font-size: .65rem; color: rgba(255,255,255,.3); letter-spacing: .1em; text-transform: uppercase; padding: 16px 20px 6px; }
-.sidenav .badge { font-size: .65rem; background: var(--red); color: #fff; padding: 1px 6px; border-radius: 8px; margin-left: auto; }
-
-/* MAIN */
-.main { margin-left: 220px; min-height: 100vh; }
-
-/* SECTION */
-.page-section { padding: 0; scroll-margin-top: 0; min-height: 100vh; display: flex; flex-direction: column; }
-.page-section + .page-section { border-top: 4px solid #e8e0d5; }
-
-.section-header { background: var(--brown); color: #f5ecd9; padding: 18px 32px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 50; }
-.section-header .num { background: var(--red); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
-.section-header h2 { font-size: 1rem; font-weight: 700; letter-spacing: .04em; }
-.section-header .url { font-size: .72rem; color: #c8b89a; font-family: monospace; margin-left: auto; }
-
-.section-body { flex: 1; }
-
-/* SCREEN IMAGE */
-.screen-wrap { position: relative; background: #e8e8e8; overflow: hidden; }
-.screen-wrap img { width: 100%; display: block; }
-.screen-wrap .no-img { padding: 60px 40px; text-align: center; color: #aaa; font-size: .875rem; }
-.screen-wrap .no-img .icon { font-size: 3rem; display: block; margin-bottom: 12px; opacity: .3; }
-
-/* DESCRIPTION */
-.desc-panel { background: #fff; padding: 28px 32px; border-top: 1px solid #e8e0d5; }
-.desc-panel .features { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
-.feature-tag { display: flex; align-items: center; gap: 6px; background: var(--beige); padding: 6px 14px; border-radius: 20px; font-size: .8125rem; color: var(--brown); }
-.feature-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
-.desc-title { font-size: .9375rem; font-weight: 700; color: var(--brown); margin-bottom: 6px; }
-.desc-text { font-size: .85rem; color: #666; line-height: 1.7; word-break: keep-all; }
-
-/* PRODUCT INFO */
-.product-panel { display: flex; gap: 24px; padding: 28px 32px; background: #faf7f3; }
-.product-card { flex: 1; min-width: 0; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
-.product-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
-.product-card .info { padding: 16px; }
-.product-card .name { font-size: .875rem; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
-.product-card .price-row { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; }
-.product-card .price { font-size: 1.1rem; font-weight: 800; color: var(--red); }
-.product-card .org-price { font-size: .8rem; color: #aaa; text-decoration: line-through; }
-
-/* COMPANY INFO */
-.company-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; padding: 28px 32px; background: #fff; }
-.company-item { background: #faf7f3; border-radius: 8px; padding: 16px 18px; }
-.company-item .label { font-size: .72rem; font-weight: 700; color: var(--red); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
-.company-item .val { font-size: .875rem; color: var(--brown); font-weight: 600; line-height: 1.5; }
-
-/* FOOTER NAV */
-.page-nav { display: flex; justify-content: space-between; padding: 16px 32px; background: #f0ebe3; border-top: 1px solid #e0d8ce; }
-.page-nav a { display: flex; align-items: center; gap: 6px; font-size: .8125rem; color: #888; text-decoration: none; padding: 6px 12px; border-radius: 6px; background: #fff; }
-.page-nav a:hover { color: var(--brown); }
-
-/* HERO */
-.hero-section { background: linear-gradient(135deg, var(--brown) 0%, #5a3a28 100%); color: var(--beige); padding: 48px 32px; }
-.hero-section h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 8px; }
-.hero-section .sub { font-size: .9rem; color: #c8b89a; line-height: 1.7; margin-bottom: 20px; }
-.hero-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.hero-chip { background: rgba(255,255,255,.1); color: #f5ecd9; font-size: .75rem; padding: 4px 12px; border-radius: 12px; }
-
-@media (max-width: 768px) {
-  .sidenav { display: none; }
-  .main { margin-left: 0; }
-  .product-panel { flex-direction: column; }
-  .section-header .url { display: none; }
-}
+:root { --brown:#2a2018; --red:#a23a2a; --beige:#f5ecd9; --light:#faf7f3; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;background:var(--light);color:var(--brown);}
+.sidenav{position:fixed;left:0;top:0;width:220px;height:100vh;background:var(--brown);color:#f5ecd9;overflow-y:auto;z-index:100;padding:24px 0 40px;}
+.sidenav .logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:16px;}
+.sidenav .logo h1{font-size:1rem;font-weight:700;line-height:1.4;}
+.sidenav .logo p{font-size:.7rem;color:#c8b89a;margin-top:3px;}
+.sidenav a{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:.8375rem;color:#c8b89a;text-decoration:none;border-left:3px solid transparent;transition:all .2s;}
+.sidenav a:hover,.sidenav a.active{color:#fff;background:rgba(255,255,255,.08);border-left-color:var(--red);}
+.sidenav a .icon{font-size:1rem;width:22px;text-align:center;flex-shrink:0;}
+.sidenav .lbl{font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;padding:16px 20px 6px;}
+.main{margin-left:220px;min-height:100vh;}
+.page-section{padding:0;scroll-margin-top:0;min-height:100vh;display:flex;flex-direction:column;}
+.page-section+.page-section{border-top:4px solid #e8e0d5;}
+.sh{background:var(--brown);color:#f5ecd9;padding:18px 32px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50;}
+.sh .num{background:var(--red);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;}
+.sh h2{font-size:1rem;font-weight:700;letter-spacing:.04em;}
+.sh .url{font-size:.72rem;color:#c8b89a;font-family:monospace;margin-left:auto;}
+.sb{flex:1;}
+.sw{background:#e8e8e8;overflow:hidden;}
+.sw img{width:100%;display:block;}
+.sw .ni{padding:60px 40px;text-align:center;color:#aaa;font-size:.875rem;}
+.sw .ni .ic{font-size:3rem;display:block;margin-bottom:12px;opacity:.3;}
+.dp{background:#fff;padding:28px 32px;border-top:1px solid #e8e0d5;}
+.dp .ft{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;}
+.ft div{display:flex;align-items:center;gap:6px;background:var(--beige);padding:6px 14px;border-radius:20px;font-size:.8125rem;color:var(--brown);}
+.ft div .d{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;}
+.dt{font-size:.9375rem;font-weight:700;color:var(--brown);margin-bottom:6px;}
+.dx{font-size:.85rem;color:#666;line-height:1.7;word-break:keep-all;}
+.pp{display:flex;gap:24px;padding:28px 32px;background:var(--light);}
+.pc{flex:1;min-width:0;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.pc img{width:100%;height:180px;object-fit:cover;display:block;}
+.pc .pi{padding:16px;}
+.pc .pn{font-size:.875rem;font-weight:700;margin-bottom:6px;line-height:1.4;}
+.pc .pr{display:flex;align-items:baseline;gap:6px;margin-top:8px;}
+.pc .p1{font-size:1.1rem;font-weight:800;color:var(--red);}
+.pc .p2{font-size:.8rem;color:#aaa;text-decoration:line-through;}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:28px 32px;background:#fff;}
+.ci{background:var(--light);border-radius:8px;padding:16px 18px;}
+.ci .cl{font-size:.72rem;font-weight:700;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.ci .cv{font-size:.875rem;color:var(--brown);font-weight:600;line-height:1.5;}
+.pn2{display:flex;justify-content:space-between;padding:16px 32px;background:#f0ebe3;border-top:1px solid #e0d8ce;}
+.pn2 a{display:flex;align-items:center;gap:6px;font-size:.8125rem;color:#888;text-decoration:none;padding:6px 12px;border-radius:6px;background:#fff;}
+.pn2 a:hover{color:var(--brown);}
+.hero{background:linear-gradient(135deg,var(--brown) 0%,#5a3a28 100%);color:var(--beige);padding:48px 32px;}
+.hero h1{font-size:1.75rem;font-weight:800;margin-bottom:8px;}
+.hero .sub{font-size:.9rem;color:#c8b89a;line-height:1.7;margin-bottom:20px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:rgba(255,255,255,.1);color:#f5ecd9;font-size:.75rem;padding:4px 12px;border-radius:12px;}
+@media(max-width:768px){.sidenav{display:none;}.main{margin-left:0;}.pp{flex-direction:column;}.sh .url{display:none;}}
 </style>
 </head>
 <body>
 
-<!-- 사이드 네비게이션 -->
 <nav class="sidenav">
   <div class="logo">
     <h1>대야식품<br>쇼핑몰 검토</h1>
     <p>daeyafood.co.kr · 1차 검토본</p>
   </div>
-  <div class="section-label">페이지 목록</div>
+  <div class="lbl">페이지 목록</div>
   <a href="#intro" class="active"><span class="icon">🏠</span> 인트로 &amp; 소개</a>
   <a href="#main"><span class="icon">🖥️</span> 메인 홈페이지</a>
   <a href="#shop"><span class="icon">🛒</span> 쇼핑몰 메인</a>
@@ -106,336 +73,215 @@ body { font-family: 'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-se
   <a href="#kbs"><span class="icon">📺</span> KBS 방송</a>
   <a href="#cs"><span class="icon">💬</span> 고객센터</a>
   <a href="#company"><span class="icon">🏢</span> 회사 정보</a>
-  <div class="section-label" style="margin-top:20px;">구매 정보</div>
+  <div class="lbl" style="margin-top:20px;">구매 정보</div>
   <a href="#delivery"><span class="icon">🚚</span> 배송 정보</a>
   <a href="#refund"><span class="icon">↩️</span> 교환/환불</a>
 </nav>
 
 <div class="main">
 
-  <!-- 인트로 -->
-  <section id="intro" class="page-section">
-    <div class="hero-section">
-      <h1>대야식품 쇼핑몰<br><span style="font-size:.6em;font-weight:400;opacity:.8;">익산 40년 전통 대야할매곰탕</span></h1>
-      <p class="sub">이 페이지는 사장님 검토용 데모입니다.<br>왼쪽 메뉴를 클릭하여 각 페이지를 확인하세요.</p>
-      <div class="hero-chips">
-        <span class="hero-chip">🍖 소머리곰탕 5,900원</span>
-        <span class="hero-chip">🦴 도가니탕 6,900원</span>
-        <span class="hero-chip">🚚 배송비 5,000원 (59,000원↑ 무료)</span>
-        <span class="hero-chip">📺 KBS 6시 내고향 방영</span>
-        <span class="hero-chip">🏦 광주은행 1121-028-625-322</span>
-      </div>
+<section id="intro" class="page-section">
+  <div class="hero">
+    <h1>대야식품 쇼핑몰<br><span style="font-size:.6em;font-weight:400;opacity:.8;">익산 40년 전통 대야할매곰탕</span></h1>
+    <p class="sub">이 페이지는 사장님 검토용 데모입니다.<br>왼쪽 메뉴를 클릭하여 각 페이지를 확인하세요.</p>
+    <div class="chips">
+      <span class="chip">🍖 소머리곰탕 5,900원</span>
+      <span class="chip">🦴 도가니탕 6,900원</span>
+      <span class="chip">🚚 배송비 5,000원 (59,000원↑ 무료)</span>
+      <span class="chip">📺 KBS 6시 내고향 방영</span>
+      <span class="chip">🏦 광주은행 1121-028-625-322</span>
     </div>
-    <div class="desc-panel">
-      <div class="desc-title">검토 안내</div>
-      <div class="desc-text">좌측 메뉴에서 각 페이지를 선택하면 해당 화면을 볼 수 있습니다. 수정이 필요한 부분은 메모해 주시면 반영하겠습니다.</div>
-      <div class="features" style="margin-top:16px;">
-        <div class="feature-tag"><span class="dot"></span>그누보드5 + 영카트5</div>
-        <div class="feature-tag"><span class="dot"></span>이윰빌더4 eb4_shop_022 테마</div>
-        <div class="feature-tag"><span class="dot"></span>Nginx 1.28 + PHP 8.3</div>
-        <div class="feature-tag"><span class="dot"></span>MariaDB 12.2</div>
-        <div class="feature-tag"><span class="dot"></span>AWS Lightsail 배포 예정</div>
-      </div>
+  </div>
+  <div class="dp">
+    <div class="dt">검토 안내</div>
+    <div class="dx">왼쪽 메뉴에서 각 페이지를 선택하면 해당 화면을 볼 수 있습니다. 수정이 필요한 부분은 메모해 주시면 반영하겠습니다.</div>
+    <div class="ft" style="margin-top:16px;">
+      <div><span class="d"></span>그누보드5 + 영카트5</div>
+      <div><span class="d"></span>이윰빌더4 eb4_shop_022 테마</div>
+      <div><span class="d"></span>Nginx 1.28 + PHP 8.3</div>
+      <div><span class="d"></span>MariaDB 12.2</div>
+      <div><span class="d"></span>AWS Lightsail 배포 예정</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 메인 홈페이지 -->
-  <section id="main" class="page-section">
-    <div class="section-header">
-      <div class="num">1</div>
-      <h2>메인 홈페이지 — 슬라이더 &amp; 상품 소개</h2>
-      <span class="url">localhost/</span>
-    </div>
-    <div class="section-body">
-      <div class="screen-wrap">
-        <img src="main.png" alt="메인 페이지" onerror="this.parentNode.innerHTML='<div class=no-img><span class=icon>🖥️</span>메인 페이지 스크린샷</div>'">
-      </div>
-      <div class="desc-panel">
-        <div class="desc-title">메인 홈페이지 구성</div>
-        <div class="desc-text">대야식품 로고 · 네비게이션 · 메인 슬라이더(3장) · 상품 소개 카드 · 브랜드 스토리 · 4대 특징 섹션</div>
-        <div class="features">
-          <div class="feature-tag"><span class="dot"></span>슬라이더: 한우 브랜드 + 소머리곰탕 + 도가니탕</div>
-          <div class="feature-tag"><span class="dot"></span>상품 카드: 이미지·설명·가격·구매하기 버튼</div>
-          <div class="feature-tag"><span class="dot"></span>KBS 방송 · 고객센터 링크 메뉴</div>
-        </div>
+<section id="main" class="page-section">
+  <div class="sh"><div class="num">1</div><h2>메인 홈페이지 — 슬라이더 &amp; 상품 소개</h2><span class="url">localhost/</span></div>
+  <div class="sb">
+    <div class="sw"><img src="02_shop.png" alt="메인 홈페이지" onerror="this.parentNode.innerHTML='<div class=ni><span class=ic>🖥️</span>메인 페이지 스크린샷</div>'"></div>
+    <div class="dp">
+      <div class="dt">메인 홈페이지 구성</div>
+      <div class="dx">대야식품 로고 · 네비게이션 · 메인 슬라이더(3장) · 상품 소개 카드 · 브랜드 스토리 · 4대 특징 섹션</div>
+      <div class="ft">
+        <div><span class="d"></span>슬라이더: 한우 브랜드 + 소머리곰탕 + 도가니탕</div>
+        <div><span class="d"></span>상품 카드: 이미지·설명·가격·구매하기 버튼</div>
+        <div><span class="d"></span>KBS 방송 · 고객센터 링크 메뉴</div>
       </div>
     </div>
-    <div class="page-nav">
-      <a href="#intro">← 이전</a>
-      <a href="#shop">다음 →</a>
-    </div>
-  </section>
+  </div>
+  <div class="pn2"><a href="#intro">← 이전</a><a href="#shop">다음 →</a></div>
+</section>
 
-  <!-- 쇼핑몰 -->
-  <section id="shop" class="page-section">
-    <div class="section-header">
-      <div class="num">2</div>
-      <h2>쇼핑몰 메인 — 상품 목록</h2>
-      <span class="url">localhost/shop/</span>
-    </div>
-    <div class="section-body">
-      <div class="screen-wrap">
-        <img src="shop.png" alt="쇼핑몰" onerror="this.parentNode.innerHTML='<div class=no-img><span class=icon>🛒</span>쇼핑몰 메인 스크린샷</div>'">
+<section id="shop" class="page-section">
+  <div class="sh"><div class="num">2</div><h2>쇼핑몰 메인 — 상품 목록</h2><span class="url">localhost/shop/</span></div>
+  <div class="sb">
+    <div class="sw"><img src="02_shop.png" alt="쇼핑몰" onerror="this.parentNode.innerHTML='<div class=ni><span class=ic>🛒</span>쇼핑몰 메인 스크린샷</div>'"></div>
+    <div class="pp">
+      <div class="pc">
+        <img src="03_gomtang.png" alt="소머리곰탕" onerror="this.style.display='none'">
+        <div class="pi"><div class="pn">대야할매 한우소머리곰탕 520g</div><div class="pr"><span class="p1">5,900원</span><span class="p2">7,900원</span></div></div>
       </div>
-      <div class="product-panel">
-        <div class="product-card">
-          <img src="gomtang.png" alt="소머리곰탕" onerror="this.style.display='none'">
-          <div class="info">
-            <div class="name">대야할매 한우소머리곰탕 520g</div>
-            <div class="price-row">
-              <span class="price">5,900원</span>
-              <span class="org-price">7,900원</span>
-            </div>
-          </div>
-        </div>
-        <div class="product-card">
-          <img src="dogani.png" alt="도가니탕" onerror="this.style.display='none'">
-          <div class="info">
-            <div class="name">대야할매 한우도가니탕 520g</div>
-            <div class="price-row">
-              <span class="price">6,900원</span>
-              <span class="org-price">8,900원</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="desc-panel">
-        <div class="desc-title">쇼핑몰 구성</div>
-        <div class="desc-text">대표 곰탕 섹션 · 오늘의 보양식 섹션 · 배송비 5,000원 (59,000원 이상 무료)</div>
-        <div class="features">
-          <div class="feature-tag"><span class="dot"></span>카테고리: 곰탕/탕류 · 선물세트 · 김치/반찬</div>
-          <div class="feature-tag"><span class="dot"></span>히트·추천·신상 아이콘 표시</div>
-          <div class="feature-tag"><span class="dot"></span>리뷰보기 · 장바구니 · 바로구매</div>
-        </div>
+      <div class="pc">
+        <img src="04_dogani.png" alt="도가니탕" onerror="this.style.display='none'">
+        <div class="pi"><div class="pn">대야할매 한우도가니탕 520g</div><div class="pr"><span class="p1">6,900원</span><span class="p2">8,900원</span></div></div>
       </div>
     </div>
-    <div class="page-nav">
-      <a href="#main">← 이전</a>
-      <a href="#gomtang">다음 →</a>
+    <div class="dp">
+      <div class="dt">쇼핑몰 구성</div>
+      <div class="dx">대표 곰탕 섹션 · 오늘의 보양식 섹션 · 배송비 5,000원 (59,000원 이상 무료)</div>
+      <div class="ft">
+        <div><span class="d"></span>카테고리: 곰탕/탕류 · 선물세트 · 김치/반찬</div>
+        <div><span class="d"></span>히트·추천·신상 아이콘 표시</div>
+        <div><span class="d"></span>리뷰보기 · 장바구니 · 바로구매</div>
+      </div>
     </div>
-  </section>
+  </div>
+  <div class="pn2"><a href="#main">← 이전</a><a href="#gomtang">다음 →</a></div>
+</section>
 
-  <!-- 소머리곰탕 상품 상세 -->
-  <section id="gomtang" class="page-section">
-    <div class="section-header">
-      <div class="num">3</div>
-      <h2>상품 상세 — 한우소머리곰탕</h2>
-      <span class="url">localhost/shop/item.php?it_id=1001</span>
-    </div>
-    <div class="section-body">
-      <div class="screen-wrap">
-        <img src="gomtang.png" alt="소머리곰탕 상세" onerror="this.parentNode.innerHTML='<div class=no-img><span class=icon>🍲</span>소머리곰탕 상품 상세 스크린샷</div>'">
+<section id="gomtang" class="page-section">
+  <div class="sh"><div class="num">3</div><h2>상품 상세 — 한우소머리곰탕</h2><span class="url">localhost/shop/item.php?it_id=1001</span></div>
+  <div class="sb">
+    <div class="sw"><img src="03_gomtang.png" alt="소머리곰탕 상세" onerror="this.parentNode.innerHTML='<div class=ni><span class=ic>🍲</span>소머리곰탕 상세 스크린샷</div>'"></div>
+    <div class="dp">
+      <div class="dt">상품 상세 구성</div>
+      <div class="dx">상품 이미지(3장) · 판매가 5,900원/정상가 7,900원 · 제조사·원산지·브랜드 · 키워드 태그 · 소머리곰탕 소개 · 효능 4가지 · 배송/교환/환불 탭</div>
+      <div class="ft">
+        <div><span class="d"></span>키워드: 소머리수육 쫀득쫀득 콜라겐 뽀얀국물…</div>
+        <div><span class="d"></span>KBS 6시 내고향 방영 · 정용진 부회장 추천</div>
+        <div><span class="d"></span>관련상품: 도가니탕 자동 연결</div>
       </div>
-      <div class="desc-panel">
-        <div class="desc-title">상품 상세 구성</div>
-        <div class="desc-text">상품 이미지(3장) · 판매가 5,900원/정상가 7,900원 · 제조사·원산지·브랜드 · 키워드 태그 · 소머리곰탕 소개 · 효능 4가지 · 배송/교환/환불 탭</div>
-        <div class="features">
-          <div class="feature-tag"><span class="dot"></span>키워드: 소머리수육 쫀득쫀득 콜라겐 뽀얀국물…</div>
-          <div class="feature-tag"><span class="dot"></span>KBS 6시 내고향 방영 · 정용진 부회장 추천</div>
-          <div class="feature-tag"><span class="dot"></span>관련상품: 도가니탕 자동 연결</div>
+    </div>
+  </div>
+  <div class="pn2"><a href="#shop">← 이전</a><a href="#dogani">다음 →</a></div>
+</section>
+
+<section id="dogani" class="page-section">
+  <div class="sh"><div class="num">4</div><h2>상품 상세 — 한우도가니탕</h2><span class="url">localhost/shop/item.php?it_id=1002</span></div>
+  <div class="sb">
+    <div class="sw"><img src="04_dogani.png" alt="도가니탕 상세" onerror="this.parentNode.innerHTML='<div class=ni><span class=ic>🥘</span>도가니탕 상세 스크린샷</div>'"></div>
+    <div class="dp">
+      <div class="dt">상품 상세 구성</div>
+      <div class="dx">상품 이미지(3장) · 판매가 6,900원/정상가 8,900원 · 도가니탕이란? 소개 · 효능 6가지(기력회복·성장발달·관절건강·뼈건강·면역력·피부노화예방)</div>
+      <div class="ft">
+        <div><span class="d"></span>키워드: 도가니수육 설렁탕 보양식 무릎연골 젤라틴…</div>
+        <div><span class="d"></span>단백질·칼슘·콜라겐 풍부한 보양식</div>
+        <div><span class="d"></span>관련상품: 소머리곰탕 자동 연결</div>
+      </div>
+    </div>
+  </div>
+  <div class="pn2"><a href="#gomtang">← 이전</a><a href="#kbs">다음 →</a></div>
+</section>
+
+<section id="kbs" class="page-section">
+  <div class="sh"><div class="num">5</div><h2>KBS 6시 내고향 방영</h2><span class="url">localhost/page/kbs_broadcast</span></div>
+  <div class="sb">
+    <div class="sw"><img src="05_kbs.png" alt="KBS 방송" onerror="this.parentNode.innerHTML='<div class=ni><span class=ic>📺</span>KBS 방송 페이지 스크린샷</div>'"></div>
+    <div class="dp">
+      <div class="dt">KBS 방송 페이지 구성</div>
+      <div class="dx">KBS 1TV 6시 내고향 방송 영상(MP4) · 방송 소개 텍스트 · 오시는 길 Google Maps</div>
+      <div class="ft">
+        <div><span class="d"></span>방영 영상 직접 재생 가능</div>
+        <div><span class="d"></span>신세계 정용진 부회장 추천 · 40년 전통 노포</div>
+        <div><span class="d"></span>Google Maps 위치: 경기도 남양주시 화도읍</div>
+      </div>
+    </div>
+  </div>
+  <div class="pn2"><a href="#dogani">← 이전</a><a href="#cs">다음 →</a></div>
+</section>
+
+<section id="cs" class="page-section">
+  <div class="sh"><div class="num">6</div><h2>고객센터 &amp; 자주 묻는 질문</h2><span class="url">localhost/bbs/faq.php</span></div>
+  <div class="sb">
+    <div class="sw"><img src="06_cs.png" alt="고객센터" onerror="this.parentNode.innerHTML='<div class=ni><span class=ic>💬</span>고객센터 스크린샷</div>'"></div>
+    <div class="dp">
+      <div class="dt">고객센터 구성</div>
+      <div class="dx">자주 묻는 질문(FAQ) · 1:1 문의 · 배송/교환/환불 정책 안내</div>
+      <div class="ft">
+        <div><span class="d"></span>전화: 031-511-0531</div>
+        <div><span class="d"></span>이메일: daeya0612@daum.net</div>
+        <div><span class="d"></span>평일 09:00~18:00 · 주말 및 공휴일 휴무</div>
+      </div>
+    </div>
+  </div>
+  <div class="pn2"><a href="#kbs">← 이전</a><a href="#company">다음 →</a></div>
+</section>
+
+<section id="company" class="page-section">
+  <div class="sh"><div class="num">7</div><h2>회사 정보 &amp; 결제 계좌</h2><span class="url">푸터 영역</span></div>
+  <div class="sb">
+    <div class="sw"><img src="06_cs.png" alt="회사 정보" onerror="this.parentNode.innerHTML='<div class=ni><span class=ic>🏢</span>회사 정보 스크린샷</div>'"></div>
+    <div class="cg">
+      <div class="ci"><div class="cl">회사명</div><div class="cv">대야식품</div></div>
+      <div class="ci"><div class="cl">대표자</div><div class="cv">장형근</div></div>
+      <div class="ci"><div class="cl">사업자번호</div><div class="cv">354-12-02081</div></div>
+      <div class="ci"><div class="cl">통신판매업</div><div class="cv">2020-금곡양정-0114</div></div>
+      <div class="ci"><div class="cl">주소</div><div class="cv">경기도 남양주시 화도읍<br>북한강로 1603-26 (12150)</div></div>
+      <div class="ci"><div class="cl">전화</div><div class="cv">031-511-0531</div></div>
+      <div class="ci"><div class="cl">이메일</div><div class="cv">daeya0612@daum.net</div></div>
+      <div class="ci"><div class="cl">결제 계좌</div><div class="cv">광주은행<br>1121-028-625-322<br>예금주: 장형근</div></div>
+    </div>
+  </div>
+  <div class="pn2"><a href="#cs">← 이전</a><a href="#delivery">다음 →</a></div>
+</section>
+
+<section id="delivery" class="page-section">
+  <div class="sh"><div class="num">8</div><h2>배송 정보</h2><span class="url">상품 상세 &gt; 배송정보 탭</span></div>
+  <div class="sb">
+    <div class="dp" style="padding:40px 32px;">
+      <div class="dt" style="font-size:1.1rem;margin-bottom:16px;">배송 안내</div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+        <div style="background:var(--light);border-radius:8px;padding:16px 20px;">
+          <div style="font-weight:700;color:var(--red);margin-bottom:6px;">🚚 배송 방법</div>
+          <div style="font-size:.875rem;line-height:1.7;">냉장 택배 배송 (CJ대한통운)<br>주문 후 2~3일 내 발송</div>
+        </div>
+        <div style="background:var(--light);border-radius:8px;padding:16px 20px;">
+          <div style="font-weight:700;color:var(--red);margin-bottom:6px;">💰 배송비</div>
+          <div style="font-size:.875rem;line-height:1.7;">기본 배송비: <strong>5,000원</strong><br>59,000원 이상 구매 시: <strong style="color:var(--red);">무료배송</strong></div>
         </div>
       </div>
     </div>
-    <div class="page-nav">
-      <a href="#shop">← 이전</a>
-      <a href="#dogani">다음 →</a>
-    </div>
-  </section>
+  </div>
+  <div class="pn2"><a href="#company">← 이전</a><a href="#refund">다음 →</a></div>
+</section>
 
-  <!-- 도가니탕 상품 상세 -->
-  <section id="dogani" class="page-section">
-    <div class="section-header">
-      <div class="num">4</div>
-      <h2>상품 상세 — 한우도가니탕</h2>
-      <span class="url">localhost/shop/item.php?it_id=1002</span>
-    </div>
-    <div class="section-body">
-      <div class="screen-wrap">
-        <img src="dogani.png" alt="도가니탕 상세" onerror="this.parentNode.innerHTML='<div class=no-img><span class=icon>🥘</span>도가니탕 상품 상세 스크린샷</div>'">
-      </div>
-      <div class="desc-panel">
-        <div class="desc-title">상품 상세 구성</div>
-        <div class="desc-text">상품 이미지(3장) · 판매가 6,900원/정상가 8,900원 · 도가니탕이란? 소개 · 효능 6가지(기력회복·성장발달·관절건강·뼈건강·면역력·피부노화예방)</div>
-        <div class="features">
-          <div class="feature-tag"><span class="dot"></span>키워드: 도가니수육 설렁탕 보양식 무릎연골 젤라틴…</div>
-          <div class="feature-tag"><span class="dot"></span>단백질·칼슘·콜라겐 풍부한 보양식</div>
-          <div class="feature-tag"><span class="dot"></span>관련상품: 소머리곰탕 자동 연결</div>
+<section id="refund" class="page-section">
+  <div class="sh"><div class="num">9</div><h2>교환 &amp; 환불 정책</h2><span class="url">상품 상세 &gt; 교환정보 탭</span></div>
+  <div class="sb">
+    <div class="dp" style="padding:40px 32px;">
+      <div class="dt" style="font-size:1.1rem;margin-bottom:16px;">교환/환불 안내</div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+        <div style="background:var(--light);border-radius:8px;padding:16px 20px;">
+          <div style="font-weight:700;color:var(--red);margin-bottom:6px;">✅ 교환/환불 가능</div>
+          <div style="font-size:.875rem;line-height:1.7;">상품 수령 후 <strong>7일 이내</strong><br>상품 불량 · 오배송 · 내용물 상이한 경우</div>
+        </div>
+        <div style="background:#fff3f0;border-radius:8px;padding:16px 20px;border-left:3px solid var(--red);">
+          <div style="font-weight:700;color:var(--red);margin-bottom:6px;">⚠️ 반품 불가</div>
+          <div style="font-size:.875rem;line-height:1.7;">식품 특성상 <strong>단순변심 반품 불가</strong><br>개봉 후 또는 유통기한 경과 시</div>
         </div>
       </div>
     </div>
-    <div class="page-nav">
-      <a href="#gomtang">← 이전</a>
-      <a href="#kbs">다음 →</a>
-    </div>
-  </section>
-
-  <!-- KBS 방송 -->
-  <section id="kbs" class="page-section">
-    <div class="section-header">
-      <div class="num">5</div>
-      <h2>KBS 6시 내고향 방영</h2>
-      <span class="url">localhost/page/kbs_broadcast</span>
-    </div>
-    <div class="section-body">
-      <div class="screen-wrap">
-        <img src="footer.png" alt="KBS 방송" onerror="this.parentNode.innerHTML='<div class=no-img><span class=icon>📺</span>KBS 방송 페이지 스크린샷</div>'">
-      </div>
-      <div class="desc-panel">
-        <div class="desc-title">KBS 방송 페이지 구성</div>
-        <div class="desc-text">KBS 1TV 6시 내고향 방송 영상(MP4) · 방송 소개 텍스트 · 오시는 길 Google Maps</div>
-        <div class="features">
-          <div class="feature-tag"><span class="dot"></span>방영 영상 직접 재생 가능</div>
-          <div class="feature-tag"><span class="dot"></span>신세계 정용진 부회장 추천 · 40년 전통 노포</div>
-          <div class="feature-tag"><span class="dot"></span>Google Maps 위치: 경기도 남양주시 화도읍</div>
-        </div>
-      </div>
-    </div>
-    <div class="page-nav">
-      <a href="#dogani">← 이전</a>
-      <a href="#cs">다음 →</a>
-    </div>
-  </section>
-
-  <!-- 고객센터 -->
-  <section id="cs" class="page-section">
-    <div class="section-header">
-      <div class="num">6</div>
-      <h2>고객센터 &amp; 자주 묻는 질문</h2>
-      <span class="url">localhost/bbs/faq.php</span>
-    </div>
-    <div class="section-body">
-      <div class="screen-wrap">
-        <div class="no-img"><span class="icon">💬</span>고객센터 페이지 스크린샷 (준비 중)</div>
-      </div>
-      <div class="desc-panel">
-        <div class="desc-title">고객센터 구성</div>
-        <div class="desc-text">자주 묻는 질문(FAQ) · 1:1 문의 · 배송/교환/환불 정책 안내</div>
-        <div class="features">
-          <div class="feature-tag"><span class="dot"></span>전화: 031-511-0531</div>
-          <div class="feature-tag"><span class="dot"></span>이메일: daeya0612@daum.net</div>
-          <div class="feature-tag"><span class="dot"></span>평일 09:00~18:00 · 주말 및 공휴일 휴무</div>
-        </div>
-      </div>
-    </div>
-    <div class="page-nav">
-      <a href="#kbs">← 이전</a>
-      <a href="#company">다음 →</a>
-    </div>
-  </section>
-
-  <!-- 회사 정보 -->
-  <section id="company" class="page-section">
-    <div class="section-header">
-      <div class="num">7</div>
-      <h2>회사 정보 &amp; 결제 계좌</h2>
-      <span class="url">푸터 영역</span>
-    </div>
-    <div class="section-body">
-      <div class="screen-wrap">
-        <img src="footer.png" alt="푸터" onerror="this.parentNode.innerHTML='<div class=no-img><span class=icon>🏢</span>회사 정보 스크린샷</div>'">
-      </div>
-      <div class="company-grid">
-        <div class="company-item"><div class="label">회사명</div><div class="val">대야식품</div></div>
-        <div class="company-item"><div class="label">대표자</div><div class="val">장형근</div></div>
-        <div class="company-item"><div class="label">사업자번호</div><div class="val">354-12-02081</div></div>
-        <div class="company-item"><div class="label">통신판매업</div><div class="val">2020-금곡양정-0114</div></div>
-        <div class="company-item"><div class="label">주소</div><div class="val">경기도 남양주시 화도읍<br>북한강로 1603-26 (12150)</div></div>
-        <div class="company-item"><div class="label">전화</div><div class="val">031-511-0531</div></div>
-        <div class="company-item"><div class="label">이메일</div><div class="val">daeya0612@daum.net</div></div>
-        <div class="company-item"><div class="label">결제 계좌</div><div class="val">광주은행<br>1121-028-625-322<br>예금주: 장형근</div></div>
-      </div>
-    </div>
-    <div class="page-nav">
-      <a href="#cs">← 이전</a>
-      <a href="#delivery">다음 →</a>
-    </div>
-  </section>
-
-  <!-- 배송 정보 -->
-  <section id="delivery" class="page-section">
-    <div class="section-header">
-      <div class="num">8</div>
-      <h2>배송 정보</h2>
-      <span class="url">상품 상세 &gt; 배송정보 탭</span>
-    </div>
-    <div class="section-body">
-      <div class="desc-panel" style="padding:40px 32px;">
-        <div class="desc-title" style="font-size:1.1rem;margin-bottom:16px;">배송 안내</div>
-        <div class="features" style="flex-direction:column;gap:14px;">
-          <div style="background:#faf7f3;border-radius:8px;padding:16px 20px;">
-            <div style="font-weight:700;color:#a23a2a;margin-bottom:6px;">🚚 배송 방법</div>
-            <div style="font-size:.875rem;line-height:1.7;">냉장 택배 배송 (CJ대한통운)<br>주문 후 2~3일 내 발송</div>
-          </div>
-          <div style="background:#faf7f3;border-radius:8px;padding:16px 20px;">
-            <div style="font-weight:700;color:#a23a2a;margin-bottom:6px;">💰 배송비</div>
-            <div style="font-size:.875rem;line-height:1.7;">기본 배송비: <strong>5,000원</strong><br>59,000원 이상 구매 시: <strong style="color:#a23a2a;">무료배송</strong></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="page-nav">
-      <a href="#company">← 이전</a>
-      <a href="#refund">다음 →</a>
-    </div>
-  </section>
-
-  <!-- 교환/환불 -->
-  <section id="refund" class="page-section">
-    <div class="section-header">
-      <div class="num">9</div>
-      <h2>교환 &amp; 환불 정책</h2>
-      <span class="url">상품 상세 &gt; 교환정보 탭</span>
-    </div>
-    <div class="section-body">
-      <div class="desc-panel" style="padding:40px 32px;">
-        <div class="desc-title" style="font-size:1.1rem;margin-bottom:16px;">교환/환불 안내</div>
-        <div class="features" style="flex-direction:column;gap:14px;">
-          <div style="background:#faf7f3;border-radius:8px;padding:16px 20px;">
-            <div style="font-weight:700;color:#a23a2a;margin-bottom:6px;">✅ 교환/환불 가능</div>
-            <div style="font-size:.875rem;line-height:1.7;">상품 수령 후 <strong>7일 이내</strong><br>상품 불량 · 오배송 · 내용물 상이한 경우</div>
-          </div>
-          <div style="background:#fff3f0;border-radius:8px;padding:16px 20px;border-left:3px solid #a23a2a;">
-            <div style="font-weight:700;color:#a23a2a;margin-bottom:6px;">⚠️ 반품 불가</div>
-            <div style="font-size:.875rem;line-height:1.7;">식품 특성상 <strong>단순변심 반품 불가</strong><br>개봉 후 또는 유통기한 경과 시</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="page-nav">
-      <a href="#delivery">← 이전</a>
-      <span style="color:#ccc;font-size:.8rem;padding:6px 12px;">마지막 페이지</span>
-    </div>
-  </section>
+  </div>
+  <div class="pn2"><a href="#delivery">← 이전</a><span style="color:#ccc;font-size:.8rem;padding:6px 12px;">마지막 페이지</span></div>
+</section>
 
 </div>
-
 <script>
-// 스크롤 위치에 따라 nav 활성화
-const sections = document.querySelectorAll('.page-section');
-const navLinks = document.querySelectorAll('.sidenav a');
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const id = entry.target.id;
-            navLinks.forEach(a => {
-                a.classList.toggle('active', a.getAttribute('href') === '#' + id);
-            });
-        }
-    });
-}, { threshold: 0.3 });
-
-sections.forEach(s => observer.observe(s));
-
-// 부드러운 스크롤
-navLinks.forEach(a => {
-    a.addEventListener('click', e => {
-        e.preventDefault();
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-    });
-});
+const secs=document.querySelectorAll('.page-section');
+const nav=document.querySelectorAll('.sidenav a');
+new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const id=x.target.id;nav.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));}});},{threshold:0.3}).observe||(secs.forEach(s=>new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const id=x.target.id;nav.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));}})},{threshold:0.3}).observe(s)));
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const id=x.target.id;nav.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));}});},{threshold:0.3});secs.forEach(s=>io.observe(s));
+nav.forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});});
 </script>
-
 </body>
 </html>
