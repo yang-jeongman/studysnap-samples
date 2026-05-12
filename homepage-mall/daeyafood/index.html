@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대야식품 쇼핑몰 — daeyafood.co.kr</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f5f0eb; color: #2a2018; }
+
+  .hero { background: linear-gradient(135deg, #2a2018 0%, #5a3a28 100%); color: #f5ecd9; text-align: center; padding: 56px 24px 40px; }
+  .hero .badge { display: inline-block; background: #a23a2a; color: #fff; font-size: .75rem; padding: 4px 14px; border-radius: 12px; letter-spacing: .08em; margin-bottom: 16px; }
+  .hero h1 { font-size: 2rem; font-weight: 800; line-height: 1.25; margin-bottom: 10px; }
+  .hero p { font-size: .95rem; color: #c8b89a; line-height: 1.7; }
+
+  .info-bar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 16px 24px; background: #2a2018; }
+  .info-bar span { font-size: .78rem; color: #c8b89a; background: rgba(255,255,255,.08); padding: 4px 12px; border-radius: 10px; }
+
+  .section { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+  .section-title { font-size: 1.15rem; font-weight: 700; color: #2a2018; border-left: 4px solid #a23a2a; padding-left: 12px; margin-bottom: 20px; letter-spacing: .03em; }
+
+  .screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); gap: 24px; }
+  .screen-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,.1); }
+  .screen-card img { width: 100%; display: block; border-bottom: 1px solid #eee; }
+  .screen-card .caption { padding: 14px 16px; }
+  .screen-card .caption h3 { font-size: .9375rem; font-weight: 700; color: #2a2018; margin-bottom: 4px; }
+  .screen-card .caption p { font-size: .8125rem; color: #888; line-height: 1.6; }
+
+  .spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .spec-item { background: #fff; border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .spec-item .label { font-size: .72rem; color: #a23a2a; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .spec-item .value { font-size: .875rem; color: #2a2018; font-weight: 600; line-height: 1.5; }
+
+  .footer { text-align: center; padding: 32px; color: #aaa; font-size: .8rem; background: #2a2018; color: #c8b89a; margin-top: 48px; }
+
+  @media (max-width: 560px) {
+    .screens { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">Homepage & Mall</div>
+  <h1>대야식품<br><span style="font-size:.65em;font-weight:400;opacity:.85;">익산 40년 전통 대야할매곰탕</span></h1>
+  <p style="margin-top:10px;">그누보드5 + 이윰빌더4 + EB4 Shop 022 테마<br>식품 전문 쇼핑몰 구축 프로젝트</p>
+</div>
+
+<div class="info-bar">
+  <span>플랫폼: 그누보드5 + 영카트5</span>
+  <span>테마: eb4_shop_022</span>
+  <span>웹서버: Nginx 1.28 + PHP 8.3</span>
+  <span>DB: MariaDB 12.2</span>
+  <span>도메인: daeyafood.co.kr (예정)</span>
+  <span>호스팅: AWS Lightsail (예정)</span>
+</div>
+
+<div class="section">
+  <div class="section-title">페이지 화면</div>
+  <div class="screens">
+
+    <div class="screen-card">
+      <img src="main.png" alt="메인 페이지">
+      <div class="caption">
+        <h3>메인 페이지 (홈)</h3>
+        <p>대야식품 로고 · 슬라이더 · 상품 카드 · 브랜드 스토리 섹션</p>
+      </div>
+    </div>
+
+    <div class="screen-card">
+      <img src="shop.png" alt="쇼핑몰 메인">
+      <div class="caption">
+        <h3>쇼핑몰 메인 · 푸터</h3>
+        <p>광주은행 계좌 · 회사정보 · CS센터 · 이용약관 링크</p>
+      </div>
+    </div>
+
+    <div class="screen-card">
+      <img src="gomtang.png" alt="소머리곰탕 상품 상세">
+      <div class="caption">
+        <h3>상품 상세 — 대야할매 한우소머리곰탕 520g</h3>
+        <p>상품 이미지 · 가격(5,900원) · 키워드 태그 · 상품 설명</p>
+      </div>
+    </div>
+
+    <div class="screen-card">
+      <img src="dogani.png" alt="도가니탕 상품 상세">
+      <div class="caption">
+        <h3>상품 상세 — 대야할매 한우도가니탕 520g</h3>
+        <p>상품 이미지 · 가격(6,900원) · 키워드 태그 · 도가니탕 효능 6가지</p>
+      </div>
+    </div>
+
+    <div class="screen-card">
+      <img src="footer.png" alt="푸터 상세">
+      <div class="caption">
+        <h3>사업자 정보 & 배송/교환 정책</h3>
+        <p>대야식품 · 354-12-02081 · 통신판매업 2020-금곡양정-0114 · 배송/교환정책</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">구현 사양</div>
+  <div class="spec-grid">
+    <div class="spec-item">
+      <div class="label">등록 상품</div>
+      <div class="value">소머리곰탕 5,900원<br>도가니탕 6,900원</div>
+    </div>
+    <div class="spec-item">
+      <div class="label">배송비</div>
+      <div class="value">5,000원<br>59,000원 이상 무료</div>
+    </div>
+    <div class="spec-item">
+      <div class="label">결제 계좌</div>
+      <div class="value">광주은행<br>1121-028-625-322</div>
+    </div>
+    <div class="spec-item">
+      <div class="label">SEO</div>
+      <div class="value">키워드 태그<br>메타 keywords</div>
+    </div>
+    <div class="spec-item">
+      <div class="label">KBS 방송</div>
+      <div class="value">6시 내고향 방영<br>영상 + 오시는 길 지도</div>
+    </div>
+    <div class="spec-item">
+      <div class="label">사업자 정보</div>
+      <div class="value">대야식품<br>대표 장형근</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  대야식품 daeyafood.co.kr — 1차 개발 검토본 · 2026.05<br>
+  © StudySnap Samples by yang-jeongman
+</div>
+
+</body>
+</html>
