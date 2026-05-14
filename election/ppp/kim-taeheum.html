@@ -25,6 +25,7 @@
   --line: #d8dde3;
   --bg: #f4f6f8;
   --white: #fff;
+  --vh: 1vh;
 }
 
 * { box-sizing: border-box; }
@@ -54,13 +55,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  overscroll-behavior: contain;
+  -webkit-app-region: no-drag;
 }
 
 /* Book = horizontal swipe carousel */
 .book {
   display: flex;
   width: 100%;
-  height: 100%;
+  height: calc(var(--vh, 1vh) * 100);
   position: fixed;
   top: 0;
   left: 0;
@@ -76,6 +79,7 @@ body {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -webkit-user-select: none;
+  contain: layout style paint;
 }
 .book::-webkit-scrollbar { display: none; }
 
@@ -83,7 +87,7 @@ body {
 .page {
   flex: 0 0 100%;
   width: 100%;
-  height: 100%;
+  height: calc(var(--vh, 1vh) * 100);
   overflow-y: scroll;
   overflow-x: hidden;
   scroll-snap-align: start;
@@ -97,6 +101,7 @@ body {
   scrollbar-gutter: stable;
   -webkit-user-select: text;
   user-select: text;
+  contain: layout style paint;
 }
 .page::-webkit-scrollbar { width: 6px; }
 .page::-webkit-scrollbar-track { background: transparent; }
@@ -1149,6 +1154,28 @@ tr:nth-child(even) td { background: #fafbfc; }
 </div><!-- .book -->
 
 <script>
+// 안드로이드 동적 높이 설정
+function setViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// 초기 설정
+setViewportHeight();
+
+// 뷰포트 변화 감지
+window.addEventListener('resize', setViewportHeight, { passive: true });
+window.addEventListener('orientationchange', setViewportHeight, { passive: true });
+
+// 안드로이드 주소창 변화 감지
+let lastInnerHeight = window.innerHeight;
+window.addEventListener('scroll', () => {
+  if (Math.abs(window.innerHeight - lastInnerHeight) > 10) {
+    setViewportHeight();
+    lastInnerHeight = window.innerHeight;
+  }
+}, { passive: true });
+
 const book = document.getElementById('book');
 const pageNum = document.getElementById('page-num');
 const btnPrev = document.getElementById('btn-prev');
