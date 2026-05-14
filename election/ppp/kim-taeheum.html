@@ -70,8 +70,7 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  scroll-behavior: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
   will-change: scroll-position;
@@ -80,6 +79,7 @@ body {
   -webkit-backface-visibility: hidden;
   -webkit-user-select: none;
   contain: layout style paint;
+  -webkit-overflow-scrolling: auto;
 }
 .book::-webkit-scrollbar { display: none; }
 
@@ -1201,27 +1201,51 @@ function goToPage(n) {
 btnPrev.addEventListener('click', () => goToPage(currentPage - 1));
 btnNext.addEventListener('click', () => goToPage(currentPage + 1));
 
+let isScrolling = false;
 let scrollTimeout;
+
 book.addEventListener('scroll', () => {
+  isScrolling = true;
   if (scrollTimeout) clearTimeout(scrollTimeout);
+
   scrollTimeout = setTimeout(() => {
-    const newPage = Math.round(book.scrollLeft / window.innerWidth);
-    if (newPage !== currentPage && newPage < totalPages) {
+    isScrolling = false;
+    // 스크롤 종료 후 가장 가까운 페이지에 스냅
+    const currentScroll = book.scrollLeft;
+    const pageWidth = window.innerWidth;
+    const newPage = Math.round(currentScroll / pageWidth);
+
+    if (newPage >= 0 && newPage < totalPages) {
       currentPage = newPage;
+      const targetScroll = newPage * pageWidth;
+
+      // 정확하게 페이지에 맞추기
+      if (Math.abs(currentScroll - targetScroll) > 1) {
+        book.scrollLeft = targetScroll;
+      }
       updatePageNum();
     }
-  }, 10);
+  }, 150);
 }, { passive: true });
 
 let touchStartX = 0;
+let touchStartTime = 0;
+
 book.addEventListener('touchstart', (e) => {
-  touchStartX = e.touches[0].clientX;
+  if (!isScrolling) {
+    touchStartX = e.touches[0].clientX;
+    touchStartTime = Date.now();
+  }
 }, { passive: true });
 
 book.addEventListener('touchend', (e) => {
   const touchEndX = e.changedTouches[0].clientX;
+  const touchEndTime = Date.now();
   const diff = touchStartX - touchEndX;
-  if (Math.abs(diff) > 50) {
+  const duration = touchEndTime - touchStartTime;
+
+  // 빠른 스와이프 또는 충분한 거리
+  if ((Math.abs(diff) > 50 && duration < 500) || Math.abs(diff) > 100) {
     if (diff > 0) goToPage(currentPage + 1);
     else goToPage(currentPage - 1);
   }
