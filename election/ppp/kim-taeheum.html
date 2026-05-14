@@ -1228,28 +1228,8 @@ book.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
-let touchStartX = 0;
-let touchStartTime = 0;
-
-book.addEventListener('touchstart', (e) => {
-  if (!isScrolling) {
-    touchStartX = e.touches[0].clientX;
-    touchStartTime = Date.now();
-  }
-}, { passive: true });
-
-book.addEventListener('touchend', (e) => {
-  const touchEndX = e.changedTouches[0].clientX;
-  const touchEndTime = Date.now();
-  const diff = touchStartX - touchEndX;
-  const duration = touchEndTime - touchStartTime;
-
-  // 빠른 스와이프 또는 충분한 거리
-  if ((Math.abs(diff) > 50 && duration < 500) || Math.abs(diff) > 100) {
-    if (diff > 0) goToPage(currentPage + 1);
-    else goToPage(currentPage - 1);
-  }
-}, { passive: true });
+// CSS scroll-snap이 터치 처리함 - 추가 JavaScript 터치 이벤트 제거
+// (중복으로 인한 2페이지 건너뛰는 현상 해결)
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') goToPage(currentPage + 1);
