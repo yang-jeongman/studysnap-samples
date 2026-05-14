@@ -32,6 +32,8 @@ html, body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
+  position: fixed;
+  width: 100%;
 }
 body {
   font-family: "Pretendard", "맑은 고딕", "Malgun Gothic", "Noto Sans KR", sans-serif;
@@ -54,10 +56,11 @@ body {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  will-change: transform;
+  will-change: scroll-position;
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  scroll-snap-stop: always;
 }
 .book::-webkit-scrollbar { display: none; }
 
@@ -67,7 +70,7 @@ body {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -77,9 +80,12 @@ body {
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  scrollbar-gutter: stable;
 }
 .page::-webkit-scrollbar { width: 6px; }
-.page::-webkit-scrollbar-thumb { background: rgba(192,57,43,0.3); border-radius: 3px; }
+.page::-webkit-scrollbar-track { background: transparent; }
+.page::-webkit-scrollbar-thumb { background: rgba(192,57,43,0.3); border-radius: 3px; transition: background 0.2s; }
+.page::-webkit-scrollbar-thumb:hover { background: rgba(192,57,43,0.6); }
 
 .page-header {
   position: sticky;
