@@ -54,6 +54,10 @@ body {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .book::-webkit-scrollbar { display: none; }
 
@@ -70,6 +74,9 @@ body {
   background: #fff;
   -webkit-overflow-scrolling: touch;
   position: relative;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .page::-webkit-scrollbar { width: 6px; }
 .page::-webkit-scrollbar-thumb { background: rgba(192,57,43,0.3); border-radius: 3px; }
@@ -464,10 +471,13 @@ tr:nth-child(even) td { background: #fafbfc; }
 .accordion-content {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease-out;
+  opacity: 0;
+  padding: 0 16px 0 54px;
 }
 .accordion-content.active {
   max-height: 500px;
+  opacity: 1;
   padding: 0 16px 16px 54px;
 }
 .accordion-content p {
@@ -661,7 +671,7 @@ tr:nth-child(even) td { background: #fafbfc; }
     <div class="candidate-block">
       <div class="number">2</div>
       <div style="text-align: center; flex: 1;">
-        <img src="/static/kim_tae_heum.png" class="photo-box" alt="김태흠">
+        <img src="kim-taeheum-photo.png" class="photo-box" alt="김태흠">
       </div>
       <div style="text-align: left; flex: 1;">
         <div class="name">김 태 흠</div>
@@ -1100,11 +1110,11 @@ tr:nth-child(even) td { background: #fafbfc; }
 
     <h4 style="margin-top: 36px; text-align: center;">더 알아보기</h4>
     <div class="contact-links">
-      <a href="https://www.kimtaeheum.com" target="_blank" class="contact-link">🌐 웹사이트</a>
-      <a href="https://www.facebook.com/kimtaeheum" target="_blank" class="contact-link">f 페이스북</a>
-      <a href="https://www.instagram.com/kimtaeheum" target="_blank" class="contact-link">📷 인스타그램</a>
-      <a href="https://www.youtube.com/@kimtaeheum" target="_blank" class="contact-link">▶ 유튜브</a>
-      <a href="tel:041-xxx-xxxx" class="contact-link">☎️ 전화</a>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">🌐 웹사이트 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">f 페이스북 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">📷 인스타그램 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">▶ 유튜브 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">☎️ 전화번호를 등록하세요</span>
     </div>
   </div>
 </div>
