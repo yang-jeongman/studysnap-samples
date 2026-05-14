@@ -1201,6 +1201,7 @@ const btnNext = document.getElementById('btn-next');
 const pages = document.querySelectorAll('.page');
 const totalPages = pages.length;
 let currentPage = 0;
+let lastScrollLeft = 0;
 
 function updatePageNum() {
   pageNum.textContent = currentPage + 1;
@@ -1219,13 +1220,23 @@ function goToPage(n) {
 btnPrev.addEventListener('click', () => goToPage(currentPage - 1));
 btnNext.addEventListener('click', () => goToPage(currentPage + 1));
 
-// CSS scroll-snap만 사용 (JavaScript 간섭 최소화)
+// 스크롤 방향 감지 + 1페이지씩만 이동
 book.addEventListener('scroll', () => {
-  const newPage = Math.round(book.scrollLeft / window.innerWidth);
-  if (newPage !== currentPage && newPage < totalPages && newPage >= 0) {
+  const currentScroll = book.scrollLeft;
+  const pageWidth = window.innerWidth;
+  const newPage = Math.round(currentScroll / pageWidth);
+
+  // 한 번에 1페이지씩만 이동하도록 제한
+  if (Math.abs(newPage - currentPage) > 1) {
+    // 스크롤 방향 판단
+    const direction = currentScroll > lastScrollLeft ? 1 : -1;
+    currentPage = Math.max(0, Math.min(totalPages - 1, currentPage + direction));
+  } else if (newPage !== currentPage && newPage < totalPages && newPage >= 0) {
     currentPage = newPage;
-    updatePageNum();
   }
+
+  lastScrollLeft = currentScroll;
+  updatePageNum();
 }, { passive: true });
 
 // CSS scroll-snap이 터치 처리함 - 추가 JavaScript 터치 이벤트 제거
