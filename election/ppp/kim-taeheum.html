@@ -72,16 +72,16 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  scroll-behavior: auto;
+  scroll-snap-stop: always;
+  scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  will-change: scroll-position;
+  will-change: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -webkit-user-select: none;
-  contain: layout style paint;
-  -webkit-overflow-scrolling: auto;
+  overscroll-behavior-x: contain;
 }
 .book::-webkit-scrollbar { display: none; }
 
@@ -1219,31 +1219,13 @@ function goToPage(n) {
 btnPrev.addEventListener('click', () => goToPage(currentPage - 1));
 btnNext.addEventListener('click', () => goToPage(currentPage + 1));
 
-let isScrolling = false;
-let scrollTimeout;
-
+// CSS scroll-snap만 사용 (JavaScript 간섭 최소화)
 book.addEventListener('scroll', () => {
-  isScrolling = true;
-  if (scrollTimeout) clearTimeout(scrollTimeout);
-
-  scrollTimeout = setTimeout(() => {
-    isScrolling = false;
-    // 스크롤 종료 후 가장 가까운 페이지에 스냅
-    const currentScroll = book.scrollLeft;
-    const pageWidth = window.innerWidth;
-    const newPage = Math.round(currentScroll / pageWidth);
-
-    if (newPage >= 0 && newPage < totalPages) {
-      currentPage = newPage;
-      const targetScroll = newPage * pageWidth;
-
-      // 정확하게 페이지에 맞추기
-      if (Math.abs(currentScroll - targetScroll) > 1) {
-        book.scrollLeft = targetScroll;
-      }
-      updatePageNum();
-    }
-  }, 150);
+  const newPage = Math.round(book.scrollLeft / window.innerWidth);
+  if (newPage !== currentPage && newPage < totalPages && newPage >= 0) {
+    currentPage = newPage;
+    updatePageNum();
+  }
 }, { passive: true });
 
 let touchStartX = 0;
