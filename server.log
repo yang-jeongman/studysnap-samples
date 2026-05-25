@@ -1,0 +1,8 @@
+::1 - - [25/May/2026 17:51:38] "GET /park_geun_yeong_campaign.html HTTP/1.1" 200 -
+::1 - - [25/May/2026 17:51:38] code 404, message File not found
+::1 - - [25/May/2026 17:51:38] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [25/May/2026 17:51:45] code 404, message File not found
+::1 - - [25/May/2026 17:51:45] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+::1 - - [25/May/2026 18:11:10] "GET /park_geun_yeong_campaign.html HTTP/1.1" 200 -
+::1 - - [25/May/2026 18:11:10] code 404, message File not found
+::1 - - [25/May/2026 18:11:10] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
