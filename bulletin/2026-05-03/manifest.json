@@ -1,0 +1,36 @@
+{
+  "name": "여의도순복음교회 주보",
+  "short_name": "순복음주보",
+  "description": "여의도순복음교회 2026-05-03 주보 (모바일 PWA)",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#5B4AC4",
+  "categories": [
+    "religion",
+    "lifestyle",
+    "books"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

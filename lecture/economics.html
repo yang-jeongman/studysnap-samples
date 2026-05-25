@@ -1,0 +1,4164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Consumer Theory - None">
+    <title>Consumer Theory | StudySnap</title>
+
+    <!-- MathJax for Mathematical Equations -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
+
+    <!-- Google Fonts for Unicode symbols support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+Math&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4F46E5;
+            --primary-light: #818CF8;
+            --primary-dark: #3730A3;
+            --bg-color: #FFFFFF;
+            --text-color: #1F2937;
+            --text-secondary: #6B7280;
+            --border-color: #E5E7EB;
+            --card-bg: #F9FAFB;
+            --code-bg: #F3F4F6;
+            --highlight-color: #FEF3C7;
+        }
+
+        /* Dark Mode Variables */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #111827;
+                --text-color: #F9FAFB;
+                --text-secondary: #9CA3AF;
+                --border-color: #374151;
+                --card-bg: #1F2937;
+                --code-bg: #374151;
+                --highlight-color: #92400E;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Noto Sans Math', 'Noto Sans Symbols 2', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: var(--bg-color);
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
+
+        /* Top Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-bar .logo {
+            font-size: 1.2em;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-bar .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--card-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:active {
+            transform: scale(0.95);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--border-color);
+            z-index: 999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 0 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Header Section */
+        .lecture-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+        }
+
+        .lecture-header .course-code {
+            font-size: 0.85em;
+            opacity: 0.9;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .lecture-header .course-name {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .lecture-header .meta-info {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+            opacity: 0.95;
+        }
+
+        .meta-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .quick-action-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85em;
+        }
+
+        .quick-action-btn:active {
+            transform: translateY(2px);
+        }
+
+        .quick-action-btn .icon {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .quick-action-btn .label {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Table of Contents - Collapsible */
+        .toc-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .toc-header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .toc-header .title {
+            font-weight: 700;
+            font-size: 1.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-header .toggle {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .toc-header .toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .toc-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .toc-content.open {
+            max-height: 1000px;
+            padding: 15px 0;
+        }
+
+        .toc-item {
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toc-item:hover {
+            background: var(--bg-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .toc-item.active {
+            background: var(--primary-light);
+            border-left-color: var(--primary-color);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .toc-item .chapter-number {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .toc-item .page-indicator {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        /* Chapter Sections */
+        .chapter-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            scroll-margin-top: 100px;
+        }
+
+        .chapter-title {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chapter-number {
+            background: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .section-title {
+            font-size: 1.25em;
+            font-weight: 700;
+            margin: 25px 0 15px 0;
+            color: var(--text-color);
+            padding-left: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .subsection-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            color: var(--text-color);
+        }
+
+        /* Content Styles */
+        .content-text {
+            font-size: 1.05em;
+            line-height: 1.9;
+            margin-bottom: 18px;
+            color: var(--text-color);
+        }
+
+        .content-text strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .content-text em {
+            background: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-style: normal;
+        }
+
+        /* Math Equations */
+        .math-block {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .math-inline {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: var(--border-color);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        .code-content {
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .code-content pre {
+            margin: 0;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-color);
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background: var(--card-bg);
+        }
+
+        /* Images */
+        .image-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .image-caption {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Figure Caption Box (no image) */
+        .figure-caption-box {
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #3730A3;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+            line-height: 1.7;
+        }
+
+        /* Data Table */
+        .table-container {
+            margin: 25px 0;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        .table-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            min-width: 500px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .data-table tbody tr:nth-child(even) {
+                background: rgba(255, 255, 255, 0.02);
+            }
+        }
+
+        /* Key Concepts Box */
+        .key-concept {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid #F59E0B;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .key-concept .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #92400E;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .key-concept .content {
+            color: #78350F;
+            line-height: 1.8;
+        }
+
+        /* Important Note Box */
+        .important-note {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            border-left: 4px solid #EF4444;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .important-note .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #991B1B;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .important-note .content {
+            color: #7F1D1D;
+            line-height: 1.8;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-left: 4px solid #3B82F6;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .example-box .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #1E40AF;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example-box .content {
+            color: #1E3A8A;
+            line-height: 1.8;
+        }
+
+        /* Quiz/Exercise Box */
+        .quiz-box {
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+            border-left: 4px solid #6366F1;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .quiz-box .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #3730A3;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-box .question {
+            color: #312E81;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .quiz-box .answer {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .quiz-box .show-answer-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* Bookmarks */
+        .bookmark-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.3em;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .bookmark-btn.bookmarked {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-color);
+            border-top: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 999;
+        }
+
+        .bottom-nav button {
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .bottom-nav button.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .bottom-nav button:active {
+            transform: scale(0.98);
+        }
+
+        .bottom-nav button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 50px;
+        }
+
+        .footer .logo {
+            font-weight: 800;
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0 15px;
+            }
+
+            .lecture-header .course-name {
+                font-size: 1.3em;
+            }
+
+            .chapter-title {
+                font-size: 1.3em;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+
+            .quick-action-btn {
+                padding: 12px 8px;
+            }
+
+            .quick-action-btn .icon {
+                font-size: 1.3em;
+            }
+
+            .quick-action-btn .label {
+                font-size: 0.75em;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="nav-bar">
+        <div class="logo">
+            📚 StudySnap
+        </div>
+        <div class="actions">
+            <button class="btn-icon" onclick="toggleDarkMode()" title="다크모드 전환">
+                🌓
+            </button>
+            <button class="btn-icon" onclick="showBookmarks()" title="북마크">
+                🔖
+            </button>
+            <button class="btn-icon" onclick="window.print()" title="인쇄">
+                🖨️
+            </button>
+        </div>
+    </div>
+
+    <!-- Reading Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Lecture Header -->
+        <div class="lecture-header">
+            <div class="course-code">1</div>
+            <div class="course-name">Consumer Theory</div>
+            <div class="meta-info">
+                <span>👨‍🏫 None</span>
+                <span>📅 None</span>
+                <span>📄 3페이지</span>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="quick-action-btn" onclick="scrollToSection('toc')">
+                <div class="icon">📑</div>
+                <div class="label">목차</div>
+            </div>
+            <div class="quick-action-btn" onclick="toggleFontSize()">
+                <div class="icon">🔤</div>
+                <div class="label">글자크기</div>
+            </div>
+            <div class="quick-action-btn" onclick="showSummary()">
+                <div class="icon">✨</div>
+                <div class="label">요약</div>
+            </div>
+            <div class="quick-action-btn" onclick="shareContent()">
+                <div class="icon">📤</div>
+                <div class="label">공유</div>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc-container" id="toc">
+            <div class="toc-header" onclick="toggleTOC()">
+                <div class="title">
+                    📑 목차
+                </div>
+                <div class="toggle" id="tocToggle">▼</div>
+            </div>
+            <div class="toc-content" id="tocContent">
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-1')">
+                    <div>
+                        <span class="chapter-number">1</span>
+                        Lecture 1: Introduction to Microeconomics
+                    </div>
+                    <div class="page-indicator">p.1</div>
+                </div>
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-2')">
+                    <div>
+                        <span class="chapter-number">2</span>
+                        Lecture 2: Preferences and Utility Functions
+                    </div>
+                    <div class="page-indicator">p.2</div>
+                </div>
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-3')">
+                    <div>
+                        <span class="chapter-number">3</span>
+                        Lecture 3: Budget Constraints
+                    </div>
+                    <div class="page-indicator">p.3</div>
+                </div>
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-4')">
+                    <div>
+                        <span class="chapter-number">4</span>
+                        Exercises
+                    </div>
+                    <div class="page-indicator">p.4</div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Chapters Content -->
+        
+        <div class="chapter-section" id="chapter-1">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-1')" id="bookmark-chapter-1">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">1</div>
+                Lecture 1: Introduction to Microeconomics
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.1.1 What is microeconomics?
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Microeconomics is the study of how individuals and firms maximize their well-being in a world of scarcity. The core of microeconomics is the study of constrained optimization and assessing tradeoffs. The key concept behind tradeoffs is opportunity cost: every action or inaction has a cost in terms of what could have been done instead.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Study of constrained optimization</li><li>Focus on scarcity and tradeoffs</li><li>Opportunity cost is central</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.1.2 Modeling in microeconomics
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                A model is any description of the relationship between two or more economic variables. Economic models are simplified representations of relationships between variables.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Models simplify economic relationships</li><li>Supply and Demand Model is fundamental</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Supply and Demand Model
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Demand curve is downward-sloping. It shows the relationship between price and quantity demanded. It measures the willingness of consumers to buy a certain good. Supply curve is upward-slowing. It shows the relationship between price and quantity supplied. It measures the willingness of producers to sell. The intersection of supply and demand curve is the market equilibrium. Each point on the demand curve shows how much consumers will demand at a given price. Each point on the supply curve shows how much producers will supply at a given price. At the equilibrium price, suppliers are willing to supply as much as demanders will demand.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Demand curve: downward-sloping</li><li>Supply curve: upward-sloping</li><li>Market equilibrium at intersection</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.1.3 Positive vs. normative economics
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Positive analysis is the study of the way things are (e.g. eBay auctions). Normative analysis is the study of the way that things should be (e.g. should organ sales be legal?).
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Positive: what is</li><li>Normative: what should be</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.1.4 Market economy
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Capitalistic economy: individuals and firms decide what to produce and consume, subject to limited restrictions by the government (similar to laissez-faire). Command economy: government in control with production and allocation (e.g. inefficiency and corruption of Soviet Union). Invisible hand: Adam Smith's concept, self-regulating nature of markets and self-interest
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Capitalistic economy: individual choice</li><li>Command economy: government control</li><li>Invisible hand: self-regulation</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.1.5 TO KNOW - Conceptual Understanding
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Microeconomics studies how individuals and firms make optimal choices under scarcity, focusing on trade-offs and opportunity cost. Models are simplified tools to understand behavior; positive economics explains what is, while normative economics debates what should be
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Understand scarcity and opportunity cost</li><li>Know difference between positive and normative analysis</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+        <div class="chapter-section" id="chapter-2">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-2')" id="bookmark-chapter-2">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">2</div>
+                Lecture 2: Preferences and Utility Functions
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.2.1 Consumer preferences
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Consumer choices are based on preferences and budget constraints. To model consumer preferences, there are three assumptions: Completeness (when comparing two bundles of goods, you either prefer one, prefer the other, or are indifferent), Transitivity (If consumer prefers bundle x to bundle y, and bundle y to bundle z, then must prefer bundle x to bundle z), Non-Satiation (More of a good is always better, consumers never get satiated)
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Completeness</li><li>Transitivity</li><li>Non-Satiation</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.2.2 Indifference curves
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                We use indifference curves as the basic graphical tool of consumer theory. There are four important properties of indifference curves: Consumers prefer higher indifference curves, Indifference curves are downward-sloping, Indifference curves never cross, There is one indifference curve through each possible consumption bundle
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Higher curves preferred</li><li>Downward-sloping</li><li>Never cross</li><li>One curve per bundle</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.2.3 Utility
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Utility is a way of mapping preferences. We use utility to get ordinal ranking, not cardinal ranking. Utility function translates consumer utility from different consumption bundles into units, that can then be compared. Marginal utility is the derivative of utility with respect to good. It measures how utility changes as consumers consume more of a good. The important principle of diminishing marginal utility states that consumers receive less utility from each unit of a good they consume.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[MRS = -\frac{MU_x}{MU_y} = -\frac{\delta U/\delta x}{\delta U/\delta y}\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Utility provides ordinal ranking</li><li>Marginal utility measures change</li><li>Diminishing marginal utility principle</li><li>MRS is ratio of marginal utilities</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Marginal rate of substitution (MRS)
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                The slope of the indifference curve is called the marginal rate of substitution (MRS). Marginal rate of substitution (MRS) = rate at which consumers are willing to trade Y axis for X axis. MRS is the ratio of marginal utilities. MRS is diminishing as you move along the indifference curve
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>MRS = slope of indifference curve</li><li>MRS diminishes along curve</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.2.4 TO KNOW - Graphical and Math Understanding
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Know required skills for graphical and mathematical understanding
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Prove indifference curves never cross using a figure</li><li>Prove indifference curves are downward sloping using a figure</li><li>Draw indifference curves for perfect complements and perfect substitutes</li><li>Sketch indifference curve given verbal description</li><li>Calculate marginal utilities given a utility function</li><li>Calculate marginal rate of substitution given a utility function</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+        <div class="chapter-section" id="chapter-3">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-3')" id="bookmark-chapter-3">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">3</div>
+                Lecture 3: Budget Constraints
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.3.1 Budget constraint
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Consumers have limited resources: their budget constraint. One simplifying assumption is that budget is equal to income (I). Budget over two goods X and Y is defined to be
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[I = p_X X + p_Y Y\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[MRT = -\frac{p_X}{p_Y}\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Budget = Income assumption</li><li>Budget line equation: $I = p_X X + p_Y Y$</li><li>MRT is slope of budget constraint</li><li>Price/income changes shift/rotate budget line</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                The slope of budget constraint
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                The slope of budget constraint is defined as marginal rate of transformation (MRT): rate at which you can transform one good into the other in the marketplace. Intuitively, with a fixed budget, by choosing one thing you are by definition reducing the money you have to spend on other things. Shifts in price and income alter the position and slope of the budget constraint. For example, if the price of good X increases, the budget constraint flattens. If the income decreases, the budget constraint shifts inwards.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>MRT = marginal rate of transformation</li><li>MRT = slope of budget line</li><li>Price changes rotate the line</li><li>Income changes shift the line</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.3.2 Constrained optimization
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                The goal of constrained choice is to maximize utility subject to the budget constraint. Preferences are represented by indifference curves. The optimal bundle that a consumer can choose is defined by the point where indifference curve is tangent to the budget constraint
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[MRS = -\frac{MU_X}{MU_Y} = -\frac{\delta U/\delta X}{\delta U/\delta Y} = -\frac{p_X}{p_Y} = MRT\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Maximize utility subject to budget</li><li>Optimal point: indifference curve tangent to budget line</li><li>At optimum: MRS = MRT</li><li>Interior solutions vs corner solutions</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Optimal bundle condition
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                At this point, slope of indifference curve = slope of budget constraint. This is equivalent to equating the marginal cost and benefit of consuming each good. The above equation defines an interior solution (in which the consumer consumes some of each good); if indifference curves are fat, there can also be corner solutions in which the consumer only consumes one good
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Slope equality at optimal point</li><li>Interior vs corner solutions</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                1.3.3 TO KNOW - Graphical and Math Understanding
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Required skills for understanding budget constraints
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Know how to write down a budget constraint given prices and income</li><li>Show graphically how to find the bundle that maximizes the consumer's utility subject to the budget constraint</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+        <div class="chapter-section" id="chapter-4">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-4')" id="bookmark-chapter-4">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">4</div>
+                Exercises
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">1. Prove that indifference curves never cross using a figure</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">귀류법으로 증명:<br>1. 두 무차별곡선이 점 A에서 교차한다고 가정<br>2. 곡선1 위의 점 B와 곡선2 위의 점 C를 선택<br>3. A~B (곡선1), A~C (곡선2)이므로 이행성에 의해 B~C<br>4. 그러나 B와 C는 서로 다른 무차별곡선 위에 있어 모순<br><br>∴ 무차별곡선은 교차할 수 없다</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">2. Prove that indifference curves are downward sloping using a figure</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">단조성(monotonicity) 가정 사용:<br>1. 소비자는 더 많은 것을 선호 (more is better)<br>2. 점 A(x₁, y₁)에서 오른쪽 위로 이동하면 더 나은 상태<br>3. 같은 효용을 유지하려면 y를 감소시켜야 함<br><br>$\frac{dy}{dx} < 0$ (우하향)</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">3. Draw indifference curves corresponding to perfect complements and perfect substitutes</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer"><b>완전보완재:</b> L자형 곡선<br>예: 왼쪽 신발과 오른쪽 신발<br>$U = \min(x, y)$<br><br><b>완전대체재:</b> 직선<br>예: 1달러 동전과 100센트<br>$U = x + y$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">4. Know how to sketch an indifference curve given a verbal description of a consumer's preferences</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">주요 패턴:<br>1. <b>일반재:</b> 볼록한 곡선 (원점 방향)<br>2. <b>완전대체재:</b> 직선<br>3. <b>완전보완재:</b> L자형<br>4. <b>중립재:</b> 수직선 또는 수평선<br>5. <b>나쁜 재화:</b> 우상향 곡선</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">5. Calculate marginal utilities given a utility function</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">효용함수 $U(x,y)$가 주어졌을 때:<br><br>$MU_x = \frac{\partial U}{\partial x}$<br><br>$MU_y = \frac{\partial U}{\partial y}$<br><br>예: $U = x^{0.5}y^{0.5}$<br>$MU_x = 0.5x^{-0.5}y^{0.5}$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">6. Calculate marginal rate of substitution given a utility function</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">$MRS = -\frac{MU_x}{MU_y} = -\frac{\partial U/\partial x}{\partial U/\partial y}$<br><br>예: $U = x^{0.5}y^{0.5}$<br>$MRS = -\frac{0.5x^{-0.5}y^{0.5}}{0.5x^{0.5}y^{-0.5}} = -\frac{y}{x}$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">7. Know how to write down a budget constraint given prices and income</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">예산제약식:<br><br>$p_x \cdot x + p_y \cdot y = I$<br><br>또는 y에 대해 정리:<br>$y = \frac{I}{p_y} - \frac{p_x}{p_y}x$<br><br>기울기: $-\frac{p_x}{p_y}$<br>y절편: $\frac{I}{p_y}$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">8. Show graphically how to find the bundle that maximizes the consumer's utility subject to the budget constraint</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">최적 조건 (내부해):<br>1. 무차별곡선과 예산선이 접하는 점<br>2. $MRS = -\frac{p_x}{p_y}$<br>3. $\frac{MU_x}{p_x} = \frac{MU_y}{p_y}$ (한계효용 균등화)<br><br>그래프: 예산선과 가장 높은 무차별곡선의 접점</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="logo">StudySnap</div>
+            <div>스마트폰으로 공부하는 가장 쉬운 방법</div>
+            <div style="margin-top: 10px; font-size: 0.85em;">
+                📚 Generated with StudySnap | studysnap.kr
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button onclick="previousChapter()" id="prevBtn">
+            ← 이전
+        </button>
+        <button class="primary" onclick="toggleTOC()">
+            📑 목차
+        </button>
+        <button onclick="nextChapter()" id="nextBtn">
+            다음 →
+        </button>
+    </div>
+
+    <script>
+        // Initialize Highlight.js for code blocks
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+
+        // Progress Bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Table of Contents Toggle
+        function toggleTOC() {
+            const content = document.getElementById('tocContent');
+            const toggle = document.getElementById('tocToggle');
+
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                toggle.classList.remove('open');
+            } else {
+                content.classList.add('open');
+                toggle.classList.add('open');
+            }
+        }
+
+        // Scroll to Chapter
+        function scrollToChapter(chapterId) {
+            const element = document.getElementById(chapterId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Bookmark functionality
+        let bookmarks = JSON.parse(localStorage.getItem('studysnap_bookmarks') || '[]');
+
+        function toggleBookmark(chapterId) {
+            const btn = document.getElementById('bookmark-' + chapterId);
+
+            if (bookmarks.includes(chapterId)) {
+                bookmarks = bookmarks.filter(id => id !== chapterId);
+                btn.classList.remove('bookmarked');
+            } else {
+                bookmarks.push(chapterId);
+                btn.classList.add('bookmarked');
+            }
+
+            localStorage.setItem('studysnap_bookmarks', JSON.stringify(bookmarks));
+        }
+
+        function showBookmarks() {
+            if (bookmarks.length === 0) {
+                alert('저장된 북마크가 없습니다.');
+                return;
+            }
+
+            const bookmarkList = bookmarks.map(id => {
+                const element = document.getElementById(id);
+                return element ? element.querySelector('.chapter-title').textContent.trim() : id;
+            }).join('\n');
+
+            alert('📑 북마크 목록:\n\n' + bookmarkList);
+        }
+
+        // Load bookmarks on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            bookmarks.forEach(id => {
+                const btn = document.getElementById('bookmark-' + id);
+                if (btn) btn.classList.add('bookmarked');
+            });
+        });
+
+        // Font Size Toggle
+        let fontSize = 1.05;
+        function toggleFontSize() {
+            const sizes = [1.05, 1.15, 1.25, 0.95];
+            const currentIndex = sizes.indexOf(fontSize);
+            fontSize = sizes[(currentIndex + 1) % sizes.length];
+
+            document.querySelectorAll('.content-text').forEach(el => {
+                el.style.fontSize = fontSize + 'em';
+            });
+        }
+
+        // Copy Code
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block').querySelector('code');
+            const text = codeBlock.textContent;
+
+            function showSuccess() {
+                btn.innerHTML = '✅ 복사됨';
+                setTimeout(() => {
+                    btn.innerHTML = '📋 복사';
+                }, 2000);
+            }
+
+            function showFail() {
+                // 모바일에서 복사 실패시 텍스트 선택으로 대체
+                const range = document.createRange();
+                range.selectNodeContents(codeBlock);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                btn.innerHTML = '📝 선택됨';
+                setTimeout(() => {
+                    btn.innerHTML = '📋 복사';
+                }, 2000);
+            }
+
+            // Modern clipboard API
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text)
+                    .then(showSuccess)
+                    .catch(() => {
+                        // Fallback
+                        fallbackCopy(text, showSuccess, showFail);
+                    });
+            } else {
+                fallbackCopy(text, showSuccess, showFail);
+            }
+        }
+
+        function fallbackCopy(text, onSuccess, onFail) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.cssText = 'position:fixed;top:0;left:0;width:2em;height:2em;padding:0;border:none;outline:none;boxShadow:none;background:transparent;';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    onSuccess();
+                } else {
+                    onFail();
+                }
+            } catch (err) {
+                onFail();
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Toggle Answer
+        function toggleAnswer(btn) {
+            const answer = btn.nextElementSibling;
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                btn.textContent = '답안 보기';
+            } else {
+                answer.style.display = 'block';
+                btn.textContent = '답안 숨기기';
+            }
+        }
+
+        // Chapter Navigation
+        let currentChapter = 1;
+        const totalChapters = 4;
+
+        function previousChapter() {
+            if (currentChapter > 1) {
+                currentChapter--;
+                scrollToChapter('chapter-' + currentChapter);
+                updateNavButtons();
+            }
+        }
+
+        function nextChapter() {
+            if (currentChapter < totalChapters) {
+                currentChapter++;
+                scrollToChapter('chapter-' + currentChapter);
+                updateNavButtons();
+            }
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentChapter === 1;
+            document.getElementById('nextBtn').disabled = currentChapter === totalChapters;
+        }
+
+        // Track current chapter while scrolling
+        window.addEventListener('scroll', function() {
+            const chapters = document.querySelectorAll('.chapter-section');
+            chapters.forEach((chapter, index) => {
+                const rect = chapter.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    currentChapter = index + 1;
+                    updateNavButtons();
+                }
+            });
+        });
+
+        // Show Summary (placeholder)
+        function showSummary() {
+            alert('📝 요약 기능은 곧 제공됩니다!\n\nAI가 자동으로 생성한 요약을 확인할 수 있습니다.');
+        }
+
+        // Share Content
+        function shareContent() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Consumer Theory',
+                    text: 'Consumer Theory - StudySnap으로 변환된 강의자료',
+                    url: window.location.href
+                });
+            } else {
+                alert('📤 공유 링크가 클립보드에 복사되었습니다!');
+                navigator.clipboard.writeText(window.location.href);
+            }
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            // This will be handled by system preference, but can be overridden
+            alert('🌓 다크모드는 시스템 설정을 따릅니다.\n\n기기의 다크모드 설정을 변경해주세요.');
+        }
+
+        // Initialize
+        updateNavButtons();
+
+        // Prevent zoom on double-tap (iOS fix)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

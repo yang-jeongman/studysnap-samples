@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>정명근 - 화성특례시장 후보 선거공보물</title>
+
+    <!-- Open Graph (카카오톡, 페이스북, 슬랙 등) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="기호 1번 정명근 | 더불어민주당 화성특례시장 후보">
+    <meta property="og:description" content="시민과 싸워 무언가를 이룬 적 없다. 협력으로 화성의 미래를 여는 리더 정명근의 핵심 공약과 화성 지역 소식을 확인하세요.">
+    <meta property="og:url" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/jeong-myeonggeun-hwaseong.html">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:site_name" content="정명근 화성특례시장 후보">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="기호 1번 정명근 | 더불어민주당 화성특례시장 후보">
+    <meta name="twitter:description" content="시민과 싸워 무언가를 이룬 적 없다. 협력으로 화성의 미래를 여는 리더.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%231B3A8C'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-weight='bold'>1</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1B3A8C;
+            --primary-light: #2E5BB8;
+            --primary-dark: #0F2460;
+            --accent: #E8443A;
+            --accent-light: #FF6B5E;
+            --green: #2D8B4E;
+            --green-light: #E8F5E9;
+            --gold: #D4930D;
+            --gold-light: #FFF8E1;
+            --sky: #E3F0FC;
+            --warm: #FFF3E8;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #EEEEEE;
+            --gray-300: #E0E0E0;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--gray-900);
+            background: var(--gray-100);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        section { padding: 48px 24px; }
+
+        /* ===== NAV ===== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .top-nav .logo { font-weight: 800; font-size: 1.1em; color: var(--primary); }
+        .top-nav .party {
+            background: var(--primary);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            font-weight: 600;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--primary-light) 100%);
+            color: white;
+            padding: 100px 28px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+        }
+        .hero .number-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            font-size: 1.8em; font-weight: 900;
+            line-height: 56px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+        .hero .candidate-name {
+            font-size: 2.8em; font-weight: 900;
+            letter-spacing: -1px; margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .hero .position { font-size: 1.15em; font-weight: 500; opacity: 0.9; margin-bottom: 24px; }
+        .hero .slogan { font-size: 1.5em; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+        .hero .slogan em { font-style: normal; color: #FFD54F; }
+        .hero .sub-slogan { font-size: 0.95em; opacity: 0.85; font-weight: 300; }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .section-title .label {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75em; font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .section-title h2 { font-size: 1.6em; font-weight: 800; color: var(--gray-900); line-height: 1.3; }
+        .section-title h2 .highlight { color: var(--primary); }
+        .section-title p { color: var(--gray-600); font-size: 0.9em; margin-top: 8px; }
+
+        /* ===== PROFILE ===== */
+        .profile-section { background: var(--gray-50); }
+        .profile-photo {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 4em; font-weight: 900;
+            box-shadow: 0 8px 30px rgba(27,58,140,0.25);
+            border: 4px solid white;
+            overflow: hidden;
+        }
+        .profile-info { text-align: center; margin-bottom: 28px; }
+        .profile-info .name { font-size: 1.5em; font-weight: 800; margin-bottom: 4px; }
+        .profile-info .desc { color: var(--gray-600); font-size: 0.9em; }
+        .career-list {
+            list-style: none;
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .career-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9em;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .career-list li:last-child { border: none; }
+        .career-list li .dot {
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            flex-shrink: 0; margin-top: 9px;
+        }
+
+        /* ===== PROBLEM ===== */
+        .problem-section { background: var(--gray-900); color: white; }
+        .problem-section .section-title .label { background: var(--accent); }
+        .problem-section .section-title h2 { color: white; }
+        .problem-section .section-title p { color: rgba(255,255,255,0.6); }
+        .problem-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+        }
+        .problem-card .icon { font-size: 2em; margin-bottom: 12px; }
+        .problem-card h3 { font-size: 1.1em; font-weight: 700; margin-bottom: 8px; }
+        .problem-card p { font-size: 0.88em; color: rgba(255,255,255,0.7); line-height: 1.6; }
+        .problem-card .stat {
+            display: inline-block;
+            background: var(--accent);
+            padding: 4px 12px; border-radius: 6px;
+            font-size: 0.85em; font-weight: 700; margin-top: 10px;
+        }
+
+        /* ===== LOCAL NEWS (지역 소식 카드) ===== */
+        .local-news {
+            background: linear-gradient(180deg, #F0F6FF 0%, #E8F1FB 100%);
+            padding: 40px 24px;
+        }
+        .local-news .news-header { text-align: center; margin-bottom: 24px; }
+        .local-news .news-header .tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: white; color: var(--primary);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.8em; font-weight: 600;
+            box-shadow: var(--shadow-sm); margin-bottom: 10px;
+        }
+        .local-news .news-header h3 { font-size: 1.2em; font-weight: 700; color: var(--primary-dark); }
+        .local-news .news-header p { font-size: 0.82em; color: var(--gray-600); margin-top: 4px; }
+
+        .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .news-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none; color: inherit; display: block;
+        }
+        .news-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .news-card .card-img {
+            width: 100%; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5em;
+        }
+        .news-card .card-img.festival { background: linear-gradient(135deg, #FF9A9E, #FAD0C4); }
+        .news-card .card-img.nature { background: linear-gradient(135deg, #A8E6CF, #88D8B0); }
+        .news-card .card-img.food { background: linear-gradient(135deg, #FFECD2, #FCB69F); }
+        .news-card .card-img.market { background: linear-gradient(135deg, #C9B1FF, #A18CD1); }
+        .news-card .card-img.industry { background: linear-gradient(135deg, #89CFF0, #667EEA); }
+        .news-card .card-body { padding: 12px; }
+        .news-card .card-body .category {
+            font-size: 0.68em; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .news-card .card-body h4 {
+            font-size: 0.85em; font-weight: 700; margin: 4px 0;
+            line-height: 1.3; color: var(--gray-900);
+        }
+        .news-card .card-body p {
+            font-size: 0.72em; color: var(--gray-600); line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* ===== STRATEGY ===== */
+        .strategy-section { background: white; }
+        .strategy-pillars { display: flex; gap: 10px; margin-bottom: 28px; }
+        .pillar {
+            flex: 1; text-align: center;
+            padding: 20px 10px; border-radius: var(--radius);
+            background: var(--sky);
+        }
+        .pillar .icon { font-size: 2em; margin-bottom: 8px; }
+        .pillar h4 { font-size: 0.82em; font-weight: 700; color: var(--primary); }
+        .pillar p { font-size: 0.7em; color: var(--gray-600); margin-top: 4px; }
+
+        /* ===== PLEDGES ===== */
+        .pledge-section { background: var(--gray-50); }
+        .pledge-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+        .pledge-card.infra { border-left-color: var(--gold); }
+        .pledge-card.life { border-left-color: var(--green); }
+        .pledge-card.future { border-left-color: var(--primary); }
+        .pledge-card.community { border-left-color: var(--accent); }
+        .pledge-card .pledge-number {
+            display: inline-block;
+            width: 28px; height: 28px;
+            border-radius: 50%; background: var(--primary);
+            color: white; text-align: center; line-height: 28px;
+            font-size: 0.8em; font-weight: 700; margin-bottom: 10px;
+        }
+        .pledge-card.infra .pledge-number { background: var(--gold); }
+        .pledge-card.life .pledge-number { background: var(--green); }
+        .pledge-card.future .pledge-number { background: var(--primary); }
+        .pledge-card.community .pledge-number { background: var(--accent); }
+        .pledge-card h3 { font-size: 1.05em; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .pledge-card p { font-size: 0.85em; color: var(--gray-700); line-height: 1.6; }
+        .pledge-card .kpi {
+            display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 10px; padding: 4px 12px;
+            border-radius: 6px; font-size: 0.78em; font-weight: 600;
+        }
+        .pledge-card.infra .kpi { background: var(--gold-light); color: var(--gold); }
+        .pledge-card.life .kpi { background: var(--green-light); color: var(--green); }
+        .pledge-card.future .kpi { background: var(--sky); color: var(--primary); }
+        .pledge-card.community .kpi { background: #FFF0EF; color: var(--accent); }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-section { background: white; }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before {
+            content: ''; position: absolute;
+            left: 10px; top: 0; bottom: 0;
+            width: 2px; background: var(--gray-300);
+        }
+        .timeline-item { position: relative; margin-bottom: 28px; }
+        .timeline-item::before {
+            content: ''; position: absolute;
+            left: -24px; top: 4px;
+            width: 12px; height: 12px;
+            border-radius: 50%; background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .timeline-item .year { font-size: 0.78em; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .timeline-item h4 { font-size: 0.95em; font-weight: 700; margin-bottom: 4px; }
+        .timeline-item p { font-size: 0.82em; color: var(--gray-600); }
+
+        /* ===== CLOSING ===== */
+        .closing-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white; text-align: center; padding: 56px 28px;
+        }
+        .closing-section .closing-photo {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 3em; font-weight: 900;
+            border: 3px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .closing-section .quote { font-size: 1.6em; font-weight: 800; line-height: 1.4; margin-bottom: 16px; }
+        .closing-section .quote em { font-style: normal; color: #FFD54F; }
+        .closing-section .message { font-size: 0.92em; opacity: 0.85; line-height: 1.7; margin-bottom: 28px; }
+        .closing-section .cta-badge {
+            display: inline-block;
+            background: var(--accent); color: white;
+            padding: 14px 36px; border-radius: 50px;
+            font-size: 1.1em; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.5);
+            text-align: center; padding: 24px;
+            font-size: 0.72em; line-height: 1.8;
+        }
+        .footer strong { color: rgba(255,255,255,0.8); }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 380px) {
+            .hero .candidate-name { font-size: 2.2em; }
+            .hero .slogan { font-size: 1.25em; }
+            .news-grid { grid-template-columns: 1fr; }
+            .strategy-pillars { flex-direction: column; }
+        }
+    </style>
+
+    <link rel="manifest" href="manifest-jeong_m.json">
+    <meta name="theme-color" content="#1B3A8C">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="정명근">
+    <link rel="apple-touch-icon" href="pwa/jeong_m-192.png">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+        <span class="logo">정명근</span>
+        <span class="party">더불어민주당</span>
+    </nav>
+
+    <!-- ===== 1. HERO (표지) ===== -->
+    <section class="hero">
+        <div class="number-badge">1</div>
+        <div class="candidate-name">정명근</div>
+        <div class="position">더불어민주당 화성특례시장 후보</div>
+        <div class="slogan"><em>협력</em>으로 일하는<br>화성의 일꾼</div>
+        <div class="sub-slogan">시민과 싸워 무언가를 이룬 적 없다</div>
+    </section>
+
+    <!-- ===== 2. 프로필 ===== -->
+    <section class="profile-section fade-in">
+        <div class="section-title">
+            <span class="label">PROFILE</span>
+            <h2>30년 공직 경험,<br><span class="highlight">화성을 아는 시장</span></h2>
+        </div>
+
+        <div class="profile-photo"><img src="data:image/jpeg;base64,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" alt="정명근 후보"></div>
+
+        <div class="profile-info">
+            <div class="name">정명근</div>
+            <div class="desc">안산시 출신 | 제8대 화성특례시장 (현직)</div>
+        </div>
+
+        <ul class="career-list">
+            <li><span class="dot"></span>제8대 화성특례시장 (현직, 2022~ )</li>
+            <li><span class="dot"></span>공무원 실무 경력 약 30년 (1989년 안산시청 입직)</li>
+            <li><span class="dot"></span>경기도청 근무 (1992~ )</li>
+            <li><span class="dot"></span>화성시청 전근 (2007~ ), 동탄4동 동장으로 명예퇴직 (2018)</li>
+            <li><span class="dot"></span>권칠승 국회의원 보좌관 (2018~2021)</li>
+            <li><span class="dot"></span>화성미래발전포럼 대표</li>
+            <li><span class="dot"></span>대통령 직속 국가균형발전위원회 국민소통특별위원회 위원</li>
+            <li><span class="dot"></span>수성고등학교 졸업, 중국 국비유학 국제정치학 석사</li>
+        </ul>
+    </section>
+
+    <!-- ===== 지역소식 1: 화성의 축제와 문화 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127982; 내가 사랑하는 화성</div>
+            <h3>화성의 축제와 문화유산</h3>
+            <p>역사와 자연이 어우러진 화성의 자랑</p>
+        </div>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="card-img festival">&#9973;</div>
+                <div class="card-body">
+                    <span class="category">축제</span>
+                    <h4>화성 뱃놀이축제</h4>
+                    <p>궁평항 일대에서 펼쳐지는 해양 문화 축제</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img market">&#128052;</div>
+                <div class="card-body">
+                    <span class="category">문화재현</span>
+                    <h4>정조효행차 재현</h4>
+                    <p>정조대왕의 효심을 기리는 역사 문화 행사</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img nature">&#127984;</div>
+                <div class="card-body">
+                    <span class="category">문화제</span>
+                    <h4>융건릉 문화제</h4>
+                    <p>유네스코 세계문화유산 융건릉에서 열리는 전통 축제</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img food">&#127815;</div>
+                <div class="card-body">
+                    <span class="category">특산물</span>
+                    <h4>화성 포도 &amp; 화성 쌀</h4>
+                    <p>전국적으로 유명한 화성의 대표 농산물</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 3. 문제 정의 ===== -->
+    <section class="problem-section fade-in">
+        <div class="section-title">
+            <span class="label">WHY NOW</span>
+            <h2>지금, 화성에<br>필요한 변화</h2>
+            <p>인구 100만 특례시, 인프라가 따라가야 합니다</p>
+        </div>
+
+        <div class="problem-card">
+            <div class="icon">&#128643;</div>
+            <h3>교통 인프라 부족</h3>
+            <p>동탄 신도시를 비롯한 급격한 인구 증가에 비해 광역교통망 확충이 뒤처져 시민의 출퇴근 고통이 가중되고 있습니다.</p>
+            <span class="stat">광역교통 개선 시급</span>
+        </div>
+
+        <div class="problem-card">
+            <div class="icon">&#127961;</div>
+            <h3>동서 균형 발전</h3>
+            <p>동탄 등 동부권 신도시와 봉담 등 서부권 원도심 사이 발전 격차가 심화되고 있어 권역별 행정 서비스 분산이 필요합니다.</p>
+            <span class="stat">권역구청 신설 필요</span>
+        </div>
+
+        <div class="problem-card">
+            <div class="icon">&#128105;&#8205;&#9877;&#65039;</div>
+            <h3>의료 &middot; 돌봄 사각지대</h3>
+            <p>인구 대비 의료기관이 부족하고, 고령화에 따른 치매 전문 의료시설과 발달장애인 지원 인프라가 절실합니다.</p>
+            <span class="stat">시립 전문병원 필요</span>
+        </div>
+    </section>
+
+    <!-- ===== 지역소식 2: 화성의 산업과 경제 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127981; 화성의 경제</div>
+            <h3>산업 &amp; 경제 허브</h3>
+            <p>첨단산업과 농업이 공존하는 화성</p>
+        </div>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="card-img industry">&#128187;</div>
+                <div class="card-body">
+                    <span class="category">반도체</span>
+                    <h4>삼성전자 화성캠퍼스</h4>
+                    <p>세계 최대 규모 반도체 생산기지, 화성의 핵심 산업 축</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img market">&#128202;</div>
+                <div class="card-body">
+                    <span class="category">첨단산업</span>
+                    <h4>동탄 테크노밸리</h4>
+                    <p>IT, BT, NT 기업 집적지, 청년 일자리의 중심</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img food">&#127834;</div>
+                <div class="card-body">
+                    <span class="category">수산물</span>
+                    <h4>궁평항 수산물</h4>
+                    <p>서해안 신선한 해산물과 활어회의 명소</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="card-img nature">&#127793;</div>
+                <div class="card-body">
+                    <span class="category">친환경</span>
+                    <h4>친환경 자동차 산업</h4>
+                    <p>우정 &middot; 장안 일대 친환경자동차산업단지 조성 추진</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 4. 핵심 전략 ===== -->
+    <section class="strategy-section fade-in">
+        <div class="section-title">
+            <span class="label">STRATEGY</span>
+            <h2><span class="highlight">3대 전략</span>으로<br>화성을 완성하겠습니다</h2>
+        </div>
+
+        <div class="strategy-pillars">
+            <div class="pillar">
+                <div class="icon">&#128643;</div>
+                <h4>연결되는<br>화성</h4>
+                <p>교통 &middot; 인프라</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#127968;</div>
+                <h4>살기 좋은<br>화성</h4>
+                <p>복지 &middot; 의료</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#127793;</div>
+                <h4>미래를 여는<br>화성</h4>
+                <p>산업 &middot; 문화</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 5. 핵심 공약 ===== -->
+    <section class="pledge-section fade-in">
+        <div class="section-title">
+            <span class="label">PLEDGES</span>
+            <h2>정명근의<br><span class="highlight">핵심 공약</span></h2>
+        </div>
+
+        <div class="pledge-card infra">
+            <div class="pledge-number">1</div>
+            <h3>병점 복합환승센터 신설</h3>
+            <p>병점역 일대에 버스 &middot; 지하철 &middot; 광역교통을 한곳에서 환승할 수 있는 복합환승센터를 건설하여 출퇴근 시간을 획기적으로 단축합니다.</p>
+            <span class="kpi">&#128643; 광역교통 환승 허브 구축</span>
+        </div>
+
+        <div class="pledge-card infra">
+            <div class="pledge-number">2</div>
+            <h3>봉담 권역구청 신설 (4개 구청 체계)</h3>
+            <p>봉담을 비롯한 4개 권역에 구청을 신설하여 시민이 가까운 곳에서 행정 서비스를 받을 수 있도록 균형 발전을 추진합니다.</p>
+            <span class="kpi">&#127963; 4개 권역구청 행정 분산</span>
+        </div>
+
+        <div class="pledge-card future">
+            <div class="pledge-number">3</div>
+            <h3>동탄 아시아 최대 보타닉가든 조성</h3>
+            <p>동탄 신도시에 아시아 최대 규모의 식물원(보타닉가든)을 조성하여 시민 휴식 공간이자 관광 랜드마크로 만듭니다.</p>
+            <span class="kpi">&#127807; 아시아 최대 규모 식물원</span>
+        </div>
+
+        <div class="pledge-card future">
+            <div class="pledge-number">4</div>
+            <h3>우정 &middot; 장안 친환경자동차산업단지 조성</h3>
+            <p>서부권 우정 &middot; 장안 지역에 친환경 자동차 산업단지를 조성하여 미래 먹거리와 양질의 일자리를 창출합니다.</p>
+            <span class="kpi">&#128664; 친환경 산업 일자리 창출</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">5</div>
+            <h3>화성시립 치매전문 종합병원 개설</h3>
+            <p>증가하는 치매 환자와 가족을 위한 시립 치매전문 종합병원을 개설하고, HPV 백신 접종 지원을 확대합니다.</p>
+            <span class="kpi">&#127973; 시립 치매 전문병원 설립</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">6</div>
+            <h3>유기동물센터 &amp; 반려동물 보건소 설치</h3>
+            <p>반려동물 인구 시대에 맞춰 유기동물센터와 반려동물 전문 보건소를 설치하여 동물복지와 시민 편의를 높입니다.</p>
+            <span class="kpi">&#128054; 동물복지 인프라 확충</span>
+        </div>
+
+        <div class="pledge-card community">
+            <div class="pledge-number">7</div>
+            <h3>발달장애인 에이블아트센터 &amp; 시립 오케스트라 창립</h3>
+            <p>발달장애인의 예술 활동을 지원하는 에이블아트센터를 설립하고, 화성시립 오케스트라를 창립하여 문화 도시의 품격을 높입니다.</p>
+            <span class="kpi">&#127926; 문화예술 포용도시</span>
+        </div>
+
+        <div class="pledge-card community">
+            <div class="pledge-number">8</div>
+            <h3>'화성 연쇄살인사건'을 '이춘재 사건'으로 재명명 추진</h3>
+            <p>지역명이 아닌 범인의 이름으로 사건을 재명명하여 화성시민이 부당하게 겪어온 지역 낙인을 해소합니다.</p>
+            <span class="kpi">&#9878; 지역 낙인 해소</span>
+        </div>
+    </section>
+
+    <!-- ===== 6. 실행 로드맵 ===== -->
+    <section class="roadmap-section fade-in">
+        <div class="section-title">
+            <span class="label">ROADMAP</span>
+            <h2>4년 <span class="highlight">실행 로드맵</span></h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="year">1년차 (2026~2027)</div>
+                <h4>기반 설계 &amp; 착수</h4>
+                <p>병점 복합환승센터 설계, 봉담 권역구청 기본계획 수립, 보타닉가든 부지 확정</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">2년차 (2027~2028)</div>
+                <h4>본격 추진</h4>
+                <p>친환경자동차산업단지 조성 착공, 치매전문 종합병원 설립 인가, 에이블아트센터 건립 추진</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">3년차 (2028~2029)</div>
+                <h4>가시적 성과</h4>
+                <p>복합환승센터 1단계 개통, 유기동물센터 운영 개시, HPV 백신 접종 지원 전면 확대</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">4년차 (2029~2030)</div>
+                <h4>완성 &amp; 도약</h4>
+                <p>4개 구청 체계 가동, 보타닉가든 개원, 시립 오케스트라 정기 공연, 인구 100만 명실상부 특례시 완성</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 7. 마무리 CTA ===== -->
+    <section class="closing-section fade-in">
+        <img src="data:image/jpeg;base64,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" alt="정명근 후보">
+        <div class="quote"><em>협력</em>으로 일하는<br>화성의 시장</div>
+        <div class="message">
+            30년 공직 경험과 첫 임기의 성과를 바탕으로<br>
+            화성특례시의 완성을 위해 다시 뛰겠습니다.<br>
+            시민과 함께, 결과로 보답하겠습니다.
+        </div>
+        <div class="cta-badge">기호 1번 정명근</div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <strong>정명근</strong> | 더불어민주당 화성특례시장 후보<br>
+        이 공보물은 후보자 캠프 제공 자료 없이 공개 정보를 기반으로 제작되었습니다.<br>
+        이 선거공보물은 공직선거법 규정에 따라 제작되었습니다.<br>
+        &copy; 2026 정명근 선거공보물
+    </footer>
+
+</div>
+
+<!-- Scroll Animation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+    });
+</script>
+
+
+    <!-- PWA Install & Push Notification UI -->
+    <div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:linear-gradient(135deg,#0F2460,#1B3A8C);color:#fff;padding:16px 20px;z-index:200;box-shadow:0 -4px 20px rgba(0,0,0,0.3);border-radius:16px 16px 0 0;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <img src="pwa/jeong_m-192.png" alt="" style="width:48px;height:48px;border-radius:12px;">
+            <div>
+                <div style="font-weight:700;font-size:1em;">정명근 화성시장 후보</div>
+                <div style="font-size:0.8em;opacity:0.8;">홈 화면에 추가하고 알림을 받으세요</div>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+            <button id="pwa-install-btn" onclick="pwaInstall()" style="flex:1;padding:12px;border:none;border-radius:10px;background:#FFD54F;color:#0F2460;font-weight:700;font-size:0.9em;cursor:pointer;">홈 화면에 추가</button>
+            <button id="pwa-push-btn" onclick="pushSubscribe()" style="flex:1;padding:12px;border:none;border-radius:10px;background:rgba(255,255,255,0.15);color:#fff;font-weight:600;font-size:0.9em;cursor:pointer;border:1px solid rgba(255,255,255,0.3);">알림 받기</button>
+            <button onclick="closePwaBanner()" style="padding:12px 16px;border:none;border-radius:10px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:0.8em;cursor:pointer;">닫기</button>
+        </div>
+        <div id="push-status" style="text-align:center;font-size:0.78em;margin-top:8px;opacity:0.7;"></div>
+    </div>
+
+    <!-- Push Toast -->
+    <div id="push-toast" style="display:none;position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#27AE60;color:#fff;padding:12px 24px;border-radius:10px;font-size:0.88em;font-weight:600;z-index:300;box-shadow:0 4px 15px rgba(0,0,0,0.2);">
+        알림 구독이 완료되었습니다!
+    </div>
+
+    <script>
+    // ===== PWA Install =====
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        showPwaBanner();
+    });
+
+    function showPwaBanner() {
+        var banner = document.getElementById('pwa-banner');
+        if (banner) banner.style.display = 'block';
+    }
+
+    function closePwaBanner() {
+        var banner = document.getElementById('pwa-banner');
+        if (banner) banner.style.display = 'none';
+        sessionStorage.setItem('pwa-banner-closed', '1');
+    }
+
+    function pwaInstall() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(result) {
+                if (result.outcome === 'accepted') {
+                    var btn = document.getElementById('pwa-install-btn');
+                    btn.textContent = '설치 완료!';
+                    btn.style.background = '#27AE60';
+                    btn.style.color = '#fff';
+                }
+                deferredPrompt = null;
+            });
+        } else {
+            alert('홈 화면 추가 방법:\n\niPhone: 하단 공유 버튼 → 홈 화면에 추가\nAndroid: 브라우저 메뉴 → 홈 화면에 추가');
+        }
+    }
+
+    
+    // ===== Push Notification (VAPID + Admin Backend) =====
+    const VAPID_PUBLIC_KEY = 'BJhM676WZfP3-M0vichq1j9Yd8DYg2WTF8KT04dqp5laWgTnkWkGmzpbBhjAXl0HMYhGzscNMajznJYU94ezdGw';
+    const ADMIN_BACKEND = 'https://push.mpublisher.com';
+    const CANDIDATE_ID = 'jeong_m';
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length %% 4) %% 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; i++) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    function pushSubscribe() {
+        var statusEl = document.getElementById('push-status');
+        var btn = document.getElementById('pwa-push-btn');
+
+        if (!('Notification' in window) || !('PushManager' in window)) {
+            statusEl.textContent = '이 브라우저는 푸시 알림을 지원하지 않습니다.';
+            return;
+        }
+
+        Notification.requestPermission().then(function(permission) {
+            if (permission !== 'granted') {
+                statusEl.textContent = permission === 'denied'
+                    ? '알림이 차단되었습니다. 브라우저 설정에서 허용해주세요.'
+                    : '알림 권한이 필요합니다.';
+                return;
+            }
+
+            statusEl.textContent = '알림 구독 처리 중...';
+
+            navigator.serviceWorker.ready.then(function(reg) {
+                return reg.pushManager.getSubscription().then(function(existing) {
+                    if (existing) return existing;
+                    return reg.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+                    });
+                });
+            }).then(function(subscription) {
+                // Send subscription to admin backend (tenant-scoped)
+                return fetch(ADMIN_BACKEND + '/api/subscribe', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_id: CANDIDATE_ID,
+                        subscription: subscription.toJSON()
+                    })
+                }).then(function(res) {
+                    return { ok: res.ok, data: subscription };
+                });
+            }).then(function(result) {
+                if (result.ok) {
+                    btn.textContent = '알림 구독됨 ✓';
+                    btn.style.background = '#27AE60';
+                    btn.style.borderColor = '#27AE60';
+                    statusEl.textContent = '알림이 활성화되었습니다! 후보 캠프의 소식을 받아보세요.';
+                    localStorage.setItem('push-subscribed-jeong_m', '1');
+
+                    var toast = document.getElementById('push-toast');
+                    toast.style.display = 'block';
+                    setTimeout(function() { toast.style.display = 'none'; }, 3000);
+                } else {
+                    statusEl.textContent = '서버 등록 실패. 잠시 후 다시 시도해주세요.';
+                    console.warn('Subscription submit failed');
+                }
+            }).catch(function(err) {
+                console.error('Push subscribe error:', err);
+                statusEl.textContent = '알림 구독 중 오류: ' + err.message;
+            });
+        });
+    }
+
+    // ===== Service Worker Registration =====
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw-election.js', {
+                scope: '/studysnap-samples/election/minjoo/'
+            }).then(function(reg) {
+                console.log('[PWA] SW registered, scope:', reg.scope);
+
+                if (!sessionStorage.getItem('pwa-banner-closed')) {
+                    setTimeout(showPwaBanner, 2000);
+                }
+
+                if (localStorage.getItem('push-subscribed-jeong_m')) {
+                    var btn = document.getElementById('pwa-push-btn');
+                    if (btn) {
+                        btn.textContent = '알림 구독됨 ✓';
+                        btn.style.background = '#27AE60';
+                        btn.style.borderColor = '#27AE60';
+                    }
+                }
+            }).catch(function(err) {
+                console.warn('[PWA] SW registration failed:', err);
+            });
+        });
+    }
+    </script>
+</body>
+</html>

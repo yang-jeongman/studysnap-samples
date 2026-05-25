@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국마린엔지니어링학회 소식지 Vol.50 - March 2026</title>
+
+<meta name="theme-color" content="#003366">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="kosme-vol50-images/favicon.ico">
+<style>
+/* ─── 리셋 & 기본 ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Noto Sans KR', 'Malgun Gothic', '맑은 고딕', sans-serif;
+    background: #f0f2f5;
+    color: #1a1a1a;
+    line-height: 1.8;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ─── 표지 ─── */
+.cover {
+    width: 100%;
+    background: #003366;
+}
+.cover-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ─── 목차 ─── */
+.toc-section {
+    background: linear-gradient(135deg, #003366, #00507a);
+    color: #fff;
+    padding: 24px 20px 32px;
+}
+.toc-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+.toc-webzine {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2px;
+}
+.toc-vol {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 12px;
+}
+.toc-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffd700;
+    letter-spacing: 6px;
+    margin: 0;
+}
+.toc-group {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 0;
+}
+.toc-section-link {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffd700;
+    text-decoration: none;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+.toc-section-link:hover {
+    color: #ffe44d;
+    text-decoration: underline;
+}
+.toc-entry {
+    margin: 6px 0 6px 12px;
+}
+.toc-entry-title {
+    font-size: 14px;
+    color: rgba(255,255,255,0.95);
+    line-height: 1.5;
+    margin: 0;
+}
+.toc-entry-author {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin: 2px 0 0 0;
+}
+
+/* ─── 섹션 헤더 ─── */
+.section-header {
+    background: linear-gradient(135deg, #004080, #0066cc);
+    color: white;
+    padding: 40px 24px;
+    text-align: center;
+}
+.section-header-inner h3 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 8px 0;
+}
+.section-header-inner p {
+    font-size: 14px;
+    opacity: 0.85;
+    margin: 4px 0;
+}
+.section-header-img {
+    max-width: 200px;
+    margin: 16px auto;
+    display: block;
+}
+
+/* ─── 기사/논문 ─── */
+.article-section {
+    background: #fff;
+    margin: 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+.article-body {
+    padding: 24px 20px;
+}
+/* ─── 기사 제목 블록 ─── */
+.article-title-block {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+}
+.article-title-block h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #003366;
+    line-height: 1.5;
+    margin: 0;
+    word-break: keep-all;
+}
+.article-title-block p {
+    font-size: 22px;
+    font-weight: 700;
+    color: #003366;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ─── 저자 사진 ─── */
+.author-photo {
+    text-align: center;
+    margin: 16px 0 12px;
+}
+.author-photo img {
+    width: 140px;
+    height: 175px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* ─── 저자 정보 ─── */
+.author-info-block {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.author-info-block p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 2px 0;
+    color: #555;
+}
+.author-info-block p:first-child {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+/* ─── 본문 (원고지 형식) ─── */
+.article-body h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #003366;
+    margin: 28px 0 10px;
+    line-height: 1.5;
+    text-align: left;
+}
+.article-body h3:first-child {
+    margin-top: 0;
+}
+.article-body p {
+    font-size: 15px;
+    line-height: 1.9;
+    margin: 0 0 4px 0;
+    text-align: justify;
+    text-indent: 1em;
+    word-break: keep-all;
+}
+/* 소제목 바로 뒤 또는 bold/색상 있는 단락은 들여쓰기 안 함 */
+.article-body h3 + p { text-indent: 1em; }
+.article-body .no-indent { text-indent: 0; }
+.article-body strong {
+    color: #003366;
+}
+/* 글머리 기호 단락 */
+.article-body p.bullet-item {
+    text-indent: 0;
+    padding-left: 1.2em;
+    position: relative;
+}
+
+/* ─── 테이블 ─── */
+.article-table {
+    margin: 16px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.article-table table {
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+.article-table td, .article-table th {
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    vertical-align: top;
+    white-space: normal;
+}
+.article-table tr:first-child td,
+.article-table tr:first-child th {
+    background: #f0f4f8;
+    font-weight: 600;
+    color: #003366;
+    position: sticky;
+    top: 0;
+}
+.article-table tr:nth-child(even) td {
+    background: #fafbfc;
+}
+/* 좌우 스크롤 힌트 */
+.table-scroll-hint {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+}
+
+/* ─── 이미지 (논문 내 그림) ─── */
+.article-figure {
+    margin: 16px 0;
+    text-align: center;
+}
+.article-figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.article-figure img:hover {
+    transform: scale(1.02);
+}
+.article-figure figcaption {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+}
+
+/* ─── 회원사 로고 ─── */
+.logos-section {
+    background: #fff;
+    padding: 20px 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.logos-header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+.logos-section-label {
+    font-size: 13px;
+    color: #0066cc;
+    margin-bottom: 4px;
+}
+.logos-instruction {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+}
+.logos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+.logo-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 6px;
+    background: #fff;
+}
+.logo-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* ─── 전체화면 이미지 뷰어 ─── */
+.fullscreen-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.fullscreen-overlay.active {
+    display: flex;
+}
+.fullscreen-overlay img {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+}
+
+/* ─── 하단 네비게이션 ─── */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: rgba(0,51,102,0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    z-index: 100;
+}
+.bottom-nav button {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.bottom-nav button:hover,
+.bottom-nav button.active {
+    background: rgba(255,255,255,0.3);
+}
+
+/* 하단 네비 공간 확보 */
+body::after {
+    content: '';
+    display: block;
+    height: 60px;
+}
+
+/* ─── 상단 네비바 ─── */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: 48px;
+    background: rgba(0,51,102,0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    z-index: 200;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.top-nav .nav-title {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    text-align: center;
+    margin: 0 8px;
+}
+.top-nav button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+.top-nav button:hover {
+    background: rgba(255,255,255,0.15);
+}
+/* 상단 네비 공간 확보 */
+body { padding-top: 48px; }
+
+/* ─── 맨위로 버튼 ─── */
+.scroll-top {
+    position: fixed;
+    bottom: 20px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    background: #003366;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 101;
+    transition: opacity 0.3s;
+}
+.scroll-top.visible {
+    display: block;
+}
+
+/* ─── 사이드바 목록 ─── */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 300;
+}
+.sidebar-overlay.active { display: block; }
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100%;
+    background: #fff;
+    z-index: 301;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -4px 0 16px rgba(0,0,0,0.2);
+}
+.sidebar.active { right: 0; }
+
+.sidebar-header {
+    background: #003366;
+    color: white;
+    padding: 16px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sidebar-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+.sidebar-list {
+    list-style: none;
+    padding: 8px 0;
+}
+.sidebar-list li a {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+.sidebar-list li a:hover {
+    background: #f5f7fa;
+}
+.sidebar-list li a .toc-label {
+    font-size: 11px;
+    color: #0066cc;
+    display: block;
+    margin-bottom: 2px;
+}
+
+@media (min-width: 481px) {
+    .top-nav { max-width: 600px; }
+}
+@media (min-width: 768px) {
+    .top-nav { max-width: 720px; }
+}
+
+/* ─── 하단 연락처 ─── */
+.footer-contact {
+    background: #2c2c2c;
+    color: #ccc;
+    padding: 24px 20px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+.footer-contact .footer-info p {
+    margin: 2px 0;
+    text-indent: 0;
+}
+.footer-contact .footer-links {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 16px;
+    border-top: 1px solid #444;
+    padding-top: 16px;
+}
+.footer-contact .footer-link-item {
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 4px;
+}
+.footer-contact .footer-link-item .icon {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 4px;
+}
+
+/* ─── 반응형 ─── */
+@media (min-width: 481px) {
+    body { max-width: 600px; }
+    .article-body { padding: 32px 28px; }
+    .article-body p { font-size: 16px; }
+}
+@media (min-width: 768px) {
+    body { max-width: 720px; }
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- 상단 네비바 -->
+<nav class="top-nav" id="topNav">
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" title="맨 위로">↑</button>
+    <span class="nav-title">KOSME 소식지 Vol.50</span>
+    <button onclick="location.href='../'" title="홈">⌂</button>
+    <button onclick="toggleSidebar()" title="목차">☰</button>
+</nav>
+
+<!-- 사이드바 목록 -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <span>목차</span>
+        <button onclick="toggleSidebar()">✕</button>
+    </div>
+    <ul class="sidebar-list">
+        <li><a href="#slide-1" onclick="toggleSidebar()"><span class="toc-label">표지</span>Vol.50 March 2026</a></li>
+        <li><a href="#slide-2" onclick="toggleSidebar()"><span class="toc-label">목차</span>CONTENTS</a></li>
+        <li><a href="#slide-3" onclick="toggleSidebar()"><span class="toc-label">권두언</span>조선해양산업 전환의 시대</a></li>
+        <li><a href="#slide-6" onclick="toggleSidebar()"><span class="toc-label">단체소식</span>한국선급 AI 에이전트</a></li>
+        <li><a href="#slide-8" onclick="toggleSidebar()"><span class="toc-label">단체소식</span>KOMERI 암모니아 기술협력</a></li>
+        <li><a href="#slide-10" onclick="toggleSidebar()"><span class="toc-label">단체탐방</span>한국기계연구원(KIMM)</a></li>
+        <li><a href="#slide-12" onclick="toggleSidebar()"><span class="toc-label">특집 해설기사</span>암모니아 추진 선박의 안전성 확보</a></li>
+        <li><a href="#slide-17" onclick="toggleSidebar()"><span class="toc-label">특집 해설기사</span>태양광(PV) 전기 추진 선박 생애주기평가</a></li>
+        <li><a href="#slide-22" onclick="toggleSidebar()"><span class="toc-label">연구실 인터뷰</span>노정호 교수 (한국해양대)</a></li>
+        <li><a href="#slide-25" onclick="toggleSidebar()"><span class="toc-label">알아두면 도움이 되는 상식</span>현존의 태도로 관계 안에서 성장하기</a></li>
+        <li><a href="#slide-28" onclick="toggleSidebar()"><span class="toc-label">상식</span>#1. 친환경 선박 시대, 승무 자격 변화</a></li>
+        <li><a href="#slide-31" onclick="toggleSidebar()"><span class="toc-label">선배 연구자에게 듣다</span>남정길 교수 (목포해양대)</a></li>
+        <li><a href="#slide-34" onclick="toggleSidebar()"><span class="toc-label">학회소식</span>졸업우수자 시상식·산업체 탐방·학술대회</a></li>
+        <li><a href="#slide-36" onclick="toggleSidebar()"><span class="toc-label">단체회원사</span>회원사 현황</a></li>
+        <li><a href="#slide-43" onclick="toggleSidebar()"><span class="toc-label">단체회원사</span>회원사 로고</a></li>
+        <li><a href="#slide-47" onclick="toggleSidebar()"><span class="toc-label">편집위원회</span>소식지 편집위원(2026년도)</a></li>
+        <li><a href="#footer-contact" onclick="toggleSidebar()"><span class="toc-label">연락처</span>학회 연락처 · 호남지부</a></li>
+    </ul>
+</div>
+
+<!-- 전체화면 이미지 뷰어 -->
+<div class="fullscreen-overlay" id="fullscreenOverlay" onclick="closeFullscreen()">
+    <img id="fullscreenImg" src="" alt="">
+</div>
+
+<section class="cover" id="slide-1">
+  <img src="kosme-vol50-images/s01_img02.jpg" class="cover-img" alt="표지">
+</section>
+
+<section class="toc-section" id="slide-2">
+  <div class="toc-container">
+    <div class="toc-header">
+      <p class="toc-webzine">Webzine</p>
+      <p class="toc-vol">Vol. 50 · March 2026</p>
+      <h2 class="toc-title">CONTENTS</h2>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-4" class="toc-section-link">권두언</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">조선해양산업 전환의 시대, 마린엔지니어링산업 생태계의 역할</p>
+        <p class="toc-entry-author">황재혁 · 부산조선해양기자재공업협동조합 전무이사</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-12" class="toc-section-link">특집 해설기사</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">암모니아 추진 선박의 안전성 확보: 암모니아 누출 완화를 위한 기계식 환기 시스템의 효과 및 안전성 평가</p>
+        <p class="toc-entry-author">정병욱 · 스트라스클라이드대학교</p>
+      </div>
+      <div class="toc-entry">
+        <p class="toc-entry-title">태양광(PV)을 적용한 전기 추진 선박의 라이브 생애주기평가 - 2</p>
+        <p class="toc-entry-author">박치병 · 국립한국해양대학교 교수</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-6" class="toc-section-link">업체동정</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">(사)한국선급 / (재)한국조선해양기자재 연구원</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-10" class="toc-section-link">업체탐방</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">한국기계연구원(KIMM)</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-22" class="toc-section-link">연구실 인터뷰</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">노정호</p>
+        <p class="toc-entry-author">국립한국해양대학교 기관시스템공학부 교수</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-25" class="toc-section-link">알아두면 도움이 되는 상식</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">현존의 태도로 관계 안에서 성장하기</p>
+        <p class="toc-entry-author">김영근 · 인제대학교 상담심리치료학과 교수</p>
+      </div>
+      <div class="toc-entry">
+        <p class="toc-entry-title">#1. 친환경 선박 시대, 승무 자격은 어떻게 달라지나</p>
+        <p class="toc-entry-author">유형수 · 한국해양수산연수원 교수</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-31" class="toc-section-link">선배 연구자에게 듣다</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">남정길</p>
+        <p class="toc-entry-author">국립목포해양대학교 교수 / (사)한국마린엔지니어링학회 고문</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-34" class="toc-section-link">학회소식</a>
+      <div class="toc-entry">
+        <p class="toc-entry-title">2025년도 졸업우수자 '상' 시상식 진행</p>
+      </div>
+      <div class="toc-entry">
+        <p class="toc-entry-title">2026년도 상반기 산업체 탐방 진행</p>
+      </div>
+      <div class="toc-entry">
+        <p class="toc-entry-title">2026년도 전기학술대회 행사 안내</p>
+      </div>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-36" class="toc-section-link">단체회원사 현황</a>
+    </div>
+    <div class="toc-group">
+      <a href="#slide-43" class="toc-section-link">단체회원사 로고</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-header" id="slide-3">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">권두언</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-4">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>조선해양산업 전환의 시대, 마린엔지니어링산업 생태계의 역할</strong></span></h3>
+    </div>
+    <div class="author-photo">
+      <img src="kosme-vol50-images/s04_img02.gif" alt="저자 사진">
+    </div>
+    <div class="author-info-block">
+      <p style="text-align:center"><span style="font-size:16px">황재혁</span></p>
+      <p style="text-align:center"><span style="font-size:16px">부산조선해양기자재공업협동조합 전무이사</span></p>
+      <p style="text-align:center"><span style="font-size:16px">(사)한국마린엔지니어링학회 사업이사</span></p>
+    </div>
+    <p><span style="font-size:20px">한국마린엔지니어링학회 회원 여러분,</span></p>
+    <p><span style="font-size:20px">안녕하십니까? 학회 사업 이사를 맡고 있는 부산조선 해양기자재공업협동조합 전무이사 황재혁입니다. </span></p>
+    <p><span style="font-size:20px"> 최근 글로벌 해양 산업은 친환경 전환과 디지털 기술 혁신이라는 두 가지 거대한 흐름 속에서 빠르게 재편되고 있습니다. 국제해사기구(IMO)의 환경 규제 강화, 자율운항 기술의 발전, 그리고 인공지능 기반 스마트 조선소의 확산은 산업 전반의 구조와 경쟁 방식을 근본적으로 변화시키고 있습니다.</span></p>
+    <p><span style="font-size:20px">이러한 흐름은 단순한 기술 발전을 넘어 해양 산업 전반의 운영 방식과 가치사슬을 재구성하고 있으며, 조선·기자재·운영·서비스 간 연계가 더욱 긴밀해지는 방향으로 이어지고 있습니다. 특히 조선해양기자재 산업은 생산 중심에서 유지관리와 서비스 영역으로 확장되며, 산업 경쟁력을 좌우하는 핵심 축으로 자리 잡고 있습니다.</span></p>
+    <p><span style="font-size:20px">대한민국 조선 산업은 세계적인 기술력과 생산 역량을 바탕으로 글로벌 시장에서 중요한 위치를 유지하고 있습니다. 그러나 글로벌 경쟁 심화와 공급망 재편이라는 환경 속에서 지속적인 경쟁력을 확보하기 위해서는 기술 혁신과 산업 간 협력 구조의 고도화가 요구되는 시점입니다.</span></p>
+    <p><span style="font-size:20px">(</span><span style="font-size:20px"><strong>친환경 중심의 산업 구조 전환</strong></span><span style="font-size:20px">) 해양 산업에서 가장 주목해야 할 흐름은 친환경 중심의 산업 구조 재편입니다. 국제 규제와 탄소중립 정책에 따라 친환경 연료 기반 선박과 에너지 효율 중심의 운영 체계로 빠르게 변화하고 있습니다. </span></p>
+    <p><span style="font-size:20px">이러한 변화는 개별 기술의 발전을 넘어 산업 전반의 구조 변화를 요구하고 있으며, 관련 기업과 기관 간 협력과 대응 전략이 중요한 과제로 부각되고 있습니다. 앞으로 친환경 대응 역량은 기업 경쟁력은 물론, 국가 해양 산업의 지속 가능성을 좌우하는 핵심 요소가 될 것입니다.</span></p>
+    <p><span style="font-size:20px">(</span><span style="font-size:20px"><strong>디지털 기반 산업 생태계 확장</strong></span><span style="font-size:20px">) 디지털 기술의 발전은 해양 산업의 운영 방식과 가치 창출 구조를 근본적으로 재편하고 있습니다. 특히 데이터 기반 의사결정, 스마트 생산 체계, 원격 운영 등 새로운 산업 패러다임으로 전환되면서 산업의 효율성과 연결성이 한층 강화되고 있습니다.</span></p>
+    <p><span style="font-size:20px">더불어 주요 국가들의 정책적 지원 확대와 공급망 재편이 맞물리며 산업 환경의 변화 속도는 더욱 빨라지고 있습니다. 이러한 흐름 속에서 해양 산업은 단순 제조를 넘어 데이터와 서비스가 결합된 구조로 진화하고 있으며, 기업 간 협력과 산업 간 융합이 경쟁력을 좌우하는 핵심 요소로 부상하고 있습니다. 디지털 전환은 해양 산업 전반의 혁신을 이끄는 기반으로, 향후 산업 경쟁력을 좌우하는 핵심 요소로 작용할 것입니다.</span></p>
+    <p><span style="font-size:20px">(</span><span style="font-size:20px"><strong>Lab to Market, 연구에서 산업으로</strong></span><span style="font-size:20px">) 해양 산업의 기술 혁신은 연구개발 단계에서 완성되는 것이 아니라, 산업 현장에서 구현될 때 비로소 가치를 갖습니다. 연구실에서 개발된 기술이 산업 현장에서 실제로 활용되고 시장으로 연결되는 과정이 중요합니다. 최근 강조되는 “Lab to Market” 개념은 이러한 기술 상용화의 중요성을 잘 보여줍니다.</span></p>
+    <p><span style="font-size:20px">특히 해양 산업은 대규모 설비와 장기간의 검증 과정이 필요한 산업이기 때문에 연구개발–실증–산업 적용을 연결하는 협력 플랫폼이 필수적입니다. 산·학·연 협력 체계를 통해 연구 성과가 산업 경쟁력으로 이어지는 선순환 구조를 구축해야 할 것입니다.</span></p>
+    <p><span style="font-size:20px">(</span><span style="font-size:20px"><strong>해양 산업의 미래와 새로운 기회</strong></span><span style="font-size:20px">) 앞으로 해양 산업은 친환경, 디지털, 자동화 기술을 중심으로 더욱 빠르게 발전할 것으로 전망됩니다. 또한 북극 항로 개발, 해양 자원 활용 확대 등 새로운 영역이 열리면서 산업의 확장 가능성도 더욱 커지고 있습니다.</span></p>
+    <p><span style="font-size:20px">이러한 변화는 기존 산업의 고도화와 함께 새로운 시장과 기회를 창출하며, 우리 해양 산업이 한 단계 도약할 수 있는 중요한 계기가 될 것입니다.</span></p>
+    <p><span style="font-size:20px">(</span><span style="font-size:20px"><strong>마린엔지니어링학회와 조선해양기자재 산업의 동반 발전</strong></span><span style="font-size:20px">) 지금 해양 산업은 중요한 전환의 시기를 맞이하고 있습니다. 이러한 변화 속에서 학회의 역할 또한 더욱 중요해지고 있습니다.</span></p>
+    <p><span style="font-size:20px">한국마린엔지니어링학회는 「조선해양기자재 및 관련 산업의 학문과 기술의 향상·보급에 기여하고, 산·학·연·관·언 간 정보 교류와 싱크탱크 역할을 수행하는 것을 목적」으로 하는 중요한 플랫폼입니다.</span></p>
+    <p><span style="font-size:20px">이와 같은 역할을 바탕으로 학회가 산업과 연구를 연결하는 중심에서 지속적으로 기능할 때, 해양 산업의 혁신과 발전은 더욱 가속화될 것입니다.</span></p>
+    <p><span style="font-size:20px">앞으로도 학회와 산업계가 함께 협력하여 지식과 기술이 산업 경쟁력으로 이어지는 선순환 구조를 통해 해양 산업의 지속 가능한 경쟁력을 함께 만들어 나가야 할 시점입니다. </span></p>
+    <p><span style="font-size:20px">회원 여러분의 지속적인 관심과 참여를 부탁드리며, 학회의 발전과 건승을 기원합니다. 감사합니다.</span></p>
+    <h3 style="text-align:right"><span style="font-size:20px">부산조선해양기자재공업협동조합 전무이사 </span><span style="font-size:28px"><strong>황재혁</strong></span></h3>
+  </div>
+</article>
+
+<section class="section-header" id="slide-6">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">업체동정</span></p>
+    <h3 style="text-align:center"><span style="font-size:24px;color:#002060"><strong>(사)한국선급</strong></span></h3>
+  </div>
+</section>
+
+<article class="article-section" id="slide-7">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>한국선급, 차세대 통합 AI 에이전트 </strong></span></h3>
+    </div>
+    <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>플랫폼 구축</strong></span></h3>
+    <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>- 워크플로우 설계부터 전문도구 연동까지, 조선해양산업의 DX 가속화</strong></span></h3>
+    <p><span style="font-size:20px">한국선급(KR, 회장 이영석)은 급격한 인공지능 패러다임 변화에 발맞춰, 단순한 질의응답을 넘어 실제 업무를 자율적으로 수행하는 차세대 통합 AI 에이전트 플랫폼인『MariNote.AI』를 개발하였습니다.</span></p>
+    <div class="article-table"><table>
+<tr><td></td><td></td></tr>
+<tr><td>△ KR AI Agent 아키텍처</td><td>△ AI Agent 목록 패널</td></tr>
+</table></div>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s07_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:20px">최근 AI 기술은 단순 대화형 모델에서 사용자의 의도를 해석하고 적절한 도구를 연계해 과업을 완수하는 『AI 에이전트』 중심으로 이동하고 있습니다. KR은 이러한 글로벌 트렌드와 내부의 업무 혁신 수요를 선제적으로 반영하여, 플랫폼과 엔진, 데이터가 긴밀히 결합된 3축 구조의 실무 연동형 AI 환경을 구축하였습니다. </span></p>
+    <p><span style="font-size:20px">MariNote.AI는 세 가지 핵심 요소로 구성됩니다. : </span></p>
+    <p><span style="font-size:20px">1. MariNote.AI (통합 플랫폼):사용자가 AI 서비스를 경험하고 업무를 수행하는 통합 워크스페이스</span></p>
+    <p><span style="font-size:20px">2.  AI Agent Hub (프로세스 엔진):워크플로우 기반으로 AI 에이전트를 관리하고 실무 도구를 연계하는 시스템의 중추 역할 수행</span></p>
+    <p><span style="font-size:20px">3. AI Data Lake (지식 저장소):파편화된 업무 매뉴얼과 체크리스트 등을 AI가 이해할 수 있는 형태로 표준화하여 관리하는 지식 자산 허브</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s07_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:20px">본 플랫폼의 가장 큰 혁신은 사용자가 업무 목적에 맞는 실행 절차를   직접 설계하고 전문 도구를 배치할 수 있다는 점입니다. 사용자는 복잡한 과업을 단계별로 구조화하고, 각 단계에 필요한 전문 도구(MCP & Task Tool)를 동적으로 장착하여 수준 높은 특화 작업을 수행할 수 있습니다.</span></p>
+    <p><span style="font-size:20px">또한, KR은 레거시 시스템의 데이터를 AI 최적화 형태로 재구성한 데이터 환경을 구현하였습니다. AI Data Lake는 기존의 파편화된 정보를 의미론적으로 표준화하여 ‘데이터 번들’ 형태로 공급함으로써, AI 에이전트가 실무 현장에서 정확한 맥락을 유지하며 정보를 참고할 수 있도록 지원  하였습니다.</span></p>
+    <p><span style="font-size:20px">현재 MariNote.AI에서는 다음과 같은 전문 AI 에이전트를 기본으로 제공하고 있습니다: </span></p>
+    <p><span style="font-size:20px">1. M365 Agent:Microsoft 365 데이터 연동 및 문서 검색 지원</span></p>
+    <p><span style="font-size:20px">2. KR Rules Agent:KR 선급기술규칙 기반 전문 답변 제공</span></p>
+    <p><span style="font-size:20px">3. Marine Legal Terms Agent:해사 법률 용어 기반 표준 번역 및 용어 검토</span></p>
+    <p><span style="font-size:20px">4. Document Generation Agent:분석 결과를 바탕으로 워드, 엑셀 등 보고서 자동 생성</span></p>
+    <p><span style="font-size:20px">KR 관계자는 “MariNote.AI는 AI 에이전트의 프로세스 설계 능력과 전문 지식 체계를 실무 환경에 완벽하게 녹여낸 결실”이라며, “앞으로도 레거시 시스템과의 연계성을 고도화하고 데이터 지원 범위를 확대하여  조선해양 산업의 디지털 전환(AI Transformation)을 가속화할 예정”이라고 밝혔습니다. <끝></span></p>
+  </div>
+</article>
+
+<section class="section-header" id="slide-8">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">업체동정</span></p>
+    <h3 style="text-align:center"><span style="font-size:24px;color:#002060"><strong>(재)한국조선해양기자재연구원</strong></span></h3>
+  </div>
+</section>
+
+<article class="article-section" id="slide-9">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>KOMERI-국립목포해양대학교, ‘친환경 선박용 암모니아’ 기술협력 맞손</strong></span></h3>
+    </div>
+    <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>- 차세대 무탄소 연료 ‘암모니아’ 기반 친환경 선박 기술협력 본격화</strong></span></h3>
+    <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>- 암모니아 연료공급 및 추진시스템 연구 위한 전문 인력 양성 체계 구축</strong></span></h3>
+    <p><span style="font-size:20px">한국조선해양기자재연구원(원장 배정철, 이하 KOMERI)과 국립목포해양대학교(총장 최부홍, 이하 목포해양대)는 지난 2026년 3월 10일(화), 전남 목포 신항만 배후 단지에 위치한 KOMERI 연안해상기술연구 센터에서 ‘친환경 선박용 암모니아 연료공급시스템 기술 교류 및 인력 양성’을 위한 업무협약(MOU)을 체결했다 고 밝혔다.</span></p>
+    <p><span style="font-size:20px">이번 협약은 국제 환경규제 강화와 탄소중립 정책에 대응하기 위해 차세대 무탄소 연료로 주목받는 ‘암모니아’ 기반 친환경 선박 기술협력과 전문 인력 양성 적기 공급을</span></p>
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>KOMERI, ‘친환경 암모니아 선박 연료공급 실증센터’ 착공, 2026년 12월 완공 목표</strong></span></h3>
+    </div>
+    <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>- 탄소중립 시대 대비 친환경 암모니아 선박 연료기술 선도 기반 마련</strong></span></h3>
+    <h3 style="text-align:center"><span style="font-size:28px;color:#004F8A"><strong>- 민·관·연 협력 플랫폼 구축으로 친환경 암모니아 신산업 육성 기대</strong></span></h3>
+    <p><span style="font-size:20px">한국조선해양기자재연구원(원장 배정철, 이하 KOMERI)은 3월 10일(화), 전라남도 목포시 대양산단 기반구축 사업부지에서 ‘친환경 암모니아 선박 연료공급 실증센터’ 신축공사 착공식을 개최하고 본격적인 사업 추진에 들어간다. 실증센터는 2026년 12월 완공을 목표로 조성될 예정이다.</span></p>
+    <p><span style="font-size:20px">위해 마련됐다. 특히 수소 대비 저장과 운송이 용이한 암모니아 연료추진선박의 상용화에 대비해 기술 개발과 인재 양성을 동시에 추진한다는 점에서 의미가 크다.</span></p>
+    <p><span style="font-size:20px">양 기관은 특히 암모니아의 독성과 부식성 문제를 해결하는 안전 제어 기술과 고효율 엔진 시스템 개발을 포함하여 △친환경 무탄소 연료 선박 지역산업 육성 및 인력양성 △친환경 선박 기자재 산업 활성화를 위한 신규사업 발굴 및 공동연구 협력 △암모니아 연료공급 및 추진시스템 장비 공동 활용 중심으로 협력한다.</span></p>
+    <p><span style="font-size:20px"> 암모니아는 연소 과정에서 이산화탄소를 배출하지 않는 무탄소 연료로 2050 탄소중립 실현을 위한 핵심 에너지원으로 주목받고 있다. 다만 연료 취급 과정에서 높은 안전성과 전문 기술이 요구되는 분야로, 이번 협약은 KOMERI의 연구 인프라와 목포해양대의 교육·연구 역량을 결합해 관련 기술 개발과 인력 양성을 동시에 추진한다는 점에서 의미가 있다.</span></p>
+    <p><span style="font-size:20px">이번 사업은 국내 최대 규모인 12MW급 선박용 암모니아 연료공급 시스템을 기반으로, 암모니아 연료추진선박에 탑재되는 주요 기자재의 육상 실증 테스트를 수행할 수 있는 인프라 구축을 목표로 추진된다.</span></p>
+    <p><span style="font-size:20px">이날 착공식에는 전라남도, 목포시, 전남테크노파크, 방재시험연구원, HD현대삼호, HD현대엔진을 비롯하여 지역 중소기업 관계자 200여명이 참석했으며, 정부와 지자체의 지원 아래 민·관·연이 협력하는 친환경 선박 연료전환의 중요한 전환점이 될 것으로 기대된다.</span></p>
+    <p><span style="font-size:20px">  KOMERI는 산업통상부가 주관한 ‘산업혁신기반구축 사업’의 일환으로 전라남도와 목포시의 전폭적인 지원을 받아 친환경 선박 시장 공략에 박차를 가해 왔다. 총사업비 200억 원(국비 100억, 지방비 100억)이 투입된 이번 사업은 암모니아 연료추진선박 핵심 기자재의 국산화 기술 확보와 실증 플랫폼 구축을 통해 친환경 암모니아 선박 기술 상용화 기반을 마련하는 데 목적이 있다.</span></p>
+    <p><span style="font-size:20px"> 목포해양대 최부홍 총장은 “우리 대학의 우수한 인재들이 조선해양 산업의 미래인 암모니아 연료추진선박 기술 교류와 현장 맞춤형 교육을 통해 K-조선의 경쟁력을 이끌 핵심 인재로 성장할 수 있도록 적극 지원하겠다”고 밝혔다.</span></p>
+    <p><span style="font-size:20px">  KOMERI 배정철 원장은 “암모니아 선박 시장은 이제 막 열리기 시작한 미래 친환경 선박 산업의 핵심 분야”라며, “목포해양대와의 협력을 통해 암모니아 연료 기술 경쟁력 확보와 전문 인력 양성을 동시에 추진해 글로벌 시장을 선도할 기반을 마련하겠다”고 말했다.</span></p>
+    <p style="text-align:center"><span style="font-size:20px">MOU 사진 / (좌)국립목포해양대학교 최부홍총장, </span></p>
+    <p style="text-align:center"><span style="font-size:20px">(우)KOMERI 배정철원장</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s09_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:20px">이 사업에서는 KOMERI가 구축한 중대형 선박용 암모니아 연료공급시스템 및 추진시스템 통합 성능평가 설비를 중심으로 △방재시험연구원이 설비 안정성 확보를 위한 기술지원 △전남테크노파크가 신산업 전환 및 기술 보급 확산을 위한 기업 지원을 수행하고 있다.</span></p>
+    <p><span style="font-size:20px">실증센터와 주요 장비가 완성되는 2027년부터는 국산 암모니아 혼소엔진 기술을 비롯하여 암모니아 연료추진선박의 핵심기자재 국산화 기술 및 누출 감지 안전 기술을 포함한 다양한 암모니아 관련 기자재에 대한 육상 실증이 본격적으로 진행될 예정이다.</span></p>
+    <p><span style="font-size:20px">KOMERI 배정철 원장은 “국제해사기구(IMO)의 온실가스 감축 전략과 2050 탄소중립 목표에 따라 친환경 무탄소 연료로서 암모니아의 중요성이 더욱 커지고 있다”며 “최근 암모니아 연료추진선박 수주가 증가하고 있는 가운데 이번 실증센터 착공은 암모니아 연료기술 선도와 국내 기자재 개발을 위한 핵심 기반이 될 것”이라고 말했다.</span></p>
+    <p><span style="font-size:20px">  KOMERI는 앞으로도 산업계와 협력해 탄소중립 실현을 위한 친환경 선박용 암모니아 연료기술 선도라는 비전으로 기반 기술 확보와 실증을 지속적으로 확대해 나갈 계획이다. <끝></span></p>
+  </div>
+</article>
+
+<section class="section-header" id="slide-10">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">업체탐방</span></p>
+    <h3 style="text-align:center"><span style="font-size:24px;color:#002060"><strong>한국기계연구원(KIMM)</strong></span></h3>
+  </div>
+</section>
+
+<article class="article-section" id="slide-11">
+  <div class="article-body">
+    <p style="text-align:center"><span style="font-size:20px"><strong>1. 설립근거 및 목적</strong></span></p>
+    <p><span style="font-size:20px">- 설립근거: 과학기술분야 정부출연연구기관 등의 설립·운영 및 육성에 관한 법률(제8조)</span></p>
+    <p><span style="font-size:20px">- 설립목적: 기계분야의 연구개발, 성과확산, 신뢰성평가 등을 통해 국가 및 산업계의 발전에 기여</span></p>
+    <p style="text-align:center"><span style="font-size:20px"><strong>2. 주요기능</strong></span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s11_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p style="text-align:center"><span style="font-size:20px"><strong>3. 경영비전과 추진전략</strong></span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s11_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p style="text-align:center"><span style="font-size:20px"><strong>4. 동남권기계연구본부 소재지</strong></span></p>
+    <p style="text-align:center"><span style="font-size:20px">부산 강서구 미음산단5로41번길 48 (동남권기계연구본부)</span></p>
+    <p style="text-align:center"><span style="font-size:20px"><strong>5. 동남권기계연구본부 소개</strong></span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s11_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<section class="section-header" id="slide-12">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">특집 해설기사</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-13">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>암모니아 추진 선박의 안전성 확보: 암모니아 누출 완화를 위한 기계식 환기 시스템의 효과 및 안전성 평가</strong></span></h3>
+    </div>
+    <div class="author-photo">
+      <img src="kosme-vol50-images/s13_img02.png" alt="저자 사진">
+    </div>
+    <div class="author-info-block">
+      <p>정병욱</p>
+      <p>Byongug Jeong</p>
+      <p>조선해양마린엔지니어링학부</p>
+      <p>스트라스클라이드대학교</p>
+      <p>University of Strathclyde</p>
+      <p>byongug.jeong@strath.ac.uk</p>
+    </div>
+    <p><span style="font-size:20px;color:#004F8A"><strong>3. 연구의 배경 및 목적: 선박 환경에서의 기계식 환기 성능 평가</strong></span></p>
+    <p><span style="font-size:20px">기존 암모니아 환기에 관한 연구는 주로 공장, 공중화장실, 농업 시설 등 육상 시설에 집중되어 왔다 [8, 9]. 하지만 선박 내부 공간은 육상 시설에 비해 협소하고 복잡하며 다양한 형태의 화물창과 장비가 밀집해 있어 독특한 기류 패턴을 형성한다. 과거 사고 통계를 보면 장비 손상이나 부품 결함으로 인한 누출이 주요 원인 중 하나로 지목되고 있어 밀폐 공간에서의 효과적인 환기는 필수적이다.</span></p>
+    <p><span style="font-size:20px">이에 본 논문은 전산유체역학(CFD) 시뮬레이션을 활용하여 선박 내 밀폐 공간에서 암모니아 누출 발생 시 기계식 환기 시스템의 완화 효과를 정량적으로 평가했다 (그림 1 참조) [10, 11]. 구체적으로 컨테이너선과 RoPax선이라는 두 가지 상이한 선박 모델을 대상으로, 다양한 환기 조건 및 환경 변수가 암모니아 농도를 안전 기준인 30 ppm 및 폭발 하한계인 LFL 이하로 저감시키는 데 소요되는 시간(Decay time)을 도출하고 승무원의</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>1. 서 론: 해운 산업의 탈탄소화와 암모니아 연료의 부상</strong></span></p>
+    <p><span style="font-size:20px">지난 20여 년간 국제해사기구(IMO)의 엄격한 환경 규제에 따라 해운 산업 내 글로벌 탈탄소화 노력이 가속화되고 있다. 2050년까지 온실가스(GHG) 순배출 제로(Net-Zero)를 달성하겠다는 IMO의 야심 찬 목표를 달성하기 위해, 기존 화석 연료를 대체할 수 있는 지속 가능한 에너지 솔루션에 대한 관심이 급증하고 있다.</span></p>
+    <p><span style="font-size:20px">다양한 대체 연료 중에서도 암모니아는 가장 유망한 차세대 선박 연료 중 하나로 주목받고 있다. 암모니아는 연소 시 탄소를 배출하지 않으며, 에너지 밀도가 높고, 풍력이나 태양광과 같은 재생 에너지를 통해 합성될 수 있다 [1]. 특히 극저온 보관이 필요한 수소와 달리, 암모니아는 영하 33도 또는 적당한 압력 하에서 액체 상태로 쉽게 저장 및 운송할 수 있어 해상 운송 요건에 부합한다. 또한 육상 산업을 위해 이미 대규모 암모니아 생산 및 운송 인프라가 잘 구축되어 있다는 점도 큰 이점이다 [2].</span></p>
+    <p><span style="font-size:20px">안전한 접근 시간을 제시하는 것을 목표로 한다.</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>4. 수치 해석 및 모델링 방법 (FLACS-CFD)</strong></span></p>
+    <p><span style="font-size:20px">본 연구는 산업 안전 분석에 특화된 상용 전산유체역학 도구인 FLACS-CFD 소프트웨어를 사용하여 수행되었다 [12]. FLACS는 분산 다공성(Distributed porosity) 기법을 사용하여 복잡한 기하학적 구조를 거친 격자 상에서도 효과적으로 표현할 수 있다. 난류 모델로는 실내 환기 시뮬레이션에 적합한 RANS 모델이 사용되었다. 환기율 모델링 시 기계식 배기 팬은 30 ACH 및 45 ACH에 해당하는 속도 출구(Velocity outlet)로, 자연 환기용 개구부는 0 Pa 게이지 압력의 압력 입구(Pressure inlet)로 설정하여 신선한 공기가 유입되도록 구성했다. 또한, 헬륨 가스 확산 실험 데이터 및 식품 공장 축소 모형의 암모니아 가스 분산 실험 데이터를 바탕으로 모델의 타당성을 이중으로 검증하여 오차 범위 내의 정확성을 입증했다 [13].</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>2. 암모니아의 치명적 위험성과 규제 현황</strong></span></p>
+    <p><span style="font-size:20px">그러나 암모니아를 선박 연료로 도입하는 데에는 안전성 측면에서 중대한 도전 과제가 존재한다. 암모니아는 인체에 매우 유독한 물질로, 노출 시 눈, 코, 목을 자극하며 농도가 높을 경우 호흡 곤란이나 폐 손상, 심지어 사망에 이르게 할 수 있다 [3, 4]. 인체 노출 한계는 25~50 ppm 수준으로 매우 엄격하며, 300 ppm 이상의 농도에 노출될 경우 치명적인 결과를 초래한다. 안전 측면에서 주목해야 할 주요 기준치는 다음과 같다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 30 ppm: 암모니아에 대한 경보 한계치(Alarm limit)로, 즉각적인 안전 조치와 알람이 요구된다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 150 ppm: 비상 환기 시스템이 자동으로 가동되어야 하며 연료 공급이 차단되는 기준이다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 300 ppm: 심각한 비상 대응이 필요하며, 연료 공급 차단 및 화재 진압 시스템이 활성화된다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 400 ppm: 미국 국립직업안전위생연구소(NIOSH)가 정한 '생명과 건강에 즉각적으로 위험한</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>5. 사례 연구 대상 선박 모델링</strong></span></p>
+    <p><span style="font-size:20px">본 연구는 서로 다른 암모니아 저장 공간 구조를 가진 두 척의 선박을 대상으로 진행되었다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[사례 1] 2700 TEU급 컨테이너선 (화물창 공간) (그림 3, 4 참고)</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 공간 특성: 5번 화물창(길이 33m, 폭 15m, 높이 18m)을 암모니아 저장 공간으로 할당했다. 이 공간에는 96개의 TEU 규격 내에 기둥 형태의 암모니아 탱크들이 모듈식으로 배치되어 있다. 이처럼 탱크가 밀집된 구조는 파이프 연결부가 많아 누출 위험이 높다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 환기 설계: 상단에 1.2m 크기의 기계식 흡입 팬 2개, 하단 측면에 1m 직경의 자연 급기구 2개를 배치하여 하향에서 상향으로 향하는 환기 기류를 유도했다. 암모니아 체적(2771.5 m3)을 기반으로 계산된 30 ACH 충족 팬 질량 유량은 27.8 kg/s이다. 격자 의존성 테스트를 통해 계산 효율과 정확성을 확보할 수 있는 0.50m 크기의 그리드가 선정되었다.</span></p>
+    <p><span style="font-size:20px">(IDLH)' 농도이다 [4].</span></p>
+    <p><span style="font-size:20px">또한, 암모니아는 공기 중 부피비 15%(하한폭발한계, LFL)에서 28%(상한폭발한계, UFL) 사이에서 가연성을 띤다 [5]. 밀폐되거나 환기가 불량한 선박 내부 공간에 발화원이 존재할 경우 심각한 화재 및 폭발 위험을 초래할 수 있다.</span></p>
+    <p><span style="font-size:20px">국제해사기구(IMO)의 IGC 및 IGF 코드 등 주요 규정에 따르면, 암모니아 연료 파이프라인이나 장비가 위치하여 누출 위험이 있는 구역은 최소 30 ACH(Air Changes per Hour, 시간당 환기 횟수)를 제공할 수 있는 기계식 환기 시스템을 갖추어야 하며, 심각한 누출 시에는 이를 45 ACH 이상으로 늘려야 한다 [6, 7]. 그러나 이러한 규정들이 실제 선박의 복잡하고 밀폐된 환경에서 암모니아 농도를 30 ppm 이하로 안전하게 낮추는 데 얼마나 효과적인지에 대한 실증적 연구는 매우 부족한 실정이다.</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s13_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 2: </strong></span><span style="font-size:20px">암모니아 누출 시뮬레이션 모델/실험 검증 결과</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 3: </strong></span><span style="font-size:20px">2700 TEU 컨테이너선의 기하학적 CAD 모델: (a) 평면도; (b) 조감도; (c) 정면도; 그리고 (d) 우측면도.</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s13_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<article class="article-section" id="slide-14">
+  <div class="article-body">
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s14_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 4: </strong></span><span style="font-size:20px">화물창 공간 및 환기 덕트의 3D 모델(왼쪽), 그리고 TEU 배열(오른쪽)</span></p>
+    <p class="no-indent"><span style="font-size:20px">[사례 2] 1500명 탑승 규모 RoPax선 (협소·밀폐 공간) (그림 5,6 참고)</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 공간 특성: 차량 차고 내부의 불규칙한 형태를 띤 매우 협소한 공간(길이 39.76m, 폭 14.84m, 높이 2.85m)에 45 m3 용량의 금속 저장 탱크 3개가 설치된 상황을 가정했다. 여객과 승무원이 탑승하는 선박 특성상, 이 구역에서의 누출은 치명적인 인명 피해로 직결될 수 있다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 환기 설계: 후면 하단에 1 m2 크기의 자연 환기구 2개, 전면 상단에 1 m2 크기의 기계식 흡입 팬을 배치했다. </span></p>
+    <p><span style="font-size:20px">해당 체적(851.9 m3)을 바탕으로 계산된 30 ACH 기준 질량 유량은 9.18 kg/s이다. 격자 테스트를 통해 0.25m 크기의 그리드가 채택되었다.</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 5: </strong></span><span style="font-size:20px">로팍스(RoPax) 선박의 기하학적 CAD 모델: (a) 평면도; (b) 조감도; (c) 정면도; (d) 우측면도.</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s14_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s14_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 6.: </strong></span><span style="font-size:20px">밀폐 구역의 치수와 저장 탱크(빨간색으로 표시)의 위치를 나타내는 다양한 도면: (a) 평면도; (b) 조감도; (c) 정면도; (d) 우측면도. (이 그림 범례의 색상 참조에 대한 해석은 본 기사의 웹 버전을 참조하십시오.)</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>6. 기계식 환기 성능의 민감도 분석</strong></span></p>
+    <p><span style="font-size:20px">가장 효율적인 환기 시스템 설계를 도출하기 위해 환기구 위치, 환기구 수, 환기율(ACH), 환경 온도 등 핵심 설계 인자가 암모니아 확산과 배출에 미치는 영향을 분석했다.</span></p>
+    <p><span style="font-size:20px">① 환기구 위치의 영향 환기구의 위치는 공간 내 공기 흐름 궤적을 결정하여 환기 효율에 직결된다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 컨테이너선: 상단 배기구의 위치를 중앙에서 외곽으로 점차 이동하며 테스트한 결과, 중앙선에 환기구를 배치했을 때 30 ppm 목표에 가장 빠른 속도(880초)로 도달했다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● RoPax선: 불규칙한 협소 공간 특성상 위치에 따른 편차가 더욱 크게 나타났다. 구석(Forward corner)에 팬을 배치한 경우 600초 만에 30 ppm으로 떨어졌으나, 중앙부로 팬을 옮긴 경우 동일 시간대에 무려 1210 ppm, 1714 ppm의 높은 농도를 기록하며 심각한 국지적 정체가 발생했다.</span></p>
+    <p><span style="font-size:20px">② 환기구 수의 영향 동일한 총 환기 유량을 유지한 채 환기구 수를 1개와 2개로 나누어 비교했다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 컨테이너선: 대칭적인 화물창 양쪽에 환기구를 2개 배치하는 것이 압도적으로 우수했다. 880초 시점에서 2개 환기구 모델은 30 ppm 이하로 낮아졌으나, 1개 환기구 모델은 2949 ppm이라는 위험 수준에 머물렀다. (그림 7, 8 참조)</span></p>
+  </div>
+</article>
+
+<article class="article-section" id="slide-15">
+  <div class="article-body">
+    <p class="no-indent"><span style="font-size:20px">● RoPax선: 이와 반대로 RoPax선에서는 1개의 환기구를 사용하는 것이 더 효과적이었다. 610초 시점에서 1개 환기구 모델은 30 ppm을 달성한 반면, 2개 환기구 모델은 68 ppm을 기록했다. 협소하고 기하학적으로 불규칙한 공간에서는 무리하게 환기구를 분할할 경우 기류가 교란되어 유해 가스 구름이 오히려 더 넓게 확산될 수 있음을 시사한다 (그림 9,10 참조).</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 7: </strong></span><span style="font-size:20px">컨테이너선 (사례1) 의 다양한 ACH 값에 따른 시간에 따른 암모니아 농도 변화(왼쪽), 그리고 30ppm에 도달하는 데 필요한 시간(오른쪽)</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s15_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent"><span style="font-size:20px">▶ 사례 1: 컨테이너선 (화물창 공간) 최악의 누출 시나리오(초기 농도 90%) 조건에서 공간 내 암모니아 농도를 폭발 위험 한계인 LFL(15%) 이하로 낮추는 데는 약 3분이 소요되었다. 인체 노출 한계인 30 ppm 이하로 낮추는 데 걸린 최대 시간은 17분 20초였다. 따라서 누출 발생 시 환기 시스템을 가동한 후 승무원이 화물창 구역에 안전하게 진입하여 사후 조치를 취하기 위해서는 최소 20분의 대기 시간이 권장된다. 컨테이너선은 공간(2771.5 m3)이 방대하고 컨테이너 사이의 좁은 틈새에 가스가 갇히기 쉬워 환기 시간이 상대적으로 더 길게 소요되었다.</span></p>
+    <p class="no-indent"><span style="font-size:20px">▶ 사례 2: RoPax선 (협소 차고 공간) 최악의 시나리오 조건에서 LFL 이하로 농도를 낮추는 데는 5분이 소요되었다. 인체 노출 안전 기준인 30 ppm 이하 도달까지 소요된 최대 시간은 11분 46초였다. 따라서 여객과 승무원의 안전을 담보하고 재진입하기 위해서는 최소 15분의 대기 시간이 권장된다.</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s15_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 8: </strong></span><span style="font-size:20px">컨테이너선 (사례1) 의 880초에서 측정된 암모니아 농도의 3D 플롯</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 9: </strong></span><span style="font-size:20px">로팍스(사례2) 의 다양한 ACH 값에 따른 시간에 따른 암모니아 농도 변화(왼쪽), 그리고 30ppm에 도달하는 데 필요한 시간(오른쪽)</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s15_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:20px;color:#004F8A"><strong>8. 엔지니어링 실무를 위한 설계 권고사항 및 결론</strong></span></p>
+    <p><span style="font-size:20px">본 연구 결과는 암모니아 추진선 설계를 담당하는 엔지니어들에게 다음과 같은 실무적 통찰과 권고사항을 제공한다.</span></p>
+    <p><span style="font-size:20px">1) 데드 존(Dead zones)의 식별 및 집중 관리: 두 선박 모델 모두에서 컨테이너 사이의 좁은 틈새나 흡기구와 먼 구역이 암모니아가 마지막까지 정체하는 데드 존으로 식별되었다. 단순한 전체 환기율(ACH) 충족에 그치지 말고, 국소 배기 장치(Local extraction points) 추가 설치나 기류 유도판(Baffles)의 전략적 설계를 통해 국지적 정체를 방지해야 한다.</span></p>
+    <p><span style="font-size:20px">2) 공간 맞춤형 환기 아키텍처: 민감도 분석 결과처럼 배기구 개수를 무조건 늘리는 것이 능사가 아니다. 방대한 화물창은 복수의 대칭형 배기구가 유리하지만, 특수한 형태의 협소 구역은 단일 배기구가 기류 교란을 막아 오히려 유리할 수 있다. 따라서 모든 환기 설계는 각 공간의 기하학적 특성을 반영한</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s15_img05.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 10: </strong></span><span style="font-size:20px">로팍스(사례2) 의 의 610초에서 측정된 암모니아 농도의 3D 플롯</span></p>
+    <p><span style="font-size:20px">③ 환기율의 영향 (30 ACH vs 45 ACH) IMO 규정에 기반하여 30 ACH와 심각한 누출 기준인 45 ACH를 비교했다. 농도가 급격히 떨어지는 초기에는 큰 차이가 없었으나, 30 ppm이라는 미세한 '꼬리 구간(Tail-end zone)'으로 진입할수록 45 ACH의 강력한 유량이 잔류 가스를 제거하는 데 탁월한 효과를 발휘했다. RoPax선의 경우 ACH를 30에서 45로 높였을 때 안전 농도 도달 시간이 약 27.87% 단축되었다.</span></p>
+    <p><span style="font-size:20px">④ 환경 온도의 영향 온도를 10°C, 20°C, 30°C로 설정하여 비교한 결과, 전반적으로 온도가 높을수록(30°C) 암모니아의 제거 속도가 미세하게 빨라졌다. 주변 공기가 따뜻할수록 열적 부력(Buoyancy)이 증가하고 공기 혼합이 촉진되어 암모니아가 상단 배출구 쪽으로 더 쉽게 밀려 올라가기 때문이다. 반면 10°C의 저온 환경에서는 차가운 공기로 인해 부력 효과가 약화되어 잔류 가스 배출이 느려졌다. 참고로 습도가 미치는 영향은 미미하여 본 연구의 변수에서는 배제되었다 [Ref. 14].</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>7. 환기 소요 시간 도출 (핵심 결과)</strong></span></p>
+    <p><span style="font-size:20px">두 선박에서 시뮬레이션한 가상 누출 시나리오(초기 농도 90%, 30%, 20%, 10%)에 따른 종합적인 가스 감쇄 속도는 다음과 같다. 가스 제거는 초기에는 가파르게 진행되다가 목표치인 30 ppm에 다가갈수록 데드 존(Dead zones)과 미세 난류의 영향을 받아 점차 완만해지는 특성을 보인다.</span></p>
+  </div>
+</article>
+
+<article class="article-section" id="slide-16">
+  <div class="article-body">
+    <p><span style="font-size:20px">맞춤형 3D 시뮬레이션 평가를 수반해야 한다.</span></p>
+    <p><span style="font-size:20px">3) 전략적 가스 탐지기 배치: 국제 가이드라인에 부합하도록, 가스 탐지기는 단순한 일정한 간격 배치가 아니라 CFD 해석 결과를 통해 도출된 가스 축적 예상 구역(Potential accumulation zones)이나 환기 배출구 부근에 전략적으로 설치되어야 조기 탐지와 즉각적인 대응을 담보할 수 있다 [15].</span></p>
+    <p><span style="font-size:20px">결론적으로 본 연구는 30 ACH라는 규정치 기반의 기계식 환기 시스템이 실제 암모니아 누출 사고 시 폭발 위험 및 인명 피해 방지에 상당한 효과가 있음을 정량적 시간 데이터(컨테이너선 20분, RoPax선 15분 대기)로 최초 입증하였다. 다만 본 연구는 팬 고장, 비상 전원 상실, 선체 동요(Ship motion) 등의 극한 상황은 전산 자원 한계상 반영하지 않았다는 한계가 있다. 향후 해양 공학계는 확률론적 위험 평가(QRA)와 다양한 선박 유형, 그리고 누출율의 동적 변화를 반영한 심화 연구를 지속해야 할 것이다. 친환경 선박의 핵심 동력이 될 암모니아 연료의</span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 14] Gant S, Chang J, Hetherington R, Hanna S, Tickle G, Spicer T, et al. Atmospheric Dispersion of Pressure-Liquefied Ammonia: Results from the Jack Rabbit III Model Inter-Comparison Exercise on Desert Tortoise and FLADIS. 2025.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 15] IMO. Interim Guidelines for the Safety of Ships Using Ammonia as Fuel. MSC1/Circ1687. 2025. </span></p>
+    <p><span style="font-size:20px">안전한 정착을 위해 지속적인 기술 검증과 실무 설계의 고도화가 요구된다.</span></p>
+    <p><span style="font-size:20px"><strong>참고 문헌</strong></span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 1] Valera-Medina A, Xiao H, Owen-Jones M, David WIF, Bowen PJ. Ammonia for power. Prog Energy Combust Sci 2018;69:63–102. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 2] Liu L, Wu Y, Wang Y. Numerical investigation on the combustion and emission characteristics of ammonia in a low-speed two-stroke marine engine. Fuel 2022; 314:122727. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 3] OSHA (Occupational Safety and Health Administration). Guidelines for Ammonia Handling and Exposure Limits. U.S.: 2022. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 4] Acute exposure guideline levels for selected airborne chemicals. Volume 6. National Academies Press; 2008. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 5] Jang H, Mujeeb-Ahmed MP, Wang H, Park C, Hwang I, Jeong B, et al. Regulatory gap analysis for risk assessment of ammonia-fuelled ships. Ocean Eng 2023;287. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 6] Maritime Safety Committee. Adoption of the international code of safety for ships using gases or other low-flashpoint fuels (IGF code). Resolut MSC 2015;391:95.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 7] ABS. Requirements for Ammonia Fueled Vessels. 2023. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 8] Salamonowicz Z, Majder-Lopatka M, Dmochowska A, Rogula-Kozlowska W, Piechota-Polanczyk A, Polanczyk A. Ammonia dispersion in the closed space of an ammonia engine room with Forced ventilation in an industrial plant. Atmosphere 2022;13. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 9] Labovský J, Jelemenský Ľ. CFD simulations of ammonia dispersion using “dynamic” boundary conditions. Process Saf Environ Prot 2010;88:243–52. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 10] Kim D, Jeong B. Investigation on toxicity of ammonia releasing from storage tank onboard through CFD simulations. J Int Marit Safe Environ Affair Ship 2024;8: 2339342. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 11] Duong PA, Bae JW, Lee C, Yang DH, Kang H. Numerical study on ammonia dispersion and explosion characteristics in confined space of marine fuel preparation room. J Mar Sci Eng 2025;13. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 12] FLACS-CFD v24.1 User’s Manual. 2024. </span></p>
+    <p class="no-indent"><span style="font-size:20px">[Ref. 13] Tan W, Du H, Liu L, Su T, Liu X. Experimental and numerical study of ammonia leakage and dispersion in a food factory. J Loss Prev Process Ind 2017;47:129–39. </span></p>
+  </div>
+</article>
+
+<section class="section-header" id="slide-17">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">특집 해설기사</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-18">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>태양광(PV)을 적용한 전기 추진 선박의 라이브 생애주기평가 - 2</strong></span></h3>
+    </div>
+    <div class="author-photo">
+      <img src="kosme-vol50-images/s18_img02.jpg" alt="저자 사진">
+    </div>
+    <div class="author-info-block">
+      <p style="text-align:center"><span style="font-size:16px">박치병</span></p>
+      <p style="text-align:center"><span style="font-size:16px">Chybyung Park</span></p>
+      <p style="text-align:center"><span style="font-size:16px">국립한국해양대학교</span></p>
+      <p style="text-align:center"><span style="font-size:16px">해사대학 기관시스템공학부</span></p>
+      <p style="text-align:center"><span style="font-size:16px">조교수</span></p>
+      <p style="text-align:center"><span style="font-size:16px">cbpark@kmou.ac.kr</span></p>
+    </div>
+    <p><span style="font-size:20px">2.3 단계 3: 데이터 생성</span></p>
+    <p><span style="font-size:20px">라이브 생애주기평가(LLCA)의 핵심 요소로서, 본 3단계는 실제 산업 현장에서 아직 확보되지 않았거나 기존 LCA 데이터베이스에 존재하지 않는</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s18_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent" style="text-align:center"><span style="font-size:20px"><strong>그림 7: </strong></span><span style="font-size:20px">Matlab/Simulink를 이용한 모델링</span></p>
+    <p><span style="font-size:20px">Case 3에서는 사례 2에 추가로 설치된 태양광 PV 시스템의 전력 생산을 활용함으로써, 육상 전력원(AMP)으로부터 공급받는 전력량을 줄일 수 있다. 태양광 PV 시스템의 장점은 사례 2와의 비교를 통해 논의된다.</span></p>
+    <p><span style="font-size:20px">각 Case는 </span><span style="font-size:20px"><strong>그림 7</strong></span><span style="font-size:20px">의 시뮬레이션 모델을 통해 구현되었다.</span></p>
+    <p><span style="font-size:20px">관련 데이터를 생성하도록 설계되었다. 이러한 데이터 생성 과정은 데이터의 가용성 및 신뢰성 측면에서 기존의 본질적 문제에서 벗어날 수 있게 한다. 즉, 기존의 생애주기평가(LCA)는 많은 경우 선행 연구에서 축적된 기존 데이터에 과도하게 의존해 왔으며, 이로 인해 연구자들은 데이터의 부족 또는 부적합성 문제에 지속적으로 직면해 왔다. 반면, LLCA는 데이터 생성 과정을 반복적으로 수행함으로써 다양한 LCA 결과를 보다 직관적이고 정량적으로 제시할 수 있으며, 정책 결정자, 산업계, 그리고 일반 대중에게 올바른 지침을 제공할 수 있다. 이러한 결과는 궁극적으로 LCA 연구의 전반적인 품질을 향상시키고, 선박 성능에 대한 보다 정확한 환경적 이해와 매개변수 민감도에 대한 이해를 가능하게 한다.</span></p>
+    <p><span style="font-size:20px">2.4 단계 4: 생애주기영향평가</span></p>
+    <p><span style="font-size:20px">기존 생애주기평가(LCA) 절차의 3단계에 해당하는 본 단계는, 도출된 생애주기목록(LCI) 결과를 대표적인 환경 영향 지표(잠재력)로 변환하여 잠재적인 환경 영향을 평가하는 과정이다. LCIA는 영향 범주 선택(Selecting the impact categories), 분류(Classification), 특성화(Characterization), 정규화(Normalization), 가치 평가(Valuation)의 절차를 포함한다. LLCA에서는 다양한 시나리오 하에서 방대한 데이터와 분석 결과를 확보함으로써, 각 시나리오를 상호 비교하고 시스템 및 선박의 환경 영향에 기여하는 핵심 매개변수와 상관관계를 도출할 수 있으므로, 본 과정을 비교 평가(comparative assessment)로 간주할 수 있다. 본 연구에서는 CML(CML 2001) 방법론을 적용하여, </span><span style="font-size:20px"><strong>그림 8</strong></span><span style="font-size:20px">에 나타난 바와 같이 지구온난화 잠재력(GWP), 산성화 잠재력(AP), 부영양화 잠재력(EP), 광화학적 오존 생성 잠재력(POCP)에 대해 파악하였다.</span></p>
+    <p><span style="font-size:20px">2.3.3 모델링</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 6</strong></span><span style="font-size:20px">에 제시된 전기 추진 선박의 개념을 기반으로, MATLAB/Simulink를 활용하여 구성 요소들을 종합적으로 고려한 세가지 케이스에 대한 모델링을 수행하였다.</span></p>
+    <p><span style="font-size:20px">1) Case 1: 디젤-전기 추진 모드</span></p>
+    <p><span style="font-size:20px">2) Case 2: 완전 배터리 운항 모드</span></p>
+    <p><span style="font-size:20px">3) Case 3: 태양광 PV를 포함한 완전 배터리 운항 모드</span></p>
+    <p class="no-indent" style="text-align:center"><span style="font-size:20px"><strong>그림 6 : </strong></span><span style="font-size:20px">대상 선박의 개념 설계</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s18_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:20px">2.5 단계 5: 해석 </span></p>
+    <p><span style="font-size:20px">생애주기평가(LCA) 연구의 최종 단계인 본 단계는 다른 단계들과 지속적으로 상호작용하면서 연구 목표와 범위 설정에서의 잠재적 문제를 식별하고, LCI 및 LCIA 단계에서 분류·특성화된 정보를 검증 및 평가한다. 또한 본 단계는 연구의 초기 핵심 목적과 연계하여, 의사결정자가 활용할 수 있는 이해하기 쉽고 종합적인 연구 결과와 권고 사항을 제공한다.</span></p>
+    <p><span style="font-size:20px">다시 한 번 강조하자면, LLCA의 우수성은 모든 신뢰 가능한 시나리오에 걸친 비교 평가 과정을 통해 다양한 의미 있는 관찰 결과를 도출할 수 있다는 점에서 이 단계에서 특히 잘 드러난다. 보다 높은 수준의 검증과 해석을 통해, LLCA는 정책 결정자와 일반 대중에게 실질적인 통찰과 권고 사항을 제공할 수 있다.</span></p>
+    <p><span style="font-size:20px">2.3.4 케이스별 시뮬레이션</span></p>
+    <p><span style="font-size:20px">Case 1의 경우, 해상 배출 규제를 고려하여 디젤 엔진 연료로 해양경유(MGO, Marine Gas Oil)를 선택하였다. MGO의 생산 및 공급 과정에서 발생하는 배출량은 국가별로 상이하므로, 최종 배출량 산정에는 8개 국가의 연료 정제 관련 데이터를 반영하였다. 또한, 사례 1의 결과는 사례 2와 사례 3의 환경적 이점 및 잠재적 위해성을 정량화하기 위한 기준선(baseline)으로 활용되었다.</span></p>
+    <p><span style="font-size:20px">Case 2에서는 선박이 선내 배터리에 저장된 전기에너지를 사용하여 운항하며, 이에 따라 일일 전력 소비량과 육상 전력원(AMP)으로부터 공급되는 전력량이 산정되었다. 환경 영향 평가는 동일한 전력량이 사례 선박에 공급되더라도, 전력 생산 방식의 차이로 인해 국가별로 배출 수준이 상이하다는 점을 전제로 수행되었다.</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s18_img05.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent" style="text-align:center"><span style="font-size:20px"><strong>그림 8 : </strong></span><span style="font-size:20px">생애주기평가(LCA) 절차</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>3. 분석 결과 (4·5단계)</strong></span></p>
+    <p><span style="font-size:20px">3.1 사례 1: 디젤-전기 추진 모드</span></p>
+    <p><span style="font-size:20px">기존 연료를 사용하는 디젤 발전기만으로 선박이 운항하는 사례 1의 시뮬레이션 결과, 연간 전력 소비량은 950,139 kWh로 추정되었으며, 이에 상응하는</span></p>
+  </div>
+</article>
+
+<article class="article-section" id="slide-19">
+  <div class="article-body">
+    <p><span style="font-size:20px">연간 디젤 연료(해양경유, MGO) 소비량 산정 결과는 199,493 kg이다. 해당 수치들은 GaBi LCA 소프트웨어 및 데이터베이스를 활용하여, 8개 국가를 대상으로 한 MGO의 생산 단계(upstream)와 선내 사용 단계(downstream)에 대한 생애주기평가(LCA)에 입력되었다. 그림 9는 Case 1의 LCIA 결과이다.</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 9 : </strong></span><span style="font-size:20px">사례 1(Case 1)의 GWP, AP, EP, POCP 분석 결과</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s19_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s19_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 11 : </strong></span><span style="font-size:20px">사례 1을 기준선으로 하여, 각 국가에서 951,864 kWh의 전력을 생산할 경우의 GWP 값</span></p>
+    <p><span style="font-size:20px">하지만 </span><span style="font-size:20px"><strong>그림 13</strong></span><span style="font-size:20px">과 같이 실제 결과는 지역의 위치적, 자연환경적 요인에 따라 확연히 다른 결과가 발생될 수 있다.</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 13 : </strong></span><span style="font-size:20px">가정값(기존 LCA 가정)과 LLCA 결과에 따른 국가별 사례 선박 태양광 패널 전력 생산량</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s19_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:20px">3.2 Case 2: 완전 배터리 운항 모드 vs Case 3: 태양광 PV를 포함한 완전 배터리 운항 모드</span></p>
+    <p><span style="font-size:20px">Case 2에서는 선박이 육상 전력망으로부터 충전된 전기에너지를 사용하는 완전 배터리 운항 모드로 운항하며, 각 국가의 전력 생산 특성을 반영하기 위해 GaBi 데이터베이스를 활용하여 29개 국가를 대상으로 생애주기평가(LCA)를 수행하였다. MATLAB 시뮬레이션 결과, 배터리를 통해 소비되는 연간 전력 사용량은 951,864 kWh로 추정되었다.</span></p>
+    <p><span style="font-size:20px">Case 2는 동일한 선박에 태양광 PV 시스템을 적용하여 선내 전력 수요의 일부를 태양에너지로 충당하는 Case 3과 비교하였다. Case 3의 항해 중 전력 생산량을 추정하기 위해 29개 국가의 지리적 조건을 조사하여 MATLAB 시뮬레이션의 입력 자료로 활용하였다. 그림 10은 육상 전력원(AMP)과 태양광 PV 시스템 간의 전력 부하 분담 비율 차이를 나타낸다. 국가별로 나타나는 격차는 기상 조건의 차이에 기인하며, 일부 국가는 태양광</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 12 : </strong></span><span style="font-size:20px">사례 1을 기준선으로 하여, 각 국가에서 951,864 kWh의 전력을 생산할 경우의 (a) 산성화잠재력(AP), (b) 부영양화잠재력(EP), (c) 광화학적 오존 생성 잠재력(POCP) 값</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s19_img05.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:20px">PV 시스템에 유리한 반면, 다른 국가들은 그렇지 않은 것으로 나타났다.</span></p>
+    <p><span style="font-size:20px">구체적으로 살펴보면, 사례 선박은 브라질 연안에서 운항할 경우 태양에너지로부터 가장 큰 이점을 얻을 수 있는 것으로 나타났으며, 이는 전체 에너지 소비량의 18.73%에 해당하는 178,298 kWh를 선내 태양광 PV 시스템을 통해 공급할 수 있음을 의미한다. 그 다음으로는 키프로스(168,187 kWh, 17.67%), 몰타(158,190 kWh, 16.62%), 호주(154,850 kWh, 16.27%), 인도(153,980 kWh, 16.18%) 순으로 높은 태양광 활용 효과가 확인되었다. 반면, 라트비아 연안에서 운항할 경우 태양광 PV 시스템으로부터 얻을 수 있는 이점이 가장 낮은 것으로 분석되었으며, 전체 에너지 소비량의 8.06%, 즉 76,753 kWh에 불과하였다. 유사한 경향은 아일랜드와 스웨덴에서도 나타났으며, 각각 8.29%(78,918 kWh), 8.76%(83,366 kWh)의 태양광 에너지 기여도를 보였다.</span></p>
+    <p><span style="font-size:20px">사례 선박의 연간 전력 소비량을 951,864 kWh로 가정할 경우, 지구온난화잠재력(GWP) 측면에서 에스토니아는 약 1,113,680.9 kg CO₂ 환산량을 배출하여 가장 높은 배출 수준을 보이는 국가로 확인되었으며, 그 뒤를 인도, 호주, 폴란드가 이었다. 그러나 태양광 PV 시스템을 적용한 경우, </span><span style="font-size:20px"><strong>그림 11</strong></span><span style="font-size:20px">과 </span><span style="font-size:20px"><strong>그림 12</strong></span><span style="font-size:20px">에 나타난 바와 같이 호주는 폴란드보다 더 낮은 GWP 값을 보이는 것으로 분석되었다. 석탄은 다른 에너지원에 비해 GWP에 가장 큰 기여를 하는 것으로 나타났다.</span></p>
+    <p><span style="font-size:20px">또한, 산성화 잠재력(AP), 부영양화 잠재력(EP), 광화학적 오존 생성 잠재력(POCP)과 같은 지역적 오염물질의 경우, 인도의 배출 수준이 압도적으로 높은 것으로 나타났다. 이는 동일한 전기 추진 선박이라 하더라도 노르웨이 연안을 운항하며 노르웨이 국가 전력망으로부터 전력을 공급받는 경우와, 인도 연안으로 배치되는 경우에 전혀 다른 환경적 성능을 보일 수 있음을 명확히 보여준다. </span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s19_img06.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p class="no-indent" style="text-align:center"><span style="font-size:20px"><strong>그림 10 : </strong></span><span style="font-size:20px">국가별 사례 선박의 전력 공급 방식</span></p>
+    <p><span style="font-size:20px">분석 결과는 각 국가의 기상 조건이 태양광 PV 시스템의 성능을 결정하는 핵심 매개변수임을 명확히 보여주며, 이는 흐리고 기온이 낮은 지역을 항해하는 선박에 태양광 PV 시스템을 적용하는 데 있어 한계 요인으로 작용한다.</span></p>
+    <p><span style="font-size:20px">29개 국가를 대상으로 한 Case 2 및 Case 3의 생애주기영향평가(LCIA) 결과는 그림 11 및 12에 제시되어 있다.</span></p>
+    <p><span style="font-size:20px">이러한 결과는 전기 추진 선박 자체를 일률적으로 ‘친환경 선박(green ship)’으로 분류할 수 없다는 중요한 시사점을 전달한다. 대신, 다양한 지리적 조건과 전력망 특성을 고려하여 실제 운항 성능을 평가한 이후에야 비로소 해당 선박이 진정으로 친환경적인지 여부를 판단할 수 있다.</span></p>
+    <p><span style="font-size:20px">뿐만 아니라, 태양광 PV 시스템의 적용은 대부분의 국가에서 환경 영향을 현저히 저감하는 데 유의미한 효과를 보이는 것으로 분석되었다. 이는 동일한 전력량을 생산할 경우, 수력 및 원자력을 제외한 대부분의 발전원에 비해 태양광 PV 시스템의 전주기 배출량이 훨씬 낮은 것으로 분석되었기 때문이다. 다만 역설적으로, 수력 및 원자력 발전 비중이 다른 발전 방식에 비해 높은 노르웨이와 스웨덴의 경우에는, 선박에 태양광 발전 시스템을 적용했을 때 오히려 배출량이 소폭 증가하는 것으로 나타났다.</span></p>
+    <p><span style="font-size:20px">3.3 기존 LCA와의 비교</span></p>
+    <p><span style="font-size:20px">본 절은 LLCA의 우수성을 제시하기 위해 기존 생애주기평가(LCA) 접근법과의 비교 분석으로 구성되었다. 앞서 논의한 바와 같이, 기존 LCA는 실험 변수에 따른 환경 성능의 변화에 대한 예측 없이, 주로 기존에 축적된 데이터에 의존하는 한계를 가진다. 기존 생애주기평가(LCA)에 따르면, 사례 선박에 설치된 태양광 패널은 일사량 1000 W/m² 및 온도 25 ℃ 조건에서 최대 84.525 kW의 출력을 생산할 수 있다. 일사량은 지역과 월별로 큰 차이를 보이지만, 기존 LCA에서는 평균값을 적용하는 경향이 있어 태양광 시스템이 약 40%의 전력 생산률을 가진 것으로 가정한다. 이에 따라 일일 평균 일조 시간을 약 10시간으로 가정하여 태양광 PV 시스템의 연간 발전량을 산정하면, 123,406.5 kWh/년(= 84.525 kW × 40% × 10 h × 365일)으로 계산된다.</span></p>
+  </div>
+</article>
+
+<article class="article-section" id="slide-20">
+  <div class="article-body">
+    <p><span style="font-size:20px">본 연구 사례에서 LLCA 대신 기존 LCA 방법을 적용할 경우, 에너지 생산량이 최대 44.5%까지 상이하게 평가될 수 있음이 확인되었다. 이러한 차이를 국가별 전력 생산에 따른 배출계수에 대입하여 분석한 결과, 키프로스에서 운항할 경우 연간 33,850 kg GWP가 추가로 발생하며, 인도에서는 연간 30,356 kg GWP가 더 배출되는 것으로 나타났다. 반면 에스토니아와 폴란드의 경우에는 각각 37,639 kg GWP, 30,540 kg GWP가 실제값보다 낮게 평가되는 것으로 나타나, 기존 LCA 기반 평가 결과가 부정확할 수 있음을 확인하였다.</span></p>
+    <p><span style="font-size:20px">6) 생애주기평가(LCA) 결과는 각 국가의 에너지 생산 방식에 따라 현저히 상이한 경향을 보였다. 이에 따라 본 연구는, 해당 국가에서 생산된 전력을 사용하는 전기 추진 시스템이 기존 화석연료를 사용하는 시스템보다 환경적으로 더 우수한지 여부를 판단할 수 있는 기준을 제공하였다.</span></p>
+    <p><span style="font-size:20px">7) 본 연구는 “전기 추진 선박은 모든 국가와 지역에서 친환경 선박이라 할 수 있는가?”라는 근본적인 질문에 대해 ‘항상 그렇지는 않다(Not always)’라는 결론을 도출하였다. 이는 화석연료를 사용하는 선박을 단순히 전기 추진 선박으로 대체하는 것만으로는 환경 보호 측면에서 분명한 한계가 있음을 의미한다. 따라서 전기 에너지의 생산 방식과 발전원에 따라 환경 영향이 크게 달라지는 만큼, 이를 보다 친환경적인 방향으로 전환하기 위한 지속적인 논의가 필요함을 시사한다. <끝></span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>4. 결 론</strong></span></p>
+    <p><span style="font-size:20px">1) 이번 연구는 보다 정밀한 데이터 수집이 가능하며 보편적인 생애주기평가 연구에 적용할 수 있는 시뮬레이션 기반의 새로운 방법론인 라이브 생애주기평가(Live-Life Cycle Assessment, LLCA)를 제안한다. 본 기법을 적용한 연구 결과는 전기 추진 선박이 과연 완전히 친환경적인 선박인지에 대한 기존의 일반적 인식에 대해 정량적이고 직관적인 관점에서 새로운 시각을 제시하며, 이는 선박 설계자, 선주, 규정 제정자 및 정책 입안자에게 매우 유용한 정보를 제공한다. 이러한 맥락에서 본 연구 결과는 선박의 환경적 지속가능성을 향상시키기 위한 통찰을 제공함과 동시에, 전기 추진 선박을 생애주기평가 관점에서 접근할 필요성을 강조한다.</span></p>
+    <p><span style="font-size:20px">2) 본 논문은 전주기적 관점에서, 기존에 단편적이고 제한된 데이터를 활용하여 특정 사례에 국한되었던 생애주기평가(LCA)를 LLCA 연구로 확장·개선함으로써, 상황에 적합한 데이터를 확보하여 보다 정확한 LCA 결과를 도출할 수 있음을 보여주었다. 또한 다양한 선박 유형에 적용 가능한 연구로서, 적용 범위에 제약을 받지 않는 보편적인 방법론을 제시하였다.</span></p>
+    <p><span style="font-size:20px">3) 국가별 전력 1 kWh 생산 과정에서 발생하는 환경 오염물질을 지구온난화잠재력(GWP), 산성화잠재력(AP), 부영양화잠재력(EP), 광화학적 오존 생성 잠재력(POCP)의 네 가지 범주로 분석한 결과, 호주, 에스토니아, 인도, 폴란드가 가장 많은 오염물질을 배출하는 국가로 확인되었다. GWP 측면에서는 에스토니아가 인도보다 더 높은 배출량을 보였으나, AP, EP, POCP 측면에서는 인도가 다른 국가들에 비해 압도적으로 높은 배출 수준을 나타냈다.</span></p>
+    <p><span style="font-size:20px">4) 사례 선박에 설치된 태양광 패널을 통해, 일사량 1000 W/m² 및 온도 25 ℃의 조건에서 최대 84.525 kWh의 전력을 생산할 수 있으며, 이는 선박이 운항하는 지역의 환경 요인에 따라 전력 생산량이 현저하게 달라짐을 보여준다. 사례 선박에 설치된 태양광 패널의 연간 전력 생산량을 살펴보면, 브라질 연안을 항해할 경우 178,298 kWh로 가장 높은 값을 보였고, 키프로스에서는 168,187 kWh, 반면 라트비아 연안에서는 76,753 kWh로 가장 낮은 생산량을 나타냈다.</span></p>
+    <p><span style="font-size:20px">5) 조사 대상 29개국에서 생산된 전력을 사용하여 운항하는 대부분의 전기 추진 선박은, 디젤 발전기를 통해 전력을 생산하여 운항하는 전기 추진 선박보다 더 우수한 환경 성능을 보였다. 그러나 GWP 측면에서는 호주, 키프로스, 에스토니아, 인도, 폴란드의 전력을 공급받아 완전 배터리 모드로 운항하는 전기 추진 선박이, 디젤 발전기를 이용해 자체적으로 전력을 생산하여 운항하는 경우보다 오히려 더 열악한 성능을 나타냈다. 또한 태양광 발전 시스템을 선박에 적용하더라도, 키프로스를 제외한 네 개국에서는 여전히 높은 GWP가 관측되었다.</span></p>
+  </div>
+</article>
+
+<section class="section-header" id="slide-22">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">연구실 인터뷰</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-23">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:24px;color:#002060"><strong>국립한국해양대학교 기관시스템공학부 </strong></span></h3>
+    </div>
+    <h3 style="text-align:center"><span style="font-size:24px;color:#002060"><strong>노정호 교수님</strong></span></h3>
+    <p><span style="color:#0CA1D6"><strong>Q1. 학회지 인터뷰에 응해주셔서 진심으로 감사드립니다. 독자분들께 인사 한마디 부탁드립니다.</strong></span></p>
+    <p>안녕하세요. 한국해양대학교 기관시스템공학부 노정호입니다. 먼저 마린엔지니어링 분야의 학문적 발전과 산업 경쟁력 강화를 위해 노력하고 계신 학회 관계자 여러분과 독자 여러분께 인사드리게 되어 매우 뜻깊게 생각합니다. 저는 해외 LNG 운반선 기관장으로 약 6년간 근무하며 축적한 현장 경험을 바탕으로, 2019년부터 한국해양대학교 기관시스템공학부에서 후학 양성과 교육·연구에 힘쓰고 있습니다.</p>
+    <p>앞으로도 실무 경험과 학문적 지식을 유기적으로 연계하여, 변화하는 해사 산업 환경에 능동적으로 대응할 수 있는 전문 인재 양성에 기여하고자 합니다. 이번 인터뷰가 실무와 학문의 가교 역할에 대해 함께 고민하는 계기가 되기를 바랍니다. 감사합니다.</p>
+    <p>이러한 경험을 통해 해기 교육은 단순한 지식 전달을 넘어, 실제 운용 환경에서 요구되는 책임감과 문제 해결 역량을 함께 함양하는 과정임을 다시 한번 느끼게 되었습니다. 앞으로도 한바다호에서의 현장 중심 교육을 통해 실무 역량을 갖춘 우수한 해기사를 양성하는 데 기여하고자 합니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q5. 전기추진시스템에 관한 연구를 수행 중으로 알고 있는데 본 연구에 대해 간략한 설명을 부탁드립니다.</strong></span></p>
+    <p>현재 수행하고 있는 연구는 전기추진 선박의 전력변환시스템 모델링 및 특성 해석에 관한 내용입니다. 전기추진시스템은 발전기, 전력변환장치, 전동기 및 추진기 등이 통합된 형태로 구성되며, 각 구성요소의 동특성과 상호작용이 전체 시스템의 안정성과 효율성에 중요한 영향을 미치게 됩니다.</p>
+    <p>특히 전력전자 기반 전력변환장치의 동적 거동을 해석할 수 있는 모델을 구축하고, 운전 조건 변화에 따른 시스템 응답 특성을 분석하는 데 연구의 초점을 두고 있습니다. 이러한 모델링 연구는 전기추진 선박의 운용 안정성 향상뿐만 아니라, 향후 친환경·고효율 선박 설계 및 운용 기술 발전에도 기여할 수 있을 것으로 기대하고 있습니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q2. 현재 전공은 선박전기전자제어공학으로 알고 있습니다. 해당 분야를 전공하시게 된 계기가 있으신지요?</strong></span></p>
+    <p>전통적인 기계 중심의 선박 기관 분야는 최근 전기·전자·제어 기술의 비약적인 발전과 함께 거대한 패러다임의 변화를 맞이하고 있습니다.</p>
+    <p>특히 제가 기관장으로 근무했던 LNG 운반선은 추진 및 자동화 시스템 (IAS) 등 핵심 장비가 고도의 자동화와 디지털 기반으로 운영됩니다. 현장에서 수많은 트러블슈팅을 겪으며 절감한 것은, 단순한 기계적 이해를 넘어 시스템 전체를 관통하는 제어 로직과 전기적 인터페이스에 대한 통찰이 필수적이라는 사실이었습니다.</p>
+    <p>결국, 미래 해사 산업의 핵심 경쟁력은 기계·전기·전자·제어가 유기적으로 결합된 융합 역량에 달려 있다는 확신을 얻었습니다. 이러한 현장의 문제의식이 저를 선박전기전자제어공학으로 이끈 결정적인 계기가 되었으며, 현재는 현장 경험을 바탕으로 급변하는 디지털·친환경 선박 분야의 교육과 연구를 수행하고 있습니다. 앞으로도 디지털화 및 친환경 선박 기술 발전에 대응할 수 있는 융합형 전문 인재 양성에 기여하고자 합니다.</p>
+    <p>연구 초기 단계인 만큼 기초적인 모델링 연구를 중심으로 진행하고 있으며, 향후에는 실제 선박 운용 환경을 고려한 해석으로 연구 범위를 점차 확장해 나가고자 합니다. 또한 이러한 접근 방법은 LNG 선박의 전력계통 및 보조 전력변환시스템 해석에도 적용 가능할 것으로 기대하고 있습니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q6. 오랜 연구생활을 하면서 기억에 남는 연구나 선박전기전자제어을 전공함으로 인해 보람을 느끼셨던 적은 언제이신가요?</strong></span></p>
+    <p>질문에서 ‘오랜 연구 생활’이라고 표현해 주셨지만, 저는 연구실보다 선박 기관실에서 보낸 시간이 더 긴 현장 출신 연구자라고 생각합니다. 따라서 저에게 가장 큰 보람은 이론과 모델이 실제 현장의 문제 해결로 이어지는 순간에 있습니다.</p>
+    <p>최근 실습선 한바다호에서 학생들과 함께 당직 근무를 수행하던 중, 과거 기관장 시절 경험했던 전기제어 계통의 트러블슈팅 사례를 바탕으로 시스템 동작 원리를 설명하고 함께 문제 해결 방안을 도출한 경험이 특히 기억에 남습니다. 학생들이 전력변환 장치와 제어 로직의 원리를 이해하고 실제 운용과 연결 지어 받아들이는 모습을 보며, 선박전기전자제어 분야를 전공한 보람을 다시 한번 느낄 수 있었습니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q3. 한국해양대학교에서 박사를 취득하신 것으로 알고 있습니다. 연구하신 내용을 소개해주시겠습니까?</strong></span></p>
+    <p>해당 부분에 대해 정정드리자면, 저는 박사 학위를 이미 취득한 것은 아니며, LNG 운반선 기관장으로서의 현장 실무 경험과 전문성을 바탕으로 한국해양대학교에 임용되었습니다. 현재 선박전기전자제어공학 분야에서 교육과 연구를 수행하는 동시에 박사 학위 과정을 병행하며 연구의 깊이를 더해가고 있습니다. 현재 수행 중인 연구는 전기추진 선박의 전력변환시스템 모델링 및 운용 특성 분석에 관한 것으로, 전력전자 기반 추진 시스템의 동특성과 계통 안정성 확보 문제에 중점을 두고 있습니다. 특히 추진 전동기 구동 시스템과 전력변환장치 간 상호작용이 전력계통의 안정성과 효율에 미치는 영향을 공학적으로 해석하고자 합니다.</p>
+    <p>LNG 운반선 기관장으로 근무하며 경험한 실제 운용 환경에서의 기술적 과제를 바탕으로, 선박 전력계통의 신뢰성과 효율을 향상시킬 수 있는 해석 방법을 모색하고 있습니다. 이러한 연구는 전기추진 선박뿐 아니라 LNG 운반선의 전력계통 및 보조 전력변환 시스템에도 적용 가능할 것으로 기대하고 있습니다. 향후에도 현장 경험과 학문적 연구를 접목하여 친환경·고효율 선박 기술 발전에 기여할 수 있는 연구를 지속해 나가고자 합니다.</p>
+    <p>앞으로도 모델링과 제어 기술에 관한 연구가 학술적 성과에 머무르지 않고, 실제 전기추진 선박의 안전성과 효율 향상에 기여할 수 있도록 노력하고자 합니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q7. 연구 활동 이외의 시간에 즐기시는 취미나 여가 활동이 있으시다면 무엇인가요?</strong></span></p>
+    <p>연구와 교육, 그리고 실습선 항해 등으로 일정이 바쁜 편이라 특별한 취미 활동을 자주 즐기지는 못하고 있습니다. 대신 여가 시간의 대부분을 가족과 함께 보내고 있으며, 아직 어린 두 자녀와의 시간이 저에게는 가장 큰 휴식이자 소중한 재충전의 시간입니다. 과거 장기간 승선 근무로 가족과 떨어져 지냈던 경험이 있었기에, 지금 가족과 함께하는 일상의 소중함을 더욱 크게 느끼고 있습니다.</p>
+    <p>개인적으로는 아침 시간에 가볍게 조깅을 하며 하루를 시작하고 있습니다. 짧은 시간이지만 생각을 정리하고 체력을 유지하는 데 도움이 되어, 연구와 교육 활동을 지속하는 데 좋은 밑거름이 되고 있습니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q4. 한국해양대학교 기관시스템공학부 교수로 학생과의 다양한 추억들이 많으실 것 같습니다. 가장 기억에 남는 에피소드가 있으신지요?</strong></span></p>
+    <p>교수로 임용된 이후 가장 의미 있게 기억에 남는 순간들은 강의실이 아닌, 현재 근무하고 있는 실습선 한바다호의 교육 현장에 있습니다. 저는 실습선에서 학생들과 함께 생활하며 항해 중에는 직접 당직 근무에 참여하여 교육을 수행하고 있으며, 이러한 현장 중심의 교육 경험은 교육자로서 매우 뜻깊은 시간이라고 생각합니다.</p>
+    <p>불과 몇 년 전까지 글로벌 선사에서 기관장으로 근무하며 다양한 국적의 선원들과 함께 기관실을 책임졌던 경험이 있지만, 현재는 바다를 처음 접하는 학생들과 기관실에서 동일한 긴장감과 책임을 공유하고 있습니다. 특히 최근 당직 근무 중 한 학생이 시스템 이상 상황에 대해 어려움을 겪었을 때, 기관장 시절 경험했던 실제 트러블슈팅 사례를 함께 검토하며 해결 방안을 모색한 일이 기억에 남습니다. 문제를 해결한 이후 학생이 보여준 성취감과 자신감 있는 모습은 교육자로서 큰 보람을 느끼게 해주었습니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q8. 현재 몸담고 계신 국내외 선박전기전자제어공학의 현주소에 대해 어떻게 보십니까?</strong></span></p>
+    <p>선박전기전자제어 공학 분야는 최근 친환경 규제 강화와 디지털 기술 발전의 영향으로 빠르게 중요성이 높아지고 있다고 생각합니다. 특히 전기추진, 하이브리드 추진, 에너지 관리 시스템 등 전력전자 기반 기술이 선박의 효율성과 환경 성능을 좌우하는 핵심 요소로 자리잡고 있습니다.</p>
+    <p>국내의 경우 우수한 조선 산업 기반을 바탕으로 관련 기술 역량도 지속적으로 발전하고 있으며, 학계와 산업계의 협력을 통해 충분한 경쟁력을 확보할 수 있을 것으로 생각합니다. 다만 시스템 신뢰성 확보와 실선 적용을 위한 검증 등은 앞으로도 꾸준히 연구가 필요한 부분이라고 생각합니다.</p>
+    <p>부족하지만 현장 경험을 바탕으로 전기전자제어 분야의 교육과 기초적인 연구를 이어가며, 향후 해사 산업 발전에 조금이나마 기여할 수 있도록 노력하고자 합니다.</p>
+    <p><span style="color:#0CA1D6"><strong>Q9. 앞으로 우리가 주목해야할 선박전기전자제어공학이나 미래 비전에 대해 한 말씀 부탁드립니다.</strong></span></p>
+    <p>선박전기전자제어공학 분야에서는 친환경 추진 기술과 디지털 기반 제어 기술의 중요성이 더욱 커질 것으로 생각합니다. 전기추진, 하이브리드 추진, 에너지 관리 시스템(EMS)과 같은 기술은 선박의 효율성과 환경 성능을 동시에 향상시키는 핵심 요소가 될 것으로 보이며, 자율운항 및 스마트쉽 기술 발전과도 밀접하게 연계될 것으로 예상됩니다.</p>
+    <p>특히 전력변환 기술과 제어 기술의 신뢰성을 확보하고, 실제 운용 환경에서 안정적으로 적용할 수 있는 연구가 중요해질 것으로 생각합니다. 이러한 기술 발전은 단순한 성능 향상을 넘어 선박 운항의 안전성과 효율성을 높이는 기반이 될 것입니다.</p>
+    <p>부족하지만 현장 경험과 기초 연구를 바탕으로, 변화하는 해사 산업 환경에 도움이 될 수 있는 교육과 연구를 꾸준히 이어가고자 합니다.</p>
+  </div>
+</article>
+
+<article class="article-section" id="slide-24">
+  <div class="article-body">
+    <p><span style="color:#0CA1D6"><strong>Q10. 마지막으로 교수님이 몸담고 있는 분야를 공부하고 있는 연구생들에게 해주고 싶은 말이 있다면 응원의 말씀을 부탁드립니다.</strong></span></p>
+    <p>선박전기전자제어공학 분야는 기계, 전기, 전자, 제어 기술이 융합된 학문으로 처음에는 다소 어렵게 느껴질 수 있습니다. 그러나 실제 선박 운용의 안전성과 효율성을 책임지는 매우 중요한 분야인 만큼, 기초 원리를 차근차근 이해해 나간다면 충분히 경쟁력 있는 전문성을 갖출 수 있다고 생각합니다.</p>
+    <p>저 역시 현장에서의 경험을 통해 기본 원리의 중요성을 많이 느꼈으며, 작은 개념 하나가 실제 운용 환경에서는 큰 차이를 만들어내는 경우를 자주 보았습니다. 조급해하기보다는 기본에 충실하고 꾸준히 경험을 쌓아 나간다면, 앞으로 전기추진 선박과 스마트십 등 새로운 기술 환경에서도 충분히 중요한 역할을 할 수 있을 것이라 생각합니다.</p>
+    <p>여러분이 쌓아가는 노력과 경험이 미래 해사 산업의 중요한 기반이 될 것이라 믿으며, 각자의 자리에서 꾸준히 성장해 나가시기를 진심으로 응원합니다.</p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s24_img02.jpg" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p style="text-align:center"><span style="font-size:20px"><노정호 교수님 모습></span></p>
+  </div>
+</article>
+
+<section class="section-header" id="slide-25">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">알아두면 도움이 되는 상식</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-26">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>현존의 태도로 관계 안에서 성장하기</strong></span></h3>
+    </div>
+    <div class="author-photo">
+      <img src="kosme-vol50-images/s26_img02.png" alt="저자 사진">
+    </div>
+    <div class="author-info-block">
+      <p style="text-align:center"><span style="font-size:16px">김영근</span></p>
+      <p style="text-align:center"><span style="font-size:16px">Youngkeun Kim</span></p>
+      <p style="text-align:center"><span style="font-size:16px">인제대학교 </span></p>
+      <p style="text-align:center"><span style="font-size:16px">상담심리치료학과, 교수</span></p>
+      <p style="text-align:center"><span style="font-size:16px">ykkim@inje.ac.kr</span></p>
+    </div>
+    <p><span style="font-size:20px">지난  2026년 대한민국 정부의 주요 키워드 중 하나는 단연 인공지능(AI)이다. AI의 무서운 발전 속도와 더불어 우리에게 궁금함이 생기는 부분 중 하나가 바로 AI가 대체할 직업일 것이다. 그도 그럴 것이, 무섭게 진화하고 있는 AI 기술로 인해서 자신의 분야가 위협받을까 봐 한 번쯤은 걱정해 본 분들이 많을 것이다. 한국고용정보원(2024)의 『중장기 인력수급 전망 2023~2033』에 따르면, 상담 및 심리치료와 같이 인간의 정서를 섬세히 다루고 고도의 관계 기술을 요하는 분야는 AI가 대체하기 가장 어려운 직업 분야 중 하나이다. 그렇다면 무엇이 상담 및 심리치료 분야를 무서운 속도로 발전하고 있는 AI가 대체하기 어렵게 만드는 것일까? 감히 나는 그 답이 바로 관계에 있다고 대답하고 싶다.</span></p>
+    <p><span style="font-size:20px">이처럼 상담 및 심리치료 분야에서 빼놓을 수 없는 키워드가 바로 ‘관계’이다. 이렇게 내가 속한 학문은 관계로부터 비롯된 문제로 시작되고, 관계를 통해서 이를 풀어 나가며, 관계로 새로운 삶이 시작되는 분야라고 말하고 싶다. 물론, 이 글을 읽는 대부분의 독자들은 해양공학 관련자들이겠지만 이와 관련하여 우리가 함께 생각해 보아야 할 중요한 주제가 바로 ‘관계’가 아닐까 싶다. 상담 및 심리치료 분야에서 내담자(來談者; 상담을 받으러 오는 사람)를 변화시키는 중요한 공통 요인 중 하나로 ‘치료적 관계(therapeutic relationship)’를 꼽고 있다. 치료적 관계는 사람과 사람 사이에 맺어지는 관계의 특성 자체가 ‘치료적’이라는 의미를 내포하고 있다. ‘치료적’(therapeutic) 또는 ‘치유적’(curative)이라는 말은 참 멋진 말인 것 같다. 내담자를 포함한 우리 사람의 변화와 성장의 의미가 들어가 있기 때문이다. 이 글을 읽고 있는 당신도 최소한 관계 안에서의 변화와 성장에는 조금이라도 관심을 가지고 계시리라 믿는다.</span></p>
+    <p><span style="font-size:20px">이러한 ‘치료적 관계’를 촉진시킬 수 있는 상태로 ‘치료적 현존’이라는 개념이 있다. ‘치료적 현존(治療的 現存; therapeutic presence)’이란, 내담자와의 만남에 자신(여기서는 상담자)의 전체 자기(whole self)를 투입하는 것을 의미하며, 신체적‧감정적‧인지적‧영적‧관계적 수준에서 완전히 현재의 순간에 몰입하는 것을 포함한다(Geller & Greenberg, 2026). 종교를 가지고 계신 분들은 “신의 임재 아래 있다(in the presence of God)”라는 말을 한 번쯤 들어 보았을 것이다. 이때의 ‘임재(臨在)’가 바로 앞서 언급한 현존(presence)과 동일한 단어라는 것을 알아차렸을 것이다. 즉, 비록 신이 눈에 보이지 않는 존재이지만 한 사람의 마음속에 또는 그의 곁에 신이 함께 존재해 있다는 의미인 것이다.</span></p>
+    <p><span style="font-size:20px">그렇다면, 사람 대 사람으로서 현존한다는 의미가 무엇일까? 이 글을 읽고 있는 당신도 한 번쯤 관계 안에서 성장한다는 의미를 생각해 본 적이 있을 것이다. 물론 대부분의 사람들은 관계 안에서 성장한다는 의미를 곱씹어 보기도 전에 사람으로부터 상처받고, 배신당하고, 뒤통수 맞는(?) 여러 경험들을 통해서 사람이라면 진절머리 나는 삶을 살아왔을지도 모른다! 그러나 이 글을 읽으면서는 최소한 그 반대의 경우를 생각해 보면 좋을 것 같다. 관계 안에서 성장한다는 의미가 도대체 무엇인가? 당신이 좋아하는 사람 몇을 지금 이 순간 떠올려 보라. 그들을 만나면 당신은 그들과의 관계 안에서 어떤 자세를 취하고 있는가? 눈을 마주치지 않고 스마트폰을 만지작거리면서 듣고 있으니 말해 보라고 할 것인가? 아마 이렇게 주의가 다른 데로 가 있으면서 그 사람 앞에서 현존하고 있다고 생각되지는 않을 것이다.</span></p>
+    <p><span style="font-size:20px">신부이자 임상심리학자인 헨리 나우웬은 다음과 같이 말했다. “우리 인생에서 가장 소중한 사람이 누구인지 솔직하게 자문해 보면, 많은 조언이나 해결책, 치료법을 제시하는 사람이 아니라, 우리와 고통을 함께 나누고 부드럽고 다정한 손길로 상처를 어루만져 주는 사람이라는 것을 종종 깨닫게 된다.” 이 말에 고개를 끄덕이는 사람이라면 나 자신을 성장시키는 좋은 대상으로서의 상대방을 충분히 생각해 볼 수 있을 것이라 믿는다.</span></p>
+  </div>
+</article>
+
+<article class="article-section" id="slide-27">
+  <div class="article-body">
+    <p><span style="font-size:20px">이러한 현존의 상태와 관련하여 잠시 멈춤의 순간을 가져 보기 바란다. 잠시 눈을 쉬고 호흡하는 신체적 경험에 집중하라. 몸의 중심이나 호흡에 리듬을 맞추어 의식을 내면에 집중하라. 현재의 경험, 감각, 감정, 내부 사건에 대한 알아차림에 주의를 기울이라. 또한, 소리, 시각, 촉각 등 외부 인식에서 일어나는 일, 즉 자신의 영역에서 일어나는 모든 일에 주의를 기울이라. 숨을 쉬고 그 순간에 몰입하라. 순간순간이 주는 광활함을 느껴 보라. 이제 당신에게 현존이 어떤 의미인지 스스로에게 물어보라. 자신의 신체적 경험에서 어떤 측면을 통해 자신이 온전히 현존하고 있음을 알 수 있는가? 어떤 감정이나 신체적 경험이 현존을 동반하는가? 호흡할 때마다 의식이 신체의 현존 경험으로 더 깊이 들어가도록 하라. 다른 사람과 온전히 함께 있을 때의 느낌은 어떤가? 최근에 누군가에게 온전히 현존을 느꼈던 경험을 떠올려 보라. 아니면 누군가가 나에게 온전히 현존하고 공감해 주었던 경험이나 고군분투가 있었는가? 현존을 제공하거나 받을 때 몸에 어떤 느낌이 드는가? 그 순간 그 사람과의 관계에 어떤 영향을 미쳤는가? 이제 당신에게 가까운 사람과 함께 그 순간에 온전히 집중하는 것이 어떤 느낌인지 생각해 보라. 자신의 삶에서 누군가와 온전히 함께 있을 때와 얼마나 비슷하거나 다른가? 내면에 물어보라. 바로 이러한 현존의 자세가 철학자 마틴 부버가 말한 나-그것(I-It)의 관계가 아닌, 나-너(I-Thou)의 만남이 가능하도록 만들어 줄 수 있다. 이는 궁극적으로 사람과 사람의 관계 안에서 성장으로 이어지는 상호 현존(co-presence)에 가까워지도록 만들어 준다.</span></p>
+    <p><span style="font-size:20px">오늘날 눈부시게 발전하고 있는 신경과학 분야가 이러한 관계의 중요성을 우리에게 과학적 증거로서 제시해 준다. 신경과학 분야의 한 이론인 다미주 이론(polyvagal theory)은 관계 안에서의 현존이 치료적 만남(therapeutic encounter)에서 어떻게 변화를 활성화하는지 잘 설명해 준다. 이 이론에 따르면, 사람의 현존과 조율이 현재 중심적인(present-centered) 만남인 안전한 관계 안에서 이루어지는 양방향 조율을 통해 사람에게 안정감을 유발한다. 한 사람의 차분하고 안정된 현존은 상대방의 신경계를 이완시키고, 관계를 통해 발생하는 공동조절(coregulation)은 상대방이 안전함을 느끼고 관계에 더 몰입할 수 있게 한다.</span></p>
+    <p><span style="font-size:20px">이와 더불어 심리학자 헵은 신경가소성의 원리를 통해 안전한 관계 경험이 얼마나 중요한지 우리에게 상기시켜 준다. ‘신경가소성(neuroplasticity)’이란, 경험에 따라 뇌가 변화하고 적응하는 능력이다. 즉, 나의 첫 상식기사에서 다룬 복합외상(complex trauma)과 같이 사람으로부터 당하는 충격적인 사건으로 인해 뇌가 손상되어 적응적인 기능을 발휘하는데 제한이 있지만, 안전한 관계 경험으로 인해서 뇌가 건강한 상태로 회복될 수 있다는 사실이 정말 멋진 일 아닌가! 이러한 신경가소성의 의미는 사람 사이의 관계에서 순간적인 현존 상태가 정기적으로 함양되고 연습되면 지속적인 특성이 될 수 있다는 것이다. 즉, 경험의 반복은 뇌 구조의 변화를 초래할 수 있다는 것이다! 안전한 관계 안에서 평온함, 중심감, 수용, 몰입, 평정심 등의 경험을 통해 자신을 쉬게 할 때, 이러한 경험이 비로소 ‘신경학적 각인(neurological imprints)’가 될 수 있다는 사실이 현대의 상담 및 심리치료 분야를 더욱 빛나게 만들어 주고 있다.</span></p>
+    <p><span style="font-size:20px">나는 이러한 신경과학의 원리를 내 학문 분야의 우수성을 피력하기 위해서 여기서 언급하고자 하는 것이 아니다. 오히려 평범한 사람과 사람 사이의 진정한 관계 안에서 자기 자신 뿐만 아니라 다른 사람을 성장시킬 수 있다는 놀라운 원리를 설파하고 싶은 것이다. 당신은 사랑하고 좋아하는 사람들과 이러한 현존의 태도를 유지하고 있는가? 혹여 너무 바쁜 일상과 몰아치는 일거리, 그리고 달성해야 할 목표들로 인해서 내 눈앞에 있는 소중한 사람을 있는 그대로 온전히 대하고 있지 못하고 있는 것은 아닌가? 우리 다시, 현존의 태도로 돌아와 보자. 그로 인해서 관계 안에서 서로가 성장하는 기쁨을 누리는 삶을 살아보자.</span></p>
+    <p><span style="font-size:20px"><strong>참고 문헌</strong></span></p>
+    <p class="no-indent"><span style="font-size:20px">[1] Geller, S. M., & Greenberg, L. S. (2026). 치료적 현존: 효과적인 치료적 관계를 위한 마음챙김 접근법 개정판[Therapeutic presence: A mindful approach to effective therapeutic relationships, 2nd Ed.]. (김영근 역). 학지사(원전은 2023에 출판).</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s27_img02.jpg" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<article class="article-section" id="slide-28">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>#1. 친환경 선박 시대, 승무 자격은 어떻게 달라지나 </strong></span></h3>
+    </div>
+    <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>국내 대체연료 추진선박의 확산과 승무자격 제도를 중심으로</strong></span></h3>
+    <p style="text-align:center"><span style="font-size:16px">유형수</span></p>
+    <p style="text-align:center"><span style="font-size:16px">Hyoungsoo Yoo</span></p>
+    <p style="text-align:center"><span style="font-size:16px">한국해양수산연수원 교수</span></p>
+    <p style="text-align:center"><span style="font-size:16px">hsyoo@seaman.or.kr</span></p>
+    <p><span style="font-size:20px">“교수님, 저희 회사가 LNG 추진 탱커선을 이제 곧 인수할 예정인데, 이 선박에 승선할 예정인 선원들은 어떤 교육을 이수해야 하고, 승무 자격은 어떻게 준비해야 하나요?”</span></p>
+    <p><span style="font-size:20px">2020년 가을, 첫 문의를 받았을 때만 해도 IGF Code (International Code of Safety for Ships using Gases or other Low-flashpoint Fuels)는 국내에 막 소개되던 단계였다 </span><span style="font-size:20px"><strong>[1]</strong></span><span style="font-size:20px">. 그러나 6년이 지난 지금, 관련 문의는 LNG를 넘어 메탄올과 암모니아 추진선의 승선 자격으로까지 확대되었다. 이는 친환경 대체연료 추진선박이 더 이상 예외적 사례가 아니라, 선박 발주와 건조, 운항, 인력 양성까지 연결되는 현실적 과제가 되었음을 보여준다.</span></p>
+    <p><span style="font-size:20px">이제 현장의 관심은 단순히 어떤 연료를 채택할 것인가에 머물지 않는다. 실제로는 누가 승선할 수 있는지, 어떤 교육을 받고 어떤 자격을 갖추어야 하는지가 더 중요한 실무 과제가 되었다. 2025년 말 기준 한국해양수산연수원(KIMFT)의 가스연료추진 선박 교육 누적 이수자는 기초교육 839명, 직무교육 763명에 이르며, 이 가운데 상당수는 LNG 및 메탄올 추진선박의 승선 준비 인력 또는 승선 인력으로 활용되고 있다[6].</span></p>
+    <p><span style="font-size:20px">본 고에서는 이러한 변화의 배경과 국내 보급 현황, 그리고 대체연료 추진선박 승선을 위해 요구되는 교육 및 승무자격 제도의 핵심을 정리하고자 한다.</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>1. 왜 지금 대체연료 추진 선박인가</strong></span></p>
+    <p><span style="font-size:20px">대체연료 추진선박이 빠르게 늘어나는 가장 큰 배경은 국제 환경규제의 강화에 있다. 국제해사 기구(IMO)는 가스 또는 저인화점연료를 사용하는 선박에 IGF Code를 적용하고 있으며[1], 승무원 교육과 자격의 국제적 근거는 STCW 협약 제V/3규칙에 두고 있다[2]. 메탄올 추진선박에는 MSC.1/Circ.1621[3], 암모니아 추진선박에는 MSC.1/Circ.1687[4]이 각각 적용된다.</span></p>
+    <p><span style="font-size:20px">이러한 규제 환경 속에서 LNG, 메탄올, 암모니아와 같은 저인화점연료는 해운업계의 현실적인 대응 수단으로 자리 잡고 있다. 글로벌 시장에서도 대체연료 추진선박 발주는 꾸준히 증가해 왔으며, 최근에는 LNG와 메탄올이 주요 선택지로 자리 잡고 있다[7][8]. 이에 따라 선박 인도 전에 관련 교육을 이수하고 자격을 갖춘 선원을 확보하는 일이 현장의 중요한 과제가 되고 있다.</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>2. 국내 대체연료 추진선박은 얼마나 늘었나</strong></span></p>
+    <p><span style="font-size:20px">한국해양수산연수원 집계자료에 따르면, 2025년 말 기준 국내 관공선, 공공기관 선박, 외항선 선주사 및 선박관리사가 운항 중이거나 건조 중 또는 발주한 대체연료 추진선박은 총 100척이다[6]. 이 중 IGC Code 적용 선박을 제외하면 LNG 추진선은 82척, 메탄올 추진선은 18척으로 집계된다[6].</span></p>
+    <p><span style="font-size:20px">국내 대체연료 추진선박의 가장 큰 특징은 외항선을 중심으로 보급이 확대되고 있다는 점이다. [그림 1]에서 보듯이, 외항선 부문에서는 자동차운반선(PCTC)과 컨테이너선을 중심으로 LNG와 메탄올 추진선이 집중되어 있다[6]. 특히 PCTC는 38척, 컨테이너선은 23척으로 나타나며, 이 두 선종이 국내 외항선 분야의 대체연료 전환을 주도하고 있다[6].</span></p>
+    <p><span style="font-size:20px">연료별로 보면 LNG가 전반적으로 우세한 가운데, 메탄올은 일부 선종에 선택적으로 도입되고 있다[6]. PCTC와 컨테이너선에서는 LNG와 메탄올 이 함께 적용되지만, 유조선과 벌크선은 LNG 중심이며, 케미컬탱커에서는 메탄올 사례가 확인 된다[6]. 이는 선종별 운항 특성, 연료공급 여건, 기술 성숙도의 차이가 연료 선택에 반영된 결과로 볼 수 있다.</span></p>
+    <p class="no-indent" style="text-align:center"><span style="font-size:20px"><strong>그림 1: </strong></span><span style="font-size:20px">국내 외항선 선종별 LNG·메탄올 추진선박 현황</span></p>
+    <p style="text-align:center"><span style="font-size:20px">(운항·건조·발주 완료 선박 포함, 2025년 말 기준)</span></p>
+    <p><span style="font-size:20px">다만 국내 대체연료 추진선박의 보급은 외항선에만 국한되지 않는다. 공공·내항선 부문에서도 청항선, 예인선, 방제선 등을 중심으로 LNG 추진선 도입이 이루어지고 있으며, 교육·연구 부문에서도 실습선과 조사선에 LNG가 적용되고 있다[6]. 즉, 외항선 에서는 LNG와 메탄올이 함께 확산되는 반면, 공공·내항선과 교육·연구선에서는 운항 경험과 연료 공급 인프라가 상대적으로 축적된 LNG가 우선 채택되고 있다.</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s28_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<article class="article-section" id="slide-29">
+  <div class="article-body">
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 2: </strong></span><span style="font-size:20px">국내 조선소에서 건조된 메탄올 추진 컨테이너선 사례</span></p>
+    <p style="text-align:center"><span style="font-size:20px"><출처: HMM> </span></p>
+    <p><span style="font-size:20px">한편, 2025년부터 국내 조선소에서 메탄올 추진 컨테이너선이 연이어 건조되는 등 대체연료 추진 선박의 도입은 이미 실제 산업 현장으로 확산된 상태다. [그림 2]의 사례가 이를 상징적으로 대변 한다. 즉, 메탄올 추진선은 더 이상 시험적 개념에 머물지 않으며, 실질적인 선대 운영과 승무 인력 준비가 동시에 요구되는 현실적 대상으로 자리 잡은 것이다.   </span></p>
+    <p><span style="font-size:20px">국내는 아직 LNG 비중이 높지만, 일부 외항선을 중심으로 메탄올 적용도 점차 확대되고 있다 [6][7][8]. 따라서 앞으로는 선박 보급 확대 자체뿐 아니라, 어떤 선종에 어떤 연료가 적용 되는지, 그리고 이에 맞추어 어떤 승무 인력과 교육체계가 준비되어야 하는지가 더욱 중요해질 것으로 보인다.</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>3. 승선에 필요한 교육과 승무자격</strong></span></p>
+    <p><span style="font-size:20px">대체연료 추진선박에 승선하기 위해서는 관련 전문 교육을 이수하고 승무자격증(COP, Certificate of Proficiency)을 취득해야 한다. 국내에서는 선원법 시행규칙 제42조의2가, 국제적으로는 STCW 협약 제V/3규칙이 그 근거가 된다[2][5].</span></p>
+    <p><span style="font-size:20px">승무자격은 직무의 책임 정도에 따라 크게 기초 승무자격증(COP Basic Training)과 상급 승무 자격증(COP Advanced Training)으로 구분된다. 기초 승무자격증은 항해사, 기관사, 부원 등 해당 선박에 승선하는 관련 인원이 기본적으로 갖추어야 하는 자격이다. 이는 대체연료의 특성과 위험성, 기본 안전수칙, 비상대응 절차 등을 이해하기 위한 최소한의 요건이며, 관련 기초교육을 이수한 후 발급된다[2][5].</span></p>
+    <p><span style="font-size:20px">반면 상급 승무자격증은 선장, 기관장, 기관사관 등 보다 책임 있는 직무를 수행하는 인원에게 요구되는 실무형 자격이다. 단순한 기초 안전지식을 넘어, 실제 선박에서 연료 시스템을 이해하고 연료수급 작업과 운항 중 안전관리를 수행할 수 있는 역량이 전제된다. 따라서 상급 승무자격증은 교육 이수뿐 아니라 일정한 승무경력과 연료 취급 경험까지 함께 요구된다[2][5].</span></p>
+    <p><span style="font-size:20px">현장에서 가장 많이 문의하는 부분도 바로 이 상급승무자격증의 발급 요건이다. 상급 가스연료 추진선박 승무자격증은 일반적으로 다음 요건을 모두 충족해야 한다[2][5].</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 가스연료추진선선박 기초 및 직무교육 이수</span></p>
+    <p class="no-indent"><span style="font-size:20px">● IGF Code 적용 선박에서 1개월 이상의 승무경력</span></p>
+    <p class="no-indent"><span style="font-size:20px">● 3회 이상의 연료 수급작업(벙커링) 경력</span></p>
+    <p><span style="font-size:20px">즉, 상급 승무자격증은 교육만 이수했다고 바로 발급되는 자격이 아니다. 실제 선박에서 일정 기간 근무하면서 연료 취급 업무를 경험한 인력에게 부여되는 실무형 자격이다. STCW 협약에서도 상급승무자격 요건으로 1개월 이상의 승인된 승선경력과 최소 3회의 벙커링 작업을 요구하며, 이 중 2회는 승인된 시뮬레이터 훈련으로 대체할 수 있다고 설명하고 있다[2].</span></p>
+    <p><span style="font-size:20px">다만 현장 여건을 고려한 제도적 보완장치도 마련되어 있다. 해양수산부장관이 인정하는 기관에서 이수한 모의 연료수급작업 경력은 최대 2회까지 실제 경력에 포함할 수 있다[5]. 예를 들어 벙커링 시뮬레이터 실습을 이수한 경우, 실제 선박에서 1회의 연료수급작업만 수행하더라도 총 3회의 요건을 충족할 수 있다[5][6]. 이는 신조 대체연료 추진선박의 초기 승무원 확보에 실질적인 도움이 되는 제도적 장치라 할 수 있다.</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>4. KIMFT 교육 운영 현황과 향후 과제</strong></span></p>
+    <p><span style="font-size:20px">현재 한국해양수산연수원의 가스연료추진선박 교육은 기초교육 2일(14시간), 직무교육 3일 (21시간) 과정으로 운영된다[6]. 기초교육은 대체 연료의 특성과 기본 안전개념, 관련 규정, 비상대응을 중심으로 구성되며, 직무교육은 심화 내용과 실제 업무에 연계된 실습을 포함한다.</span></p>
+    <p><span style="font-size:20px">특히 직무교육 내 벙커링 시뮬레이터 실습은 현장 경험 기회가 제한적인 대체연료 선박의 초기 승무원 양성에 실질적인 도움을 준다. 교육생들은 실제 선박과 유사한 환경에서 연료수급 절차, 위험요인 확인, 비상조치 등을 훈련할 수 있으며, 이는 승선 전 준비과정에서 매우 중요한 역할을 한다.</span></p>
+    <p><span style="font-size:20px">2020년 10월 교육 개설 이후 교육 이수자는 전반적으로 증가하는 추세를 보이고 있다[6]. [그림 3]에서 보듯이 연도별 합산 이수자는 2020년 39명에서 2025년 632명으로 크게 늘었으며, 특히 2024년 이후 증가 폭이 두드러진다[6]. 이는 국내 대체연료 추진선박 도입 확대와 함께 관련 교육 수요도 본격적으로 증가하고 있음을 보여준다. 이 수치에는 기초교육과 직무교육뿐 아니라 외국인 기초교육도 포함되며, 교육 수요가 국내 해기사 교육을 넘어 외국인 선원 교육으로까지 확대되고 있음을 시사한다[6].</span></p>
+    <p class="no-indent"><span style="font-size:20px"><strong>그림 3: </strong></span><span style="font-size:20px">가스연료추진선박 교육 연도별 이수자 추이(2020~2025)</span></p>
+    <p style="text-align:center"><span style="font-size:20px">(기초교육·직무교육·외국인 기초교육 합산 기준)</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s29_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s29_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<article class="article-section" id="slide-30">
+  <div class="article-body">
+    <p><span style="font-size:20px">최근에는 신조선 인도 일정에 맞춘 단체교육 요청 사례도 늘고 있어, 친환경 선박 도입이 인력 양성과 직결되는 실무 문제로 확장되었음을 알 수 있다[6].</span></p>
+    <p><span style="font-size:20px">이에 발맞추어 교육 내용도 변화하고 있다. IMO의 연료별 안전지침 마련[3][4]에 따라, KIMFT 역시 2025년 교육과정 개편을 통해 메탄올, LPG, 암모 니아 관련 내용을 신규 반영하였다[6]. 앞으로는 단일 연료 중심에서 벗어나 연료별 물성, 공급 방식, 위험 특성, 비상대응 절차의 차이를 반영한 보다 정교한 교육체계가 필요하다. 또한 승무자격 제도와 교육과정이 실제 운항 현장과 긴밀히 연결되도록, 시뮬레이터 실습과 현장 경험을 연계하는 체계도 더욱 중요해질 것이다.</span></p>
+    <p><span style="font-size:20px;color:#004F8A"><strong>맺음말</strong></span></p>
+    <p><span style="font-size:20px">과거 “이런 교육이 가능한가”를 묻던 현장은 이제 “신조선 인도 전에 어떻게 인력을 양성하고 상급승무자격을 갖출 것인가”라는 보다 구체적이고 현실적인 논의로 바뀌었다. 이는 친환경 대체연료 추진선박이 더 이상 일부 시범적 영역이 아니라 실제 선박 운항과 인력 운영의 과제가 되었음을 보여준다.</span></p>
+    <p><span style="font-size:20px">기술 전환의 성패는 새로운 연료나 설비의 도입에만 있지 않다. 이를 안전하게 다룰 수 있는 인력, 그리고 그 인력을 체계적으로 준비시키는 교육 및 자격 제도가 함께 갖춰질 때 비로소 전환은 완성된다. 앞으로 LNG, 메탄올, 암모니아 등 다양한 대체연료 추진선박이 확대될수록, 이를 안전하게 운용할 수 있는 인력과 그 인력을 체계적으로 양성하는 교육·자격 제도의 중요성은 더욱 커질 것이다[1][2][3][4][7][8]. <끝></span></p>
+    <p><span style="font-size:20px"><strong>참고문헌</strong></span></p>
+    <p class="no-indent"><span style="font-size:20px">[1] IMO, International Code of Safety for Ships using Gases or other Low-flashpoint Fuels (IGF Code).</span></p>
+    <p class="no-indent"><span style="font-size:20px">[2] IMO, STCW Convention and Code, Regulation V/3.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[3] IMO, MSC.1/Circ.1621, Interim Guidelines for the Safety of Ships using Methyl/Ethyl Alcohol as Fuel.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[4] IMO, MSC.1/Circ.1687, Interim Guidelines for the Safety of Ships using Ammonia as Fuel.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[5] 선원법 시행규칙 제42조의2.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[6] 한국해양수산연수원 교육과정위원회 자료, 2025.</span></p>
+    <p class="no-indent"><span style="font-size:20px">[7] DNV, Alternative Fuels Insight (AFI).</span></p>
+    <p class="no-indent"><span style="font-size:20px">[8] Clarksons Research, Green Technology Tracker: Record Investments in Alternative Fuel, 2025.</span></p>
+    <p><span style="font-size:20px"><strong>저자 소개</strong></span></p>
+    <p><span style="font-size:20px">저자는 한국해양대학교 해사대학 기관시스템 공학과를 졸업하였다. 이후 상선 승선 경력을 바탕으로 중공업 엔지니어와 선박검사원으로 현장 실무를 수행하였으며, 2016년부터 한국해양수산 연수원에서 교육을 담당하고 있다. 특히 가스연료 추진선박 교육과정의 개설 초기부터 기획과 운영 전반에 참여해 왔으며, 현재 해당 과정의 책임 교수를 맡고 있다. </span></p>
+    <p><span style="font-size:20px">2025년에는 대한민국 대표로 IMO-WMU 주관 대체연료 Train-the-Trainer 과정(상하이) 및 IMO·MPA 주관 대체연료 세미나(싱가포르)에 참석 하였으며, 이를 통해 최신 국제 동향을 국내 교육 현장에 적극적으로 반영하고 있다.</span></p>
+  </div>
+</article>
+
+<section class="section-header" id="slide-31">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">선배 연구자에게 듣는다</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-32">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>UT(University of Tennessee)에서의 Visiting 생활과 보람(2/2)</strong></span></h3>
+    </div>
+    <div class="author-photo">
+      <img src="kosme-vol50-images/s32_img02.jpg" alt="저자 사진">
+    </div>
+    <div class="author-info-block">
+      <p style="text-align:center"><span style="font-size:16px">남정길</span></p>
+      <p style="text-align:center"><span style="font-size:16px">Jeong-Gil Nam</span></p>
+      <p style="text-align:center"><span style="font-size:16px">국립목포해양대학교 교수 </span></p>
+      <p style="text-align:center"><span style="font-size:16px">전 KOSME 회장, 전 대학원장</span></p>
+      <p style="text-align:center"><span style="font-size:16px">jgnam@mmu.ac.kr</span></p>
+    </div>
+    <p><span style="font-size:20px">2012년에 다시한번 더 미국 테네시 주립대학교(UT, University of Tennessee)에 Visiting 교수로 다녀올 수 있는 기회가 있었다. 두 번째라서 영어 실력은 조금 늘었으나, 아직도 갈 길이 멀었다. Adviser는 베트남 사람(Prof. Ke Nguyen)으로 실력이 있었을 뿐만 아니라, 겸손하기까지 하였다. 나에게는 영어 선생님이자, 연구 파트너로서 동네 형님 같은 분이었다. </span></p>
+    <p><span style="font-size:20px">1년 동안의 미국 생활 대부분은 UT 실험실 출근, 가족여행, Play Golf 등 이었다. 주말에는 한인 교회에서 오전 예배를 보았으며, 특별한 일이 없으면 오후에는 주로 Golf(교회에서 점심식사 후 설거지는 남자들 담당이었으며, 즉석 골프 팀이 만들어짐)를 즐겼다. </span></p>
+    <p><span style="font-size:20px">주중에는 거의 매일 실험실에 출근하였으며, 오전에는 Adviser와 함께 실험을 하였다. 점심 시간에는 외식을 함께 하거나, 가끔씩 도시락(각자 집에서 가져온 도시락) 식사도 함께 하였다. 점심식사 후에는 Adviser 연구실로 이동하여 이런 저런 대화를 하는 것이 일상이었다. 그야 말로 나에게는 너무나 좋은 영어과외 선생님이었다.</span></p>
+    <p><span style="font-size:20px">연구 내용으로는 SCR system에 들어가는 ‘촉매(Catalyst)의 황(S) 피독에 의한 성능 변화 및 탈황에 관한 내용’으로 Bench flow reactor test 장치를 활용하였으며, 배기가스 Data 측정은 FTIR (Fourier Transform Infrared Spectroscopy)을 이용하여 수행하였다. 또한, 촉매성분 분석은 NTRC(National Transportation Research Center, 국립교통연구센터)에 의뢰하여 수행하였으며, BET(Brunauer–Emmett–Teller) 비표면적 분석, DRIFTS(Diffuse Reflectance Infrared Fourier Transform Spectroscopy, 확산반사 적외선 푸리에 변환 분광법) 분석, XRD(X-Ray Diffraction, X선 회절) 분석, EPMA(Electron Probe Micro Analyzer, 전자탐침 미량분석) 분석, TEM(Transmission Electron Microscopy, 투과형전자현미경) 관찰 등을 활용하였다. 실험장치가 아기자기 하고 소음도 없을 뿐만 아니라, 주위도 깨끗해서 실험하는데 어려움은 없었다.  </span><span style="font-size:20px"><strong>Figure 1</strong></span><span style="font-size:20px">은 그 당시 실험실(in UT)에서 실험중인 본인의 사진이다. 그 연구 결과는 Adviser와 공저로 SCI급 학술지인 Catalyst today에 논문(Title: Impact of sulfation and desulfation on NOx reduction using Cu-chabazite SCR catalysts)으로 게재되었다.</span></p>
+    <p style="text-align:center"><span style="font-size:20px"><strong>Figure 1: </strong></span><span style="font-size:20px">Photograph of the lab testing setup at UT</span></p>
+    <p><span style="font-size:20px">Adviser와 대화 내용은 다양했다. 항상 지난 주말에 있었던 일상생활 및 가정사부터 시작해서, 연구실 컴퓨터 Monitor 앞에 앉아 문학, 역사, 철학, 종교, 베트남문화, 전공 등 한정된 주제는 없었다. 심지어는 국립목포해양대학교 홈페이지에 들어가서 영어로 소개된 내용 검토까지 하기도 하였다. 대화 중에 좀 더 구체적으로 알아보고 싶은 내용이 있으면 항상 Wikipedia(위키피디아)를 활용하였다. </span></p>
+    <p><span style="font-size:20px">대화 내용 중에 대한민국 Adviser 자격으로 IMO MEPC 회의에 참가(2005 ~ 2011년, in London) 해서 활동했던 본인의 이야기를 했더니, IMO MEPC에서 그 당시에 진행 중이었던 Hot issue를 잘 정리해서 NTRC 연구원들(Almost Americans)을 상대로 발표를 해보자는 제안을 하였다. 그것은 나에게 토큰머니(Token Money, 작은 돈)를 주기 위한 배려이기도 하였다. 그 당시 미국경제가 좋지 않아 토큰머니는 받지 못했지만, 나에게는 엄청난 소득과 경험이었다. NTRC 연구원들 앞에서 멋진 발표를 하기 위해 발표할 PPT도 Adviser와 함께 만들었으며, 발표하는 태도 및 발표 요령도 대학원생 지도 하듯이 세심하게 가르쳐 주었다. </span></p>
+    <p><span style="font-size:20px">그 때 함께 만들었던 PPT와 발표 Skill이 Visiting 생활을 마치고, 귀국해서 두 번의 Keynote speech [AMEC 2016 (7th PAAMESS, Hongkong),  ISME 2017 (Tokyo Odaiba)]를 당당하게 할 수 있게 해 주었다. 또한, 2019 년도에 한국해양대학교에서 진행되었던 세계 엔진메이커[Everllence(구 B&W → MAN B&W Diesel → MAN B&W → MAN Energy Solution → Everllence), WinGD, Wärtsilä 등]의 CEO를 모신 Technical meeting에서 멋지게 MC(Master of ceremonies, 사회)도 볼 수 있었다. </span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s32_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<article class="article-section" id="slide-33">
+  <div class="article-body">
+    <p><span style="font-size:20px">특히, ISME 2017에서는 Keynote speech를 하기 전에 </span><span style="font-size:20px"><strong>Figure 2</strong></span><span style="font-size:20px">와 같이 Tape cutting 식에 이어서 3명[임기택 IMO S/G(Secretary General, 사무총장), 오츠보 일본교통성 차관(일본대표), 그리고 본인(KOSME 부회장, 한국대표)]의 Greeting speech가 있었다.</span></p>
+    <p><span style="font-size:20px"><strong>Figure 2: </strong></span><span style="font-size:20px">Photograph of the tape-cutting ceremony and greeting speech at ISME 2017</span></p>
+    <p><span style="font-size:20px">그날 저녁에 동경역 근처에 있는 쉐라톤 호텔에서 진행된 간담회에 초청되어 참석을 하게 되었는데, 한국인은 2명 (IMO Secretary-General Lim and Me) 이었고 대부분이 일본 측 인사들 (ISME 2017 Organizer, 일본 해운회사 회장님들 등) 이었다. 간담회장 Round table 옆에 Grand piano가 있어 의아해 했었는데, 식전에 기모노를 입은 예쁜 여인이 들어와서 아리랑 곡을 피아노로 연주해 주었다. 한국 사람에 대한 최대한의 예우로 생각되었으나, 일제 강점기때(1910~1945) 핍박 받았을 우리 조상들이 생각나 격세지감(세상이 완전히 달라진 것 같은 느낌)을 느꼈다. 식사가 끝나갈 무렵에, 마이크를 들고 한마디씩 하는 순서가 돌아왔다. 무슨말을 할까 고민하다가 목포해양대학교에 대해서 간단하게 홍보하고 나서, 또 한가지가 더 있다고 했더니 모두 집중해 주었다. 긴 역사를 가진 ISME(그 당시 44년, 3년마다 개최)와 상대적으로 역사가 짧은 ISMT(그 당시 12년, 2년마다 개최)의 다음 Conference는 부산 Bexco에서 ‘ISME & ISMT Joint Conference’로 진행하면 좋겠다는 제안을 하였다. 그 당시 큰 박수갈채를 받았으며, Joint Conference를 진행하기 위해서 2021년도에 자연스럽게 KOSME 학회장이 되었다. Joint Conference 2021 개최를 목표(3년마다 진행하는 ISME 2020은 ISME 2021 진행을 위해 Skip 되었음)로 처음에는 잘 추진되었으나, 코로나 19의 끈질긴 방해로 무산되었지만 언제라도 좋은날 ‘ISME & ISMT Joint conference’를 진행하면 좋겠다.</span></p>
+    <p><span style="font-size:20px">지금도 UT에서 현역으로 활동중인 Adviser 케 뉴엔 교수님과 그 당시에 매우 친하게 지냈으며, 세상에는 이렇게도 친절하시고 겸손한 분도 있구나 싶어 많은 것을 배우고 느꼈다. 귀국을 앞두고는 목포해양대학교 출신 제자 한 명을 석사과정 장학생으로 받겠다는 귀한 선물까지 주셨다. 학부때부터 논문지도 학생 팀장이었으며, 승선하면서도 가끔씩 연락이 왔던 K군(당시, 1기사)에게 제안했더니 꼭 유학을 가고 싶다고 했다. K군의 학부 성적표를 보여주면서 성실성을 강조했더니 좋아하셨다. 그런데 영어라는 복병이 하나 있었다. 영어 성적은 그 대학(UT) 석사과정에서 원하는 수준이 되어야 입학이 가능했다. 그래서 K군은 서울에 있는 영어 학원에 등록하여 UT에서 원하는 수준이 되었으며, 유학을 위한 출국 전 약 두 달 동안 본인의 연구실에서 함께하면서 데이터 정리작업 및 실험방법론과 연구 수행절차 등을 지도하였다. 또한, UT Lab에 대한 설명과 함께 연구자로서 갖추어야 할 자세와 책임감에 대한 정신교육을 시켰다. </span></p>
+    <p><span style="font-size:20px">K군이 유학생활을 하는 중에 좋은 학생을 보내줘서 고맙다는 인사와 함께 한국학생 한 명을 더 받고 싶다는 제안도 받았으나, 여러가지 사정으로 보내지는 못했다. K군은 본인의 열정과 노력으로 전액 장학금을 받으며 석·박사 통합과정을 성공적으로 마치고 박사학위를 취득하였다. 또한, 박사후 과정으로 미국에서 약 3년 동안 재직[ORNL(Oak Ridge National Laboratory)에서 박사후 연구원, UT(University of Tennessee)에서 Lecturer, UCF(University of Central Florida)에서 박사후 연구원]을 한 후에 귀국하였다. 현재는 자동차 촉매 분야에서 세계를 Leading 하는 H 사에서 활발하게 연구활동을 이어가고 있다. 본인이 교수로 재직하면서 여러 가지 보람도 많았지만, K군을 지도하고 그의 성장 과정을 함께한 경험이 가장 큰 보람 중의 하나이며, 앞으로의 행보 또한 기대가 크다.</span></p>
+    <p><span style="font-size:20px">두 번의 Visiting 생활(OSU, UT) 덕분에 좀 더 활발하게 IMO MEPC 활동(COVID 19 전까지)을 할 수 있었으며, 국제활동도 적극적으로 할 수 있었다. 그동안 세계내연기관협의회(CIMAC, International  Council on Combustion Engines) 회의에 두 번 [CIMAC Congress 2019(Vancouver, Canada), CIMAC Congress 2025(Zurich, Switzerland)] 참가하여 많은 것을 배우고 느꼈다. 또한, 퇴직 전(2027. 8/末) 까지 세계 3대 조선·해양 박람회(Nor-Shipping, Posidonia, SMM)를 모두 참가해서 견문을 넓히려는 목표를 세웠으며, 이미 두 곳[Nor-Shipping 2023(Oslo, Norway), Posidonia 2024(Athens, Greece)]을 다녀왔다. 두 곳의 조선·해양 박람회에서는 전 세계 해양산업계와 조선업계 리더들이 모여 지속 가능한 미래를 위해 기술혁신을 선보이고, 지식을 공유하며, 다양한 부대행사(기술 세미나, 해양리더십 컨퍼런스, 해양수소 컨퍼런스, 해상풍력 컨퍼런스 등)를 진행하였다.  2026년 올해는 독일 Hamburg에서 개최되는 SMM 2026(9/1~9/5)에 다녀올 예정이다.</span></p>
+    <p><span style="font-size:20px">미국 주립대학교에서는 연구비를 많이 가져오는 교수가 연봉을 책정하는데 있어서 가장 좋은 평가를 받았다. 열심히 연구해서 프로젝트를 수행해야 대학원생을 유치할 수 있고, 대학원생이 많아야 연구 성과와 논문 실적이 많이 나올 수 있는 구조였다. 우리나라도 마찬가지로 연구도 많이 하고, 프로젝트도 많이 수행해야 훌륭한 연구 교수로 인정받을 수 있지만, 그 보다도 더 중요한 것은 건강(健康, 굳건함 ≪ 편안함)이므로 무엇보다 건강을 우선으로 챙기면서 연구하시길 바란다. <끝></span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s33_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<section class="section-header" id="slide-34">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">학회소식</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-35">
+  <div class="article-body">
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>2025년도 졸업우수자 ‘상’ 시상식 진행</strong></span></h3>
+    </div>
+    <p><span style="font-size:20px">우리 학회는 매년 각 대학의 학위수여 대상자 중 ‘조선 및 조선기자재산업’ 관련 학과 내 학업성적이 우수하고 타의 모범이 되는 학생을 추천받아 졸업우수 표창을 하고 있습니다.</span></p>
+    <p><span style="font-size:20px">이번 2025학년도 졸업우수표창은 각 학교별 학위수여식 일시에 맞추어 시상식이 진행되었습니다. 지난 1월 28일 한국해양대학교 해사대학은 한국해양대학교 대강당에서 학위수여식을 개최하여 수상자 2명(기관시스템공학부 김재우, 해사인공지능·보안학부 변양석)에게 상장을 수여하였으며, 공과대학은 2월 24일 3명(해양공간건축학부 김건홍, 전자전기정보공학부 문민, 전자전기정보공학부 장선희)의 학생들에게 상장을 수여하였습니다.</span></p>
+    <p><span style="font-size:20px">졸업하신 모든 학생분들의 앞날에 행운이 가득하길 바라며 학회상을 수상하신 각 대학의 졸업생 여러분 모두 축하드립니다.</span></p>
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>2026년도 전기학술대회 행사 안내</strong></span></h3>
+    </div>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s35_img02.jpg" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p style="text-align:center"><span style="font-size:20px">2025년도 해사대학 학위수여식(김재우, 변양석)</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s35_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <div class="article-title-block">
+      <h3 style="text-align:center"><span style="font-size:28px;color:#002060"><strong>2026년도 상반기 산업체 탐방 진행</strong></span></h3>
+    </div>
+    <p><span style="font-size:20px">지난 2월 24일(화) 우리 학회는 학회 회원들을 대상으로 2026년도 상반기 산업체 탐방을 진행하였습니다.</span></p>
+    <p><span style="font-size:20px">이번 방문기관은 한국기계연구원 동남권기계연구본부로, 선도하는 미래기술과 관련한 레이저기술실용화연구실, 미래차부품연구실, 원전기기연구실을 둘러보았습니다. 총 21명의 회원님들께서 참석하셨으며, 모든 회원님들께서는 많은 관심과 함께 현장 직원들의 설명을 들으며, 기계분야의 연구 및 개발에 대한 이해도 제고와 K-Machine을 선도하는 연구기관의 필요성에 대한 공감대 형성을 할 수 있는 뜻깊은 시간이었습니다.</span></p>
+    <p><span style="font-size:20px">탐방 진행에 협조해주신 동남권기계연구본부 레이저기술실용화연구실 박인덕 책임님, 현장 직원분들, 그리고 산업체 탐방을 준비하시느라 수고해주신 이원주 사업이사님께 다시 한 번 감사드립니다.</span></p>
+    <p style="text-align:center"><span style="font-size:20px">2026년도 상반기 산업체 탐방</span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s35_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+  </div>
+</article>
+
+<section class="section-header" id="slide-36">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">단체회원사 현황</span></p>
+  </div>
+</section>
+
+<article class="article-section" id="slide-37">
+  <div class="article-body">
+    <p><span style="font-size:12px;color:#0070C0">단체회원사 현황</span></p>
+    <p><span style="color:#004F8A">Platinum</span></p>
+    <div class="article-table"><table>
+<tr><td>회사명</td><td>사업 분야</td><td>연락처</td></tr>
+<tr><td>(사)한국선급</td><td>선박 검사</td><td>070-8799-7114</td></tr>
+<tr><td>(주)테크윈</td><td>전해 설비</td><td>043-261-8114</td></tr>
+<tr><td>(재)한국조선해양기자재연구원</td><td>연구 용역</td><td>051-400-5000</td></tr>
+<tr><td>HD현대중공업(주)</td><td>엔진, 축계</td><td>052-202-2114</td></tr>
+<tr><td>로우카본㈜</td><td>선박용 탈황제, 화력발전용 <br>탈황제, NOX저감제,<br>CO2 전기·화학적 변환촉매</td><td>061-432-7273</td></tr>
+<tr><td>(주)디엔디이</td><td>1. 공학용 소프트웨어 ANSYS<br>- 공학용 시뮬레이션 SW 판매 및 유지보수<br>2. 엔지니어링 서비스<br>- 공학 시뮬레이션을 통한 구조, 유동, 전자기, 시스템 해석<br>- 최적화 / 커스트마이징<br>- 디지털트윈 구축 / ROM 개발</td><td>051-920-2480</td></tr>
+</table></div>
+    <p><span style="color:#004F8A">Diamond+</span></p>
+    <div class="article-table"><table>
+<tr><td>회사명</td><td>사업 분야</td><td>연락처</td></tr>
+<tr><td>HD현대일렉트릭㈜</td><td>변압기, 고압차단기, 회전기, 저압전동기, 배전반, 전력제어, 중저압차단기, 전력변환 및 에너지저장장치</td><td>052-202-8114</td></tr>
+<tr><td>(주)동화엔텍</td><td>열교환기</td><td>051-970-1000</td></tr>
+<tr><td>현대삼호중공업(주)</td><td>선박 건조</td><td>061-460-2114</td></tr>
+<tr><td>(주)제이엠피네트웍스</td><td>선박용 전기추진 하이브리드체계 공급 및 Commissioning, Engineering<br>선박용 하이브리드 발전기체계 공급 및 Engineering<br>해양안전장비전문-고속보트용 충격완화시트 등<br>중소형 보트 전용 디젤엔진 및 추진기 공급</td><td>051-302-3898</td></tr>
+</table></div>
+  </div>
+</article>
+
+<article class="article-section" id="slide-38">
+  <div class="article-body">
+    <p><span style="color:#004F8A">Diamond</span></p>
+    <div class="article-table"><table>
+<tr><td>회사명</td><td>사업 분야</td><td>연락처</td></tr>
+<tr><td>한화엔진</td><td>엔진, 축계</td><td>055-260-6403</td></tr>
+<tr><td>삼성중공업(주)</td><td>조선수주, 해양산업, 건설</td><td>055-630-3114</td></tr>
+<tr><td>STX엔진(주)</td><td>엔진, 축계</td><td>055-280-0114</td></tr>
+<tr><td>한국해양교통안전공단</td><td>선박 검사</td><td>032-260-2252</td></tr>
+<tr><td>(주)KTE</td><td>전기 제어제품</td><td>051-265-0255</td></tr>
+<tr><td>HD현대마린솔루션</td><td>선박 유무상 서비스, <br>친환경 선박 개조, Dry Dock,<br>발전 플랜트, 선박부품/기자재,<br>유류 판매(벙커링 & 윤활유 공급), 디지털/제어(스마트쉽, 위성관제, 선박제어, 육상 관제 센터 운용), <br>글로벌 아카데미(선박운영관리,<br>선박기자재 정비, 항통, 선박, Operation 교육)</td><td>051-741-7601</td></tr>
+<tr><td>한국자동차연구원</td><td>학술연구용역</td><td>041-559-3114</td></tr>
+<tr><td>여수광양항만공사</td><td>항구 및 기타 해상 터미널 운영업</td><td>061-797-4300</td></tr>
+<tr><td>㈜다우데이타</td><td>Autodesk, Microsoft, Teamviewer 등 소프트웨어 전반</td><td>02-3410-5100</td></tr>
+<tr><td>㈜대불조선</td><td>강선건조 및 선박수리</td><td>061-461-0888</td></tr>
+<tr><td>한국예선업협동조합</td><td>-</td><td>02-786-9590</td></tr>
+</table></div>
+  </div>
+</article>
+
+<article class="article-section" id="slide-39">
+  <div class="article-body">
+    <p><span style="color:#004F8A">Sapphire</span></p>
+    <div class="article-table"><table>
+<tr><td>회사명</td><td>사업 분야</td><td>연락처</td></tr>
+<tr><td>㈜프러스엔지니어링</td><td>YANMAR DIESEL ENGINE (9PS~6,118PS 주/보기)<br>공급 및 기술지원</td><td>051-745-8201</td></tr>
+<tr><td>한국해양과학기술원 <br>선박해양플랜트연구소</td><td></td><td>042-866-3192</td></tr>
+<tr><td>(주)ABB코리아</td><td>전기추진설비, 선박자동화, <br>항만자동화, 인버터, <br>모터, 배전반, 계기류</td><td>051-621-3666</td></tr>
+<tr><td>Accelleron</td><td>high efficiency tubocharger, Engine Part Load Optimization(EPLO)</td><td>051-933-0500</td></tr>
+<tr><td>㈜지노스</td><td>조선분야 S/W 개발 및 H/W 제작 납품, 선내 탑재시스템 대상 <br>HIL 테스트 서비스, 연구개발 서비스, 함정 정보 관리 시스템등</td><td>02-596-1488</td></tr>
+</table></div>
+  </div>
+</article>
+
+<article class="article-section" id="slide-40">
+  <div class="article-body">
+    <p><span style="color:#004F8A">Gold</span></p>
+    <div class="article-table"><table>
+<tr><td>회사명</td><td>사업 분야</td><td>연락처</td></tr>
+<tr><td>Everllence</td><td>엔진</td><td>051-635-6644</td></tr>
+<tr><td>STX오션서비스(주)</td><td>선박 관리</td><td>051-461-2000</td></tr>
+<tr><td>(주)신동디지텍</td><td>항해통신장비, 조선기자재</td><td>051-461-5000</td></tr>
+<tr><td>한국선주상호보험조합</td><td>선박운항, 보험, 금융서비스</td><td>02-739-9755</td></tr>
+<tr><td>한화오션</td><td>선박 건조</td><td>055-680-2114</td></tr>
+<tr><td>(주)태양기전</td><td>선박 부품 제조 및 봉합</td><td>051-974-0561</td></tr>
+<tr><td>한국해운협회</td><td>해운업</td><td>02-739-1551</td></tr>
+<tr><td>한국해기사협회</td><td>해기사 지원</td><td>051-463-5030</td></tr>
+<tr><td>한국해양수산연수원</td><td>해기사 교육</td><td>051-624-4521</td></tr>
+<tr><td>(주)파나시아</td><td>레벨, 압력계</td><td>051-831-1010</td></tr>
+<tr><td>(사)한국도선사협회</td><td>도선</td><td>02-784-6022</td></tr>
+<tr><td>(주)동화뉴텍</td><td>압축기, 밸브</td><td>051-831-3277</td></tr>
+<tr><td>(주)티엠에스코리아</td><td>선원선박관리</td><td>051-441-2021</td></tr>
+<tr><td>동이공업(주)</td><td>선박용 유압감속기,<br>유압조타기, 유압PTO</td><td>055-760-5571</td></tr>
+<tr><td>(주)팬스타테크솔루션</td><td>해운회사</td><td>051-240-8820</td></tr>
+<tr><td>(주)삼정터빈</td><td>가스터빈, 터보차저, 터보블로워<br>선박 구성품 제조업 등</td><td>055-345-6971</td></tr>
+<tr><td>(주)유일</td><td>구조금속,해양,육상프랜트, <br>선박구성부분품, 선박건조 및 <br>수리</td><td>061-463-9332</td></tr>
+<tr><td>(주)엠에스엘테크놀로지</td><td>해상 안전 용품 제작 설치 <br>및 유지관련<br>(해상용 등명기, 해상용 부표, <br>충방전조절기)</td><td>061-652-3003</td></tr>
+<tr><td>희성촉매(주)</td><td>자동차촉매, 귀금속, 수금, 치과<br>도금재료 제조업</td><td>031-496-5500</td></tr>
+<tr><td>폴라리스쉬핑(주)</td><td>외항화물운송업 및 선박관리업</td><td>051-410-1111</td></tr>
+<tr><td>현대머티리얼(주)</td><td>EGCS, Scrubber, SCR 시스템 등</td><td>070-4348-3777</td></tr>
+<tr><td>㈜포스에스엠</td><td>선원/선박관리, 보험/사고관리, <br>선주 대행 업무, 신조감리, <br>선박용대선/매폐선 지원 등</td><td>051-400-1700</td></tr>
+<tr><td>플로우테크㈜</td><td>수충격 해석, 수충격 완화장치, 상하수도 플랜트 배관시스템<br>수충격 안전진단</td><td>032-715-7990</td></tr>
+<tr><td>디케이엠텍(주)</td><td>MAN High Speed Engine, Hamilton 워터제트 추진장치, <br>선박용항해장비, 야간감시카메라, 횡동요감쇄장치, <br>축계장치 및 추진장치, Hovercraft, <br>시뮬레이터(기관, 선박운항, 크레인 시뮬레이터 등) 등</td><td>02-553-0181</td></tr>
+<tr><td>삼건세기(주)</td><td>액체여과기 및 수처리장치, 코팅</td><td>055-338-3030</td></tr>
+<tr><td>마린웍스(주)</td><td>선박용 항해기기,<br>교육용 훈련장치</td><td>051-441-1922</td></tr>
+<tr><td>호리바코리아㈜</td><td>전자기 측정기기, <br>시험 및 분석기구</td><td>031-296-7911</td></tr>
+<tr><td>효성전기㈜</td><td>자동차용모터, 로봇관련제품</td><td>051-720-6300</td></tr>
+<tr><td>한국에이브이엘㈜</td><td>자동차엔진시험장비, <br>소프트웨어, 라이선스, <br>연구서비스</td><td>02-580-5811</td></tr>
+<tr><td>㈜장보고조선</td><td>선박건조, 수리</td><td>061-276-6336</td></tr>
+<tr><td>(유)성문</td><td>선박 엔진 부품, <br>선박용 연료가스 배관,<br>선박용 모듈, 초저온 이중배관</td><td>061-464-9696</td></tr>
+<tr><td>NEXT Engineering</td><td>교육용 시뮬레이션 장비 및 스<br>마트 교육 프로그램 /<br>엔진 전문 수리 / 대체연료 <br>도입관련 컨설팅</td><td>-</td></tr>
+<tr><td>댄포스코리아(주)</td><td>방재교육, 해양환경개선사업</td><td>02-3498-8500</td></tr>
+<tr><td>(주)오렌지씨큐리티</td><td>해사 사이버보안 인증/검사/<br>심사 대응 컨설팅<br>해사 사이버보안 온/오프라인 교육<br>선사 및 선박 보안솔루션 구축/운영<br>선박 사이버보안 모니터링</td><td>070-8766-3951</td></tr>
+<tr><td>포엑스(주)</td><td>방폭엔지니어링,<br>방폭 안전 진단,<br>국제방폭 안전진단 및 관리 전문기관, 국제방폭 CoPC 자격인증 교육기관(RTP)</td><td>052-277-8922</td></tr>
+<tr><td>해민중공업㈜</td><td>알루미늄 일반선박 / 특수목적선 / 어선 / 알루미늄 전기추진선 <br>/ 하이브리드 전기추진선<br>알루미늄 부잔교</td><td>051-266-7968</td></tr>
+<tr><td>LS ELECTRIC Co.,Ltd</td><td>전력 솔루션(전력기기, 송/배전, 철도 등)</td><td>1544-2080</td></tr>
+<tr><td>㈜여수해양</td><td>선박수리, modication. Retrofit</td><td>061-640-5585</td></tr>
+<tr><td>STK Engineering Co.,Ltd</td><td>선박 전력 보호 계전기<br>선박 전기전자엔지니어링<br>선박 전자 장비 설치,수리 및<br>시운전<br>시스템 소프트웨어 개발 및 공급</td><td>051-714-1179</td></tr>
+<tr><td>부곡스텐레스㈜</td><td>스테인레스 파이프&튜브, 이형단면재(자동차 부품 외),<br> 난가공성 제품 등</td><td>051-973-8081</td></tr>
+<tr><td>㈜센솔테크놀로지</td><td>맞춤형 센서(Sensor Set) 기반 예지진단(Prognostic & Diagnostic) 솔루션을 제공</td><td>042-721-0925</td></tr>
+<tr><td>㈜산엔지니어링</td><td>전력제어 및 관리 시스템<br>기관화물 통합 감시제어시스템<br>항해당직 감시경보시스템<br>기관화물 통합제어시스템</td><td>031-607-3421</td></tr>
+<tr><td>㈜바이오프랜즈</td><td>청정원료 DME 생산 및 판매, 메탄올, <br>LGP-DME 혼합연료, 수소사업</td><td>042-322-1103</td></tr>
+</table></div>
+  </div>
+</article>
+
+<article class="article-section" id="slide-41">
+  <div class="article-body">
+    <p><span style="color:#004F8A">Silver</span></p>
+    <div class="article-table"><table>
+<tr><td>회사명</td><td>사업 분야</td><td>연락처</td></tr>
+<tr><td>충무전기공업사</td><td>전기제품 수리</td><td>051-416-7088</td></tr>
+<tr><td>(주)티에스피</td><td>엔진, 항공기부품</td><td>051-728-6680</td></tr>
+<tr><td>한라IMS(주)</td><td>레벨, 측심계</td><td>051-601-3000</td></tr>
+<tr><td>한국조선해양플랜트협회</td><td>조선업계 지원</td><td>02-2112-8181</td></tr>
+<tr><td>(주)레베산업</td><td>여과기</td><td>052-265-9752</td></tr>
+<tr><td>진성라이너</td><td>실린더 라이너</td><td>042-931-8558</td></tr>
+<tr><td>한국조선해양기자재공업협동조합</td><td>사업 지원</td><td>02-783-6952</td></tr>
+<tr><td>강림중공업(주)</td><td>보일러, 보냉</td><td>055-269-7700</td></tr>
+<tr><td>범한산업(주)</td><td>압축기, 기자재</td><td>055-251-6070</td></tr>
+<tr><td>테크노바이오</td><td>연료첨가제 제조</td><td>031-352-1953</td></tr>
+<tr><td>㈜대명엘리베이터</td><td>육상 및 해상용 승강기</td><td>052-288-2700</td></tr>
+<tr><td>동주선박㈜</td><td>국제해운대리점업, 수출업</td><td>051-462-4359</td></tr>
+<tr><td>WinGD Korea Ltd.</td><td>Licensor of 2 Stroke engine by supporting of technology & assembling</td><td>051-320-9821</td></tr>
+<tr><td>에이치엠엠오션서비스(주)</td><td>선박관리, 신조감리</td><td>051-461-6983</td></tr>
+<tr><td>(주)스펄스엠텍</td><td>제조업/선박 추진기<br>이물질 걸림 방지용 자동로프절단장치</td><td>051-721-6333</td></tr>
+<tr><td>(주)아이비머티리얼즈</td><td>자동차부품, 세라믹 필터 및 촉매</td><td>061-460-7600</td></tr>
+<tr><td>바로라인(주)</td><td>Local Sales Agency and Distributer for Marine Equipment, Water Jet (MJP / Sweden) & Thruster (Hydro Master / Netherlands), Gas & Diesel Gen-set (Sandfirden / Netherlands), Energy Storage System (ESS) (Corvus / Norway), Elec. Motor (Hoyer / Denmark)</td><td>051-796-1371</td></tr>
+<tr><td>(주)뉴젠아이엔에스</td><td>교육훈련시스템 개발<br>소프트웨어개발 및 공급<br>선박/육상 개조설계,<br>선박 신조설계</td><td>051-741-5641</td></tr>
+<tr><td>대상오션(주)</td><td>심해 잠수, 수중 공사<br>해양플랜트 / 파이프 / <br>케이블 설치 / 항만 건설</td><td>052-265-9512</td></tr>
+<tr><td>세호마린솔루션즈(주)</td><td>중소형 친환경 선박설계<br>LNG연료추진 선박개조설계<br>EGCS / BWTS Retrofit 선박설계</td><td>052-971-7310</td></tr>
+<tr><td>대한LPG협회</td><td>친환경 LPG 자동차, <br>선박 기술개발<br>친환경 LPG발전/시설원예/<br>건설기계 기술개발</td><td>02-3474-6925</td></tr>
+<tr><td>(주)엠이에스티</td><td>내연기관 제조업,<br>배전반 및 전기자동제어반 제조업, 기타 전자부품 제조업,<br>선박 구성부분품, <br>전기,전자기계장비, 무역(수출입),<br>소프트웨어 개발 생산 판매,<br>건설, 광업용 기계, <br>기타 일반기계 및 장비 수리업,<br>전기 및 정밀기기 수리업</td><td>055-723-4155</td></tr>
+<tr><td>한국유미코아촉매(주)</td><td>자동차배출가스 저감용 족매<br>고정원 및 선박 배연 NOx <br>저감용 족매</td><td>032-454-2706</td></tr>
+<tr><td>㈜에스앤에스</td><td>자동차 배기가스 촉매용 단열재, 디젤 자동차 매연 저감 장치 부품, <br>선박용 SCR촉매 보호용 단열재, 미세먼지 저감 세라믹 허니콤 필터, 반도체 디스플레이 PFC WET Dust Trap, 염색공장 백연 저감 전기집진장치, Aerogel(LNG,수소 저장용기용 단열재), MLI(고진공 극저온용 단열재),탄소저감 MCFC 연료전지, 수전해 SOEC 연료전지, SOFC연료전지</td><td>031-353-4392</td></tr>
+<tr><td>대양전기공업㈜</td><td>전기전자기계장비 외 <br>(선박/함정용 조명, 전력장비 등)</td><td>051-200-9770</td></tr>
+<tr><td>㈜발맥스기술</td><td>발전플랜트 설비, LNG, 석유화학 플랜트, 조선해양 설비<br>에너지 플랜트 핵심계장기기(Metering System, Analyzer System, Fuel Gas System), 각종 부품(Valve, fitting, Flange, Package item) 전물 제조, 수출/입 판매</td><td>031-478-4020</td></tr>
+<tr><td>나인플러스IT㈜</td><td>CADENCE EDA & CFD 소프트웨어 국내 공급 총판 (CADENCE Channel Partner)<br>전자&기계 설계-해석 소프트웨어 공급, 프로젝트 컨설팅, 교육<br>*서울 본사, 부산 지사</td><td>02-6213-3348</td></tr>
+<tr><td>(주)써니마린</td><td>선박용 페인트 / 선박 전자, 전기 / 선박유 절감장치</td><td>051-469-9701</td></tr>
+<tr><td>㈜엘앤비</td><td>윤활유 선박 공급, 선박급유업</td><td>051-467-8125</td></tr>
+<tr><td>리녹스㈜</td><td>스테인레스강 소성가공 제품<br>모터 하우징 및 플랜지<br>냉간금속가공<br>연구개발서비스업</td><td>070-5066-3760</td></tr>
+<tr><td>HD현대플라스포㈜</td><td>전력변환장치<br>- ESS용 PCS, 태양광/풍력/연료전지용 인버터, 선박용 VFD<br>엔지니어링 서비스 <br>- 통합 O&M</td><td>031-909-8077</td></tr>
+<tr><td>㈜트랜스가스솔루션</td><td>친환경연료 추진선박, 친한경연료 공급 시스템, 친환경연료 <br>벙커링 시스템 등에 관한 시스템 모듈화 엔지니어링 서비스와 제어시스템, 납품 및 가스 시운전 수행</td><td>051-941-8191</td></tr>
+<tr><td>(주)서울데이타시스템</td><td>ETAP, ETAP Real-Tim, SEE Electrical, CANECO ONE, ROHR2 공급, 교육 및 컨설팅</td><td>02-2649-9345</td></tr>
+<tr><td>지마린서비스</td><td>종합선박관리, 신조감리, 선박검선서비스, 선원교육</td><td>051-330-9300</td></tr>
+</table></div>
+  </div>
+</article>
+
+<article class="article-section" id="slide-42">
+  <div class="article-body">
+    <p><span style="color:#004F8A">공공</span></p>
+    <div class="article-table"><table>
+<tr><td>회사명</td><td>사업 분야</td><td>연락처</td></tr>
+<tr><td>해양환경공단</td><td>방재교육, 해양환경개선사업</td><td>02-3498-8500</td></tr>
+<tr><td>한국해양대학교</td><td>교육</td><td>051-410-4114</td></tr>
+<tr><td>부산조선해양기자재공업협동조합</td><td>사업 지원</td><td>051-831-5100</td></tr>
+</table></div>
+  </div>
+</article>
+
+<section class="section-header" id="slide-43">
+  <div class="section-header-inner">
+    <p><span style="font-size:12px;color:#0070C0">단체회원사 로고</span></p>
+  </div>
+</section>
+
+<section class="logos-section" id="slide-44">
+  <div class="logos-header">
+    <p class="logos-section-label">단체회원사 로고</p>
+    <p class="logos-instruction">회원사 로고를 클릭하시면 해당 홈페이지로 연결됩니다!</p>
+  </div>
+  <div class="logos-grid">
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img02.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img03.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img04.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img05.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img06.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img07.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img08.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img09.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img10.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img11.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img12.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img13.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img14.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img15.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img16.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img17.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img18.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img19.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img20.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img21.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img22.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img23.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img24.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img25.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img26.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img27.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img28.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img29.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img30.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img31.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img32.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img33.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img34.jpg" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img35.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img36.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img37.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img38.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img39.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img40.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s44_img41.png" class="logo-img" alt="" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="logos-section" id="slide-45">
+  <div class="logos-header">
+    <p class="logos-section-label">단체회원사 로고</p>
+    <p class="logos-instruction">회원사 로고를 클릭하시면 해당 홈페이지로 연결됩니다!</p>
+  </div>
+  <div class="logos-grid">
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img02.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img03.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img04.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img05.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img06.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img07.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img08.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img09.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img10.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img11.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img12.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img13.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img14.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img15.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img16.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img17.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img18.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img19.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img20.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img21.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img22.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img23.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img24.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img25.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img26.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img27.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img28.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img29.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img30.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img31.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img32.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img33.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img34.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img35.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img36.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img37.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img38.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img39.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img40.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s45_img41.png" class="logo-img" alt="" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="logos-section" id="slide-46">
+  <div class="logos-header">
+    <p class="logos-section-label">단체회원사 로고</p>
+    <p class="logos-instruction">회원사 로고를 클릭하시면 해당 홈페이지로 연결됩니다!</p>
+  </div>
+  <div class="logos-grid">
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img02.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img03.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img04.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img05.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img06.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img07.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img08.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img09.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img10.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img11.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img12.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img13.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img14.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img15.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img16.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img17.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img18.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img19.png" class="logo-img" alt="" loading="lazy"></div>
+    <div class="logo-cell"><img src="kosme-vol50-images/s46_img20.png" class="logo-img" alt="" loading="lazy"></div>
+  </div>
+</section>
+
+<article class="article-section" id="slide-47">
+  <div class="article-body">
+    <p><span style="font-size:16px"><strong>(사)한국마린엔지니어링학회 소식지 편집위원(2026년도)</strong></span></p>
+    <div class="article-table"><table>
+<tr><td>위원장</td><td>이재웅 / 한국해양대학교</td><td></td><td></td></tr>
+<tr><td>국내<br>편집<br>위원</td><td>갈준총 / 전북대학교</td><td>박준영 / 세종대학교</td><td>이영찬 / 한국해양대학교</td></tr>
+<tr><td></td><td>강 준 / 한국해양대학교</td><td>박치병 / 한국해양대학교</td><td>이원주 / 한국해양대학교</td></tr>
+<tr><td></td><td>강호근 / 한국해양대학교</td><td>서광철 / 목포해양대학교</td><td>이윤호 / 목포해양대학교</td></tr>
+<tr><td></td><td>구본흔 / 창원대학교</td><td>서대원 / 군산대학교</td><td>이은경 / 한국해양대학교</td></tr>
+<tr><td></td><td>구치완 / 한밭대학교</td><td>서동욱 / 한국해양대학교</td><td>이진광 / 경상국립대학교</td></tr>
+<tr><td></td><td>김문수 / 포스코 기술연구원</td><td>서동환 / 한국해양대학교</td><td>이창민 / ABS</td></tr>
+<tr><td></td><td>김순호 / 한국생산기술연구원</td><td>서정관 / 부산대학교</td><td>이현용 / 한국선급</td></tr>
+<tr><td></td><td>김정현 / 부산대학교</td><td>성주현 / 한국해양대학교</td><td>전민규 / 해군사관학교</td></tr>
+<tr><td></td><td>김준성 / 한국해양대학교</td><td>소건백 / 목포해양대학교</td><td>정성엽 / 선박해양플랜트연구소</td></tr>
+<tr><td></td><td>김준수 / 전남대학교</td><td>양정현 / 경상국립대학교</td><td>정재훈 / 국립군산대학교</td></tr>
+<tr><td></td><td>류보림 / 한국조선해양기자재연구원</td><td>오경원 / 호원대학교</td><td>정진원 / 한국조선해양기자재연구원</td></tr>
+<tr><td></td><td>류영현 / 목포해양대학교</td><td>윤동협 / 중소조선연구원</td><td>최병철 / 호서대학교</td></tr>
+<tr><td></td><td>박유세 / 부산대학교</td><td>윤성환 / 한국해양대학교</td><td>최성웅 / 경상국립대학교</td></tr>
+<tr><td></td><td>박은주 / 경기과학기술대학교</td><td>이경훈 / 한국해양대학교</td><td>최영도 / 목포대학교</td></tr>
+<tr><td></td><td>박준범 / 한국해양대학교</td><td>이두형 / 한국해양대학교</td><td>허재정 / 한국해양대학교</td></tr>
+<tr><td>해외<br>편집<br>위원</td><td>Junghwan Choi(Dalian Maritime University), Byongug Jeong(University of Strathclyde), Chungkuk Jin(Florida Institute of Technology), Duong Phan Anh(Vietnam Maritime University), Hyungju Kim(Norwegian University of Science and Technology), José Manuel Cabrera Miranda(Universidad de las Americas Puebla), Lew Andrew Ravelas Tria(University of the Philippines-Diliman), Md. Manirul Alam Sarker(Bangladesh University of Engineering & Technology),Mujeeb Ahmed M.P(University of Strathclyde), Narayan Sapkal(Dr D.Y. Patil Institute of Technology), Nima Fathi(Texas A&M University), Serdar Turgut Ince(Yildiz Technical University), Tajul Islam(Begum Rokeya University), Yude Shao(Shandong University of Science and Technology), Zhenmu CHEN(Wenzhou University)</td><td></td><td></td></tr>
+</table></div>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s47_img02.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s47_img03.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:16px">E-mail</span></p>
+    <p><span style="font-size:16px">Tel</span></p>
+    <p><span style="font-size:11px">2026年 3月 31日</span></p>
+    <p><span style="font-size:11px">남 택 근</span></p>
+    <p><span style="font-size:11px">이 재 웅</span></p>
+    <p><span style="font-size:11px">고지연</span></p>
+    <p><span style="font-size:11px">(사) 한국마린엔지니어링학회</span></p>
+    <p><span style="font-size:11px">부산광역시 영도구 태종로 727 한국해양대학교 해사대학관 433호 (49112)</span></p>
+    <p><span style="font-size:11px">TEL : (051) 405-1050/1054   FAX : (051) 405-1125</span></p>
+    <p><span style="font-size:11px">E-mail : kosme@kosme.or.kr  홈페이지 : www.kosme.or.kr</span></p>
+    <p><span style="font-size:11px">농협계좌 : 904-17-000632 / 우체국계좌 : 600668-01-004122</span></p>
+    <p><span style="font-size:11px">전남 목포시 해양대학로 91 목포해양대학교</span></p>
+    <p><span style="font-size:11px">TEL : (061) 240-7292 </span></p>
+    <p><span style="font-size:11px"><strong>발행일</strong></span></p>
+    <p><span style="font-size:11px"><strong>발행인</strong></span></p>
+    <p><span style="font-size:11px"><strong>편집장</strong></span></p>
+    <p><span style="font-size:11px"><strong>원고편집인</strong></span></p>
+    <p><span style="font-size:11px"><strong>발 행</strong></span></p>
+    <p><span style="font-size:11px"><strong>호남지부</strong></span></p>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s47_img04.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <figure class="article-figure">
+      <img src="kosme-vol50-images/s47_img05.png" alt="" loading="lazy" onclick="openFullscreen(this)">
+    </figure>
+    <p><span style="font-size:16px">Homepage</span></p>
+    <p><span style="font-size:16px">호남지부</span></p>
+  </div>
+</article>
+
+
+<!-- 하단 연락처 -->
+<footer class="footer-contact" id="footer-contact">
+  <div class="footer-info">
+    <p><strong>발행일</strong> 2026년 3월 31일</p>
+    <p><strong>발행인</strong> 남 해 근</p>
+    <p><strong>편교번인</strong> 남 해 근</p>
+    <p><strong>편집위원장</strong> 이 재 웅</p>
+    <p><strong>발 행</strong> (사)한국마린엔지니어링학회</p>
+    <p style="margin-top:8px;font-size:12px;color:#999;">부산광역시 영도구 태종로 727 한국해양대학교 이사배관공학부 4315호 (49112)</p>
+    <p style="font-size:12px;color:#999;">TEL: 051-405-0/0154 / 051-403-8149</p>
+    <p style="font-size:12px;color:#999;">FAX: 051-405-0142</p>
+  </div>
+  <div class="footer-links">
+    <a href="tel:051-405-0154" class="footer-link-item"><span class="icon">📞</span>Tel</a>
+    <a href="mailto:kosme@kosme.or.kr" class="footer-link-item"><span class="icon">✉️</span>E-mail</a>
+    <a href="https://www.kosme.or.kr" target="_blank" class="footer-link-item"><span class="icon">🌐</span>Homepage</a>
+    <a href="tel:061-240-7252" class="footer-link-item"><span class="icon">📞</span>호남지부</a>
+  </div>
+</footer>
+
+<script>
+// 전체화면 이미지 뷰어
+function openFullscreen(img) {
+    const overlay = document.getElementById('fullscreenOverlay');
+    const fsImg = document.getElementById('fullscreenImg');
+    fsImg.src = img.src;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeFullscreen() {
+    document.getElementById('fullscreenOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeFullscreen(); closeSidebar(); }
+});
+
+// 사이드바 토글
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+    document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('active');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+// 상단 네비바 스크롤 시 투명도 변화
+window.addEventListener('scroll', function() {
+    const nav = document.getElementById('topNav');
+    if (window.scrollY > 300) {
+        nav.style.background = 'rgba(0,51,102,0.98)';
+    } else {
+        nav.style.background = 'rgba(0,51,102,0.95)';
+    }
+});
+</script>
+
+</body>
+</html>

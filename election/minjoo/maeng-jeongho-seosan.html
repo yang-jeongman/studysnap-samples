@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>맹정호 - 서산시장 후보 선거공보물</title>
+
+    <!-- Open Graph (카카오톡, 페이스북, 슬랙 등) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="기호 1번 맹정호 | 더불어민주당 서산시장 후보">
+    <meta property="og:description" content="위기의 서산, 시민과 함께 다시 뛰겠습니다. 결과로 증명하는 서산 리더 맹정호의 핵심 공약과 서산 지역 소식을 확인하세요.">
+    <meta property="og:image" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/images/maeng-jeongho.jpg">
+    <meta property="og:url" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/maeng-jeongho-seosan.html">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:site_name" content="맹정호 서산시장 후보">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="기호 1번 맹정호 | 더불어민주당 서산시장 후보">
+    <meta name="twitter:description" content="위기의 서산, 시민과 함께 다시 뛰겠습니다. 결과로 증명하는 서산 리더.">
+    <meta name="twitter:image" content="https://yang-jeongman.github.io/studysnap-samples/election/minjoo/images/maeng-jeongho.jpg">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%231B3A8C'/><text x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-weight='bold'>1</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1B3A8C;
+            --primary-light: #2E5BB8;
+            --primary-dark: #0F2460;
+            --accent: #E8443A;
+            --accent-light: #FF6B5E;
+            --green: #2D8B4E;
+            --green-light: #E8F5E9;
+            --gold: #D4930D;
+            --gold-light: #FFF8E1;
+            --sky: #E3F0FC;
+            --warm: #FFF3E8;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #EEEEEE;
+            --gray-300: #E0E0E0;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--gray-900);
+            background: var(--gray-100);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        section { padding: 48px 24px; }
+
+        /* ===== NAV ===== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .top-nav .logo { font-weight: 800; font-size: 1.1em; color: var(--primary); }
+        .top-nav .party {
+            background: var(--primary);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            font-weight: 600;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--primary-light) 100%);
+            color: white;
+            padding: 100px 28px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+        }
+        .hero .number-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            font-size: 1.8em; font-weight: 900;
+            line-height: 56px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+        .hero .candidate-name {
+            font-size: 2.8em; font-weight: 900;
+            letter-spacing: -1px; margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .hero .position { font-size: 1.15em; font-weight: 500; opacity: 0.9; margin-bottom: 24px; }
+        .hero .slogan { font-size: 1.5em; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+        .hero .slogan em { font-style: normal; color: #FFD54F; }
+        .hero .sub-slogan { font-size: 0.95em; opacity: 0.85; font-weight: 300; }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .section-title .label {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75em; font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .section-title h2 { font-size: 1.6em; font-weight: 800; color: var(--gray-900); line-height: 1.3; }
+        .section-title h2 .highlight { color: var(--primary); }
+        .section-title p { color: var(--gray-600); font-size: 0.9em; margin-top: 8px; }
+
+        /* ===== PROFILE ===== */
+        .profile-section { background: var(--gray-50); }
+        .profile-photo {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 4em; font-weight: 900;
+            box-shadow: 0 8px 30px rgba(27,58,140,0.25);
+            border: 4px solid white;
+            overflow: hidden;
+        }
+        .profile-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .hero-photo {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 3px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .hero-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .profile-info { text-align: center; margin-bottom: 28px; }
+        .profile-info .name { font-size: 1.5em; font-weight: 800; margin-bottom: 4px; }
+        .profile-info .desc { color: var(--gray-600); font-size: 0.9em; }
+        .career-list {
+            list-style: none;
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .career-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9em;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .career-list li:last-child { border: none; }
+        .career-list li .dot {
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            flex-shrink: 0; margin-top: 9px;
+        }
+
+        /* ===== PROBLEM ===== */
+        .problem-section { background: var(--gray-900); color: white; }
+        .problem-section .section-title .label { background: var(--accent); }
+        .problem-section .section-title h2 { color: white; }
+        .problem-section .section-title p { color: rgba(255,255,255,0.6); }
+        .problem-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+        }
+        .problem-card .icon { font-size: 2em; margin-bottom: 12px; }
+        .problem-card h3 { font-size: 1.1em; font-weight: 700; margin-bottom: 8px; }
+        .problem-card p { font-size: 0.88em; color: rgba(255,255,255,0.7); line-height: 1.6; }
+        .problem-card .stat {
+            display: inline-block;
+            background: var(--accent);
+            padding: 4px 12px; border-radius: 6px;
+            font-size: 0.85em; font-weight: 700; margin-top: 10px;
+        }
+
+        /* ===== LOCAL NEWS (지역 소식 카드) ===== */
+        .local-news {
+            background: linear-gradient(180deg, #F0F6FF 0%, #E8F1FB 100%);
+            padding: 40px 24px;
+        }
+        .local-news .news-header { text-align: center; margin-bottom: 24px; }
+        .local-news .news-header .tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: white; color: var(--primary);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.8em; font-weight: 600;
+            box-shadow: var(--shadow-sm); margin-bottom: 10px;
+        }
+        .local-news .news-header h3 { font-size: 1.2em; font-weight: 700; color: var(--primary-dark); }
+        .local-news .news-header p { font-size: 0.82em; color: var(--gray-600); margin-top: 4px; }
+
+        .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .news-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none; color: inherit; display: block;
+        }
+        .news-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .news-card .card-img {
+            width: 100%; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5em;
+        }
+        .news-card .card-img.festival { background: linear-gradient(135deg, #FF9A9E, #FAD0C4); }
+        .news-card .card-img.nature { background: linear-gradient(135deg, #A8E6CF, #88D8B0); }
+        .news-card .card-img.food { background: linear-gradient(135deg, #FFECD2, #FCB69F); }
+        .news-card .card-img.market { background: linear-gradient(135deg, #C9B1FF, #A18CD1); }
+        .news-card .card-body { padding: 12px; }
+        .news-card .card-body .category {
+            font-size: 0.68em; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .news-card .card-body h4 {
+            font-size: 0.85em; font-weight: 700; margin: 4px 0;
+            line-height: 1.3; color: var(--gray-900);
+        }
+        .news-card .card-body p {
+            font-size: 0.72em; color: var(--gray-600); line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* ===== STRATEGY ===== */
+        .strategy-section { background: white; }
+        .strategy-pillars { display: flex; gap: 10px; margin-bottom: 28px; }
+        .pillar {
+            flex: 1; text-align: center;
+            padding: 20px 10px; border-radius: var(--radius);
+            background: var(--sky);
+        }
+        .pillar .icon { font-size: 2em; margin-bottom: 8px; }
+        .pillar h4 { font-size: 0.82em; font-weight: 700; color: var(--primary); }
+        .pillar p { font-size: 0.7em; color: var(--gray-600); margin-top: 4px; }
+
+        /* ===== PLEDGES ===== */
+        .pledge-section { background: var(--gray-50); }
+        .pledge-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px; margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+        .pledge-card.economy { border-left-color: var(--gold); }
+        .pledge-card.life { border-left-color: var(--green); }
+        .pledge-card.future { border-left-color: var(--primary); }
+        .pledge-card.oneteam { border-left-color: var(--accent); }
+        .pledge-card .pledge-number {
+            display: inline-block;
+            width: 28px; height: 28px;
+            border-radius: 50%; background: var(--primary);
+            color: white; text-align: center; line-height: 28px;
+            font-size: 0.8em; font-weight: 700; margin-bottom: 10px;
+        }
+        .pledge-card.economy .pledge-number { background: var(--gold); }
+        .pledge-card.life .pledge-number { background: var(--green); }
+        .pledge-card.future .pledge-number { background: var(--primary); }
+        .pledge-card.oneteam .pledge-number { background: var(--accent); }
+        .pledge-card h3 { font-size: 1.05em; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .pledge-card p { font-size: 0.85em; color: var(--gray-700); line-height: 1.6; }
+        .pledge-card .kpi {
+            display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 10px; padding: 4px 12px;
+            border-radius: 6px; font-size: 0.78em; font-weight: 600;
+        }
+        .pledge-card.economy .kpi { background: var(--gold-light); color: var(--gold); }
+        .pledge-card.life .kpi { background: var(--green-light); color: var(--green); }
+        .pledge-card.future .kpi { background: var(--sky); color: var(--primary); }
+        .pledge-card.oneteam .kpi { background: #FFF0EF; color: var(--accent); }
+
+        /* ===== ONE TEAM ===== */
+        .oneteam-section { background: linear-gradient(135deg, #FFF5F5 0%, #FFF0EF 100%); }
+        .oneteam-section .section-title .label { background: var(--accent); }
+        .oneteam-section .section-title h2 .highlight { color: var(--accent); }
+        .oneteam-list { list-style: none; }
+        .oneteam-list li {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 16px 20px; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.9em; font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+        .oneteam-list li .check {
+            width: 24px; height: 24px;
+            background: var(--accent); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 0.75em; flex-shrink: 0;
+        }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-section { background: white; }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before {
+            content: ''; position: absolute;
+            left: 10px; top: 0; bottom: 0;
+            width: 2px; background: var(--gray-300);
+        }
+        .timeline-item { position: relative; margin-bottom: 28px; }
+        .timeline-item::before {
+            content: ''; position: absolute;
+            left: -24px; top: 4px;
+            width: 12px; height: 12px;
+            border-radius: 50%; background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .timeline-item .year { font-size: 0.78em; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .timeline-item h4 { font-size: 0.95em; font-weight: 700; margin-bottom: 4px; }
+        .timeline-item p { font-size: 0.82em; color: var(--gray-600); }
+
+        /* ===== KPI ===== */
+        .kpi-section { background: var(--primary); color: white; text-align: center; }
+        .kpi-section .section-title .label { background: rgba(255,255,255,0.2); }
+        .kpi-section .section-title h2 { color: white; }
+        .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .kpi-item {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius); padding: 24px 16px;
+        }
+        .kpi-item .number { font-size: 2em; font-weight: 900; color: #FFD54F; line-height: 1; margin-bottom: 8px; }
+        .kpi-item .unit { font-size: 0.7em; font-weight: 400; }
+        .kpi-item .desc { font-size: 0.8em; opacity: 0.85; }
+
+        /* ===== NEWS ARTICLES ===== */
+        .news-section { background: var(--gray-50); }
+        .article-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden; margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none; color: inherit; display: block;
+            transition: box-shadow 0.2s;
+        }
+        .article-card:hover { box-shadow: var(--shadow-md); }
+        .article-card .article-body { padding: 20px; }
+        .article-card .source { font-size: 0.72em; color: var(--gray-600); font-weight: 500; }
+        .article-card h4 { font-size: 0.92em; font-weight: 700; margin: 6px 0; line-height: 1.4; }
+        .article-card p {
+            font-size: 0.8em; color: var(--gray-600); line-height: 1.5;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* ===== CLOSING ===== */
+        .closing-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white; text-align: center; padding: 56px 28px;
+        }
+        .closing-section .quote { font-size: 1.6em; font-weight: 800; line-height: 1.4; margin-bottom: 16px; }
+        .closing-section .quote em { font-style: normal; color: #FFD54F; }
+        .closing-section .message { font-size: 0.92em; opacity: 0.85; line-height: 1.7; margin-bottom: 28px; }
+        .closing-section .cta-badge {
+            display: inline-block;
+            background: var(--accent); color: white;
+            padding: 14px 36px; border-radius: 50px;
+            font-size: 1.1em; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(232,68,58,0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--gray-900);
+            color: rgba(255,255,255,0.5);
+            text-align: center; padding: 24px;
+            font-size: 0.72em; line-height: 1.8;
+        }
+        .footer strong { color: rgba(255,255,255,0.8); }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 380px) {
+            .hero .candidate-name { font-size: 2.2em; }
+            .hero .slogan { font-size: 1.25em; }
+            .news-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .strategy-pillars { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+        <span class="logo">맹정호</span>
+        <span class="party">더불어민주당</span>
+    </nav>
+
+    <!-- ===== 1. HERO (표지) ===== -->
+    <section class="hero">
+        <div class="hero-photo"><img src="data:image/jpeg;base64,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" alt="맹정호 후보"></div>
+        <div class="number-badge">1</div>
+        <div class="candidate-name">맹정호</div>
+        <div class="position">더불어민주당 서산시장 후보</div>
+        <div class="slogan">위기의 서산,<br><em>시민과 함께</em> 다시 뛰겠습니다</div>
+        <div class="sub-slogan">결과로 증명하는 서산 리더</div>
+    </section>
+
+    <!-- ===== 2. 프로필 ===== -->
+    <section class="profile-section fade-in">
+        <div class="section-title">
+            <span class="label">PROFILE</span>
+            <h2>서산을 아는 사람,<br><span class="highlight">서산을 바꿀 사람</span></h2>
+        </div>
+
+        <div class="profile-photo"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gAeTEVBRCBUZWNobm9sb2dpZXMgSW5jLiBWMS4wMf/bAEMABgQFBgUEBgYFBgcHBggKEAoKCQkKFA4PDBAXFBgYFxQWFhodJR8aGyMcFhYgLCAjJicpKikZHy0wLSgwJSgpKP/bAEMBBwcHCggKEwoKEygaFhooKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKP/AABEIAKkAlgMBEQACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAwQFBgcCCAH/xAA+EAABAwMCAwUGAwYEBwAAAAABAAIDBAUREiEGMUETIlFhcQcUMoGRoUKxwQgjM1Jy8DRDYuEVNXOCotHx/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAECAwQFBv/EACcRAAICAgICAQQDAQEAAAAAAAABAhEDEiExBEEiEzJRYRQzcUKB/9oADAMBAAIRAxEAPwD0CpIBACAEBxNIIonPPJoJKkdGA8ccWm4cVupGSk0lHqOByLwNz/fgVSfLo0h8UZpxJeX3KeDtSRA1rjoBxlrSTqPmd/7KIoyr+89tI87tDj3nk5+XJSAkna1+mIkbYdp2QD2hoGVLmiSQmR5wABuhBPUtDR0QaYjI+bOMEt29CSoJRc7bSi6QxSUtwhZU6caQcP1ct9jsf059FDiWU2i8cK8XXK1zOob/ABSNkiAEb5HYEmSfhOMEdATjzKcon4yNMs94prpEDA8CUNDnxE95mfEKyZRqiSUkAgBACAEAIAQAgOJpY4Y3SSuDGNGSSeSAynjD2qUMDpqO0xGpfvG+Z2zB07vj9vVRtXCLae2YbNPPWVc1VDTsDZXOLnnIbkknYk+fRVSJYnScNVtxlDaIF+ObQM4zzHoVDmkFBsn7V7IrrWx6gzQwEkAuWbzJGscLYvW+x65U8etuC4cwFVeQjT+M/wAjMcDXikpHCOBzZDnU8c8HnhW+vFEfxZPordxsN0omkGOTS3OR4/NWjli+mZywTj6GFBXVNNUNbITG9rtQzyz4HyWhj0aBYeKKPtWmrnnoZGR6ZGF+pkvg4BwIz1HI+qkhmkcJXWlMLau33D3hzGFwAj0u0jHd5nI+o22woa9olP0zUrLcobnQsqYHAtOxA6EcwrJhquB8hAIAQAgBACADsgMW9pPF8tzmnt1vcG0ULsOcDvK4c/8Atz+So3fCNIrXlmZS0jHRjtgXQ78uZ2BwPl+Y8USoq3Y5ttPJXVlLCY26XZAjae6wA7AeZ6lZ5Z6o2w49mb7wRwbTUlIyWWMa3tBwei5U3JnVLWBeYqGKnj0xtDQB0V9EjPcj6yFhOC0Yz4KkkbRGc1vhcz4R9E1J2orF8s9PJG8OjHLwWbRrFmMca8KRFz5IGBr/AC5K+PK4OmZ5sEZq0Zk8y22pZBVtzG12RqGR6ei74ytWjzJwcHTNN4SqbFJPA6mqpbbM8DIa5pZ9HDGPUlWM2i/+y++3Gi4yqrDdXwvjqWvngkY0DXg5Dtv5hn0wFC4Zf0bErFQQAgBACAEBC8aVzrbwtcqqMHUyE408xnbP3Tolfg82vrI4rfFpDC+QEbOwdRzy/vwVEqLNkJd64U7cud39OlrQNsdSPMnr6eCkqaJ7C7SK+qFTM0u0DYOHXK483LSO3BwrPS1NG2KJrQMY2wrQVGcnbPsxGkqzESDq3d4hZM6onDn4YCPogog7w7EZws5GsCh3eDtdWobLNmpl3GtlZJqIYNQ3BAXRhnXBx+TjtWig08klGTGcN0O1B3Uei7jzejWPZddKm58Q2USTySvpKkAOLc912xGemx8VHst6PTQ5KxUEAIAQAgBAUv2wzup/Z/cnNJaXdm3I25vaofRaPZ5y7Lta2jpw2PWyYAOdyGMZz5bqCBpeYI3PZoGS1zQAepIw0egAP1QHon2HW1lPYmzEd443K5JL5WdceI0ax0G+PJXKdCU3I4cELxIGuJD3fosZJnVGhJsgLQCoQoY3NsfZEk7eqhotF0Uu56CSGuHLYLJqjZMp17p2uxqHPZTDgrJWqMk4jo/da54a0s3zjphejjlaPIzQ1k0WD2X1HufElBUsIa5s0erO2R2jR/t81fplYq0z2COQVigIAQAgBACAqvtStpunAl2gZnU2LtQPHQQ4j6ApRPR5gjk09tJoc08gM7gnYfZVDE6Sknr7nBHA1z3vIeGtycucOX0VZyUVbLwg5OkesuBrYeH+F4GVRDZA0Ok8lyrnk62q4RG3fjCqZKRR0sj26sDIxgeOf75q5T/Ct13G9+aHOp7c4/hBP58lKojkUtHElzqainFXBo1kNc3BBH1WUp10bwi32WatrDC2Qtx3W9VVyNUjPr/dr3NG1tDFI92+WtHmtINPswnsvtKPXXHieNxE9JKxviWFX1gZb5COdcbkHB87e7/KSocIsvGc4jXi2i98twqo2kPYNXLoqYZayo0zw3jsiE4Gppqvie1xwAlxqowABnfIz1+a62cMeLPao+EK5mfUAIAQAgBAJ1ELJ4JIZWh0cjS1zT1BG6A8kcVWOWxcVV1skc4Mjl1R5ONTSctP0Kp0WZffYkyy2qe5V17q6eGWnLA107sYJzsAeZ26LDKm2jowySTNHvPHdNVCjpbbbbhMKyrbSRzzQuhha44OokjOMHYYBODyUKHuy7lXFEpU09ltNvfV3qqLWM3e98pjb6BrSM+WcnzKpsX0M3u/GfCs1b7vbaWq1u3Y4QPbqG+4zv0P0SSyLlFoPF0zq21zayenNrnkMrndyOR5cxxA5HOS35fdY729ZHQ8esXKJJ3W5XaqsMFyjo6ahgqY2yxQzSOfJpIzl2kYbnwGf0VpqMOGZ4XKatEPaOL6d1tE92gnp4xIYGUlM46pXg4JLxgncHAGBjnnO1rUaUSurnblwQ9/4uo3Xb/hreFY2yj4j2jCWnzOMZ+avpJ+ykckF6IiOot9wY6Slp4xpOC10Qa5p/vwWdyi6bNXGE1aQndW1MZZCIA+gmptbpCcdidRbg+Iw3K1UYtKXTMHOabglaH37P8AYxUcUS1MjG4pMktcAcO5D0IPVdPs5PtR6TCuZggBACAEAIAQFB4x4LtHGleJfepILjSjQRGMahnOHZG/yK4n5D2+KO/+JrFOfsj/AGb8FUVtfWVNZA2Wd0umMyAEsa39d/smaV0iPHhrbRolztzZbW9kTcuYWyxtA/Ewhzfu0KIqui7lb5IO68L2q9QsmrXPqC3vxOkccNzyIbyz91XSuTXd1VcFFuXAsMV1krqefTUPzqkDTq5eZUOcuiYwx/gcWfhIUVJUywZD8ghznHd2offp+aiEfkmyc0koaxLLxFQvg4UpY5WtJZEA0DlgDb5JP02MPbSM94boqVk81PVwxTfvHSML2ZLQ45x65/RLTqkIRcLt8k3X8O22eTtvdWukPUk5+qc+iyr2iOHD9LBMHe7NZGNyAFHXLDVqkPpKKndGxrWt0x9wMI3xnO/zJWsq4SMIJ8sjbe6o4aEsNmqH08Wxc2MgNLljlyyUnqzt8HxceSK+ojYLFVPrbRSVEo/eSMBPqvQxS2gmzxvJxrFllCPSY/WhgCAEAIAQAgI610rKWsuE8gA1d7IXna6t2evKe+OGo3pnBzhJEC1kji7Hqcqjd8kxjpaLNTAdm0lbwOWfZBXSCWlLzSBpiJLuzdtpJ54PQZ3xgpI0h0QRdPLKA+CLHnKdv/FUpF/kiZtcMU7mtkfrYw8mt0tz9dyr98Io01y+xLj97WWxmNttgq5ekaeN2zLIpad1VGwyGKbVhrht8ljHjk3aLdStq9Ix2Lx0Ogj9Vr/4YtfsQuPvDf4mhvmxpB+5KSevSEY37IeLEdQAPh6BZrhmkuqGEjTV3N1HCB2rp+zA/qKrKO0qR14cixR2fVGzUdOykpYaeP4I2Bo+S9WMdUkj5yc3OTk/YspKAgBACAEAIDkxiVkkRwNbSN1zZ4+zr8aevH4I+mgNMGQubpMYAwfRclUdre1tEzBIAz9FrBmE48kddKprQcHYKXL8F4RKtNNLVVQigaRnwWd3wjopRVscXbiiPha30sFLaKq41ch7zIcN0+ZJKtso8GLxSnck+CP4t4lo6ukjfMexjLcljsZaccjg81Sc9i+ODxmdRXaCuppYjSSQOa/MTnEEyb88DkqPjo3jfbLtw7VSina2U8upVoSaKTSHlZMHk6t/QqW+SnS4K7O7FUA3HNVsl9DywW8HiunqIsuL5QX5/DgZH1wtMcbyJojJOsDTNUXoniggBACAEAIAQH1p0uBIGB4qmRXE0xPWQjcce9am/iAGfNcE1yehj4jQmC8NIb9VESzI2rp3uBwceatQ2Ptlp4oJnE4Lh1KmKKzlZKVUbJx/Ca4jkSMq5RNopt4t1PM+oDoW6m7AkLKUTaMnwim+4QwSlzIwDnmAs6NLrglaGVrGAcjnGylByFZg92cHGVJFkdLHpmaBzVemT6LdwbaayC4S1dQ18MeC1rXDBf8ALyXZgxyT2ZzeXmg8axx5Zc11HmggBACAEAIAQAgGtYC2Jrge6w8vVcubFS2R24M1vWQrGQYwR1XMjpYlUgCN5PyVyn6KNV3S7suDorTRRT6N3CWQsHpkA7qibs1jCPtjmrqeKaiNrmilp2D4omTaSB66f1Wus/R0Qhgi+Sq32t4lhidDhrmHvF5kH5rOSkuzpjDHLmKKmbzeKaUsfBHN4NDifvhVM8mMmLHX189a0VVK2ONw2LXZx67KpyyjRapiI2jx8lJRHNspjVXeliH4ngux4Dc/ZWxx2kkMstMbZqAXpnjggBACAEAIAQAgBAcyND2OYeRGFDVqmTF6tNDODXEXRP2ewlpC87SnR6u1q0fZzqjIPNT0VYwt8DY6h507nrhViTZ1dWSMjc6Fxb12yFdza6LRZQrmKyVzhI5zt+ZdlYuTfs6VNroYR0QacuAz6KCG2+2O4IhE4YaNt1JnIVqJA4c/JCsUWfgegOuSukbtjs48/c/p9V1eNCrkzl8zJ1BFvXYcAIAQAgBACAEAIAQC9DF2tUxp5A5KA+3ymEVSKhje7Js7HiubLGnsjswTtakLOQw+XMLnlwdCPtJgPzt81ESrHk4h0kuxt0Ks6CbKrcTB2j9LGY6ZCzf6Nk37IGp0Z1NwFUnYY1MmkAD6IRY6sVtluVcyJxLWHdx8AtMeNzdGWTL9ONo0ymgjpadkMLQ2Ngw0BeikkqR5rbk7YqpIBACAEAIAQAgBAdRsdI4MjaS7oAgJm30ZpwXPI1uGNuigkcVELJ4XRvGzlDVqiYvV2ioXajfTuLHDb8LuhC48kHE74TU1aIiGpMUha4clj0XaCtqCI3GMk+hUshFXrKh/eG6qXI+aYuDQMA8iSUBzEwAhxy53QkclPRUvnB1GYqJ1VJ8cxw0/6R/uu7BGlZxZ5fKkWFbGAIAQAgBACAEAIB3S0Mk+Ce4zxKAl6eCOBuIxjxPUqCRZACASqII6iIslYHNKhpPhkxbi7RU7zw3K3VJSHW3nj8Q/9rmng9xOqGdPiRVKoPhyydjhjoVg1XDN1+iGquzycED1VS6TI8tYCcEKpajrtGsDQDlzsAAc8q0eyGqVmvWu1SQWikiZgujjw5uevM/delFapI8qT2bZ8kjdGcSNLT5qxU5QAgBACAEB3FG+V2mNpcfJAS1JbmRYdLh7vDoFAH6EggBACAEAYQDC42ulrmETRAnxGxUOMZcSRMZSj9rKHfeEHx6pKIiTqGO2P1/+LCfje4s6sfl1xJGaXaqFDUPhqmSQPacFsjS0/dcrg48NHoR1kriyW9nFFLfLsLhJE5ttpHfui4bSyDqPIfn6Lo8fF/0zk8vLS0Ru1G7EbWuH4crrZ5yF3sD24c0Ob4FQSMZraxwzESw+B3CEUR81LLDu5px/MNwpAggBACAskMUcLNMbQ0KCRTIQAgAIAQAgBACAEA0r3QQUstRUyMihiYXvkecBrQMkk+GFaP4IfHJ5U499p1xu1+nNnEcFsi7kAkiBc4fznI2J8Og+a7I+PGvkjil5Uk/gxf2c+1C726+09Jd3MqrZM8RFgjbGYempukDbxCjJhjGNx4GPPJyqTuz1JGBJHA+Ah0ZHMeBC4zsFoQWRhruYR/olHWcHH0KA5LwGnAGfBKFjZ9JBUt1NGh/iE6BG1VJLTnJGWfzBAN0BZj9vJQSfDty+iA6HJAfUAIAQAgBACA87e3Pj19xvMfDFsc4W6M5q5hkCd4/yx4tB3PifTfu8PGnK2cPmTajSMeuNP2MuwGOmV6M4UefCXAtYGCqudNExuJNYxt1XPkXwaNsTrJE9V+zO8OqeF/d5iTUUX7twJ309F5bXJ6xZqauEk+g7DolAWkkLH6HfCeR8EIEo5D2uh3opI6G8dSaaqdG47Z6qKJJWKRsrdseYVWqLIj6235cHUwG/Nv6qASvRCRLO5BQBG7fCUBQoD6gBAcOdhCDonAyhJWeKLs4Qvo6Fx1uGJJWn4R4DzWkI+2Vk/wAGUXThmO6FsBhDWA4DgMFvmD0K6VJxpowlBSTTM54ntElsrZaOoBe9nItae8PFerCayw2R484PDNxZDcDv7Lja3MMbg0y7l2AORPiuXNwmkjqwfcnZ6R4VpXQ3kvpDiOojMcrDyPgfVeZI9RF3hoDEQ7qFWyReobqj/wBQ3QgZPdqYHDZ7SpA1u7S6NlQznycB4oD5bK4gtDj5FKAu24lr3A42JCUCcJ0keCzLnE4xghSgIB2HhSQPByVST5nBwgOkBw8AhCGDDtjwQEPcKFjJHEMGh+5wORWkWQ0MK+iiprdM9jQCGk5CumVPO/GVVJXcSVk7XYiJawjHVrQD9wV7fjR1xI8LypJ5WUK6l1LWMfE4tc1wc0gkYIKrmVMnE+D1l7LeMaPiWwwSAMjq2NDZmgAd5eRnxaPjo9fx8u8ee0XWaXSMAbLBI3sbB+RurIqNJcNefA8whJyWh9M9h5ICIib2cuOWFJInUZZUyDoTn67qEC5n4CqEs6l/hKANB8auB8z4QqEnL/iCEM+oSfTzQhnLfiQCNf8A4dymIZDXj/k039BWseyvo8yXP/FVX/VcvocX9cf8R83m/sl/rKhd+X0WWU2xmq/s+fBWerV5/k/aj0PE+5nof/IZ6LgO4TbzQDaf4ipB9h+B3opBFyfxT6qCRCu/jj+kID//2Q==" alt="맹정호 후보"></div>
+
+        <div class="profile-info">
+            <div class="name">맹정호</div>
+            <div class="desc">1968년 충남 서산 인지면 출생</div>
+        </div>
+
+        <ul class="career-list">
+            <li><span class="dot"></span>제7대 서산시장 (민선 7기)</li>
+            <li><span class="dot"></span>더불어민주당 서산시장 후보 공천 확정</li>
+            <li><span class="dot"></span>서산시 발전을 위한 현장 행정 경험</li>
+            <li><span class="dot"></span>국비 확보 및 지역 인프라 구축 실적</li>
+            <li><span class="dot"></span>시민과 소통하는 열린 행정 실천</li>
+        </ul>
+    </section>
+
+    <!-- ===== 지역소식 1: 서산의 사계절 축제 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127982; 내가 사랑하는 서산</div>
+            <h3>서산의 사계절 축제</h3>
+            <p>우리 서산에는 아름다운 축제가 가득합니다</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img festival">&#127800;</div>
+                <div class="card-body">
+                    <span class="category">봄 축제</span>
+                    <h4>유기방가옥 매화축제</h4>
+                    <p>수령 100년 매화나무의 장관, 매년 3~4월 운산면</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img nature">&#127804;</div>
+                <div class="card-body">
+                    <span class="category">봄 축제</span>
+                    <h4>개심사 벚꽃축제</h4>
+                    <p>겹벚꽃이 만개하는 천년 고찰, 매년 4월</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img market">&#127984;</div>
+                <div class="card-body">
+                    <span class="category">가을 축제</span>
+                    <h4>해미읍성 역사체험축제</h4>
+                    <p>조선시대 군영 체험, 전통무예, 매년 10월</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://birdland.seosan.go.kr" target="_blank">
+                <div class="card-img nature">&#129414;</div>
+                <div class="card-body">
+                    <span class="category">겨울 축제</span>
+                    <h4>천수만 세계철새축제</h4>
+                    <p>가창오리 수십만 마리의 군무, 매년 11~12월</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 3. 문제 정의 ===== -->
+    <section class="problem-section fade-in">
+        <div class="section-title">
+            <span class="label">WHY NOW</span>
+            <h2>지금, 서산이<br>변해야 하는 이유</h2>
+            <p>지금 변화하지 않으면 지역은 소멸합니다</p>
+        </div>
+
+        <div class="problem-card">
+            <div class="icon">&#128200;</div>
+            <h3>인구 감소 위기</h3>
+            <p>서산시 인구가 지속적으로 감소하고 있으며, 청년 유출이 가속화되고 있습니다. 일자리와 정주 여건 개선이 시급합니다.</p>
+            <span class="stat">청년 유출 증가 추세</span>
+        </div>
+
+        <div class="problem-card">
+            <div class="icon">&#127981;</div>
+            <h3>산업 구조 정체</h3>
+            <p>대산 석유화학 단지 중심의 단일 산업 구조에서 벗어나 친환경 에너지, 관광, 농업의 다각화가 필요합니다.</p>
+            <span class="stat">산업 다각화 필요</span>
+        </div>
+
+        <div class="problem-card">
+            <div class="icon">&#128101;</div>
+            <h3>지역 균형 발전</h3>
+            <p>도심과 농어촌 간 격차가 심화되고 있습니다. 모든 시민이 골고루 혜택을 누리는 균형 발전이 필요합니다.</p>
+            <span class="stat">도농 격차 심화</span>
+        </div>
+    </section>
+
+    <!-- ===== 지역소식 2: 전망대 & 자연 명소 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127748; 서산의 자랑</div>
+            <h3>전망대 &amp; 자연 명소</h3>
+            <p>맹정호가 지키고 싶은 서산의 아름다운 자연</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://birdland.seosan.go.kr" target="_blank">
+                <div class="card-img nature">&#129415;</div>
+                <div class="card-body">
+                    <span class="category">생태관광</span>
+                    <h4>서산 버드랜드</h4>
+                    <p>천수만 철새도래지 생태관광단지, 철새박물관 &middot; 탐조대 운영</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img festival">&#127749;</div>
+                <div class="card-body">
+                    <span class="category">일출 명소</span>
+                    <h4>간월암 (간월도)</h4>
+                    <p>밀물에 섬, 썰물에 육지가 되는 신비로운 일출 명소</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img nature">&#9968;</div>
+                <div class="card-body">
+                    <span class="category">등산</span>
+                    <h4>팔봉산</h4>
+                    <p>여덟 봉우리의 기암괴석, 서산 시내와 서해 조망</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img food">&#127795;</div>
+                <div class="card-body">
+                    <span class="category">휴양</span>
+                    <h4>용현자연휴양림</h4>
+                    <p>가야산 북쪽 기슭, 울창한 숲과 계곡의 힐링 공간</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 4. 핵심 전략 ===== -->
+    <section class="strategy-section fade-in">
+        <div class="section-title">
+            <span class="label">STRATEGY</span>
+            <h2><span class="highlight">3대 전략</span>으로<br>서산을 바꾸겠습니다</h2>
+        </div>
+
+        <div class="strategy-pillars">
+            <div class="pillar">
+                <div class="icon">&#128176;</div>
+                <h4>돈이 되는<br>서산</h4>
+                <p>일자리 &middot; 산업</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#127968;</div>
+                <h4>살기 편한<br>서산</h4>
+                <p>복지 &middot; 생활</p>
+            </div>
+            <div class="pillar">
+                <div class="icon">&#128640;</div>
+                <h4>미래가 있는<br>서산</h4>
+                <p>교육 &middot; 청년</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 5. 핵심 공약 ===== -->
+    <section class="pledge-section fade-in">
+        <div class="section-title">
+            <span class="label">PLEDGES</span>
+            <h2>맹정호의<br><span class="highlight">핵심 공약</span></h2>
+        </div>
+
+        <div class="pledge-card economy">
+            <div class="pledge-number">1</div>
+            <h3>대산 산업단지 친환경 전환 &amp; 수소경제 허브</h3>
+            <p>석유화학 중심에서 친환경 에너지 산업으로 전환하고, 수소 기업을 유치하여 미래 먹거리를 창출합니다.</p>
+            <span class="kpi">&#127919; 수소 기업 50개 유치</span>
+        </div>
+
+        <div class="pledge-card economy">
+            <div class="pledge-number">2</div>
+            <h3>서산항 스마트 항만 구축</h3>
+            <p>대산항 &middot; 서산항의 물류 인프라를 현대화하고 스마트 항만으로 전환하여 물동량을 획기적으로 늘립니다.</p>
+            <span class="kpi">&#128674; 물동량 40% 증가 목표</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">3</div>
+            <h3>아이 키우기 좋은 서산</h3>
+            <p>국공립 어린이집 확충, 아이돌봄 서비스 확대, 출산장려금 인상으로 서산을 육아 친화 도시로 만들겠습니다.</p>
+            <span class="kpi">&#128118; 육아 친화 도시 조성</span>
+        </div>
+
+        <div class="pledge-card life">
+            <div class="pledge-number">4</div>
+            <h3>골목상권 특화 거리 프로젝트</h3>
+            <p>전통시장과 골목상권을 살리는 특화 거리를 조성하고, 지역 상인과 함께 성장하는 경제 생태계를 만듭니다.</p>
+            <span class="kpi">&#127978; 전통시장 활성화</span>
+        </div>
+
+        <div class="pledge-card future">
+            <div class="pledge-number">5</div>
+            <h3>AI 재난예측 통합플랫폼 구축</h3>
+            <p>첨단 AI 기술을 활용한 재난 예측 시스템을 구축하여 시민의 안전을 한 단계 높이겠습니다.</p>
+            <span class="kpi">&#129302; AI 기반 안전도시</span>
+        </div>
+
+        <div class="pledge-card future">
+            <div class="pledge-number">6</div>
+            <h3>체류형 관광 도시 전환</h3>
+            <p>서산의 풍부한 관광 자원을 연계한 패키지를 개발하고 숙박 인프라를 확충하여 관광 체류시간을 늘리겠습니다.</p>
+            <span class="kpi">&#128747; 관광객 2배 증가 목표</span>
+        </div>
+    </section>
+
+    <!-- ===== 지역소식 3: 특산물 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127858; 서산의 맛</div>
+            <h3>서산 대표 특산물</h3>
+            <p>풍요로운 서산의 자랑스러운 먹거리</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img food">&#129476;</div>
+                <div class="card-body">
+                    <span class="category">농산물</span>
+                    <h4>서산 6쪽마늘</h4>
+                    <p>전국 최대 산지, 알이 굵고 저장성 뛰어난 지리적표시 특산물</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img festival">&#127862;</div>
+                <div class="card-body">
+                    <span class="category">농산물</span>
+                    <h4>서산 생강</h4>
+                    <p>조선시대부터 재배, 향이 강하고 섬유질이 적은 명품</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img market">&#129424;</div>
+                <div class="card-body">
+                    <span class="category">수산물</span>
+                    <h4>어리굴젓</h4>
+                    <p>궁중 진상품, 간월도 원산지의 전통 별미</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://tour.seosan.go.kr" target="_blank">
+                <div class="card-img nature">&#127812;</div>
+                <div class="card-body">
+                    <span class="category">해산물</span>
+                    <h4>감태 &amp; 우럭</h4>
+                    <p>서해안 갯벌의 향긋한 감태와 싱싱한 우럭회</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 6. 원팀 ===== -->
+    <section class="oneteam-section fade-in">
+        <div class="section-title">
+            <span class="label">ONE TEAM</span>
+            <h2><span class="highlight">원팀</span>으로<br>승리하겠습니다</h2>
+            <p>경선 공약을 적극 수용, 하나된 민주당</p>
+        </div>
+
+        <ul class="oneteam-list">
+            <li><span class="check">&#10003;</span>시장 의전 간소화</li>
+            <li><span class="check">&#10003;</span>아이 키우기 좋은 서산 만들기</li>
+            <li><span class="check">&#10003;</span>장애인일자리센터 설치</li>
+            <li><span class="check">&#10003;</span>AI 재난예측 통합플랫폼 구축</li>
+            <li><span class="check">&#10003;</span>골목상권 특화 거리 프로젝트</li>
+        </ul>
+    </section>
+
+    <!-- ===== 지역소식 4: 전통시장 ===== -->
+    <div class="local-news fade-in">
+        <div class="news-header">
+            <div class="tag">&#127978; 서산 시장 나들이</div>
+            <h3>전통시장 탐방</h3>
+            <p>활기 넘치는 서산의 전통시장을 소개합니다</p>
+        </div>
+        <div class="news-grid">
+            <a class="news-card" href="https://www.sijangtong.or.kr" target="_blank">
+                <div class="card-img market">&#127977;</div>
+                <div class="card-body">
+                    <span class="category">서산 최대</span>
+                    <h4>서산동부시장</h4>
+                    <p>200여 점포, 5일장(4 &middot; 9일) 운영, 꽈배기 &middot; 호떡 &middot; 순대국밥 명물</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.sijangtong.or.kr" target="_blank">
+                <div class="card-img festival">&#128717;</div>
+                <div class="card-body">
+                    <span class="category">도심 상권</span>
+                    <h4>서산중앙시장</h4>
+                    <p>도심 접근성 좋은 생활밀착형 전통시장</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.sijangtong.or.kr" target="_blank">
+                <div class="card-img food">&#127855;</div>
+                <div class="card-body">
+                    <span class="category">역사 연계</span>
+                    <h4>해미시장</h4>
+                    <p>해미읍성 인근, 역사 관광과 함께하는 5일장</p>
+                </div>
+            </a>
+            <a class="news-card" href="https://www.sijangtong.or.kr" target="_blank">
+                <div class="card-img nature">&#128674;</div>
+                <div class="card-body">
+                    <span class="category">공단 배후</span>
+                    <h4>대산시장</h4>
+                    <p>대산공단 배후 시장, 근로자와 주민의 생활 중심지</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== 7. 실행 로드맵 ===== -->
+    <section class="roadmap-section fade-in">
+        <div class="section-title">
+            <span class="label">ROADMAP</span>
+            <h2>4년 <span class="highlight">실행 로드맵</span></h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="year">1년차 (2026~2027)</div>
+                <h4>기반 구축</h4>
+                <p>친환경 전환 로드맵 수립, AI 플랫폼 설계, 관광 인프라 조사</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">2년차 (2027~2028)</div>
+                <h4>성과 창출 시작</h4>
+                <p>수소기업 유치 본격화, 골목상권 특화거리 1단계 완공, 어린이집 확충</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">3년차 (2028~2029)</div>
+                <h4>가속 성장</h4>
+                <p>스마트 항만 1단계 운영, 체류형 관광 패키지 출시, 장애인일자리센터 운영</p>
+            </div>
+            <div class="timeline-item">
+                <div class="year">4년차 (2029~2030)</div>
+                <h4>결과 완성</h4>
+                <p>핵심 KPI 달성, 인구 순유입 전환, 서산 브랜드 가치 도약</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 8. 성과 KPI ===== -->
+    <section class="kpi-section fade-in">
+        <div class="section-title">
+            <span class="label">GOALS</span>
+            <h2>숫자로 약속합니다</h2>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-item">
+                <div class="number">50<span class="unit">개</span></div>
+                <div class="desc">수소 기업 유치</div>
+            </div>
+            <div class="kpi-item">
+                <div class="number">40<span class="unit">%</span></div>
+                <div class="desc">항만 물동량 증가</div>
+            </div>
+            <div class="kpi-item">
+                <div class="number">2<span class="unit">배</span></div>
+                <div class="desc">관광객 증가</div>
+            </div>
+            <div class="kpi-item">
+                <div class="number">10,000<span class="unit">개</span></div>
+                <div class="desc">일자리 창출</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 9. 언론 보도 ===== -->
+    <section class="news-section fade-in">
+        <div class="section-title">
+            <span class="label">NEWS</span>
+            <h2>언론이 주목하는<br><span class="highlight">맹정호</span></h2>
+        </div>
+
+        <a class="article-card" href="https://share.google/vb3LwtwxcxFW9SYLB" target="_blank">
+            <div class="article-body">
+                <span class="source">중도일보</span>
+                <h4>맹정호 서산시장 후보, '원팀' 행보 본격화, 경선 공약 적극 수용</h4>
+                <p>더불어민주당 서산시장 예비후보로 확정된 맹정호 후보가 경선 이후 통합 행보에 속도를 내며 '원팀' 전략을 본격화하고 있다.</p>
+            </div>
+        </a>
+
+        <a class="article-card" href="https://share.google/LOZDWpqtmy7e1ySim" target="_blank">
+            <div class="article-body">
+                <span class="source">언론 보도</span>
+                <h4>맹정호 전 서산시장, 더불어민주당 서산시장 후보 공천 확정</h4>
+                <p>서산의 재도약을 위한 주요 공약을 제시하고 본격적인 정책 경쟁에 나섰다.</p>
+            </div>
+        </a>
+
+        <a class="article-card" href="https://share.google/BYSAQmWvcOMMt5qmD" target="_blank">
+            <div class="article-body">
+                <span class="source">언론 보도</span>
+                <h4>맹정호 민주당 서산시장 후보 "원팀으로 승리하겠다"</h4>
+                <p>경선 후보 박상무, 한기남의 공약 5가지를 자신의 선거공약으로 채택했다.</p>
+            </div>
+        </a>
+
+        <a class="article-card" href="https://share.google/aUcN20OqmjaJmXluz" target="_blank">
+            <div class="article-body">
+                <span class="source">디트NEWS24</span>
+                <h4>"위기의 서산, 시민과 함께 다시 뛰겠다" 맹정호, 민주당 후보 확정</h4>
+                <p>서산시의 재도약과 시민 중심 행정을 약속하며 본선 행보를 시작했다.</p>
+            </div>
+        </a>
+    </section>
+
+    <!-- ===== 10. 마무리 CTA ===== -->
+    <section class="closing-section fade-in">
+        <div class="hero-photo"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gAeTEVBRCBUZWNobm9sb2dpZXMgSW5jLiBWMS4wMf/bAEMABgQFBgUEBgYFBgcHBggKEAoKCQkKFA4PDBAXFBgYFxQWFhodJR8aGyMcFhYgLCAjJicpKikZHy0wLSgwJSgpKP/bAEMBBwcHCggKEwoKEygaFhooKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKP/AABEIAKkAlgMBEQACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAwQFBgcCCAH/xAA+EAABAwMCAwUGAwYEBwAAAAABAAIDBAUREiEGMUETIlFhcQcUMoGRoUKxwQgjM1Jy8DRDYuEVNXOCotHx/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAECAwQFBv/EACcRAAICAgICAQQDAQEAAAAAAAABAhEDEiExBEEiEzJRYRQzcUKB/9oADAMBAAIRAxEAPwD0CpIBACAEBxNIIonPPJoJKkdGA8ccWm4cVupGSk0lHqOByLwNz/fgVSfLo0h8UZpxJeX3KeDtSRA1rjoBxlrSTqPmd/7KIoyr+89tI87tDj3nk5+XJSAkna1+mIkbYdp2QD2hoGVLmiSQmR5wABuhBPUtDR0QaYjI+bOMEt29CSoJRc7bSi6QxSUtwhZU6caQcP1ct9jsf059FDiWU2i8cK8XXK1zOob/ABSNkiAEb5HYEmSfhOMEdATjzKcon4yNMs94prpEDA8CUNDnxE95mfEKyZRqiSUkAgBACAEAIAQAgOJpY4Y3SSuDGNGSSeSAynjD2qUMDpqO0xGpfvG+Z2zB07vj9vVRtXCLae2YbNPPWVc1VDTsDZXOLnnIbkknYk+fRVSJYnScNVtxlDaIF+ObQM4zzHoVDmkFBsn7V7IrrWx6gzQwEkAuWbzJGscLYvW+x65U8etuC4cwFVeQjT+M/wAjMcDXikpHCOBzZDnU8c8HnhW+vFEfxZPordxsN0omkGOTS3OR4/NWjli+mZywTj6GFBXVNNUNbITG9rtQzyz4HyWhj0aBYeKKPtWmrnnoZGR6ZGF+pkvg4BwIz1HI+qkhmkcJXWlMLau33D3hzGFwAj0u0jHd5nI+o22woa9olP0zUrLcobnQsqYHAtOxA6EcwrJhquB8hAIAQAgBACADsgMW9pPF8tzmnt1vcG0ULsOcDvK4c/8Atz+So3fCNIrXlmZS0jHRjtgXQ78uZ2BwPl+Y8USoq3Y5ttPJXVlLCY26XZAjae6wA7AeZ6lZ5Z6o2w49mb7wRwbTUlIyWWMa3tBwei5U3JnVLWBeYqGKnj0xtDQB0V9EjPcj6yFhOC0Yz4KkkbRGc1vhcz4R9E1J2orF8s9PJG8OjHLwWbRrFmMca8KRFz5IGBr/AC5K+PK4OmZ5sEZq0Zk8y22pZBVtzG12RqGR6ei74ytWjzJwcHTNN4SqbFJPA6mqpbbM8DIa5pZ9HDGPUlWM2i/+y++3Gi4yqrDdXwvjqWvngkY0DXg5Dtv5hn0wFC4Zf0bErFQQAgBACAEBC8aVzrbwtcqqMHUyE408xnbP3Tolfg82vrI4rfFpDC+QEbOwdRzy/vwVEqLNkJd64U7cud39OlrQNsdSPMnr6eCkqaJ7C7SK+qFTM0u0DYOHXK483LSO3BwrPS1NG2KJrQMY2wrQVGcnbPsxGkqzESDq3d4hZM6onDn4YCPogog7w7EZws5GsCh3eDtdWobLNmpl3GtlZJqIYNQ3BAXRhnXBx+TjtWig08klGTGcN0O1B3Uei7jzejWPZddKm58Q2USTySvpKkAOLc912xGemx8VHst6PTQ5KxUEAIAQAgBAUv2wzup/Z/cnNJaXdm3I25vaofRaPZ5y7Lta2jpw2PWyYAOdyGMZz5bqCBpeYI3PZoGS1zQAepIw0egAP1QHon2HW1lPYmzEd443K5JL5WdceI0ax0G+PJXKdCU3I4cELxIGuJD3fosZJnVGhJsgLQCoQoY3NsfZEk7eqhotF0Uu56CSGuHLYLJqjZMp17p2uxqHPZTDgrJWqMk4jo/da54a0s3zjphejjlaPIzQ1k0WD2X1HufElBUsIa5s0erO2R2jR/t81fplYq0z2COQVigIAQAgBACAqvtStpunAl2gZnU2LtQPHQQ4j6ApRPR5gjk09tJoc08gM7gnYfZVDE6Sknr7nBHA1z3vIeGtycucOX0VZyUVbLwg5OkesuBrYeH+F4GVRDZA0Ok8lyrnk62q4RG3fjCqZKRR0sj26sDIxgeOf75q5T/Ct13G9+aHOp7c4/hBP58lKojkUtHElzqainFXBo1kNc3BBH1WUp10bwi32WatrDC2Qtx3W9VVyNUjPr/dr3NG1tDFI92+WtHmtINPswnsvtKPXXHieNxE9JKxviWFX1gZb5COdcbkHB87e7/KSocIsvGc4jXi2i98twqo2kPYNXLoqYZayo0zw3jsiE4Gppqvie1xwAlxqowABnfIz1+a62cMeLPao+EK5mfUAIAQAgBAJ1ELJ4JIZWh0cjS1zT1BG6A8kcVWOWxcVV1skc4Mjl1R5ONTSctP0Kp0WZffYkyy2qe5V17q6eGWnLA107sYJzsAeZ26LDKm2jowySTNHvPHdNVCjpbbbbhMKyrbSRzzQuhha44OokjOMHYYBODyUKHuy7lXFEpU09ltNvfV3qqLWM3e98pjb6BrSM+WcnzKpsX0M3u/GfCs1b7vbaWq1u3Y4QPbqG+4zv0P0SSyLlFoPF0zq21zayenNrnkMrndyOR5cxxA5HOS35fdY729ZHQ8esXKJJ3W5XaqsMFyjo6ahgqY2yxQzSOfJpIzl2kYbnwGf0VpqMOGZ4XKatEPaOL6d1tE92gnp4xIYGUlM46pXg4JLxgncHAGBjnnO1rUaUSurnblwQ9/4uo3Xb/hreFY2yj4j2jCWnzOMZ+avpJ+ykckF6IiOot9wY6Slp4xpOC10Qa5p/vwWdyi6bNXGE1aQndW1MZZCIA+gmptbpCcdidRbg+Iw3K1UYtKXTMHOabglaH37P8AYxUcUS1MjG4pMktcAcO5D0IPVdPs5PtR6TCuZggBACAEAIAQFB4x4LtHGleJfepILjSjQRGMahnOHZG/yK4n5D2+KO/+JrFOfsj/AGb8FUVtfWVNZA2Wd0umMyAEsa39d/smaV0iPHhrbRolztzZbW9kTcuYWyxtA/Ewhzfu0KIqui7lb5IO68L2q9QsmrXPqC3vxOkccNzyIbyz91XSuTXd1VcFFuXAsMV1krqefTUPzqkDTq5eZUOcuiYwx/gcWfhIUVJUywZD8ghznHd2offp+aiEfkmyc0koaxLLxFQvg4UpY5WtJZEA0DlgDb5JP02MPbSM94boqVk81PVwxTfvHSML2ZLQ45x65/RLTqkIRcLt8k3X8O22eTtvdWukPUk5+qc+iyr2iOHD9LBMHe7NZGNyAFHXLDVqkPpKKndGxrWt0x9wMI3xnO/zJWsq4SMIJ8sjbe6o4aEsNmqH08Wxc2MgNLljlyyUnqzt8HxceSK+ojYLFVPrbRSVEo/eSMBPqvQxS2gmzxvJxrFllCPSY/WhgCAEAIAQAgI610rKWsuE8gA1d7IXna6t2evKe+OGo3pnBzhJEC1kji7Hqcqjd8kxjpaLNTAdm0lbwOWfZBXSCWlLzSBpiJLuzdtpJ54PQZ3xgpI0h0QRdPLKA+CLHnKdv/FUpF/kiZtcMU7mtkfrYw8mt0tz9dyr98Io01y+xLj97WWxmNttgq5ekaeN2zLIpad1VGwyGKbVhrht8ljHjk3aLdStq9Ix2Lx0Ogj9Vr/4YtfsQuPvDf4mhvmxpB+5KSevSEY37IeLEdQAPh6BZrhmkuqGEjTV3N1HCB2rp+zA/qKrKO0qR14cixR2fVGzUdOykpYaeP4I2Bo+S9WMdUkj5yc3OTk/YspKAgBACAEAIDkxiVkkRwNbSN1zZ4+zr8aevH4I+mgNMGQubpMYAwfRclUdre1tEzBIAz9FrBmE48kddKprQcHYKXL8F4RKtNNLVVQigaRnwWd3wjopRVscXbiiPha30sFLaKq41ch7zIcN0+ZJKtso8GLxSnck+CP4t4lo6ukjfMexjLcljsZaccjg81Sc9i+ODxmdRXaCuppYjSSQOa/MTnEEyb88DkqPjo3jfbLtw7VSina2U8upVoSaKTSHlZMHk6t/QqW+SnS4K7O7FUA3HNVsl9DywW8HiunqIsuL5QX5/DgZH1wtMcbyJojJOsDTNUXoniggBACAEAIAQH1p0uBIGB4qmRXE0xPWQjcce9am/iAGfNcE1yehj4jQmC8NIb9VESzI2rp3uBwceatQ2Ptlp4oJnE4Lh1KmKKzlZKVUbJx/Ca4jkSMq5RNopt4t1PM+oDoW6m7AkLKUTaMnwim+4QwSlzIwDnmAs6NLrglaGVrGAcjnGylByFZg92cHGVJFkdLHpmaBzVemT6LdwbaayC4S1dQ18MeC1rXDBf8ALyXZgxyT2ZzeXmg8axx5Zc11HmggBACAEAIAQAgGtYC2Jrge6w8vVcubFS2R24M1vWQrGQYwR1XMjpYlUgCN5PyVyn6KNV3S7suDorTRRT6N3CWQsHpkA7qibs1jCPtjmrqeKaiNrmilp2D4omTaSB66f1Wus/R0Qhgi+Sq32t4lhidDhrmHvF5kH5rOSkuzpjDHLmKKmbzeKaUsfBHN4NDifvhVM8mMmLHX189a0VVK2ONw2LXZx67KpyyjRapiI2jx8lJRHNspjVXeliH4ngux4Dc/ZWxx2kkMstMbZqAXpnjggBACAEAIAQAgBAcyND2OYeRGFDVqmTF6tNDODXEXRP2ewlpC87SnR6u1q0fZzqjIPNT0VYwt8DY6h507nrhViTZ1dWSMjc6Fxb12yFdza6LRZQrmKyVzhI5zt+ZdlYuTfs6VNroYR0QacuAz6KCG2+2O4IhE4YaNt1JnIVqJA4c/JCsUWfgegOuSukbtjs48/c/p9V1eNCrkzl8zJ1BFvXYcAIAQAgBACAEAIAQC9DF2tUxp5A5KA+3ymEVSKhje7Js7HiubLGnsjswTtakLOQw+XMLnlwdCPtJgPzt81ESrHk4h0kuxt0Ks6CbKrcTB2j9LGY6ZCzf6Nk37IGp0Z1NwFUnYY1MmkAD6IRY6sVtluVcyJxLWHdx8AtMeNzdGWTL9ONo0ymgjpadkMLQ2Ngw0BeikkqR5rbk7YqpIBACAEAIAQAgBAdRsdI4MjaS7oAgJm30ZpwXPI1uGNuigkcVELJ4XRvGzlDVqiYvV2ioXajfTuLHDb8LuhC48kHE74TU1aIiGpMUha4clj0XaCtqCI3GMk+hUshFXrKh/eG6qXI+aYuDQMA8iSUBzEwAhxy53QkclPRUvnB1GYqJ1VJ8cxw0/6R/uu7BGlZxZ5fKkWFbGAIAQAgBACAEAIB3S0Mk+Ce4zxKAl6eCOBuIxjxPUqCRZACASqII6iIslYHNKhpPhkxbi7RU7zw3K3VJSHW3nj8Q/9rmng9xOqGdPiRVKoPhyydjhjoVg1XDN1+iGquzycED1VS6TI8tYCcEKpajrtGsDQDlzsAAc8q0eyGqVmvWu1SQWikiZgujjw5uevM/delFapI8qT2bZ8kjdGcSNLT5qxU5QAgBACAEB3FG+V2mNpcfJAS1JbmRYdLh7vDoFAH6EggBACAEAYQDC42ulrmETRAnxGxUOMZcSRMZSj9rKHfeEHx6pKIiTqGO2P1/+LCfje4s6sfl1xJGaXaqFDUPhqmSQPacFsjS0/dcrg48NHoR1kriyW9nFFLfLsLhJE5ttpHfui4bSyDqPIfn6Lo8fF/0zk8vLS0Ru1G7EbWuH4crrZ5yF3sD24c0Ob4FQSMZraxwzESw+B3CEUR81LLDu5px/MNwpAggBACAskMUcLNMbQ0KCRTIQAgAIAQAgBACAEA0r3QQUstRUyMihiYXvkecBrQMkk+GFaP4IfHJ5U499p1xu1+nNnEcFsi7kAkiBc4fznI2J8Og+a7I+PGvkjil5Uk/gxf2c+1C726+09Jd3MqrZM8RFgjbGYempukDbxCjJhjGNx4GPPJyqTuz1JGBJHA+Ah0ZHMeBC4zsFoQWRhruYR/olHWcHH0KA5LwGnAGfBKFjZ9JBUt1NGh/iE6BG1VJLTnJGWfzBAN0BZj9vJQSfDty+iA6HJAfUAIAQAgBACA87e3Pj19xvMfDFsc4W6M5q5hkCd4/yx4tB3PifTfu8PGnK2cPmTajSMeuNP2MuwGOmV6M4UefCXAtYGCqudNExuJNYxt1XPkXwaNsTrJE9V+zO8OqeF/d5iTUUX7twJ309F5bXJ6xZqauEk+g7DolAWkkLH6HfCeR8EIEo5D2uh3opI6G8dSaaqdG47Z6qKJJWKRsrdseYVWqLIj6235cHUwG/Nv6qASvRCRLO5BQBG7fCUBQoD6gBAcOdhCDonAyhJWeKLs4Qvo6Fx1uGJJWn4R4DzWkI+2Vk/wAGUXThmO6FsBhDWA4DgMFvmD0K6VJxpowlBSTTM54ntElsrZaOoBe9nItae8PFerCayw2R484PDNxZDcDv7Lja3MMbg0y7l2AORPiuXNwmkjqwfcnZ6R4VpXQ3kvpDiOojMcrDyPgfVeZI9RF3hoDEQ7qFWyReobqj/wBQ3QgZPdqYHDZ7SpA1u7S6NlQznycB4oD5bK4gtDj5FKAu24lr3A42JCUCcJ0keCzLnE4xghSgIB2HhSQPByVST5nBwgOkBw8AhCGDDtjwQEPcKFjJHEMGh+5wORWkWQ0MK+iiprdM9jQCGk5CumVPO/GVVJXcSVk7XYiJawjHVrQD9wV7fjR1xI8LypJ5WUK6l1LWMfE4tc1wc0gkYIKrmVMnE+D1l7LeMaPiWwwSAMjq2NDZmgAd5eRnxaPjo9fx8u8ee0XWaXSMAbLBI3sbB+RurIqNJcNefA8whJyWh9M9h5ICIib2cuOWFJInUZZUyDoTn67qEC5n4CqEs6l/hKANB8auB8z4QqEnL/iCEM+oSfTzQhnLfiQCNf8A4dymIZDXj/k039BWseyvo8yXP/FVX/VcvocX9cf8R83m/sl/rKhd+X0WWU2xmq/s+fBWerV5/k/aj0PE+5nof/IZ6LgO4TbzQDaf4ipB9h+B3opBFyfxT6qCRCu/jj+kID//2Q==" alt="맹정호 후보"></div>
+        <div class="quote">약속이 아닌<br><em>결과</em>로 증명하겠습니다</div>
+        <div class="message">
+            서산시장으로서의 경험과 성과를 바탕으로<br>
+            다시 한번 서산을 위해 뛰겠습니다.<br>
+            시민 여러분의 선택이 서산의 미래를 바꿉니다.
+        </div>
+        <div class="cta-badge">기호 1번 맹정호</div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <strong>맹정호</strong> | 더불어민주당 서산시장 후보<br>
+        이 선거공보물은 공직선거법 규정에 따라 제작되었습니다.<br>
+        &copy; 2026 맹정호 선거캠프
+    </footer>
+
+</div>
+
+<!-- Scroll Animation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+    });
+</script>
+
+</body>
+</html>

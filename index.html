@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySnap AI - 샘플 포트폴리오</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #ec4899;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-white: #f8fafc;
+            --text-gray: #94a3b8;
+            --border: #334155;
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .category {
+            margin-bottom: 50px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        .category-icon.church { background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); }
+        .category-icon.election { background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); }
+        .category-icon.lecture { background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%); }
+        .category-icon.newsletter { background: linear-gradient(135deg, #0ea5e9 0%, #2dd4bf 100%); }
+
+        .category h2 {
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+
+        .category h2 span {
+            color: var(--text-gray);
+            font-weight: 400;
+            font-size: 0.6em;
+            margin-left: 10px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .card-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            opacity: 0.5;
+            overflow: hidden;
+        }
+
+        .card-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+        }
+
+        .card-preview.has-thumb {
+            opacity: 1;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .badge-church { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+        .badge-minjoo { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .badge-ppp { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .badge-progressive { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge-proposal { background: rgba(52, 152, 219, 0.2); color: #5dade2; }
+        .badge-lecture { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .badge-newsletter { background: rgba(14, 165, 233, 0.2); color: #38bdf8; }
+        .badge-mall { background: rgba(162, 58, 42, 0.2); color: #e07060; }
+        .category-icon.mall { background: linear-gradient(135deg, #a23a2a 0%, #c8602a 100%); }
+
+        .card h3 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: var(--text-gray);
+        }
+
+        .card-link {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-link::after {
+            content: '→';
+            transition: transform 0.2s;
+        }
+
+        .card:hover .card-link::after {
+            transform: translateX(5px);
+        }
+
+        .share-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .share-section h3 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-dark);
+            padding: 15px 20px;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .link-item .label {
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .link-item .url {
+            flex: 1;
+            color: var(--text-gray);
+            font-size: 0.85em;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-gray);
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8em; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .link-item { flex-direction: column; align-items: flex-start; }
+            .link-item .url { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>StudySnap AI 포트폴리오</h1>
+        <p>PDF를 인터랙티브 모바일 페이지로 변환한 실제 샘플들을 확인하세요</p>
+    </div>
+
+    <main>
+    <div class="container">
+        <!-- 소식지 & 기관지 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon newsletter">📰</div>
+                <h2>소식지 & 기관지 <span>Newsletter & Corporation</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="newsletter/dongjak-2026-04/" class="card" target="_blank">
+                    <div class="card-preview has-thumb">
+                        <img src="newsletter/dongjak-2026-04/renders_apr/page01.png" alt="동작구 소식지 표지">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-badge badge-newsletter">동작구청</span>
+                        <h3>동작구 소식지 · 4월호</h3>
+                        <p>16페이지 소식지 · 캘린더 일정 팝업 · 슬라이드 · 검색 · 이미지 줌</p>
+                        <div class="card-meta">
+                            <span>2026년 4월 (Vol.593)</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="newsletter/hoengseong-2026-04.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb">
+                        <img src="newsletter/thumbnail.jpg" alt="횡성군 소식지 표지">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-badge badge-newsletter">횡성군청</span>
+                        <h3>행복 담은 횡성 · 4월호</h3>
+                        <p>32페이지 소식지 · 좌우 슬라이드 · 검색 · 목차 · 이미지 줌 · 전화 걸기</p>
+                        <div class="card-meta">
+                            <span>2026년 4월 (Vol.38)</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="newsletter-corporation/kdn-life-vol184.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb">
+                        <img src="newsletter-corporation/kdn-life-vol184-thumb.png" alt="한전KDN 사보 Vol.184 표지">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-badge badge-newsletter">한전KDN</span>
+                        <h3>KDN LIFE · Vol.184</h3>
+                        <p>PDF 직접 렌더링 · 22페이지 스프레드 분할 · 9개 섹션 캔버스 뷰어 · 단일 파일</p>
+                        <div class="card-meta">
+                            <span>2026년 3+4월호</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 교회 주보 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon church">⛪</div>
+                <h2>교회 주보 <span>Church Bulletin</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="bulletin/2026-05-03/index.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="church/fgfc-2026-05-03-thumb.jpg" alt="여의도순복음교회 주보 2026-05-03"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-church">여의도순복음교회</span>
+                        <h3>주일예배 주보 · v4 (NEW)</h3>
+                        <p>4탭 구조 + 성경/찬송가 텍스트 모달 + PWA 설치 + 화면 확대/축소 + 자동 번호 매김</p>
+                        <div class="card-meta">
+                            <span>2026-05-03 (최신)</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="bulletin/2026-04-26-list.html" class="card" target="_blank">
+                    <div class="card-preview" style="background:linear-gradient(135deg,#5B4B9E 0%,#3B9FDB 100%);opacity:1;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+                        <div style="font-size:3em;">✝</div>
+                        <div style="font-size:0.85em;color:rgba(255,255,255,0.9);font-weight:600;">리스트형 v2</div>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-badge badge-church">여의도순복음교회</span>
+                        <h3>주일예배 주보 · 리스트형</h3>
+                        <p>성경구절 팝업, 찬송가 링크, 주중예배순 포함 — 2026년 4월 26일</p>
+                        <div class="card-meta">
+                            <span>2026-04-26</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="church/fgfc-2025-12-14.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="church/fgfc-thumb.jpg" alt="여의도순복음교회"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-church">여의도순복음교회</span>
+                        <h3>주일예배 주보 (다국어)</h3>
+                        <p>8개국어 자동 번역, 성경구절 팝업, 찬송가 가사 팝업 지원</p>
+                        <div class="card-meta">
+                            <span>2025-12-14</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="church/myungsung-2025-12-07.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="church/myungsung-thumb.jpg" alt="명성교회"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-church">명성교회</span>
+                        <h3>주일예배 주보</h3>
+                        <p>예배순서, 교회소식, 다크모드 지원</p>
+                        <div class="card-meta">
+                            <span>2025-12-07</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 선거 공보물 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon election">🗳️</div>
+                <h2>선거 공보물 <span>Election Pamphlet</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="election/minjoo/lee-sangjeong-responsive.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/lee-sangjeong-resp-thumb.jpg" alt="이상정 반응형"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>이상정 후보 (반응형)</h3>
+                        <p>이미지 슬라이더 + 프로필 · 경력 · 공약 아코디언 통합</p>
+                        <div class="card-meta">
+                            <span>음성군수</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/lee-sangjeong-cardnews.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/lee-sangjeong-card-thumb.jpg" alt="이상정 카드뉴스"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>이상정 후보 (카드뉴스)</h3>
+                        <p>이미지 + 텍스트 교대 카드 스트림 · 공약 상세 · 경력 타임라인</p>
+                        <div class="card-meta">
+                            <span>음성군수</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/ryu-samyoung.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/ryu-thumb.jpg" alt="류삼영"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>류삼영 후보</h3>
+                        <p>후보 프로필, 공약 정보, 정책 비교</p>
+                        <div class="card-meta">
+                            <span>국회의원</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/progressive/jang-jihwa.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/progressive/jang-thumb.jpg" alt="장지화"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-progressive">진보당</span>
+                        <h3>장지화 후보</h3>
+                        <p>후보 프로필, 공약 정보, 정책 비교</p>
+                        <div class="card-meta">
+                            <span>국회의원</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/ppp/kim-taeheum.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/ppp/kim-taeheum.jpg" alt="김태흠"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-ppp">국민의힘</span>
+                        <h3>김태흠 후보</h3>
+                        <p>가로 슬라이드 책자형 · 10페이지 · 공약 아코디언 · SNS·웹사이트 링크</p>
+                        <div class="card-meta">
+                            <span>충남도지사</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/ppp/kim-yeonsik.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/ppp/kim-thumb.jpg" alt="김연식"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-ppp">국민의힘</span>
+                        <h3>김연식 후보</h3>
+                        <p>후보 프로필, 공약 정보, 시장 후보</p>
+                        <div class="card-meta">
+                            <span>태백시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/maeng-jeongho-seosan.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/maeng-jeongho-thumb.jpg" alt="맹정호"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>맹정호 후보</h3>
+                        <p>서산 지역 소식 연계형 공보물, 공약·원팀·로드맵·KPI</p>
+                        <div class="card-meta">
+                            <span>서산시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/song-noseop-dangjin.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/song-noseop-thumb.jpg" alt="송노섭"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>송노섭 후보</h3>
+                        <p>당진 지역 소식 연계형 공보물, K-팝 아레나·기본소득·산업전환</p>
+                        <div class="card-meta">
+                            <span>당진시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/chu-miae-gyeonggi.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/chu-miae-thumb.jpg" alt="추미애"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>추미애 후보</h3>
+                        <p>광역 도지사급 공보물, K-반도체·AI혁신·GTX·기본소득·14.8만호</p>
+                        <div class="card-meta">
+                            <span>경기도지사</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/jeong-wono-seoul.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/images/jeong_w.jpg" alt="정원오"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>정원오 후보</h3>
+                        <p>3선 성동구청장, 문화경제 수도 서울, 젠트리피케이션 방지 조례</p>
+                        <div class="card-meta">
+                            <span>서울시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/jeong-myeonggeun-hwaseong.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/images/jeong_m.jpg" alt="정명근"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>정명근 후보</h3>
+                        <p>현직 시장 재선, 30년 공직경력, 동탄 보타닉가든·병점 환승센터</p>
+                        <div class="card-meta">
+                            <span>화성시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/park-soohyun-chungnam.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/images/park.jpg" alt="박수현"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>박수현 후보</h3>
+                        <p>재선 국회의원, 청와대 대변인, 소통의 달인</p>
+                        <div class="card-meta">
+                            <span>충남도지사</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/kim-gyeongsu-gyeongnam.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/images/kim.jpg" alt="김경수"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>김경수 후보</h3>
+                        <p>전 경남도지사, 서울대·트리니티칼리지, 지방시대위원장</p>
+                        <div class="card-meta">
+                            <span>경남도지사</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo/cho-yongik-bucheon.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo/images/cho.jpg" alt="조용익"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>조용익 후보</h3>
+                        <p>현직 시장 재선, 변호사 출신, GTX-B·대장홍대선·과학교육도시</p>
+                        <div class="card-meta">
+                            <span>부천시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/minjoo-r/park-seungwon-gwangmyeong.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/minjoo-r/images/psw.jpg" alt="박승원"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-minjoo">더불어민주당</span>
+                        <h3>박승원 후보</h3>
+                        <p>현직 시장 3선 도전, 신안산선·테크노밸리·3기 신도시·기본사회 1등 도시</p>
+                        <div class="card-meta">
+                            <span>광명시장</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="election/proposal/digital-election-proposal-v2.pdf" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="election/proposal/proposal-thumb.jpg" alt="디지털 선거공보물 제안서"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-proposal">(주)더소통 제안서</span>
+                        <h3>디지털 모바일 선거공보물 제안서</h3>
+                        <p>제9회 전국동시지방선거 디지털 공보물 제작 프로젝트 제안서 (14개 지역 맞춤)</p>
+                        <div class="card-meta">
+                            <span>PDF · 33페이지</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 강의자료 -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon lecture">📚</div>
+                <h2>강의자료 <span>Lecture Materials</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="lecture/medical.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="lecture/medical-thumb.jpg" alt="의료"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-lecture">의료</span>
+                        <h3>의료 강의자료</h3>
+                        <p>의료 관련 PDF를 인터랙티브 학습 자료로 변환</p>
+                        <div class="card-meta">
+                            <span>Medical</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="lecture/economics.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="lecture/economics-thumb.jpg" alt="경제"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-lecture">경제</span>
+                        <h3>경제학 강의자료</h3>
+                        <p>경제학 PDF를 인터랙티브 학습 자료로 변환</p>
+                        <div class="card-meta">
+                            <span>Economics</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="lecture/math.html" class="card" target="_blank">
+                    <div class="card-preview has-thumb"><img src="lecture/math-thumb.jpg" alt="수학"></div>
+                    <div class="card-content">
+                        <span class="card-badge badge-lecture">수학</span>
+                        <h3>수학 강의자료</h3>
+                        <p>수학 PDF를 인터랙티브 학습 자료로 변환</p>
+                        <div class="card-meta">
+                            <span>Mathematics</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 공유 링크 섹션 -->
+        <section class="share-section">
+            <h3>🔗 외부 공유 링크</h3>
+            <p style="color: var(--text-gray); margin-bottom: 20px;">아래 링크를 복사하여 외부에 공유하세요. 클릭 시 바로 해당 페이지가 열립니다.</p>
+            <div class="link-list">
+                <div class="link-item">
+                    <span class="label">동작구 소식지 4월호</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/newsletter/dongjak-2026-04/</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/newsletter/dongjak-2026-04/')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">횡성군 소식지 4월호</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/newsletter/hoengseong-2026-04.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/newsletter/hoengseong-2026-04.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">여의도순복음교회 주보 (2026-04-26)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/bulletin/2026-04-26-list.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/bulletin/2026-04-26-list.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">여의도순복음교회 (구버전)</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/church/fgfc-2025-12-14.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/church/fgfc-2025-12-14.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">명성교회</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/church/myungsung-2025-12-07.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/church/myungsung-2025-12-07.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">이상정 반응형 (민주당)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/lee-sangjeong-responsive.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/lee-sangjeong-responsive.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">이상정 카드뉴스 (민주당)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/lee-sangjeong-cardnews.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/lee-sangjeong-cardnews.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">류삼영 (민주당)</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/election/minjoo/ryu-samyoung.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/election/minjoo/ryu-samyoung.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">장지화 (진보당)</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/election/progressive/jang-jihwa.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/election/progressive/jang-jihwa.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">김태흠 (국민의힘·충남도지사)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/ppp/kim-taeheum.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/ppp/kim-taeheum.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">김연식 (국민의힘)</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/election/ppp/kim-yeonsik.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/election/ppp/kim-yeonsik.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">맹정호 (민주당·서산시장)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/maeng-jeongho-seosan.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/maeng-jeongho-seosan.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">송노섭 (민주당·당진시장)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/song-noseop-dangjin.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/song-noseop-dangjin.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">추미애 (민주당·경기도지사)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/chu-miae-gyeonggi.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/chu-miae-gyeonggi.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">정원오 (민주당·서울시장)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/jeong-wono-seoul.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/jeong-wono-seoul.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">정명근 (민주당·화성시장)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/jeong-myeonggeun-hwaseong.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/jeong-myeonggeun-hwaseong.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">박수현 (민주당·충남도지사)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/park-soohyun-chungnam.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/park-soohyun-chungnam.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">김경수 (민주당·경남도지사)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/kim-gyeongsu-gyeongnam.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/kim-gyeongsu-gyeongnam.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">조용익 (민주당·부천시장)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo/cho-yongik-bucheon.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo/cho-yongik-bucheon.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">박승원 (민주당·광명시장)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/minjoo-r/park-seungwon-gwangmyeong.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/minjoo-r/park-seungwon-gwangmyeong.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">디지털 선거공보물 제안서 (PDF)</span>
+                    <span class="url">https://yang-jeongman.github.io/studysnap-samples/election/proposal/digital-election-proposal-v2.pdf</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://yang-jeongman.github.io/studysnap-samples/election/proposal/digital-election-proposal-v2.pdf')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">의료 강의자료</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/lecture/medical.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/lecture/medical.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">경제학 강의자료</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/lecture/economics.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/lecture/economics.html')">복사</button>
+                </div>
+                <div class="link-item">
+                    <span class="label">수학 강의자료</span>
+                    <span class="url">https://studysnap-pdf.netlify.app/samples/lecture/math.html</span>
+                    <button class="copy-btn" onclick="copyLink(this, 'https://studysnap-pdf.netlify.app/samples/lecture/math.html')">복사</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Church Bulletins (Legacy) -->
+        <h2 class="section-title">
+            <span class="icon">⛪</span>
+            <span data-i18n="church_title">Church Bulletins</span>
+        </h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-header church">
+                    <span data-i18n="yfgc_1116">YFGC Bulletin (11/16)</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="yfgc_1116_desc">2025-11-16 Sunday bulletin with worship schedule and church news.</p>
+                    <div class="btn-group">
+                        <a href="outputs/Church/여의도순복음교회/2025-11-16.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('yfgc-1116')">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header church">
+                    <span data-i18n="myungsung">Myungsung Church (12/07)</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="myungsung_desc">2025-12-07 Sunday bulletin with worship order and announcements.</p>
+                    <div class="btn-group">
+                        <a href="outputs/Church/명성교회/2025-12-07.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('myungsung')">Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Election Pamphlets -->
+        <h2 class="section-title">
+            <span class="icon">🗳️</span>
+            <span data-i18n="election_title">Election Pamphlets</span>
+        </h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-header election-minjoo">
+                    <span data-i18n="ryu">Ryu Sam-young (Democratic Party)</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="ryu_desc">National Assembly candidate pamphlet with policies and career highlights.</p>
+                    <div class="btn-group">
+                        <a href="outputs/Election/Minjoo/류삼영/류삼영.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('ryu')">Share</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header election-prog">
+                    <span data-i18n="jang">Jang Ji-hwa (Progressive Party)</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="jang_desc">Progressive party candidate pamphlet with policy vision.</p>
+                    <div class="btn-group">
+                        <a href="outputs/Election/Progressive/장지화.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('jang')">Share</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header election-ppp">
+                    <span data-i18n="ppp">PPP Candidate</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="ppp_desc">People Power Party candidate pamphlet with pledges.</p>
+                    <div class="btn-group">
+                        <a href="outputs/Election/PPP/NA.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('ppp')">Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lecture Materials -->
+        <h2 class="section-title">
+            <span class="icon">🎓</span>
+            <span data-i18n="lecture_title">Lecture Materials</span>
+        </h2>
+        <div class="grid">
+            <!-- NEW: Psychiatrist Guide -->
+            <div class="card">
+                <div class="card-header lecture">
+                    <span data-i18n="psychiatrist_guide">Modern Psychiatrist's Guide</span>
+                    <span class="badge badge-new">NEW</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="psychiatrist_guide_desc">Medical textbook with 12 chapters covering contemporary psychiatric practice, diagnosis, and treatment.</p>
+                    <div class="features">
+                        <span class="feature-tag">📖 12 Chapters</span>
+                        <span class="feature-tag">🔍 Search</span>
+                        <span class="feature-tag">🔖 Bookmarks</span>
+                        <span class="feature-tag">🌙 Dark Mode</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="psychiatrist_guide.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('psychiatrist')">Share</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header lecture">
+                    <span data-i18n="lecture1">Test Lecture Sample</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="lecture1_desc">Academic lecture material converted to mobile-friendly format.</p>
+                    <div class="btn-group">
+                        <a href="test_lecture.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('lecture1')">Share</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header lecture">
+                    <span data-i18n="lecture2">Upgraded Lecture Sample</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="lecture2_desc">Enhanced lecture material with improved layout and navigation.</p>
+                    <div class="btn-group">
+                        <a href="test_lecture_upgraded.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('lecture2')">Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter/Corporation -->
+        <h2 class="section-title">
+            <span class="icon">📰</span>
+            <span data-i18n="newsletter_title">Newsletter & Corporation</span>
+        </h2>
+        <div class="grid">
+            <!-- NEW: 한국마린엔지니어링학회 소식지 Vol.50 -->
+            <div class="card">
+                <div class="card-header" style="background: linear-gradient(135deg, #003366, #005599);">
+                    <span data-i18n="kosme_vol50">마린엔지니어링학회 Vol.50</span>
+                    <span class="badge badge-new">NEW</span>
+                </div>
+                <div class="card-body">
+                    <img src="thumbnails/kosme-vol50.png" alt="한국마린엔지니어링학회 소식지 Vol.50 썸네일" style="width:100%; border-radius:8px; margin-bottom:12px;">
+                    <p data-i18n="kosme_vol50_desc">(사)한국마린엔지니어링학회 2026년 3월호 웹진. PPTX 직접 변환. 47슬라이드, 논문/기고문 150개 이미지 순서 보존. 편집위원 테이블·회원사 로고 4열 그리드·PWA 지원.</p>
+                    <div class="features">
+                        <span class="feature-tag">📊 PPTX 직접변환</span>
+                        <span class="feature-tag">📰 논문 7편</span>
+                        <span class="feature-tag">🖼️ 150 Images</span>
+                        <span class="feature-tag">📱 PWA</span>
+                        <span class="feature-tag">📞 전화연결</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="newsletter-corporation/kosme-vol50.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('kosme-vol50')">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: 동작구 소식지 591호 -->
+            <div class="card">
+                <div class="card-header" style="background: linear-gradient(135deg, #CA3E4C, #A32535);">
+                    <span data-i18n="dongjak_591">동작구 소식지 591호</span>
+                    <span class="badge badge-new">NEW</span>
+                </div>
+                <div class="card-body">
+                    <img src="thumbnails/dongjak-sosikji-591.png" alt="동작구 소식지 591호 썸네일" style="width:100%; border-radius:8px; margin-bottom:12px;">
+                    <p data-i18n="dongjak_591_desc">동작구청 2026년 2월호 소식지. 기획특집·캘린더·만화·생생리포터·열린의정 포함. 섹션별 특화 디자인 적용.</p>
+                    <div class="features">
+                        <span class="feature-tag">📅 캘린더</span>
+                        <span class="feature-tag">🎨 만화 9컷</span>
+                        <span class="feature-tag">📰 기획특집</span>
+                        <span class="feature-tag">📱 모바일</span>
+                        <span class="feature-tag">🖼️ 이미지 팝업</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="newsletter-corporation/dongjak-sosikji-vol591.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('dongjak-591')">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: 광명시 소식지 658호 -->
+            <div class="card">
+                <div class="card-header" style="background: linear-gradient(135deg, #1B5FA8, #0D3F70);">
+                    <span data-i18n="gwangmyeong_658">광명시 소식지 658호</span>
+                    <span class="badge badge-new">NEW</span>
+                </div>
+                <div class="card-body">
+                    <img src="thumbnails/gwangmyeong-sosik-658.png" alt="광명시 소식지 658호 썸네일" style="width:100%; border-radius:8px; margin-bottom:12px;">
+                    <p data-i18n="gwangmyeong_658_desc">광명시청 2026년 3월호 소식지. 복지·특집·생활정보·청소년·평생학습 5개 섹션. PSD 이미지 전면 삽입.</p>
+                    <div class="features">
+                        <span class="feature-tag">🖼️ PSD 이미지</span>
+                        <span class="feature-tag">📞 전화연결</span>
+                        <span class="feature-tag">🔗 URL 링크</span>
+                        <span class="feature-tag">📱 모바일</span>
+                        <span class="feature-tag">🗂️ 5개 섹션</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="newsletter-corporation/gwangmyeong-sosik-658.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('gwangmyeong-658')">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: 동작구보건소 소식지 -->
+            <div class="card">
+                <div class="card-header" style="background: linear-gradient(135deg, #00897B, #26A69A);">
+                    <span data-i18n="dongjak_health">동작구보건소 e·건강소식 2월호</span>
+                    <span class="badge badge-new">NEW</span>
+                </div>
+                <div class="card-body">
+                    <img src="thumbnails/dongjak-health.png" alt="동작구보건소 소식지 썸네일" style="width:100%; border-radius:8px; margin-bottom:12px;">
+                    <p data-i18n="dongjak_health_desc">동작구보건소 2026년 2월 소식지. 사업안내, 건강캘린더, 건강대학, 암검진 정보 포함.</p>
+                    <div class="features">
+                        <span class="feature-tag">📞 전화연결</span>
+                        <span class="feature-tag">📅 건강캘린더</span>
+                        <span class="feature-tag">🎓 건강대학</span>
+                        <span class="feature-tag">🩺 암검진</span>
+                        <span class="feature-tag">📱 모바일</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="newsletter-corporation/dongjak-health-2026-02.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('dongjak-health')">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: 지방시대 VOL.137 -->
+            <div class="card">
+                <div class="card-header" style="background: linear-gradient(135deg, #004C99, #003366);">
+                    <span data-i18n="jibang_sidae_137">지방시대 VOL.137</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="jibang_sidae_137_desc">대한민국시도지사협의회 공식 매거진. 2026년 2월호, 대전광역시장 인터뷰 "나는 대전이다".</p>
+                    <div class="features">
+                        <span class="feature-tag">🎯 대전 특집</span>
+                        <span class="feature-tag">💬 시장 인터뷰</span>
+                        <span class="feature-tag">🤖 AI 변환</span>
+                        <span class="feature-tag">📱 36MB</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="newsletter-corporation/jibang-sidae-vol137.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('jibang-sidae-vol137')">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: 소통 BJW VOL.138 -->
+            <div class="card">
+                <div class="card-header" style="background: linear-gradient(135deg, #0066CC, #004C99);">
+                    <span data-i18n="sotong_bjw">소통 BJW VOL.138</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="sotong_bjw_desc">대한민국시도지사협의회 지방시대 매거진. 2026년 2월호, AI 자동 추출, 모바일 최적화.</p>
+                    <div class="features">
+                        <span class="feature-tag">🏛️ 정부 매거진</span>
+                        <span class="feature-tag">🤖 AI 변환</span>
+                        <span class="feature-tag">📱 모바일</span>
+                        <span class="feature-tag">🖼️ 이미지 팝업</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="newsletter-corporation/sotong-bjw-vol138.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('sotong-bjw')">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header newsletter">
+                    <span data-i18n="sabo132">청권사보 제132호</span>
+                </div>
+                <div class="card-body">
+                    <p data-i18n="sabo132_desc">효령대군파 종중 소식지. 2025년 1월호, 100페이지, 155개 이미지 포함.</p>
+                    <div class="features">
+                        <span class="feature-tag">📄 100 Pages</span>
+                        <span class="feature-tag">🖼️ 155 Images</span>
+                        <span class="feature-tag">🏛️ Traditional Style</span>
+                        <span class="feature-tag">🌙 Dark Mode</span>
+                    </div>
+                    <div class="btn-group" style="margin-top: 12px;">
+                        <a href="newsletter-corporation/sabo132.html" class="btn" data-i18n="view_sample">View Sample</a>
+                        <button class="btn-share" onclick="copyShareUrl('sabo132')">Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- ===== Homepage & Mall 카테고리 ===== -->
+        <section class="category">
+            <div class="category-header">
+                <div class="category-icon mall">🛒</div>
+                <h2>홈페이지 &amp; 쇼핑몰 <span>Homepage &amp; Mall</span></h2>
+            </div>
+            <div class="cards-grid">
+                <a href="homepage-mall/daeyafood/" class="card" target="_blank">
+                    <div class="card-preview has-thumb">
+                        <img src="homepage-mall/daeyafood/main.png" alt="대야식품 쇼핑몰">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-badge badge-mall">식품 쇼핑몰</span>
+                        <h3>대야식품 — daeyafood.co.kr</h3>
+                        <p>익산 40년 전통 대야할매곰탕. 그누보드5 + 이윰빌더4 + eb4_shop_022 테마 기반 식품 전문 쇼핑몰. 소머리곰탕·도가니탕 2개 상품, KBS 6시 내고향 방영 영상, 오시는 길 지도 포함.</p>
+                        <div class="card-meta">
+                            <span>2026년 5월 · 1차 검토본</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- ===== Homepage & Mall 끝 ===== -->
+
+    </main>
+
+    <footer class="footer">
+        <p>StudySnap AI - PDF를 스마트하게 변환</p>
+        <p><a href="https://studysnap-pdf.netlify.app">메인 페이지로 돌아가기</a></p>
+    </footer>
+
+    <script>
+        function copyLink(btn, url) {
+            navigator.clipboard.writeText(url).then(() => {
+                btn.textContent = '복사됨!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '복사';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

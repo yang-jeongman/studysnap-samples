@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>김태흠 - 충청남도지사 후보 선거공보물</title>
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="기호 2번 김태흠 | 국민의힘 충청남도지사 후보">
+<meta property="og:description" content="충남을 대한민국을 이끄는 중심으로. 7대 비전 · 15개 시군 맞춤형 공약 · 131개 사업 이행 — 김태흠 후보의 선거공보물을 확인하세요.">
+<meta property="og:locale" content="ko_KR">
+
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;circle cx='16' cy='16' r='14' fill='%23C0392B'/&gt;&lt;text x='16' y='22' text-anchor='middle' fill='%23FFF' font-size='18' font-weight='bold'&gt;2&lt;/text&gt;&lt;/svg&gt;">
+
+<style>
+:root {
+  --kmt-red: #C0392B;
+  --kmt-red-dark: #8B0000;
+  --kmt-gray: #333;
+  --text: #222;
+  --muted: #666;
+  --line: #d8dde3;
+  --bg: #f4f6f8;
+  --white: #fff;
+  --vh: 1vh;
+}
+
+* { box-sizing: border-box; }
+html {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  position: fixed;
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+}
+body {
+  font-family: "Pretendard", "맑은 고딕", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  background: #f5f5f5;
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  overscroll-behavior: contain;
+  -webkit-app-region: no-drag;
+}
+
+/* Book = horizontal swipe carousel */
+.book {
+  display: flex;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-user-select: none;
+  overscroll-behavior-x: contain;
+}
+.book::-webkit-scrollbar { display: none; }
+
+/* Each page = full viewport, vertical scroll */
+.page {
+  flex: 0 0 100%;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  scrollbar-gutter: stable;
+  -webkit-user-select: text;
+  user-select: text;
+  contain: layout style paint;
+}
+.page::-webkit-scrollbar { width: 6px; }
+.page::-webkit-scrollbar-track { background: transparent; }
+.page::-webkit-scrollbar-thumb { background: rgba(192,57,43,0.3); border-radius: 3px; transition: background 0.2s; }
+.page::-webkit-scrollbar-thumb:hover { background: rgba(192,57,43,0.6); }
+
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: linear-gradient(135deg, var(--kmt-red), var(--kmt-red-dark));
+  color: #fff;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.page-header .badge {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.page-header h2 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.5px;
+  flex: 1;
+  padding-right: 12px;
+}
+.page-body { padding: 24px 20px 80px; }
+
+/* Cover */
+.cover {
+  background: linear-gradient(160deg, #fff 0%, #f8f9fa 100%);
+  color: var(--text);
+  padding: 40px 28px 90px;
+  text-align: center;
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cover .top-bar {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  opacity: 0.75;
+  margin-bottom: 30px;
+}
+.cover .party {
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
+}
+.cover .party-icon {
+  color: var(--kmt-red);
+  margin: 0 4px;
+}
+.cover .main-slogan {
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -2px;
+  margin: 24px 0 20px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.cover .main-slogan .accent { color: var(--kmt-red); }
+.cover .sub-slogan {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-bottom: 40px;
+  color: var(--muted);
+}
+.cover .candidate-block {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(192,57,43,0.08);
+  padding: 24px 40px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  margin: 0 auto;
+  max-width: 380px;
+}
+.cover .photo-box {
+  width: 100px;
+  height: 130px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+  border: 2px solid rgba(192,57,43,0.2);
+  flex-shrink: 0;
+}
+.cover .number {
+  font-size: 72px;
+  font-weight: 900;
+  color: var(--kmt-red);
+  line-height: 1;
+  min-width: 80px;
+}
+.cover .name-block { text-align: left; }
+.cover .name {
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.cover .role {
+  font-size: 14px;
+  opacity: 0.8;
+  color: var(--muted);
+}
+.cover .url {
+  margin-top: 24px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* Visual / image placeholder */
+.visual {
+  background: rgba(192,57,43,0.06);
+  border: 2px dashed var(--kmt-red);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  color: var(--kmt-gray);
+  font-size: 14px;
+  text-align: center;
+  font-style: italic;
+}
+.visual::before { content: "📷 "; font-style: normal; }
+
+/* Sections */
+h3 {
+  color: var(--kmt-gray);
+  border-left: 6px solid var(--kmt-red);
+  padding-left: 14px;
+  font-size: 24px;
+  margin: 28px 0 16px;
+  letter-spacing: -0.5px;
+}
+h4 {
+  color: var(--kmt-red);
+  font-size: 18px;
+  margin: 24px 0 10px;
+  letter-spacing: -0.3px;
+}
+p { margin: 10px 0; }
+ul { padding-left: 22px; }
+li { margin: 6px 0; }
+strong { color: var(--kmt-red); }
+
+blockquote {
+  background: rgba(192,57,43,0.06);
+  border-left: 5px solid var(--kmt-red);
+  padding: 16px 20px;
+  margin: 18px 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--kmt-gray);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+th, td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+}
+th {
+  background: var(--kmt-red);
+  color: #fff;
+  font-weight: 700;
+}
+tr:nth-child(even) td { background: #fafbfc; }
+
+/* Highlight slogan box */
+.slogan-box {
+  background: linear-gradient(135deg, var(--kmt-red), var(--kmt-red-dark));
+  color: #fff;
+  text-align: center;
+  padding: 28px;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+.slogan-box .big {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+.slogan-box .small { margin-top: 8px; opacity: 0.9; font-size: 14px; }
+
+/* Vision/Promise grid */
+.vision-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 20px 0;
+}
+.vision-item {
+  background: rgba(192,57,43,0.06);
+  border-top: 4px solid var(--kmt-red);
+  padding: 18px;
+  border-radius: 8px;
+}
+.vision-item .num {
+  color: var(--kmt-red);
+  font-weight: 900;
+  font-size: 14px;
+}
+.vision-item .title {
+  font-weight: 800;
+  color: var(--kmt-gray);
+  margin-top: 4px;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+}
+.vision-item .desc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* Region card */
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 16px 0;
+}
+.region-card {
+  border: 2px solid var(--kmt-red);
+  border-radius: 10px;
+  padding: 16px;
+  background: #fff;
+}
+.region-card h5 {
+  margin: 0 0 8px;
+  color: #fff;
+  background: var(--kmt-red);
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+}
+.region-card ul { font-size: 13.5px; padding-left: 18px; margin: 8px 0 0; }
+
+/* Promise card */
+.promise-card {
+  background: #fff;
+  border: 2px solid rgba(192,57,43,0.15);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.promise-card .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--kmt-red);
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 900;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.promise-card .title {
+  font-weight: 800;
+  color: var(--kmt-gray);
+  font-size: 15px;
+  display: inline;
+}
+.promise-card .desc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+/* Stat cards */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+.stat-card {
+  background: var(--kmt-red);
+  color: #fff;
+  padding: 18px;
+  border-radius: 10px;
+  text-align: center;
+}
+.stat-card .v {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+}
+.stat-card .l {
+  font-size: 13px;
+  margin-top: 6px;
+  opacity: 0.95;
+}
+
+/* Closing block */
+.closing {
+  background: linear-gradient(135deg, var(--kmt-red), var(--kmt-red-dark));
+  color: #fff;
+  padding: 50px 40px;
+  text-align: center;
+  border-radius: 12px;
+  margin: 30px 0;
+}
+.closing .head {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+.closing .sub { font-size: 16px; opacity: 0.95; margin-bottom: 20px; }
+.closing .final {
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+/* Accordion styles */
+.accordion-item {
+  background: #fff;
+  border: 2px solid rgba(192,57,43,0.15);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.accordion-button {
+  width: 100%;
+  padding: 16px;
+  background: #fff;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--kmt-gray);
+  transition: background 0.2s;
+}
+.accordion-button:hover { background: rgba(192,57,43,0.04); }
+.accordion-button.active { background: rgba(192,57,43,0.08); }
+.accordion-button .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--kmt-red);
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 900;
+  font-size: 14px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.accordion-button .toggle {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--kmt-red);
+  transition: transform 0.3s;
+}
+.accordion-button.active .toggle { transform: rotate(180deg); }
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease-out;
+  opacity: 0;
+  padding: 0 16px 0 54px;
+}
+.accordion-content.active {
+  max-height: 500px;
+  opacity: 1;
+  padding: 0 16px 16px 54px;
+}
+.accordion-content p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Contact/Social links */
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(192,57,43,0.06);
+  border-radius: 10px;
+}
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--kmt-red);
+  border-radius: 20px;
+  color: var(--kmt-red);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+.contact-link:hover {
+  background: var(--kmt-red);
+  color: #fff;
+}
+
+.career-box {
+  background: #f8f9fb;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  margin-top: 18px;
+  font-size: 14px;
+}
+.career-box p { margin: 6px 0; }
+.career-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 13.5px;
+}
+.career-item:last-child { border: none; }
+.career-year {
+  color: var(--kmt-red);
+  font-weight: 700;
+  min-width: 50px;
+  flex-shrink: 0;
+}
+.career-desc { color: var(--text); flex: 1; }
+
+/* Page indicator */
+.page-indicator {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(192,57,43,0.9);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+/* Nav arrows (desktop) */
+.nav-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(192,57,43,0.75);
+  color: #fff;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 26px;
+  font-weight: 900;
+  cursor: pointer;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, opacity 0.2s, transform 0.2s;
+  backdrop-filter: blur(4px);
+  line-height: 1;
+  padding: 0 0 4px;
+}
+.nav-arrow:hover { background: var(--kmt-red-dark); transform: translateY(-50%) scale(1.08); }
+.nav-arrow:disabled { opacity: 0.25; cursor: default; transform: translateY(-50%); }
+.nav-prev { left: 14px; }
+.nav-next { right: 14px; }
+
+/* Swipe hint (mobile, first page only) */
+.swipe-hint {
+  position: fixed;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--kmt-red);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  z-index: 100;
+  animation: hintFade 5s ease-out forwards;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+@keyframes hintFade {
+  0%, 60% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(8px); visibility: hidden; }
+}
+
+@media (max-width: 720px) {
+  .vision-grid, .region-grid, .stat-grid { grid-template-columns: 1fr; }
+  .cover { padding: 30px 18px 80px; }
+  .cover .main-slogan { font-size: 32px; }
+  .cover .sub-slogan { font-size: 14px; margin-bottom: 24px; }
+  .cover .candidate-block { flex-direction: column; gap: 12px; padding: 16px 18px; max-width: 100%; }
+  .cover .number { font-size: 52px; min-width: auto; }
+  .cover .name { font-size: 32px; }
+  .cover .name-block { text-align: center; }
+  .cover .top-bar { flex-direction: column; gap: 4px; margin-bottom: 18px; font-size: 11px; }
+  .cover .party { font-size: 18px; margin-bottom: 12px; }
+  .page-body { padding: 18px 14px 80px; }
+  .page-header h2 { font-size: 15px; }
+  .page-header { padding: 12px 14px; }
+  h3 { font-size: 20px; }
+  h4 { font-size: 16px; }
+  .nav-arrow { display: none; }
+  .closing { padding: 32px 18px; margin: 20px 0; }
+  .closing .head { font-size: 24px; }
+  .closing .final { font-size: 38px; }
+  .slogan-box .big { font-size: 22px; }
+  .stat-card .v { font-size: 22px; }
+  table { font-size: 13px; }
+  th, td { padding: 8px 10px; }
+}
+
+@media print {
+  html, body { overflow: visible; height: auto; }
+  .book { display: block; height: auto; overflow: visible; }
+  .page { width: 100%; height: auto; overflow: visible; page-break-after: always; }
+  .page-header { position: relative; }
+  .page-indicator, .nav-arrow, .swipe-hint { display: none; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<div class="book" id="book">
+
+<!-- ============== 1면: 표지 ============== -->
+<div class="page" id="p1">
+  <div class="cover">
+    <div class="top-bar">
+      <span>충청남도지사 선거 책자형 선거공보</span>
+      <span>2026년 제9회 전국동시지방선거</span>
+    </div>
+    <div class="party"><span class="party-icon">🔴</span> 국민의힘 · 충청남도지사 후보</div>
+    <div class="main-slogan">
+      충남을<br>
+      대한민국을 이끄는<br>
+      <span class="accent">중심</span>으로
+    </div>
+    <div class="sub-slogan">7대 비전 · 15개 시군 맞춤형 공약 · 131개 사업 이행 중</div>
+
+    <div class="candidate-block">
+      <div class="number">2</div>
+      <div style="text-align: center; flex: 1;">
+        <img src="kim-taeheum-photo.png" class="photo-box" alt="김태흠">
+      </div>
+      <div style="text-align: left; flex: 1;">
+        <div class="name">김 태 흠</div>
+        <div class="role">현) 충청남도지사<br>민선 8기 · 재선 도전</div>
+      </div>
+    </div>
+    <div class="url">4년의 성과 위에 더 큰 충남을 만들겠습니다</div>
+  </div>
+</div>
+
+<!-- ============== 2면: 인사말 ============== -->
+<div class="page" id="p2">
+  <div class="page-header">
+    <h2>도민께 드리는 말씀</h2>
+    <span class="badge">2 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">충청남도 도청 현장에서 도민과 소통하는 김태흠 지사의 모습</div>
+
+    <h3>4년의 약속, 131개 공약으로 답하겠습니다</h3>
+
+    <p>존경하는 충청남도 도민 여러분,</p>
+
+    <p>2022년 저는 도민 여러분과 함께 <strong>'충남을 대한민국을 이끄는 중심으로'</strong> 만들겠다는 다짐으로 도정을 시작했습니다.</p>
+
+    <p>그 약속을 지키기 위해:</p>
+    <ul>
+      <li><strong>AI 인력 3만 명 양성</strong> 프로그램 추진</li>
+      <li><strong>천안·아산 베이밸리 메가시티</strong> 프로젝트 본격화</li>
+      <li><strong>수도권 철도비 50% 환급</strong> 실현</li>
+      <li><strong>여성농업인 공동경영주 수당</strong> 전국 최초 신설</li>
+      <li><strong>GTX·트램 등 광역 교통망</strong> 구축 추진</li>
+    </ul>
+
+    <p>131개 공약 중 <strong>14건은 완료</strong>했고, <strong>12건은 정상 추진</strong> 중이며, <strong>105건은 이행 후 계속추진</strong>하고 있습니다.</p>
+
+    <p>남은 4년은 더욱 힘차게 뛰어</p>
+    <blockquote>
+      <strong>"말이 아니라 성과와 결과로<br>충남의 미래를 증명하겠습니다"</strong><br><br>
+      기호 2번 · 국민의힘<br>
+      <strong style="font-size:18px;">김 태 흠</strong>
+    </blockquote>
+  </div>
+</div>
+
+<!-- ============== 3면: 민선8기 성과 ============== -->
+<div class="page" id="p3">
+  <div class="page-header">
+    <h2>4년간 이렇게 이행했습니다</h2>
+    <span class="badge">3 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">도정 주요 현장 · AI연구센터 개소식, 베이밸리 착공식, 트램 공사 현장, 여성농업인 지원센터 개소식</div>
+
+    <h3>131개 공약, 성과로 증명</h3>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="v">14건</div><div class="l">공약 완료</div></div>
+      <div class="stat-card"><div class="v">12건</div><div class="l">정상 추진 중</div></div>
+      <div class="stat-card"><div class="v">105건</div><div class="l">이행 후 계속추진</div></div>
+      <div class="stat-card"><div class="v">3만 명</div><div class="l">AI 인력 양성</div></div>
+    </div>
+
+    <h4>🚀 주요 추진 사업</h4>
+    <table>
+      <thead>
+        <tr><th style="width:60%;">공약 사항</th><th>진행 현황</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AI 전문인력 3만 명 양성</td><td>✅ 진행 중</td></tr>
+        <tr><td>천안·아산 베이밸리</td><td>✅ 착공</td></tr>
+        <tr><td>GTX·도시철도(트램) 구축</td><td>✅ 진행 중</td></tr>
+        <tr><td>수도권 철도비 50% 환급</td><td>✅ 실현</td></tr>
+        <tr><td>여성농업인 공동경영주 수당</td><td>✅ 신설</td></tr>
+        <tr><td>청년 반값 전세 지원</td><td>✅ 확대 추진</td></tr>
+      </tbody>
+    </table>
+
+    <div class="slogan-box">
+      <div class="big">성과와 결과로</div>
+      <div class="small">충남의 약속을 지킵니다</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 4면: 7대 비전 ============== -->
+<div class="page" id="p4">
+  <div class="page-header">
+    <h2>민선 9기 7대 핵심 비전</h2>
+    <span class="badge">4 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">충남 발전 비전: AI·산업·교통·복지·농업·문화·통합 모습</div>
+
+    <h3>충남을 대한민국을 이끄는 중심으로</h3>
+    <p style="color: var(--muted); margin-bottom: 20px;">4년의 성과 위에 더 큰 충남을 만들겠습니다</p>
+
+    <div class="vision-grid">
+      <div class="vision-item">
+        <div class="num">①</div>
+        <div class="title">AI·첨단산업 혁신</div>
+        <div class="desc">AI 전문인력 3만 명 양성 · 차량용 반도체·2차전지 산업 육성</div>
+      </div>
+      <div class="vision-item">
+        <div class="num">②</div>
+        <div class="title">베이밸리 메가시티</div>
+        <div class="desc">천안·아산만권 150만 복합문화도시 · 다목적 돔 아레나</div>
+      </div>
+      <div class="vision-item">
+        <div class="num">③</div>
+        <div class="title">광역 교통망 구축</div>
+        <div class="desc">GTX·도시철도·수도권 연결 · 철도비 50% 환급</div>
+      </div>
+      <div class="vision-item">
+        <div class="num">④</div>
+        <div class="title">청년·복지 혁신</div>
+        <div class="desc">청년 반값 전세 · 24시간 돌봄 어린이집 · 공공의료 강화</div>
+      </div>
+      <div class="vision-item">
+        <div class="num">⑤</div>
+        <div class="title">스마트 농어업</div>
+        <div class="desc">여성농업인 수당 신설 · 청년농 육성 · 스마트팜 확대</div>
+      </div>
+      <div class="vision-item">
+        <div class="num">⑥</div>
+        <div class="title">문화·관광 산업</div>
+        <div class="desc">백제문화·인삼·머드 글로벌 축제 · 해양관광벨트</div>
+      </div>
+      <div class="vision-item">
+        <div class="num">⑦</div>
+        <div class="title">충남·대전 통합 발전</div>
+        <div class="desc">경제·과학 수도 · 내포 신도시 · 지방분권 완성</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 5면: 핵심 공약 ============== -->
+<div class="page" id="p5">
+  <div class="page-header">
+    <h2>경제·산업·교통 공약</h2>
+    <span class="badge">5 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">AI 연구센터·베이밸리 프로젝트·트램 공사현장·철도역 모습</div>
+
+    <h3>경제·산업·교통</h3>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="icon">1</span><span class="title">AI·첨단산업 허브 구축</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p>AI 전문인력 3만 명 양성 · 차량용 반도체, 2차전지, 자율주행 모빌리티 클러스터 조성 · 천안·아산을 AI 첨단제조 핵심 거점으로 육성</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="icon">2</span><span class="title">베이밸리 메가시티</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p>천안·아산을 150만 규모 복합문화도시로 육성 · 다목적 돔 아레나·트램·복합쇼핑몰로 자족도시 완성</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="icon">3</span><span class="title">광역 교통망 완성</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p>GTX·도시철도(트램)로 수도권-충남 30분 생활권 조성 · 수도권 출퇴근 철도비 50% 환급 · 서해안 KTX·서산공항 개항</p>
+      </div>
+    </div>
+
+    <h4 style="margin-top: 28px;">복지·농업·문화 공약</h4>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="icon">4</span><span class="title">청년·복지 책임 강화</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p>청년 반값 전세 지원 확대 · 24시간 돌봄 어린이집 전면 운영 · 공공의료 강화 · 소상공인 신용보증</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="icon">5</span><span class="title">스마트 농어업</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p>여성농업인 공동경영주 수당 신설(전국 최초) · 청년농업인 스마트팜 지원 확대 · 해양바이오 클러스터 조성</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="icon">6</span><span class="title">문화·관광 글로벌 브랜드화</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p>백제문화·인삼·머드 글로벌 축제 육성 · 서해안 국제 해양관광벨트 · 보령·서천 해양레저, 공주·부여 백제 역사문화 복합단지</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 6면: 15개 시군 맞춤 공약 ============== -->
+<div class="page" id="p6">
+  <div class="page-header">
+    <h2>15개 시군 맞춤형 공약</h2>
+    <span class="badge">6 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">충남 15개 시군 지도 및 지역별 발전 현장 모습</div>
+
+    <h3>지역별 맞춤 공약</h3>
+
+    <div class="region-grid">
+      <div class="region-card">
+        <h5>🏙️ 천안·아산</h5>
+        <ul>
+          <li>AI·반도체 클러스터</li>
+          <li>베이밸리 메가시티</li>
+          <li>트램·복합문화도시</li>
+        </ul>
+      </div>
+      <div class="region-card">
+        <h5>🚢 당진·서산·태안</h5>
+        <ul>
+          <li>자동차·미래모빌리티</li>
+          <li>서산공항 개항</li>
+          <li>수소산업벨트</li>
+        </ul>
+      </div>
+      <div class="region-card">
+        <h5>🏛️ 공주·부여·청양</h5>
+        <ul>
+          <li>백제문화 복합단지</li>
+          <li>치유 숲·힐링관광</li>
+          <li>역사문화 유네스코</li>
+        </ul>
+      </div>
+      <div class="region-card">
+        <h5>🌊 보령·서천</h5>
+        <ul>
+          <li>국제 해양레저관광</li>
+          <li>머드 글로벌 축제</li>
+          <li>해양바이오 클러스터</li>
+        </ul>
+      </div>
+      <div class="region-card">
+        <h5>⚔️ 논산·계룡·금산</h5>
+        <ul>
+          <li>국방산업단지 육성</li>
+          <li>인삼 글로벌 브랜드</li>
+          <li>계룡대 상생 발전</li>
+        </ul>
+      </div>
+      <div class="region-card">
+        <h5>🏡 홍성·예산·청양</h5>
+        <ul>
+          <li>행정·문화 중심도시</li>
+          <li>내포 신도시 완성</li>
+          <li>남부출장소 설치</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 7면: 약력 ============== -->
+<div class="page" id="p7">
+  <div class="page-header">
+    <h2>김태흠 약력</h2>
+    <span class="badge">7 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">김태흠 지사 정치 활동 이력 및 주요 사진</div>
+
+    <h3>이력서</h3>
+
+    <div class="career-box">
+      <div class="career-item">
+        <div class="career-year">1963년</div>
+        <div class="career-desc"><strong>출생</strong> · 충남 보령 출신</div>
+      </div>
+      <div class="career-item">
+        <div class="career-year">학력</div>
+        <div class="career-desc">충남대학교 법학과 졸업<br>충남대학교 대학원 법학석사</div>
+      </div>
+      <div class="career-item">
+        <div class="career-year">2004년</div>
+        <div class="career-desc"><strong>제17대 국회의원</strong> 당선 (보령·서천)</div>
+      </div>
+      <div class="career-item">
+        <div class="career-year">2008년</div>
+        <div class="career-desc"><strong>제18대 국회의원</strong> 재선</div>
+      </div>
+      <div class="career-item">
+        <div class="career-year">2016년</div>
+        <div class="career-desc"><strong>제20대 국회의원</strong> 당선 (보령·서천)</div>
+      </div>
+      <div class="career-item">
+        <div class="career-year">2020년</div>
+        <div class="career-desc"><strong>국민의힘 원내부대표</strong></div>
+      </div>
+      <div class="career-item">
+        <div class="career-year">2022년</div>
+        <div class="career-desc"><strong>제39대 충청남도지사 당선</strong> (54.72% 득표, 국민의힘)</div>
+      </div>
+      <div class="career-item" style="border: none;">
+        <div class="career-year">현재</div>
+        <div class="career-desc"><strong>충청남도지사</strong> (민선 8기) · 재선 도전</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 8면: 함께하는 충남 ============== -->
+<div class="page" id="p8">
+  <div class="page-header">
+    <h2>도민과 함께하는 충남</h2>
+    <span class="badge">8 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">도정 추진 현장 사진 · 청년취업 교육, 여성농업인 지원센터, 어린이집 개소식, 문화축제 현장</div>
+
+    <h3>도민 삶의 질을 높이는 정책</h3>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="title">💼 청년과 일자리</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p><strong>AI 인력양성센터</strong> — 전문인력 3만 명 양성<br><strong>청년반값전세</strong> — 주거 안정 지원<br><strong>창업지원</strong> — 중소벤처기업 육성</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="title">👨‍👩‍👧 가족과 복지</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p><strong>24시간 돌봄 어린이집</strong> — 일·가정 양립 지원<br><strong>여성농업인 수당</strong> — 전국 최초 신설<br><strong>공공의료 강화</strong> — 응급의료 인프라 확충</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <button class="accordion-button" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('active')">
+        <span><span class="title">🌾 농어민 소득</span></span>
+        <span class="toggle">›</span>
+      </button>
+      <div class="accordion-content">
+        <p><strong>스마트팜 지원</strong> — 첨단농업 기반 구축<br><strong>농산물 수출 확대</strong> — 글로벌 시장 진출<br><strong>해양바이오 클러스터</strong> — 고부가가치 산업 육성</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 9면: 비전 메시지 ============== -->
+<div class="page" id="p9">
+  <div class="page-header">
+    <h2>더 큰 충남으로</h2>
+    <span class="badge">9 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">충남의 미래 비전: 발전하는 충남의 전경 및 도민이 함께하는 모습</div>
+
+    <div class="closing">
+      <div class="head">충남을</div>
+      <div class="sub">대한민국을 이끄는 중심으로</div>
+      <div class="final">만들겠습니다</div>
+      <p style="margin-top: 24px; font-size: 15px; opacity: 0.9;">
+        4년의 성과 위에 세운 7대 비전과 131개 공약으로<br>
+        도민 여러분의 꿈을 현실로 만들겠습니다.
+      </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; padding: 0 20px;">
+      <p style="font-size: 18px; font-weight: 700; color: var(--kmt-red); margin-bottom: 8px;">기호 2번</p>
+      <p style="font-size: 36px; font-weight: 900; margin: 0;">김 태 흠</p>
+      <p style="color: var(--muted); margin-top: 8px;">국민의힘 충청남도지사 후보</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 10면: 투표 안내 ============== -->
+<div class="page" id="p10">
+  <div class="page-header">
+    <h2>투표 정보</h2>
+    <span class="badge">10 / 10</span>
+  </div>
+  <div class="page-body">
+    <div class="visual">투표 현장 사진: 투표소 입구, 투표 용지 선거공보, 투표함 모습</div>
+
+    <div style="background: rgba(192,57,43,0.08); padding: 28px 20px; border-radius: 12px; text-align: center; margin: 40px 0;">
+      <p style="font-size: 48px; font-weight: 900; color: var(--kmt-red); margin: 0; line-height: 1;">기호</p>
+      <p style="font-size: 72px; font-weight: 900; color: var(--kmt-red); margin: 4px 0 20px;">2</p>
+      <p style="font-size: 28px; font-weight: 900; color: var(--text); margin: 0;">김 태 흠</p>
+      <p style="color: var(--muted); margin-top: 12px;">국민의힘 충청남도지사 후보</p>
+    </div>
+
+    <div style="background: #fff8e1; border-left: 5px solid var(--kmt-red); padding: 20px; border-radius: 0 8px 8px 0; margin: 24px 0;">
+      <h4 style="margin-top: 0;">2026 지방선거 일정</h4>
+
+      <div style="margin-bottom: 16px;">
+        <p style="margin: 0 0 8px; color: var(--kmt-red); font-weight: 700;">📋 사전 투표일</p>
+        <p style="margin: 0; font-size: 15px;"><strong>5월 29일(수) ~ 30일(목)</strong></p>
+        <p style="margin: 4px 0 0; color: var(--muted); font-size: 13px;">오전 6시 ~ 오후 6시</p>
+      </div>
+
+      <div style="border-top: 1px solid rgba(192,57,43,0.2); padding-top: 16px;">
+        <p style="margin: 0 0 8px; color: var(--kmt-red); font-weight: 700;">🗳️ 선거일</p>
+        <p style="margin: 0; font-size: 15px;"><strong>6월 3일(수)</strong></p>
+        <p style="margin: 4px 0 0; color: var(--muted); font-size: 13px;">오전 6시 ~ 오후 6시</p>
+      </div>
+
+      <p style="margin: 16px 0 0; color: var(--muted); font-size: 13px;">투표소: 거주 지역 투표소 (주민센터, 학교 등)</p>
+      <p style="margin: 12px 0 0; color: var(--kmt-red); font-weight: 700;">⭕ 기호 2번 - 김태흠</p>
+    </div>
+
+    <blockquote style="text-align: center; border: none; padding: 28px; background: linear-gradient(135deg, var(--kmt-red), var(--kmt-red-dark)); color: #fff; border-radius: 12px; margin-top: 32px;">
+      <p style="font-size: 18px; font-weight: 900; margin: 0 0 12px;">
+        "말이 아니라 성과와 결과로<br>충남의 미래를 증명하겠습니다"
+      </p>
+      <p style="margin: 12px 0 0; font-size: 16px; font-weight: 700; opacity: 0.95;">기호 2번 · 국민의힘<br>김 태 흠</p>
+    </blockquote>
+
+    <h4 style="margin-top: 36px; text-align: center;">더 알아보기</h4>
+    <div class="contact-links">
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">🌐 웹사이트 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">f 페이스북 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">📷 인스타그램 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">▶ 유튜브 주소를 등록하세요</span>
+      <span class="contact-link" style="border-color: #ccc; color: #999; cursor: default;">☎️ 전화번호를 등록하세요</span>
+    </div>
+  </div>
+</div>
+
+<button class="nav-arrow nav-prev" id="btn-prev" aria-label="이전">‹</button>
+<button class="nav-arrow nav-next" id="btn-next" aria-label="다음">›</button>
+<div class="page-indicator"><span id="page-num">1</span> / 10</div>
+<div class="swipe-hint">←  →  스와이프</div>
+
+</div><!-- .book -->
+
+<script>
+// 캐시 버스팅 - URL에 타임스탬프 추가
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (!urlParams.has('v')) {
+    const newUrl = window.location.pathname + '?v=' + Math.floor(Date.now() / 1000);
+    window.history.replaceState({}, '', newUrl);
+  }
+})();
+
+// 서비스 워커 제거 (캐시 문제 해결)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    registrations.forEach(reg => reg.unregister());
+  });
+}
+
+// 안드로이드 동적 높이 설정
+function setViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// 초기 설정
+setViewportHeight();
+
+// 뷰포트 변화 감지
+window.addEventListener('resize', setViewportHeight, { passive: true });
+window.addEventListener('orientationchange', setViewportHeight, { passive: true });
+
+// 안드로이드 주소창 변화 감지
+let lastInnerHeight = window.innerHeight;
+window.addEventListener('scroll', () => {
+  if (Math.abs(window.innerHeight - lastInnerHeight) > 10) {
+    setViewportHeight();
+    lastInnerHeight = window.innerHeight;
+  }
+}, { passive: true });
+
+const book = document.getElementById('book');
+const pageNum = document.getElementById('page-num');
+const btnPrev = document.getElementById('btn-prev');
+const btnNext = document.getElementById('btn-next');
+const pages = document.querySelectorAll('.page');
+const totalPages = pages.length;
+let currentPage = 0;
+let lastScrollLeft = 0;
+
+function updatePageNum() {
+  pageNum.textContent = currentPage + 1;
+  btnPrev.disabled = currentPage === 0;
+  btnNext.disabled = currentPage === totalPages - 1;
+}
+
+function goToPage(n) {
+  if (n < 0 || n >= totalPages) return;
+  currentPage = n;
+  const scrollLeft = n * window.innerWidth;
+  book.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+  updatePageNum();
+}
+
+btnPrev.addEventListener('click', () => goToPage(currentPage - 1));
+btnNext.addEventListener('click', () => goToPage(currentPage + 1));
+
+// 스크롤 방향 감지 + 1페이지씩만 이동
+book.addEventListener('scroll', () => {
+  const currentScroll = book.scrollLeft;
+  const pageWidth = window.innerWidth;
+  const newPage = Math.round(currentScroll / pageWidth);
+
+  // 한 번에 1페이지씩만 이동하도록 제한
+  if (Math.abs(newPage - currentPage) > 1) {
+    // 스크롤 방향 판단
+    const direction = currentScroll > lastScrollLeft ? 1 : -1;
+    currentPage = Math.max(0, Math.min(totalPages - 1, currentPage + direction));
+  } else if (newPage !== currentPage && newPage < totalPages && newPage >= 0) {
+    currentPage = newPage;
+  }
+
+  lastScrollLeft = currentScroll;
+  updatePageNum();
+}, { passive: true });
+
+// CSS scroll-snap이 터치 처리함 - 추가 JavaScript 터치 이벤트 제거
+// (중복으로 인한 2페이지 건너뛰는 현상 해결)
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') goToPage(currentPage + 1);
+  else if (e.key === 'ArrowLeft') goToPage(currentPage - 1);
+});
+
+updatePageNum();
+</script>
+
+</body>
+</html>

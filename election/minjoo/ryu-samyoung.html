@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="류삼영 - 국회의원 후보">
+    <title>류삼영 - 국회의원 후보</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --party-color: #004EA2;
+            --party-color-light: #DBEAFE;
+            --party-color-dark: #1E3A8A;
+            --party-gradient: linear-gradient(135deg, #004EA2 0%, #1E3A8A 100%);
+            --party-accent: #3B82F6;
+            --text-on-primary: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Fixed Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar .candidate-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .nav-bar .party-badge {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 60px;
+            background: var(--party-gradient);
+            color: var(--text-on-primary);
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-number {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 1.5em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-slogan {
+            font-size: 1.8em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-name {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin: 15px 0;
+        }
+
+        .hero-position {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* Vision Section (Accordion Style) */
+        .vision-section {
+            background: white;
+            margin: 0;
+            padding: 25px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .vision-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--party-color);
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--party-color-light);
+            border-radius: 10px;
+        }
+
+        .vision-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .vision-item {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .vision-item.expanded {
+            border-color: var(--party-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .vision-header {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .vision-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--party-color-light);
+            border-radius: 50%;
+        }
+
+        .vision-text {
+            flex: 1;
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .vision-expand {
+            color: var(--party-color);
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .vision-item.expanded .vision-expand {
+            transform: rotate(180deg);
+        }
+
+        .vision-content {
+            padding: 0 20px 15px;
+            display: none;
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .vision-item.expanded .vision-content {
+            display: block;
+        }
+
+        /* Quick Highlights */
+        .quick-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 25px 20px;
+            background: white;
+        }
+
+        .highlight-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: var(--party-color-light);
+            border: 2px solid var(--party-color);
+            gap: 15px;
+        }
+
+        .highlight-card .icon {
+            font-size: 2em;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .highlight-card .content {
+            flex: 1;
+        }
+
+        .highlight-card .number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--party-color);
+        }
+
+        .highlight-card .label {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Section Container */
+        .section {
+            background: white;
+            margin: 15px 0;
+            padding: 25px 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--party-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--party-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+
+        /* Promise Cards */
+        .promise-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .promise-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .promise-card.expanded {
+            border-color: var(--party-color);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .promise-header {
+            padding: 20px;
+            background: var(--party-color-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .promise-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--party-color);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .promise-header-text {
+            flex: 1;
+        }
+
+        .promise-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .promise-details {
+            padding: 20px;
+            display: none;
+            background: #f8f9fa;
+        }
+
+        .promise-card.expanded .promise-details {
+            display: block;
+        }
+
+        .promise-details ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .promise-details li {
+            padding: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .promise-details li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--party-color);
+            font-weight: bold;
+        }
+
+        .promise-details li:last-child {
+            border-bottom: none;
+        }
+
+        .expand-btn {
+            text-align: center;
+            color: var(--party-color);
+            font-weight: 600;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .expand-btn::after {
+            content: ' ▼';
+        }
+
+        .promise-card.expanded .expand-btn::after {
+            content: ' ▲';
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--party-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background: var(--party-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--party-color);
+        }
+
+        .timeline-year {
+            font-size: 0.85em;
+            color: var(--party-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Page Content */
+        .page-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--party-color);
+        }
+
+        .page-content h4 {
+            color: var(--party-color);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .page-content p {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        /* Contact Section */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .contact-link.phone {
+            background: var(--party-color);
+            color: var(--text-on-primary);
+        }
+
+        .contact-link.facebook {
+            background: #1877F2;
+            color: white;
+        }
+
+        .contact-link.instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .contact-link.youtube {
+            background: #FF0000;
+            color: white;
+        }
+
+        .contact-link.blog {
+            background: #03C75A;
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.75em;
+            padding: 5px 15px;
+            transition: all 0.3s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--party-color);
+        }
+
+        .bottom-nav .nav-icon {
+            font-size: 1.5em;
+            margin-bottom: 3px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .footer a {
+            color: var(--party-color);
+            text-decoration: none;
+        }
+
+        /* Auto Badge */
+        .auto-badge {
+            position: fixed;
+            top: 70px;
+            right: 10px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7em;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+
+        /* v2.0: Region Map Styles */
+        
+
+        /* 이미지 갤러리 스타일 */
+        
+    </style>
+</head>
+<body>
+    <!-- Auto Generation Badge -->
+    <div class="auto-badge">AUTO</div>
+
+    <!-- Fixed Top Navigation -->
+    <nav class="nav-bar">
+        <span class="candidate-name">류삼영</span>
+        <span class="party-badge">더불어민주당</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <div class="hero-number">기호 1</div>
+            <h1 class="hero-name">류삼영</h1>
+            <p class="hero-slogan">국민 안전 동작 발전</p>
+            <p class="hero-position">국회의원 후보 동작구을</p>
+        </div>
+    </section>
+
+    <!-- 대표 이미지 (폴더 첫 번째 이미지) -->
+    <div style="background:white;padding:15px;margin:0 0 15px 0;text-align:center;">
+        <img src="./images/1-1면 2025-12-08 182143.png" alt="대표 이미지" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+    </div>
+
+    <!-- Vision Section -->
+    <section class="vision-section" id="vision"><div class="vision-title">국민을 지키는 경찰에서<br>
+국민을 살리는 일꾼이 되자</div></section>
+
+<div style="background:white;padding:15px;margin:0 0 15px 0;text-align:center;">
+<img src="./images/국민의 경찰 2025-12-09 134931.png" alt="국민의 경찰" style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
+    <!-- Quick Highlights -->
+
+    <div class="quick-highlights">
+        
+        <div class="highlight-card">
+            <span class="icon">🎯</span>
+            <div class="content">
+                <span class="number">10개</span>
+                <div class="label">핵심 공약</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <span class="icon">📋</span>
+            <div class="content">
+                <span class="number">14건</span>
+                <div class="label">주요 경력</div>
+            </div>
+        </div>
+    </div>
+<!-- 사전투표 안내 버튼 -->
+<div style="padding: 20px; text-align: center;">
+    <button id="voteInfoBtn" onclick="showVoteModal()" style="
+        background: linear-gradient(135deg, #004EA2 0%, #1E3A8A 100%);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 25px 40px;
+        font-size: 1.2em;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(0, 78, 162, 0.4);
+        transition: all 0.3s ease;
+        width: 90%;
+        max-width: 400px;
+    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 12px 35px rgba(0, 78, 162, 0.5)';"
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(0, 78, 162, 0.4)';">
+        <div style="font-size: 1.3em; margin-bottom: 8px;">투표로 바꿉시다.</div>
+        <div style="font-size: 1.5em; letter-spacing: 3px;">사전투표 1찍 1찍</div>
+    </button>
+</div>
+
+<!-- 사전투표 이미지 모달 (확대/축소 기능 포함) -->
+<div id="voteModal" style="
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    overflow: hidden;
+">
+    <!-- 상단 컨트롤 바 -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent); z-index: 2001;">
+        <div style="color: white; font-size: 1em; font-weight: bold;">사전투표 안내</div>
+        <div style="display: flex; gap: 10px;">
+            <!-- 축소 버튼 -->
+            <button onclick="zoomImage(-0.3); event.stopPropagation();" style="background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 45px; height: 45px; color: white; font-size: 1.5em; cursor: pointer;">−</button>
+            <!-- 확대율 표시 -->
+            <span id="zoomLevel" style="color: white; font-size: 1em; min-width: 60px; text-align: center; line-height: 45px;">100%</span>
+            <!-- 확대 버튼 -->
+            <button onclick="zoomImage(0.3); event.stopPropagation();" style="background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 45px; height: 45px; color: white; font-size: 1.5em; cursor: pointer;">+</button>
+            <!-- 원본 크기 버튼 -->
+            <button onclick="resetZoom(); event.stopPropagation();" style="background: rgba(255,255,255,0.2); border: none; border-radius: 8px; padding: 0 15px; height: 45px; color: white; font-size: 0.9em; cursor: pointer;">원본</button>
+            <!-- 닫기 버튼 -->
+            <button onclick="hideVoteModal();" style="background: #e74c3c; border: none; border-radius: 50%; width: 45px; height: 45px; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+        </div>
+    </div>
+
+    <!-- 이미지 컨테이너 (드래그 이동 가능) -->
+    <div id="imageContainer" style="
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 70px 20px 80px 20px;
+        cursor: grab;
+    " onclick="if(event.target === this) hideVoteModal();">
+        <img id="voteImage" src="./images/사전투표.png" alt="사전투표 안내"
+             style="max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: transform 0.2s ease; transform-origin: center center;"
+             ondblclick="zoomImage(0.5); event.stopPropagation();">
+    </div>
+
+    <!-- 하단 안내 -->
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 15px; text-align: center; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+        <p style="color: rgba(255,255,255,0.8); font-size: 0.85em; margin: 0;">두 손가락으로 확대 | 더블탭으로 확대 | 빈 공간 터치시 닫힘</p>
+    </div>
+</div>
+    <!-- Pledges Section -->
+    <section class="section" id="pledges">
+        <h2 class="section-title"><span class="icon">📋</span> 핵심 공약</h2>
+
+        <!-- 스타일리시 헤더 텍스트 (PDF 8페이지 스타일) -->
+        <div style="text-align: center; margin-bottom: 25px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px;">
+            <div style="font-size: 1.8em; font-weight: 900; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 8px;">
+                원조강남! 동작의 품격
+            </div>
+            <div style="font-size: 1.3em; font-weight: bold; color: var(--party-color); margin-bottom: 5px;">
+                튼튼한 동작, 사회 안전망 구축
+            </div>
+            <button onclick="showPromiseModal()" style="
+                font-size: 1.1em;
+                font-weight: 600;
+                color: #E53935;
+                margin-top: 10px;
+                background: linear-gradient(135deg, #fff 0%, #ffebee 100%);
+                border: 2px solid #E53935;
+                border-radius: 25px;
+                padding: 12px 30px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(229, 57, 53, 0.3);
+            " onmouseover="this.style.background='#E53935'; this.style.color='white';"
+               onmouseout="this.style.background='linear-gradient(135deg, #fff 0%, #ffebee 100%)'; this.style.color='#E53935';">
+                류삼영이 약속드립니다.
+            </button>
+        </div>
+
+        <!-- 약속 이미지 모달 -->
+        <div id="promiseModal" style="
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow: hidden;
+        ">
+            <div style="position: absolute; top: 0; left: 0; right: 0; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent); z-index: 2001;">
+                <div style="color: white; font-size: 1em; font-weight: bold;">류삼영이 약속드립니다</div>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="zoomPromiseImage(-0.3); event.stopPropagation();" style="background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 45px; height: 45px; color: white; font-size: 1.5em; cursor: pointer;">−</button>
+                    <span id="promiseZoomLevel" style="color: white; font-size: 1em; min-width: 60px; text-align: center; line-height: 45px;">100%</span>
+                    <button onclick="zoomPromiseImage(0.3); event.stopPropagation();" style="background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 45px; height: 45px; color: white; font-size: 1.5em; cursor: pointer;">+</button>
+                    <button onclick="resetPromiseZoom(); event.stopPropagation();" style="background: rgba(255,255,255,0.2); border: none; border-radius: 8px; padding: 0 15px; height: 45px; color: white; font-size: 0.9em; cursor: pointer;">원본</button>
+                    <button onclick="hidePromiseModal();" style="background: #e74c3c; border: none; border-radius: 50%; width: 45px; height: 45px; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+                </div>
+            </div>
+            <div id="promiseImageContainer" style="
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 70px 20px 80px 20px;
+                cursor: grab;
+            " onclick="if(event.target === this) hidePromiseModal();">
+                <img id="promiseImage" src="./images/약속.png" alt="류삼영이 약속드립니다"
+                     style="max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: transform 0.2s ease; transform-origin: center center;"
+                     ondblclick="zoomPromiseImage(0.5); event.stopPropagation();">
+            </div>
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 15px; text-align: center; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                <p style="color: rgba(255,255,255,0.8); font-size: 0.85em; margin: 0;">두 손가락으로 확대 | 더블탭으로 확대 | 빈 공간 터치시 닫힘</p>
+            </div>
+        </div>
+
+        <div class="promise-list">
+
+            <!-- 1. 안전동작 -->
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">1</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #E53935;">안전동작</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            흑석동 소방안전센터 신설
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            관내 고지대 도로 엘리베이터 확대 설치
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            재개발·재건축지역 방범 CCTV 확대 설치
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            초등학교 등하교 교통안전지도사 확대 배치
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <!-- 2. 미래동작 -->
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">2</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #1976D2;">미래동작</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            사당-이수-남성역 상업벨트 확대
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            사당4동 주민센터 주민복합시설 신축
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            예술문화가 있는 한강 수변공원 조성
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            이수테마 문화의 거리 확대 조성
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <!-- 3. 교육동작 -->
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">3</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #388E3C;">교육동작</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            영유아 전용 체육관 건립
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            청소년 교육·문화·예술 바우처 도입
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            초·중·고 AI 스마트 교육특구 조성
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            동작가족센터 조기완공
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <!-- 4. 품격동작 -->
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">4</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #7B1FA2;">품격동작</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            상도동 체육문화타운 조성
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            흑석동 수변공원 조성 및 지하연결통로 개통
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            동작역 한강변 전통 동제기나무터 조성
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            사당동 종합 예술공연장 건립
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <!-- 5. 교통동작 -->
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">5</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #F57C00;">교통동작</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            이수역~과천 대심도 복합터널 조기착공
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            숭실대~중앙대 4차선 터널 추진
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            상도로(숭실대~중앙대) 도로 확장
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            상습정체구간·교통체증 해소
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+            <!-- 6. 충효동작 -->
+            <div class="promise-card">
+                <div class="promise-header">
+                    <span class="promise-number">6</span>
+                    <div class="promise-header-text">
+                        <div class="promise-title" style="color: #C62828;">충효동작</div>
+                    </div>
+                </div>
+                <div class="promise-details">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            경로당 어르신 점심 주5일 제공 확대실시
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            국가유공자에 대한 처우개선
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #eee; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            사회적약자법인 및 보훈회관 건립
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--party-color);">•</span>
+                            이수사회복지관을 종합사회복지관으로 확대이전
+                        </li>
+                    </ul>
+                </div>
+                <div class="expand-btn">상세 보기</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- v2.0: Region Map Section -->
+    
+
+    <!-- Career Section -->
+    <section class="section" id="career">
+        <h2 class="section-title"><span class="icon">📜</span> 주요 경력</h2>
+        <div class="timeline">
+            
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">류삼영이 걸어온 길</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">대동고등학교졸업</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">경찰대학 법학과 4기 졸업</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">동아대학교 대학원 법학박사</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">민주당 영입인재 제3호</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)부산경찰청 박부청 경찰행정수사과장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)부산영도경찰서장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)부산진대경찰서장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">전)부산진구부경찰서장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">2022 전국경찰서장(총)회의의장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">민주당 당대표 정치터디 대학위원</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">대북어민주당 국민안전위기 본부장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">대북어민주당 국민생활권익 특별위원 위원장</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year"></div>
+                <div class="timeline-content">시의원지사 / 수해작가 / 공인중개사</div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- 이미지 갤러리 -->
+    <section class="section" id="gallery">
+        <h2 class="section-title"><span class="icon">🖼️</span> 공보물 이미지</h2>
+        <div style="display:flex;flex-direction:column;gap:15px;">
+            <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <img src="./images/1-2국민무시 2025-12-08 182320.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+            </div>
+            <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <img src="./images/1-3투표로 2025-12-08 182432.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+            </div>
+            <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <img src="./images/1-4동작에서 2025-12-08 182526.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+            </div>
+            <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <img src="./images/1-5원조강남 2025-12-08 182650.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Text Section - Removed as content is duplicated in earlier sections -->
+
+    <!-- Image Gallery Section (모든 이미지 모아보기) -->
+    
+
+    <!-- Contact Section (맨 마지막) -->
+    
+    <section class="section" id="contact">
+        <h2 class="section-title"><span class="icon">📞</span> 연락처 / 선거사무소</h2>
+        <div class="contact-links">
+            <div class="contact-link office" style="background:#f0f9ff; border-color:#0ea5e9;">📍 서울시 동작구 사당로 227</div><a href="https://facebook.com/ryusamyoung2" target="_blank" class="contact-link facebook">📘 Facebook</a><a href="https://youtube.com/@dongjak630" target="_blank" class="contact-link youtube">▶️ YouTube</a><a href="https://blog.naver.com/rgo630" target="_blank" class="contact-link blog">📝 Blog</a>
+        </div>
+        <div style="margin-top:15px; padding:15px; background:#f8f9fa; border-radius:10px; line-height:1.8;">서울시 동작구 사당로 227(3층) T. (02) 533-6307 E. 630rgo@gmail.com<br>유삼영TV https://www.youtube.com/@dongjak630<br>https://www.facebook.com/ryusamyoung2<br>https://blog.naver.com/rgo630<br>인쇄: 재일디자 서울시 구로구 고척로 72-7 움직일콘텐츠 801호 T. (02) 711-8128-30</div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>본 페이지는 PDF 선거공보물에서 자동 생성되었습니다.</p>
+        <p style="margin-top: 10px;"><a href="https://studysnap.kr" target="_blank">StudySnap</a> | 완전 자동화 변환</p>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#home" class="active">
+            <span class="nav-icon">🏠</span>
+            홈
+        </a>
+        <a href="#pledges">
+            <span class="nav-icon">📋</span>
+            공약
+        </a>
+        <a href="#career">
+            <span class="nav-icon">📜</span>
+            경력
+        </a>
+        <a href="#contact">
+            <span class="nav-icon">📞</span>
+            연락처
+        </a>
+    </nav>
+
+    <script>
+        // Promise card toggle
+        document.querySelectorAll('.promise-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+        });
+
+        // Vision item toggle
+        document.querySelectorAll('.vision-item').forEach(item => {
+            item.querySelector('.vision-header').addEventListener('click', () => {
+                item.classList.toggle('expanded');
+            });
+        });
+
+        // Bottom navigation scroll spy
+        const sections = ['home', 'pledges', 'career', 'fulltext'];
+        const navLinks = document.querySelectorAll('.bottom-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const section = document.getElementById(id);
+                if (section && window.scrollY >= section.offsetTop - 100) {
+                    current = id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // v2.0: Region Map Script
+        
+
+        // 이미지 갤러리 스크립트
+
+        // 사전투표 모달 함수 - 확대/축소 기능
+        let currentZoom = 1;
+        const minZoom = 0.5;
+        const maxZoom = 4;
+
+        function showVoteModal() {
+            const modal = document.getElementById('voteModal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            resetZoom();
+        }
+
+        function hideVoteModal() {
+            const modal = document.getElementById('voteModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetZoom();
+        }
+
+        function zoomImage(delta) {
+            currentZoom = Math.min(maxZoom, Math.max(minZoom, currentZoom + delta));
+            applyZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const img = document.getElementById('voteImage');
+            const zoomLabel = document.getElementById('zoomLevel');
+
+            if (img) {
+                img.style.transform = `scale(${currentZoom})`;
+
+                // 확대 시 max-width/height 제한 해제
+                if (currentZoom > 1) {
+                    img.style.maxWidth = 'none';
+                    img.style.maxHeight = 'none';
+                } else {
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '100%';
+                }
+            }
+
+            if (zoomLabel) {
+                zoomLabel.textContent = Math.round(currentZoom * 100) + '%';
+            }
+        }
+
+        // 터치 핀치 줌 지원
+        let initialDistance = 0;
+        let initialZoom = 1;
+
+        document.getElementById('voteModal')?.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                initialDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+                initialZoom = currentZoom;
+            }
+        });
+
+        document.getElementById('voteModal')?.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const currentDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+                const scale = currentDistance / initialDistance;
+                currentZoom = Math.min(maxZoom, Math.max(minZoom, initialZoom * scale));
+                applyZoom();
+            }
+        }, { passive: false });
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideVoteModal();
+                hidePromiseModal();
+            }
+            // + 키로 확대
+            if (e.key === '+' || e.key === '=') {
+                zoomImage(0.3);
+                zoomPromiseImage(0.3);
+            }
+            // - 키로 축소
+            if (e.key === '-') {
+                zoomImage(-0.3);
+                zoomPromiseImage(-0.3);
+            }
+        });
+
+        // 약속 모달 함수 - 확대/축소 기능
+        let promiseZoom = 1;
+
+        function showPromiseModal() {
+            const modal = document.getElementById('promiseModal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            resetPromiseZoom();
+        }
+
+        function hidePromiseModal() {
+            const modal = document.getElementById('promiseModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetPromiseZoom();
+        }
+
+        function zoomPromiseImage(delta) {
+            promiseZoom = Math.min(maxZoom, Math.max(minZoom, promiseZoom + delta));
+            applyPromiseZoom();
+        }
+
+        function resetPromiseZoom() {
+            promiseZoom = 1;
+            applyPromiseZoom();
+        }
+
+        function applyPromiseZoom() {
+            const img = document.getElementById('promiseImage');
+            const zoomLabel = document.getElementById('promiseZoomLevel');
+
+            if (img) {
+                img.style.transform = `scale(${promiseZoom})`;
+                if (promiseZoom > 1) {
+                    img.style.maxWidth = 'none';
+                    img.style.maxHeight = 'none';
+                } else {
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '100%';
+                }
+            }
+
+            if (zoomLabel) {
+                zoomLabel.textContent = Math.round(promiseZoom * 100) + '%';
+            }
+        }
+
+        // 약속 모달 터치 핀치 줌
+        document.getElementById('promiseModal')?.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                initialDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+                initialZoom = promiseZoom;
+            }
+        });
+
+        document.getElementById('promiseModal')?.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const currentDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+                const scale = currentDistance / initialDistance;
+                promiseZoom = Math.min(maxZoom, Math.max(minZoom, initialZoom * scale));
+                applyPromiseZoom();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>

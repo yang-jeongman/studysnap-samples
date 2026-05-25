@@ -1,0 +1,4482 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Calculus Lecture Notes - None">
+    <title>Calculus Lecture Notes | StudySnap</title>
+
+    <!-- MathJax for Mathematical Equations -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
+
+    <!-- Google Fonts for Unicode symbols support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+Math&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4F46E5;
+            --primary-light: #818CF8;
+            --primary-dark: #3730A3;
+            --bg-color: #FFFFFF;
+            --text-color: #1F2937;
+            --text-secondary: #6B7280;
+            --border-color: #E5E7EB;
+            --card-bg: #F9FAFB;
+            --code-bg: #F3F4F6;
+            --highlight-color: #FEF3C7;
+        }
+
+        /* Dark Mode Variables */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #111827;
+                --text-color: #F9FAFB;
+                --text-secondary: #9CA3AF;
+                --border-color: #374151;
+                --card-bg: #1F2937;
+                --code-bg: #374151;
+                --highlight-color: #92400E;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Noto Sans Math', 'Noto Sans Symbols 2', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: var(--bg-color);
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
+
+        /* Top Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-bar .logo {
+            font-size: 1.2em;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-bar .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--card-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:active {
+            transform: scale(0.95);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--border-color);
+            z-index: 999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 0 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Header Section */
+        .lecture-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+        }
+
+        .lecture-header .course-code {
+            font-size: 0.85em;
+            opacity: 0.9;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .lecture-header .course-name {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .lecture-header .meta-info {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+            opacity: 0.95;
+        }
+
+        .meta-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .quick-action-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85em;
+        }
+
+        .quick-action-btn:active {
+            transform: translateY(2px);
+        }
+
+        .quick-action-btn .icon {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .quick-action-btn .label {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Table of Contents - Collapsible */
+        .toc-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .toc-header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .toc-header .title {
+            font-weight: 700;
+            font-size: 1.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-header .toggle {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .toc-header .toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .toc-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .toc-content.open {
+            max-height: 1000px;
+            padding: 15px 0;
+        }
+
+        .toc-item {
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toc-item:hover {
+            background: var(--bg-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .toc-item.active {
+            background: var(--primary-light);
+            border-left-color: var(--primary-color);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .toc-item .chapter-number {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .toc-item .page-indicator {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        /* Chapter Sections */
+        .chapter-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            scroll-margin-top: 100px;
+        }
+
+        .chapter-title {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chapter-number {
+            background: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .section-title {
+            font-size: 1.25em;
+            font-weight: 700;
+            margin: 25px 0 15px 0;
+            color: var(--text-color);
+            padding-left: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .subsection-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            color: var(--text-color);
+        }
+
+        /* Content Styles */
+        .content-text {
+            font-size: 1.05em;
+            line-height: 1.9;
+            margin-bottom: 18px;
+            color: var(--text-color);
+        }
+
+        .content-text strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .content-text em {
+            background: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-style: normal;
+        }
+
+        /* Math Equations */
+        .math-block {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .math-inline {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: var(--border-color);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        .code-content {
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .code-content pre {
+            margin: 0;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-color);
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background: var(--card-bg);
+        }
+
+        /* Images */
+        .image-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .image-caption {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Figure Caption Box (no image) */
+        .figure-caption-box {
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #3730A3;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+            line-height: 1.7;
+        }
+
+        /* Data Table */
+        .table-container {
+            margin: 25px 0;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        .table-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            min-width: 500px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .data-table tbody tr:nth-child(even) {
+                background: rgba(255, 255, 255, 0.02);
+            }
+        }
+
+        /* Key Concepts Box */
+        .key-concept {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid #F59E0B;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .key-concept .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #92400E;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .key-concept .content {
+            color: #78350F;
+            line-height: 1.8;
+        }
+
+        /* Important Note Box */
+        .important-note {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            border-left: 4px solid #EF4444;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .important-note .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #991B1B;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .important-note .content {
+            color: #7F1D1D;
+            line-height: 1.8;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-left: 4px solid #3B82F6;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .example-box .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #1E40AF;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example-box .content {
+            color: #1E3A8A;
+            line-height: 1.8;
+        }
+
+        /* Quiz/Exercise Box */
+        .quiz-box {
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+            border-left: 4px solid #6366F1;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .quiz-box .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #3730A3;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-box .question {
+            color: #312E81;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .quiz-box .answer {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .quiz-box .show-answer-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* Bookmarks */
+        .bookmark-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.3em;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .bookmark-btn.bookmarked {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-color);
+            border-top: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 999;
+        }
+
+        .bottom-nav button {
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .bottom-nav button.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .bottom-nav button:active {
+            transform: scale(0.98);
+        }
+
+        .bottom-nav button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 50px;
+        }
+
+        .footer .logo {
+            font-weight: 800;
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0 15px;
+            }
+
+            .lecture-header .course-name {
+                font-size: 1.3em;
+            }
+
+            .chapter-title {
+                font-size: 1.3em;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+
+            .quick-action-btn {
+                padding: 12px 8px;
+            }
+
+            .quick-action-btn .icon {
+                font-size: 1.3em;
+            }
+
+            .quick-action-btn .label {
+                font-size: 0.75em;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="nav-bar">
+        <div class="logo">
+            📚 StudySnap
+        </div>
+        <div class="actions">
+            <button class="btn-icon" onclick="toggleDarkMode()" title="다크모드 전환">
+                🌓
+            </button>
+            <button class="btn-icon" onclick="showBookmarks()" title="북마크">
+                🔖
+            </button>
+            <button class="btn-icon" onclick="window.print()" title="인쇄">
+                🖨️
+            </button>
+        </div>
+    </div>
+
+    <!-- Reading Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Lecture Header -->
+        <div class="lecture-header">
+            <div class="course-code">Chapter 1 - Limits</div>
+            <div class="course-name">Calculus Lecture Notes</div>
+            <div class="meta-info">
+                <span>👨‍🏫 None</span>
+                <span>📅 None</span>
+                <span>📄 3페이지</span>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="quick-action-btn" onclick="scrollToSection('toc')">
+                <div class="icon">📑</div>
+                <div class="label">목차</div>
+            </div>
+            <div class="quick-action-btn" onclick="toggleFontSize()">
+                <div class="icon">🔤</div>
+                <div class="label">글자크기</div>
+            </div>
+            <div class="quick-action-btn" onclick="showSummary()">
+                <div class="icon">✨</div>
+                <div class="label">요약</div>
+            </div>
+            <div class="quick-action-btn" onclick="shareContent()">
+                <div class="icon">📤</div>
+                <div class="label">공유</div>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc-container" id="toc">
+            <div class="toc-header" onclick="toggleTOC()">
+                <div class="title">
+                    📑 목차
+                </div>
+                <div class="toggle" id="tocToggle">▼</div>
+            </div>
+            <div class="toc-content" id="tocContent">
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-1')">
+                    <div>
+                        <span class="chapter-number">1</span>
+                        Limits: Intuitive Approach
+                    </div>
+                    <div class="page-indicator">p.1</div>
+                </div>
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-2')">
+                    <div>
+                        <span class="chapter-number">2</span>
+                        One-Sided Limits
+                    </div>
+                    <div class="page-indicator">p.2</div>
+                </div>
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-3')">
+                    <div>
+                        <span class="chapter-number">3</span>
+                        Computing Limits
+                    </div>
+                    <div class="page-indicator">p.3</div>
+                </div>
+                
+                <div class="toc-item" onclick="scrollToChapter('chapter-4')">
+                    <div>
+                        <span class="chapter-number">4</span>
+                        Exercises
+                    </div>
+                    <div class="page-indicator">p.4</div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Chapters Content -->
+        
+        <div class="chapter-section" id="chapter-1">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-1')" id="bookmark-chapter-1">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">1</div>
+                Limits: Intuitive Approach
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Introduction to Limits Concept
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Exploring the question: Is 0.9̄ = 1? Or equivalently, is 1 - 0.9̄ = 0? We define a function f(n) = 0.99...9 with n nines. We can make f(n) as close to 1 as we like by making n large enough.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[f(n) = 0.\underbrace{99...9}_{n}\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[f(3) = 0.999\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[f(6) = 0.999999\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[0.\bar{9} = \lim_{n \to \infty} f(n) = 1\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Number line showing n=1, n=2, n=? approaching 1
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Curve showing transition from discrete points to continuous limit
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>To be 1/100th from 1, make n = 5</li><li>To be 1/1000000th from 1, make n = 131</li><li>Can make f(n) arbitrarily close to 1 by choosing n large enough</li><li>$0.\bar{9} = \lim_{n \to \infty} f(n) = 1$</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Limits from Graphs
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Understanding what an open dot means on a graph. We exclude the point (a, L) or f(a). An open dot indicates that a point has no dimension. The limit notation lim(x$\rightarrow$a) f(x) = L means we can make f(x) or y as close to L as we like by making x close enough to a.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to a} f(x) = L\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Graph showing curve approaching point (a, L) with open circle, excluding f(a)
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Vertical dotted line at x = a showing approach to limit L
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Open dot excludes (a, L) or f(a)</li><li>A point has no dimension</li><li>$\lim_{x \to a} f(x) = L$ means we can make f(x) or y as close to L as we like by making x close enough to a</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+        <div class="chapter-section" id="chapter-2">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-2')" id="bookmark-chapter-2">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">2</div>
+                One-Sided Limits
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Example: Absolute Value Function
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Consider the function f(x) = |x|/x where x ≠ 0. This function approaches different values from left and right.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[f(x) = \frac{|x|}{x}, \quad x \neq 0\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 0^-} \frac{|x|}{x} = -1\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 0^+} \frac{|x|}{x} = 1\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 0} \frac{|x|}{x}$ DOES NOT EXIST (DNE)\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Graph showing f(x) = |x|/x with horizontal line at y = 1 for x > 0 and y = -1 for x < 0
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Open circles at (0, 1) and (0, -1)
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Table showing x values (1, 2, 3, 1/4, 1/8) all giving |x|/x = 1
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Table showing x values (-1, -2, -3, -1/4, -1/8) all giving |x|/x = -1
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Positive x values: |x|/x = 1</li><li>Negative x values: |x|/x = -1</li><li>Left limit ≠ Right limit, so limit DNE</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                One-Sided Limits Definition
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Need to define one-sided limits to handle cases where function approaches different values from different directions.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\text{LEFT: } \lim_{x \to a^-} f(x) \text{ means } x < a\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\text{RIGHT: } \lim_{x \to a^+} f(x) \text{ means } x > a\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 0^-} \frac{|x|}{x} = -1 \text{ AND } \lim_{x \to 0^+} \frac{|x|}{x} = 1\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 0} \frac{|x|}{x} \neq \lim_{x \to 0^+} \frac{|x|}{x}\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>LEFT limit: x approaches a from values less than a</li><li>RIGHT limit: x approaches a from values greater than a</li><li>Limit DNE when left limit ≠ right limit</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Example: Piecewise Function at x = -1
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Example showing a function g(x) with different one-sided limits at x = -1. Notice that g(-1) = 2 does not affect the limits.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to -1} g(x)$ DNE B/C\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to -1^-} g(x) = 1$ BUT\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to -1^+} g(x) = 2\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[g(-1) = 2\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Graph showing piecewise function with different branches meeting at x = -1
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Left branch approaches y = 1 at x = -1
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Right branch approaches y = 2 at x = -1
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Filled dot at (-1, 2) showing actual function value
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Function value g(-1) = 2 doesn't affect the limits</li><li>Left and right limits differ, so limit DNE</li><li>Actual function value is independent of limit behavior</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+        <div class="chapter-section" id="chapter-3">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-3')" id="bookmark-chapter-3">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">3</div>
+                Computing Limits
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Non-Piecewise Functions: 3 Cases
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Three common cases when computing limits for non-piecewise functions: 1) Plug in and done, 2) Plug in and get 0/0 (indeterminate), 3) Plug in and get k/0 where k ≠ 0 (infinite limit)
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Case 1: PLUG IN AND DONE</li><li>Case 2: PLUG IN AND GET 0/0</li><li>Case 3: PLUG IN AND GET k/0; k ≠ 0</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Case 1: Examples - Direct Substitution
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Examples where direct substitution works to evaluate the limit.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 2} (x^2 + 2x + 1) = 2^2 + 2(2) + 1\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[y = (x+1)^2 = 9\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 0} e^x = e^0 = 1\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to \pi/3} \cot x = \cot^{-1}\sqrt{3} = \frac{\sqrt{3}}{\sqrt{3}/2} = \frac{1}{\sqrt{3}}\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Parabola graph showing y = (x+1)² with vertex
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Unit circle diagram showing special angles: 0, π/6 (30°), π/4 (45°), π/3 (60°), π/2 (90°)
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+            <div class="figure-caption-box">
+                📷 Sidebar showing possible outputs of sine and cosine: 0, 1/2, √2/2, √3/2, 1
+            </div>
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>Direct substitution works when function is continuous at the point</li><li>Polynomial limits: just plug in the value</li><li>Exponential limits: evaluate directly</li><li>Trigonometric limits: use unit circle values</li><li>Special angles: 0°, 30° (π/6), 45° (π/4), 60° (π/3), 90° (π/2)</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+            <div class="subsection-title">
+                Case 2: Indeterminate Form 0/0
+            </div>
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+            <div class="content-text">
+                Example showing indeterminate form that requires further analysis.
+            </div>
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+            <div class="math-block">
+                \[\lim_{x \to 0} \frac{\sin x}{x^2} = ?\]
+            </div>
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+            <div class="key-concept">
+                <div class="title">💡 핵심 개념</div>
+                <div class="content"><ul><li>0/0 is indeterminate form</li><li>Requires algebraic manipulation or L'Hôpital's rule</li><li>Cannot simply plug in the value</li></ul></div>
+            </div>
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+        <div class="chapter-section" id="chapter-4">
+            <button class="bookmark-btn" onclick="toggleBookmark('chapter-4')" id="bookmark-chapter-4">
+                🔖
+            </button>
+
+            <div class="chapter-title">
+                <div class="chapter-number">4</div>
+                Exercises
+            </div>
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">1. Prove that 0.9̄ = 1 using limits</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">$f(n) = 0.\underbrace{99...9}_{n}$으로 정의하면<br><br>$\lim_{n \to \infty} f(n) = \lim_{n \to \infty} (1 - 10^{-n}) = 1$<br><br>따라서 $0.\bar{9} = 1$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">2. Determine if lim(x$\rightarrow$0) |x|/x exists</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">좌극한: $\lim_{x \to 0^-} \frac{|x|}{x} = \frac{-x}{x} = -1$<br><br>우극한: $\lim_{x \to 0^+} \frac{|x|}{x} = \frac{x}{x} = 1$<br><br>좌극한 ≠ 우극한이므로 <b>극한은 존재하지 않음 (DNE)</b></div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">3. Evaluate lim(x$\rightarrow$2) (x² + 2x + 1)</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">직접 대입법 (Case 1):<br><br>$\lim_{x \to 2} (x^2 + 2x + 1) = 2^2 + 2(2) + 1$<br>$= 4 + 4 + 1 = 9$<br><br>또는 $(x+1)^2$로 인수분해: $(2+1)^2 = 9$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">4. Find lim(x$\rightarrow$π/3) cot x</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">직접 대입법:<br><br>$\lim_{x \to \pi/3} \cot x = \cot(\pi/3)$<br><br>$= \frac{\cos(\pi/3)}{\sin(\pi/3)} = \frac{1/2}{\sqrt{3}/2} = \frac{1}{\sqrt{3}} = \frac{\sqrt{3}}{3}$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">5. Identify when limits do not exist due to one-sided limits</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer">극한이 존재하지 않는 경우:<br><br>1. <b>좌극한 ≠ 우극한</b><br>예: $f(x) = |x|/x$에서 $x \to 0$<br><br>2. <b>조각함수에서 경계점</b><br>각 조각이 다른 값에 접근할 때<br><br>3. <b>점프 불연속</b><br>함수값이 갑자기 뛰는 경우</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+
+            <!-- Section Title -->
+            
+
+            <!-- Subsection Title -->
+            
+
+            <!-- Text Content -->
+            
+
+            <!-- Math Equation (Block) -->
+            
+
+            <!-- Code Block -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Image -->
+            
+
+            <!-- Figure Caption (no image, just description) -->
+            
+
+            <!-- Table -->
+            
+
+            <!-- Key Concept Box -->
+            
+
+            <!-- Important Note -->
+            
+
+            <!-- Example -->
+            
+
+            <!-- Quiz/Exercise -->
+            
+            <div class="quiz-box">
+                <div class="title">🎯 연습문제</div>
+                <div class="question">6. Classify limit problems into the three cases (direct substitution, 0/0, k/0)</div>
+                
+                <button class="show-answer-btn" onclick="toggleAnswer(this)">답안 보기</button>
+                <div class="answer"><b>Case 1: 직접 대입</b><br>대입해서 바로 값이 나옴<br>예: $\lim_{x \to 2} x^2 = 4$<br><br><b>Case 2: 0/0 (부정형)</b><br>인수분해, 유리화, 로피탈 필요<br>예: $\lim_{x \to 0} \frac{\sin x}{x}$<br><br><b>Case 3: k/0 (k≠0)</b><br>무한대 극한 또는 DNE<br>예: $\lim_{x \to 0} \frac{1}{x^2} = \infty$</div>
+                
+            </div>
+            
+
+            <!-- List -->
+            
+
+            
+        </div>
+        
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="logo">StudySnap</div>
+            <div>스마트폰으로 공부하는 가장 쉬운 방법</div>
+            <div style="margin-top: 10px; font-size: 0.85em;">
+                📚 Generated with StudySnap | studysnap.kr
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button onclick="previousChapter()" id="prevBtn">
+            ← 이전
+        </button>
+        <button class="primary" onclick="toggleTOC()">
+            📑 목차
+        </button>
+        <button onclick="nextChapter()" id="nextBtn">
+            다음 →
+        </button>
+    </div>
+
+    <script>
+        // Initialize Highlight.js for code blocks
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+
+        // Progress Bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Table of Contents Toggle
+        function toggleTOC() {
+            const content = document.getElementById('tocContent');
+            const toggle = document.getElementById('tocToggle');
+
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                toggle.classList.remove('open');
+            } else {
+                content.classList.add('open');
+                toggle.classList.add('open');
+            }
+        }
+
+        // Scroll to Chapter
+        function scrollToChapter(chapterId) {
+            const element = document.getElementById(chapterId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Bookmark functionality
+        let bookmarks = JSON.parse(localStorage.getItem('studysnap_bookmarks') || '[]');
+
+        function toggleBookmark(chapterId) {
+            const btn = document.getElementById('bookmark-' + chapterId);
+
+            if (bookmarks.includes(chapterId)) {
+                bookmarks = bookmarks.filter(id => id !== chapterId);
+                btn.classList.remove('bookmarked');
+            } else {
+                bookmarks.push(chapterId);
+                btn.classList.add('bookmarked');
+            }
+
+            localStorage.setItem('studysnap_bookmarks', JSON.stringify(bookmarks));
+        }
+
+        function showBookmarks() {
+            if (bookmarks.length === 0) {
+                alert('저장된 북마크가 없습니다.');
+                return;
+            }
+
+            const bookmarkList = bookmarks.map(id => {
+                const element = document.getElementById(id);
+                return element ? element.querySelector('.chapter-title').textContent.trim() : id;
+            }).join('\n');
+
+            alert('📑 북마크 목록:\n\n' + bookmarkList);
+        }
+
+        // Load bookmarks on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            bookmarks.forEach(id => {
+                const btn = document.getElementById('bookmark-' + id);
+                if (btn) btn.classList.add('bookmarked');
+            });
+        });
+
+        // Font Size Toggle
+        let fontSize = 1.05;
+        function toggleFontSize() {
+            const sizes = [1.05, 1.15, 1.25, 0.95];
+            const currentIndex = sizes.indexOf(fontSize);
+            fontSize = sizes[(currentIndex + 1) % sizes.length];
+
+            document.querySelectorAll('.content-text').forEach(el => {
+                el.style.fontSize = fontSize + 'em';
+            });
+        }
+
+        // Copy Code
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block').querySelector('code');
+            const text = codeBlock.textContent;
+
+            function showSuccess() {
+                btn.innerHTML = '✅ 복사됨';
+                setTimeout(() => {
+                    btn.innerHTML = '📋 복사';
+                }, 2000);
+            }
+
+            function showFail() {
+                // 모바일에서 복사 실패시 텍스트 선택으로 대체
+                const range = document.createRange();
+                range.selectNodeContents(codeBlock);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                btn.innerHTML = '📝 선택됨';
+                setTimeout(() => {
+                    btn.innerHTML = '📋 복사';
+                }, 2000);
+            }
+
+            // Modern clipboard API
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text)
+                    .then(showSuccess)
+                    .catch(() => {
+                        // Fallback
+                        fallbackCopy(text, showSuccess, showFail);
+                    });
+            } else {
+                fallbackCopy(text, showSuccess, showFail);
+            }
+        }
+
+        function fallbackCopy(text, onSuccess, onFail) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.cssText = 'position:fixed;top:0;left:0;width:2em;height:2em;padding:0;border:none;outline:none;boxShadow:none;background:transparent;';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    onSuccess();
+                } else {
+                    onFail();
+                }
+            } catch (err) {
+                onFail();
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Toggle Answer
+        function toggleAnswer(btn) {
+            const answer = btn.nextElementSibling;
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                btn.textContent = '답안 보기';
+            } else {
+                answer.style.display = 'block';
+                btn.textContent = '답안 숨기기';
+            }
+        }
+
+        // Chapter Navigation
+        let currentChapter = 1;
+        const totalChapters = 4;
+
+        function previousChapter() {
+            if (currentChapter > 1) {
+                currentChapter--;
+                scrollToChapter('chapter-' + currentChapter);
+                updateNavButtons();
+            }
+        }
+
+        function nextChapter() {
+            if (currentChapter < totalChapters) {
+                currentChapter++;
+                scrollToChapter('chapter-' + currentChapter);
+                updateNavButtons();
+            }
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentChapter === 1;
+            document.getElementById('nextBtn').disabled = currentChapter === totalChapters;
+        }
+
+        // Track current chapter while scrolling
+        window.addEventListener('scroll', function() {
+            const chapters = document.querySelectorAll('.chapter-section');
+            chapters.forEach((chapter, index) => {
+                const rect = chapter.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    currentChapter = index + 1;
+                    updateNavButtons();
+                }
+            });
+        });
+
+        // Show Summary (placeholder)
+        function showSummary() {
+            alert('📝 요약 기능은 곧 제공됩니다!\n\nAI가 자동으로 생성한 요약을 확인할 수 있습니다.');
+        }
+
+        // Share Content
+        function shareContent() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Calculus Lecture Notes',
+                    text: 'Calculus Lecture Notes - StudySnap으로 변환된 강의자료',
+                    url: window.location.href
+                });
+            } else {
+                alert('📤 공유 링크가 클립보드에 복사되었습니다!');
+                navigator.clipboard.writeText(window.location.href);
+            }
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            // This will be handled by system preference, but can be overridden
+            alert('🌓 다크모드는 시스템 설정을 따릅니다.\n\n기기의 다크모드 설정을 변경해주세요.');
+        }
+
+        // Initialize
+        updateNavButtons();
+
+        // Prevent zoom on double-tap (iOS fix)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
