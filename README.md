@@ -17,26 +17,29 @@ StudySnap은 PDF 문서를 **인터랙티브 HTML**로 자동 변환하는 AI �
 
 ---
 
-## 🎯 샘플 카테고리
+## 🎯 샘플
 
-### 📋 [선거공보물 (Election Pamphlets)](./elections/)
+### 📋 [박근영 - 경주시장 후보 (2026)](./park-geun-yeong/)
 
-#### 2026년 지방선거
+**기호 1번 | 더불어민주당**
 
-- **[경주시장 - 박근영 후보](./elections/park-geun-yeong/)**
-  - 📱 모바일 홍보 페이지
-  - 📸 갤러리 (인물, 활동, 전문가 사진)
-  - 📋 5대 공약 상세 정보
-  - 👤 약력 및 배경
-  - 📰 언론 보도
+- 📱 모바일 홍보 페이지
+- 📸 갤러리 (인물, 활동, 전문가 사진)
+- 📋 5대 공약 상세 정보
+- 👤 약력 및 배경
+- 📰 언론 보도
+- 📞 연락처 정보
+
+**[→ 페이지 열기](./park-geun-yeong/park_geun_yeong_campaign.html)**
 
 ---
 
 ## 🌐 빠른 접근
 
-| 카테고리 | 설명 | 링크 |
-|---------|------|------|
-| **선거공보물** | 지방선거 후보자 홍보페이지 | [elections/](./elections/) |
+| 항목 | 링크 |
+|------|------|
+| **박근영 홍보페이지** | [열기](./park-geun-yeong/park_geun_yeong_campaign.html) |
+| **박근영 폴더** | [보기](./park-geun-yeong/) |
 
 ---
 
@@ -63,15 +66,14 @@ StudySnap은 PDF 문서를 **인터랙티브 HTML**로 자동 변환하는 AI �
 
 ```
 studysnap-samples/
-├── README.md                          (메인 페이지)
-└── elections/                         (선거공보물)
-    ├── README.md                      (선거공보물 목차)
-    └── park-geun-yeong/               (경주시장 박근영)
-        ├── park_geun_yeong_campaign.html
-        ├── 얼굴.jpg
-        ├── 그냥시민.jpg
-        ├── 기호1번.jpg
-        └── README.md
+├── README.md                     (메인 페이지)
+├── bulletin/                     (기존: 교회 주보)
+└── park-geun-yeong/              (선거공보물: 박근영)
+    ├── park_geun_yeong_campaign.html
+    ├── 얼굴.jpg
+    ├── 그냥시민.jpg
+    ├── 기호1번.jpg
+    └── README.md
 ```
 
 ---
@@ -79,14 +81,19 @@ studysnap-samples/
 ## 🚀 사용 방법
 
 ### 1. 저장소 보기
-- GitHub: https://github.com/yang-jeongman/studysnap-samples
+- **GitHub**: https://github.com/yang-jeongman/studysnap-samples
 
-### 2. 샘플 페이지 접속
-- **[선거공보물 갤러리](./elections/)** - 지방선거 후보자 홍보페이지 목록
+### 2. 박근영 홍보 페이지 열기
+- **[박근영 폴더 보기](./park-geun-yeong/)**
+- **[홍보페이지 바로 열기](./park-geun-yeong/park_geun_yeong_campaign.html)**
 
-### 3. 각 페이지 열기
-- 샘플을 클릭하면 **인터랙티브 HTML 페이지**가 열립니다
-- 탭, 갤러리, 공약 정보 등을 확인할 수 있습니다
+### 3. 페이지에서 확인할 수 있는 것
+- 📱 후보자 소개 (인물사진 포함)
+- 📸 갤러리 (활동 사진, 전문가 이미지)
+- 📋 5대 공약 상세 설명
+- 👤 약력 및 경력
+- 📰 언론 보도
+- 📞 연락처 정보
 
 ---
 
