@@ -161,6 +161,9 @@ h3.doc-h{border-left:4px solid var(--brand-2); padding-left:.6rem; margin-top:1.
 .lightbox .lb-hint{position:absolute; bottom:1rem; color:#bbb; font-size:.8rem}
 .lightbox .lb-video{display:none; width:min(96vw,56rem)}
 .lightbox .lb-video iframe{width:100%; aspect-ratio:16/9; border-radius:.4rem; display:block}
+.lightbox .lb-watch{display:inline-block; margin-top:.7rem; color:#fff;
+  background:rgba(220,30,30,.9); padding:.5rem 1rem; border-radius:.5rem;
+  text-decoration:none; font-size:.9rem}
 
 /* 영상 썸네일(▶ 오버레이) */
 .video-figure .video-thumb{position:relative; display:block; width:100%; padding:0;
@@ -540,9 +543,11 @@ IUCN – 세계자연보전연맹(IUCN, International Union for Conservation of 
     lbImg.style.transform='scale(1)';lb.classList.add('open');}
   function openVideo(embed,cap){lbImg.style.display='none';lbImg.src='';
     lbVideo.style.display='';
+    var watch=embed.replace('/embed/','/watch?v=').replace(/[?&]autoplay=1/,'').replace(/[?&]rel=0/,'');
     lbVideo.innerHTML='<iframe src="'+embed+'" title="동영상" frameborder="0" '+
-      'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" '+
-      'allowfullscreen></iframe>';
+      'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" '+
+      'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'+
+      '<a class="lb-watch" href="'+watch+'" target="_blank" rel="noopener">▶ YouTube에서 보기</a>';
     lbCap.textContent=cap||'';lb.classList.add('open');}
   function closeLb(){lb.classList.remove('open');lbImg.src='';lbVideo.innerHTML='';}
   d.addEventListener('click',function(e){
