@@ -542,7 +542,7 @@ IUCN – 세계자연보전연맹(IUCN, International Union for Conservation of 
     lbImg.style.display='';lbImg.src=src;lbCap.textContent=cap||'';scale=1;
     lbImg.style.transform='scale(1)';lb.classList.add('open');}
   function openVideo(embed,cap){lbImg.style.display='none';lbImg.src='';
-    lbVideo.style.display='';
+    lbVideo.style.display='block';
     var watch=embed.replace('/embed/','/watch?v=').replace(/[?&]autoplay=1/,'').replace(/[?&]rel=0/,'');
     lbVideo.innerHTML='<iframe src="'+embed+'" title="동영상" frameborder="0" '+
       'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" '+
