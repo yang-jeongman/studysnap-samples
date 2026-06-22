@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>순복음부천교회 모바일주보 · 2026.6.21 (No.2234)</title>
+<style>
+  :root{
+    --primary:#1f6fb2;       /* 부천교회 배너 블루 */
+    --primary-dark:#155489;
+    --primary-light:#e8f2fb;
+    --accent:#0f9bd7;
+    --ink:#222;
+    --sub:#555;
+    --line:#e3e8ee;
+    --bg:#f4f6f9;
+    --link:#1763b0;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+    background:var(--bg); color:var(--ink);
+    font-size:16px; line-height:1.72; -webkit-text-size-adjust:100%;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:520px; margin:0 auto; background:#fff; min-height:100vh;
+        box-shadow:0 0 24px rgba(0,0,0,.06); position:relative;}
+
+  /* ── 헤더 ── */
+  header.top{
+    position:sticky; top:0; z-index:60;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.18);
+  }
+  .top-row{display:flex; align-items:center; gap:10px; padding:11px 14px 9px;}
+  .hamb{
+    flex:0 0 auto; width:38px; height:38px; border:1px solid rgba(255,255,255,.45);
+    background:rgba(255,255,255,.15); border-radius:9px; cursor:pointer;
+    display:flex; flex-direction:column; justify-content:center; align-items:center; gap:4px; padding:0;
+  }
+  .hamb span{display:block; width:18px; height:2px; background:#fff; border-radius:2px;}
+  .ttl{flex:1 1 auto; min-width:0;}
+  .ch-name{font-size:18px; font-weight:800; letter-spacing:-.5px;}
+  .ch-sub{font-size:10.5px; opacity:.85; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .issue{flex:0 0 auto; text-align:right; font-size:11px; opacity:.92; line-height:1.4;}
+  .issue b{font-size:13px;}
+
+  /* 툴바: 검색(1줄) + 이동·글자크기(2줄) */
+  .toolbar{display:flex; flex-direction:column; gap:8px; padding:0 14px 10px;}
+  .tb-row2{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .search-box{
+    width:100%; display:flex; align-items:center; gap:6px;
+    background:#fff; border-radius:9px; padding:6px 10px;
+  }
+  .search-box svg{flex:0 0 auto;}
+  .search-box input{
+    flex:1 1 auto; border:none; outline:none; font-size:14px; min-width:0;
+    font-family:inherit; color:#222; background:transparent;
+  }
+  .search-nav{display:flex; align-items:center; gap:2px; flex:0 0 auto;}
+  .search-nav .cnt{font-size:11.5px; color:var(--sub); min-width:34px; text-align:center;}
+  .search-nav button, .search-box .clr{
+    border:none; background:#eef2f6; color:var(--sub); border-radius:6px;
+    width:24px; height:24px; cursor:pointer; font-size:14px; line-height:1; padding:0;
+  }
+  .fontctl{display:flex; gap:4px; flex:0 0 auto;}
+  .fontctl button{
+    background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.45);
+    color:#fff; border-radius:7px; padding:5px 8px; font-size:12.5px; cursor:pointer; font-weight:700;
+  }
+  .fontctl button:active{background:rgba(255,255,255,.4);}
+
+  /* ── 드로어(햄버거 메뉴) ── */
+  .scrim{position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:90; display:none;}
+  .scrim.on{display:block;}
+  .drawer{
+    position:fixed; top:0; left:0; height:100%; width:78%; max-width:320px;
+    background:#fff; z-index:100; transform:translateX(-100%);
+    transition:transform .26s ease; box-shadow:2px 0 18px rgba(0,0,0,.25);
+    display:flex; flex-direction:column;
+  }
+  .drawer.on{transform:translateX(0);}
+  .drawer-head{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff;
+    padding:16px 16px 14px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .drawer-head .dt{font-size:17px; font-weight:800;}
+  .drawer-head .ds{font-size:11px; opacity:.85; margin-top:2px;}
+  .drawer-head .x{background:none; border:none; color:#fff; font-size:26px; cursor:pointer; line-height:1;}
+  .drawer nav{overflow-y:auto; padding:6px 0;}
+  .drawer nav a{
+    display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink);
+    padding:12px 18px; font-size:15px; border-bottom:1px solid #f1f4f7;
+  }
+  .drawer nav a .n{
+    flex:0 0 auto; width:24px; height:24px; border-radius:6px; background:var(--primary-light);
+    color:var(--primary-dark); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .drawer nav a:active{background:var(--primary-light);}
+
+  /* ── 콘텐츠(확대/축소 대상) ── */
+  #content{zoom:1;}
+
+  section{padding:18px 16px; border-bottom:8px solid var(--bg); scroll-margin-top:112px;}
+  .sec-title{
+    display:flex; align-items:center; gap:9px;
+    font-size:18px; font-weight:800; color:var(--primary-dark); margin-bottom:14px;
+  }
+  .sec-title::before{
+    content:""; width:6px; height:20px; border-radius:3px;
+    background:linear-gradient(var(--accent),var(--primary)); display:inline-block; flex:0 0 auto;
+  }
+  .sec-note{font-size:12.5px; color:var(--sub); margin-top:-8px; margin-bottom:12px;}
+
+  /* 표지 */
+  .cover{padding:0; border-bottom:8px solid var(--bg);}
+  .cover-hero img{width:100%; display:block;}
+  .cover-meta{padding:16px;}
+  .verse-card{
+    background:var(--primary-light); border:1px solid #cfe2f3; border-radius:12px;
+    padding:14px 16px; margin-top:4px;
+  }
+  .verse-card .win{font-size:17px; font-weight:800; color:var(--primary-dark);}
+  .verse-card ul{list-style:none; margin-top:8px;}
+  .verse-card li{padding:3px 0 3px 20px; position:relative; font-size:15px;}
+  .verse-card li::before{content:"›"; position:absolute; left:4px; color:var(--accent); font-weight:800;}
+
+  /* 예배순서 표 */
+  .order{width:100%; border-collapse:collapse;}
+  .order tr{border-bottom:1px solid var(--line);}
+  .order th{
+    text-align:left; vertical-align:top; white-space:nowrap;
+    color:var(--primary-dark); font-weight:700; font-size:14.5px;
+    padding:9px 10px 9px 0; width:88px;
+  }
+  .order td{padding:9px 0; font-size:14.5px; vertical-align:top;}
+  .role{display:block; color:var(--sub); font-size:12.5px; margin-top:2px;}
+  .stand{color:#c0392b; font-weight:700;}
+  .legend{font-size:12.5px; color:#c0392b; margin-top:10px;}
+
+  /* 탭형(성경/찬송) */
+  .ref{color:var(--link); font-weight:700; cursor:pointer; border-bottom:1px dashed var(--link); padding-bottom:1px;}
+  .hymn{display:inline-block; background:#eef6ff; color:var(--primary-dark);
+    border:1px solid #cfe2f3; border-radius:6px; padding:0 7px; font-weight:700; cursor:pointer; font-size:13.5px;}
+
+  /* ── 슬라이드(가로 스크롤) 표 ── */
+  .table-wrap{margin:0 -16px;}                 /* 카드 양옆 패딩까지 활용 */
+  .swipe-hint{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    font-size:12px; color:var(--accent); font-weight:700; margin:0 16px 7px;
+  }
+  .swipe-hint .ar{animation:swipe 1.4s ease-in-out infinite;}
+  @keyframes swipe{0%,100%{transform:translateX(0);opacity:.5;}50%{transform:translateX(4px);opacity:1;}}
+  .scrollx{
+    overflow-x:auto; -webkit-overflow-scrolling:touch; padding:0 16px 4px;
+    scrollbar-width:thin;
+  }
+  .scrollx::-webkit-scrollbar{height:7px;}
+  .scrollx::-webkit-scrollbar-thumb{background:#c3d4e2; border-radius:4px;}
+  table.grid{border-collapse:collapse; font-size:13.5px;}
+  table.grid th, table.grid td{border:1px solid var(--line); padding:8px 11px; text-align:center;}
+  table.grid thead th{background:var(--primary-light); color:var(--primary-dark); font-weight:700;}
+  /* wide = 셀 줄바꿈 없이 한 줄, 표는 내용만큼 넓어지고 좌우 슬라이드 */
+  table.wide{width:max-content; min-width:100%;}
+  table.wide th, table.wide td{white-space:nowrap;}
+  table.wide td.l{text-align:left;}
+
+  /* 카드/리스트 */
+  .block{margin-bottom:16px;}
+  .block h4{font-size:15px; color:var(--primary-dark); margin-bottom:6px; font-weight:700;}
+  .news-item{padding:10px 0; border-bottom:1px dashed var(--line);}
+  .news-item:last-child{border-bottom:none;}
+  .news-item .t{font-weight:700;}
+  .kv{color:var(--sub); font-size:13.5px;}
+  .callout{
+    background:#fafcff; border:1px solid #d8e6f2; border-left:4px solid var(--primary);
+    border-radius:8px; padding:12px 14px; margin:10px 0;
+  }
+  .callout .ct{font-weight:800; color:var(--primary-dark); margin-bottom:4px;}
+
+  /* 설교 본문 */
+  .sermon h3{font-size:21px; text-align:center; font-weight:800; margin:6px 0 2px;}
+  .sermon .bref{text-align:center; color:var(--sub); margin-bottom:14px; font-size:14px;}
+  .sermon .pt{font-weight:800; color:var(--primary-dark); margin:16px 0 6px; font-size:16px;}
+  .sermon .quote{background:var(--primary-light); border-radius:8px; padding:9px 12px; font-size:14px; margin:6px 0; color:#34495e;}
+  .sermon p{margin:8px 0; text-align:justify;}
+  .yt{display:inline-flex; align-items:center; gap:6px; background:#ff0000; color:#fff;
+      text-decoration:none; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:700;}
+
+  /* 결혼 */
+  .wed{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .wed .c{background:#fff7f9; border:1px solid #f3d9e2; border-radius:10px; padding:12px;}
+  .wed .names{font-weight:800; color:#b03a5b; font-size:15px;}
+  .wed .meta{font-size:13px; color:var(--sub); margin-top:5px;}
+
+  /* 설교노트 */
+  .note-area{width:100%; min-height:180px; border:1px solid var(--line); border-radius:10px;
+    padding:12px; font-size:15px; line-height:1.8; resize:vertical; font-family:inherit;
+    background:repeating-linear-gradient(#fff,#fff 31px,#eef2f6 32px);}
+  .note-bar{display:flex; gap:8px; margin-top:8px;}
+  .note-bar button{flex:1; padding:9px; border:none; border-radius:8px; font-weight:700; cursor:pointer;}
+  .note-save{background:var(--primary); color:#fff;}
+  .note-clear{background:#eef2f6; color:var(--sub);}
+  .saved-tag{font-size:12px; color:#2e9e5b; margin-top:6px; height:16px;}
+
+  /* 임베드 원본 이미지 */
+  .embed{border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+  .embed img{width:100%; display:block; cursor:zoom-in;}
+  .embed-cap{font-size:12px; color:var(--sub); padding:8px 10px; background:#fafbfc; text-align:center;}
+  .zoom-hint{font-size:11px; color:var(--sub); text-align:right; margin-bottom:6px;}
+
+  /* 푸터 */
+  footer{padding:22px 16px 30px; text-align:center; color:var(--sub); font-size:12.5px; line-height:1.7;}
+  footer .fch{font-size:15px; font-weight:800; color:var(--primary-dark);}
+  .demo-badge{display:inline-block; background:#fff4e0; color:#b9770e; border:1px solid #f0d9a8;
+    border-radius:6px; padding:3px 9px; font-size:11.5px; font-weight:700; margin-top:10px;}
+
+  /* ── 가정예배 일자 목록 ── */
+  .day-list{list-style:none;}
+  .day-item{
+    display:flex; align-items:center; gap:12px;
+    border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:8px;
+    cursor:pointer; background:#fff; transition:background .15s;
+  }
+  .day-item:active{background:var(--primary-light);}
+  .day-item.read{background:#f3faf5; border-color:#cfe9d6;}
+  .day-date{flex:0 0 auto; font-weight:800; color:var(--primary-dark); width:80px;}
+  .day-verse{flex:1 1 auto; min-width:0; color:var(--sub); font-size:14px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .day-badge{flex:0 0 auto; width:26px; height:26px; border-radius:50%; border:2px solid #cdd6df;
+    display:flex; align-items:center; justify-content:center; font-size:14px; color:transparent;}
+  .day-item.read .day-badge{background:#2e9e5b; border-color:#2e9e5b; color:#fff;}
+  .day-arrow{flex:0 0 auto; color:#bcc7d2; font-size:18px;}
+
+  /* ── 가정예배 팝업 모달 ── */
+  .modal-overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:205;
+    display:none; align-items:center; justify-content:center; padding:18px;}
+  .modal-overlay.on{display:flex;}
+  .modal{background:#fff; border-radius:14px; width:100%; max-width:420px; max-height:88vh;
+    display:flex; flex-direction:column; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,.3);}
+  .modal-head{background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff;
+    padding:13px 14px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .modal-head .mt{font-size:16px; font-weight:800;}
+  .modal-head .mnav{display:flex; align-items:center; gap:6px; flex:0 0 auto;}
+  .modal-head .mnav button{background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.45);
+    color:#fff; border-radius:7px; width:30px; height:30px; cursor:pointer; font-size:16px; line-height:1; padding:0;}
+  .modal-body{overflow-y:auto;}
+  .field-row{display:flex; border-bottom:1px solid var(--line);}
+  .field-row:last-child{border-bottom:none;}
+  .field-label{flex:0 0 84px; background:var(--primary-light); color:var(--primary-dark);
+    font-weight:700; padding:12px; font-size:14px; border-right:1px solid var(--line);}
+  .field-value{flex:1 1 auto; padding:12px 14px; font-size:15px; line-height:1.7; word-break:keep-all;}
+  .field-value.q{font-weight:600; color:#34495e;}
+  .modal-foot{padding:12px 14px; border-top:1px solid var(--line); display:flex; gap:8px;}
+  .modal-foot button{padding:12px; border:none; border-radius:9px; font-weight:700; font-size:15px; cursor:pointer;}
+  .btn-read{flex:1 1 auto; background:#2e9e5b; color:#fff;}
+  .btn-read.done{background:#eaf6ee; color:#2e9e5b; border:1px solid #bfe3cb;}
+  .btn-close{flex:0 0 88px; background:#eef2f6; color:var(--sub);}
+
+  /* 라이트박스/토스트 */
+  .overlay{position:fixed; inset:0; background:rgba(0,0,0,.78); z-index:200;
+    display:none; align-items:center; justify-content:center; padding:18px;}
+  .overlay.on{display:flex;}
+  .overlay img{max-width:100%; max-height:92vh; border-radius:6px;}
+  .toast{position:fixed; left:50%; bottom:40px; transform:translateX(-50%);
+    background:rgba(20,40,60,.95); color:#fff; padding:11px 18px; border-radius:24px;
+    font-size:14px; z-index:210; opacity:0; transition:opacity .25s; pointer-events:none;
+    max-width:90%; text-align:center;}
+  .toast.on{opacity:1;}
+
+  /* 검색 하이라이트 */
+  mark.hl{background:#ffe680; color:inherit; border-radius:2px; padding:0 1px;}
+  mark.hl.on{background:#ff9f1a; color:#fff;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 헤더 -->
+  <header class="top">
+    <div class="top-row">
+      <button class="hamb" aria-label="메뉴 열기" onclick="toggleDrawer(true)"><span></span><span></span><span></span></button>
+      <div class="ttl">
+        <div class="ch-name">순복음부천교회</div>
+        <div class="ch-sub">창립원로목사 차군규 · 담임목사 정원일</div>
+      </div>
+      <div class="issue"><b>No. 2234</b><br>2026. 6. 21 (주일)</div>
+    </div>
+    <div class="toolbar">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="주보 내용 검색…" autocomplete="off"
+               oninput="doSearch(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();nextMatch(event.shiftKey?-1:1);}">
+        <button class="clr" onclick="clearSearch()" aria-label="검색 지우기">×</button>
+      </div>
+      <div class="tb-row2">
+        <div class="search-nav">
+          <button onclick="nextMatch(-1)" aria-label="이전">‹</button>
+          <span class="cnt" id="searchInfo">검색 결과 이동</span>
+          <button onclick="nextMatch(1)" aria-label="다음">›</button>
+        </div>
+        <div class="fontctl">
+          <button onclick="setFont(-1)">가−</button>
+          <button onclick="setFont(0)">가</button>
+          <button onclick="setFont(1)">가＋</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 드로어 메뉴 -->
+  <div class="scrim" id="scrim" onclick="toggleDrawer(false)"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div>
+        <div class="dt">주보 목차</div>
+        <div class="ds">No. 2234 · 2026. 6. 21</div>
+      </div>
+      <button class="x" onclick="toggleDrawer(false)" aria-label="닫기">×</button>
+    </div>
+    <nav id="drawerNav">
+      <a href="#cover" onclick="go(event)"><span class="n">1</span>표지</a>
+      <a href="#worship-info" onclick="go(event)"><span class="n">2</span>예배 안내</a>
+      <a href="#sunday" onclick="go(event)"><span class="n">3</span>주일예배 순서</a>
+      <a href="#wed" onclick="go(event)"><span class="n">4</span>수요예배 · 기도회</a>
+      <a href="#choir" onclick="go(event)"><span class="n">5</span>오늘의 찬양</a>
+      <a href="#word" onclick="go(event)"><span class="n">6</span>생명의 말씀</a>
+      <a href="#note" onclick="go(event)"><span class="n">7</span>설교 노트</a>
+      <a href="#news" onclick="go(event)"><span class="n">8</span>교회 소식</a>
+      <a href="#family" onclick="go(event)"><span class="n">9</span>행복한 가정예배</a>
+      <a href="#pray" onclick="go(event)"><span class="n">10</span>다음주 기도 담당</a>
+      <a href="#wedding" onclick="go(event)"><span class="n">11</span>결혼 축하</a>
+      <a href="#summer" onclick="go(event)"><span class="n">12</span>교회학교 여름사역</a>
+      <a href="#serve" onclick="go(event)"><span class="n">13</span>교회를 섬기는 분들</a>
+      <a href="#plant" onclick="go(event)"><span class="n">14</span>국내외 개척교회·신학교</a>
+      <a href="#newfam" onclick="go(event)"><span class="n">15</span>지난 주간 새가족</a>
+      <a href="#bus" onclick="go(event)"><span class="n">16</span>교구 버스노선</a>
+    </nav>
+  </aside>
+
+  <div id="content">
+
+  <!-- 표지 -->
+  <section id="cover" class="cover">
+    <div class="cover-hero"><img src="assets/cover.jpg" alt="순복음부천교회 표지 — 영혼을 사랑하자"></div>
+    <div class="cover-meta">
+      <div class="verse-card">
+        <div class="win">예수를 바라보자! WIN! <span style="font-size:13px;font-weight:600;">(히브리서 12:2)</span></div>
+        <ul>
+          <li>말씀으로 행복한 가정 <b>(W</b>ords)</li>
+          <li>기도로 깊어지는 친밀함 <b>(I</b>ntimacy)</li>
+          <li>이웃에게 흘러가는 그 사랑 <b>(N</b>eighbor)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 예배 안내 -->
+  <section id="worship-info">
+    <div class="sec-title">예배 안내</div>
+    <div class="table-wrap">
+      <div class="swipe-hint"><span class="ar">↔</span> 좌우로 밀어 전체 보기</div>
+      <div class="scrollx">
+        <table class="grid wide">
+          <thead><tr><th>구분</th><th>시간</th><th>장소</th></tr></thead>
+          <tbody>
+            <tr><td class="l">주일 1·2·3·4부 예배</td><td>주일 오전 7시·9시·11시, 오후 1시</td><td>대성전</td></tr>
+            <tr><td class="l">새가족 예배</td><td>주일 오전 9시·11시</td><td>새가족실</td></tr>
+            <tr><td class="l">수요 예배</td><td>수요일 오후 8시</td><td>대성전</td></tr>
+            <tr><td class="l">수요 오전 기도회</td><td>수요일 오전 11시</td><td>예루살렘성전</td></tr>
+            <tr><td class="l">금요 저녁 기도회</td><td>금요일 오후 8시</td><td>대성전</td></tr>
+            <tr><td class="l">새벽 기도회</td><td>매일 오전 5시 30분</td><td>예루살렘성전</td></tr>
+            <tr><td class="l">저녁 기도회</td><td>매일 오후 8시 (토·주일 오후 7시)</td><td>예루살렘성전</td></tr>
+            <tr><td class="l">사무엘 영유아부(0~4)</td><td>주일 오전 11시</td><td>사무엘성전</td></tr>
+            <tr><td class="l">요셉 유치부(5~7)</td><td>주일 오전 11시</td><td>갈릴리성전</td></tr>
+            <tr><td class="l">다니엘 유소년부(1~6학년)</td><td>주일 오전 11시</td><td>실로암성전</td></tr>
+            <tr><td class="l">다윗 청소년부</td><td>주일 오전 11시</td><td>예루살렘성전</td></tr>
+            <tr><td class="l">여호수아유드 청년1부</td><td>주일 오후 1시</td><td>예루살렘성전</td></tr>
+            <tr><td class="l">마노아 청년2부</td><td>주일 오후 1시</td><td>예루살렘성전</td></tr>
+            <tr><td class="l">예수 사랑부</td><td>주일 오전 11시, 오후 1시</td><td>베들레헴성전</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 주일예배 순서 -->
+  <section id="sunday">
+    <div class="sec-title">주일예배 순서</div>
+    <div class="sec-note">사회 · 1부 이성은 목사 / 2부 박봉기 목사 / 3부 이희종 목사 / 4부 오세훈 목사</div>
+    <table class="order">
+      <tr><th>경배와 찬양</th><td></td></tr>
+      <tr><th>예배로의 부름</th><td><span class="ref" onclick="bible('마태복음 11:28~30')">마태복음 11:28~30</span></td></tr>
+      <tr><th><span class="stand">✛</span> 송영</th><td><span class="hymn" onclick="hymn('1장')">1장</span> 만복의 근원 하나님</td></tr>
+      <tr><th><span class="stand">✛</span> 신앙고백</th><td>사도신경</td></tr>
+      <tr><th>찬송</th><td><span class="hymn" onclick="hymn('382장')">382장</span> (통일 432장) 너 근심 걱정 말아라</td></tr>
+      <tr><th>대표기도</th><td>1부 류호연 장로 / 2부 이굉진 장로<br>3부 심재율 장로 / 4부 전정수 장로</td></tr>
+      <tr><th>성경봉독</th><td>1·2·3·4부 / <span class="ref" onclick="bible('누가복음 5:3~7')">누가복음 5:3~7</span> (신약 96p)</td></tr>
+      <tr><th>찬양</th><td>성가대</td></tr>
+      <tr><th>설교</th><td>1·2·3·4부 / 「빈 배의 은혜」<span class="role">정원일 목사</span></td></tr>
+      <tr><th>목회기도</th><td>새로운 각오 · 새신자 결신</td></tr>
+      <tr><th>찬송</th><td>다같이</td></tr>
+      <tr><th>헌금기도</th><td>1부 김동호 안수집사 / 2부 박지훈 안수집사<br>3부 김윤곤 안수집사 / 4부 계영권 안수집사</td></tr>
+      <tr><th>교회소식</th><td>사회자</td></tr>
+      <tr><th>축도</th><td>설교자</td></tr>
+    </table>
+    <div class="legend">✛ 표가 있는 순서는 일어서시기 바랍니다.</div>
+  </section>
+
+  <!-- 수요예배 & 기도회 -->
+  <section id="wed">
+    <div class="sec-title">수요예배 · 기도회</div>
+    <div class="block">
+      <h4>수요예배 <span class="kv">(6월 24일 오후 8시) · 사회 박봉기 목사</span></h4>
+      <table class="order">
+        <tr><th>경배와 찬양</th><td></td></tr>
+        <tr><th>송영</th><td>성가대</td></tr>
+        <tr><th>신앙고백</th><td>다같이</td></tr>
+        <tr><th>기도</th><td>이남식 장로</td></tr>
+        <tr><th>성경봉독</th><td>사회자</td></tr>
+        <tr><th>찬양</th><td>베데스다 성가대</td></tr>
+        <tr><th>설교</th><td>정원일 목사</td></tr>
+        <tr><th>헌금기도</th><td>지상영 안수집사</td></tr>
+        <tr><th>헌금송</th><td>희망교구</td></tr>
+        <tr><th>축도</th><td>설교자</td></tr>
+      </table>
+    </div>
+    <div class="callout">
+      <div class="ct">기도회 안내</div>
+      <div class="block" style="margin-bottom:8px;">
+        <b>주일 저녁</b> <span class="kv">(6월 21일 오후 7시)</span><br>
+        설교 및 기도회 인도 · 이경숙 전도사
+      </div>
+      <div class="block" style="margin-bottom:8px;">
+        <b>수요 오전</b> <span class="kv">(6월 24일 오전 11시)</span><br>
+        기도 · 장선순 권사 / 설교 · 박봉기 목사 / 헌금기도 · 정현재 집사
+      </div>
+      <div class="block" style="margin-bottom:0;">
+        <b>금요 저녁</b> <span class="kv">(6월 26일 오후 8시)</span><br>
+        기도 · 정소망 장로 / 설교 · 정원일 목사 / 헌금기도 · 이승희 안수집사
+      </div>
+    </div>
+  </section>
+
+  <!-- 오늘의 찬양 -->
+  <section id="choir">
+    <div class="sec-title">오늘의 찬양</div>
+    <div class="table-wrap">
+      <div class="swipe-hint"><span class="ar">↔</span> 좌우로 밀어 전체 보기</div>
+      <div class="scrollx">
+        <table class="grid wide">
+          <thead><tr><th>구분</th><th>성가대명</th><th>성가대장</th><th>지휘자</th><th>Organ</th><th>Piano</th><th>성가 곡명</th></tr></thead>
+          <tbody>
+            <tr><td>1부예배</td><td class="l">샤론앙상블</td><td>-</td><td>-</td><td>-</td><td>안유진</td><td class="l">거친 세상에서 실패하거든</td></tr>
+            <tr><td>2부예배</td><td class="l">호산나성가대</td><td>심재율</td><td>전재성</td><td>홍슬기</td><td>정은희</td><td class="l">사랑의 주 예수</td></tr>
+            <tr><td>3부예배</td><td class="l">시온성가대·오케스트라</td><td>최명수</td><td>김성진b</td><td>이세라</td><td>유영아</td><td class="l">사명</td></tr>
+            <tr><td>4부예배</td><td class="l">가브리엘성가대</td><td>이형태</td><td>김성진b</td><td>-</td><td>송현정</td><td class="l">내 주는 선한 목자</td></tr>
+            <tr><td>수요예배</td><td class="l">베데스다성가대</td><td>엄태오</td><td>방김호</td><td>-</td><td>전윤진</td><td class="l">주가 필요해</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 생명의 말씀 -->
+  <section id="word" class="sermon">
+    <div class="sec-title">생명의 말씀</div>
+    <div class="sec-note">순복음부천교회 정원일 담임목사 · 6월 14일 주일 설교</div>
+    <a class="yt" href="https://www.youtube.com/@순복음부천교회" target="_blank" rel="noopener">▶ 설교 유튜브 영상 보기</a>
+    <h3>불쌍히 여기시니</h3>
+    <div class="bref">마태복음 9:35~38</div>
+    <p>한 영혼이 가진 가치의 탁월성은 그가 사랑하는 대상을 보면 알 수 있습니다. 하나님은 세상을 이처럼 사랑하셔서 독생자를 주셨고, 우리에게 온 맘 다해 주님을 사랑하라 하셨습니다. 세상은 외형으로 사람을 판단하지만, 예수님의 시선은 언제나 상하고 소외된 영혼의 중심을 향하셨습니다. 본문은 목자 없는 양과 같이 기진한 무리를 보며 아파하셨던 예수님의 마음을 보여줍니다. 한 영혼이 시대에 우리가 회복해야 할 긍휼과 전도의 사명을 깨닫고, 삶의 자리에 올려 퍼져야 할 세 가지 은혜의 원리를 나누어 보겠습니다.</p>
+
+    <div class="pt">1. 무리를 보시는 예수님의 긍휼</div>
+    <div class="quote">마 9:36, "무리를 보시고 불쌍히 여기시니 이는 그들이 목자 없는 양과 같이 고생하며 기진함이라"</div>
+    <p>'불쌍히 여기다'의 헬라어 원어는 '창자, 내장'을 뜻하는 헬라어 단어에서 유래한 말로, 창자가 끊어지는 듯한 극심한 고통과 아픔을 함께 느끼는 상태를 의미합니다. 과부의 슬픔을 보며 함께 아파하셨듯, 주님의 긍휼은 삶의 고통을 고스란히 체휼하시는 사랑입니다. 하나님은 백성의 고통을 보고 부르짖음을 들으시며 그 근심을 아시는 분입니다(출 3:7). 우리는 때를 따라 돕는 은혜를 얻기 위해 이 긍휼의 보좌 앞으로 담대히 나아가야 합니다(히 4:16).</p>
+
+    <div class="pt">2. 영혼을 찾아가시는 예수님의 수고</div>
+    <div class="quote">마 9:35, "예수께서 모든 도시와 마을에 두루 다니사 그들의 회당에서 가르치시며 천국 복음을 전파하시며 모든 병과 모든 약한 것을 고치시니라"</div>
+    <p>예수님의 긍휼은 마음의 아픔에 머물지 않고, 모든 도시와 마을을 '두루 다니시는' 구체적인 수고로 이어졌습니다. 주님은 영혼들이 찾아오기를 기다리지 않고, 사역과 전도를 위해 친히 낮은 곳으로 찾아가 가르치고 전파하며 치유해 주셨습니다. 가까운 다른 마을들로 가 전도하자 하실 때 "내가 이를 위하여 왔노라"라고 선포하셨습니다(막 1:38). 인자가 온 것은 잃어버린 자를 찾아 구원하기 위함입니다(눅 19:10). 영혼 구원은 한 영혼을 천하보다 귀히 여기며 다가가는 사랑의 수고가 동반될 때 일어납니다.</p>
+
+    <div class="pt">3. 추수의 주인께서 보내시는 일꾼</div>
+    <div class="quote">마 9:37~38, "이에 제자들에게 이르시되 추수할 것은 많되 일꾼이 적으니 그러므로 추수하는 주인에게 청하여 추수할 일꾼들을 보내 주소서 하라 하시니라"</div>
+    <p>세상 신은 믿지 않는 자들의 마음을 혼미하게 하여 복음의 광채를 막아서고 있습니다(고후 4:4). 그러나 기진한 영혼들을 바라보시는 주님의 진단은 '추수할 것은 많되 일꾼이 적다'는 것입니다. 주님은 강권하여 데려가다 내 집을 채우라 하십니다(눅 14:23). 이를 위해 우리는 '한 사람의 이름을 정하고, 매일 기도하며, 이번 주 안에 연락하며, 구체적으로 초청하며, 이후에도 동행하는' 실천적 사명을 다해야 합니다. 아버지의 이끄심을 신뢰하며 우리가 복음의 일꾼으로 쓰임 받아야 합니다.</p>
+
+    <p>우리는 창자가 끊어지는 듯한 아픔으로 영혼을 보시는 예수님의 긍휼을 품고, 주님처럼 영혼을 찾아가는 사랑의 수고를 아끼지 말며, 추수할 일꾼을 보내소서 기도하며 전도를 실천해야 합니다. 부모가 먼저 말씀과 예배로 삶의 본을 보이며 다정한 사랑으로 대할 때 다음 세대는 우리를 통해 하나님의 살아계심을 경험할 것입니다. 담대한 믿음으로 영혼 구원의 사명을 다해 영적 추수의 기쁨을 누리는 복된 삶이 되기를 소망합니다.</p>
+  </section>
+
+  <!-- 설교 노트 -->
+  <section id="note">
+    <div class="sec-title">설교 노트</div>
+    <div class="sec-note">은혜받은 말씀을 자유롭게 기록하세요. (이 기기에 자동 저장됩니다)</div>
+    <textarea id="noteArea" class="note-area" placeholder="오늘 받은 은혜와 결단을 적어보세요…"></textarea>
+    <div class="note-bar">
+      <button class="note-save" onclick="saveNote()">저장</button>
+      <button class="note-clear" onclick="clearNote()">지우기</button>
+    </div>
+    <div id="savedTag" class="saved-tag"></div>
+  </section>
+
+  <!-- 교회 소식 -->
+  <section id="news">
+    <div class="sec-title">교회 소식</div>
+
+    <div class="callout">
+      <div class="ct">처음 교회에 나오신 분들을 위하여</div>
+      은혜로운 모임이 준비되어 있습니다. 인도하신 성도님과 함께 참석하셔서 좋은 시간 되시기 바랍니다.<br>
+      · <b>새가족환영회</b> : 주일 1·2·3·4부 예배 후 (지하 1층 새가족실)<br>
+      · <b>새가족 예배</b> : 주일 오전 9시·11시 (지하 1층 새가족실)<br>
+      · <b>교구버스</b> : 노선과 승차 시간은 주보 뒷면과 홈페이지를 참고해 주시기 바랍니다.
+    </div>
+
+    <div class="block">
+      <h4>▶ 예배 · 기도회</h4>
+      <div class="news-item"><div class="t">1. 선교주일</div><div class="kv">다음 주일(6월 28일)은 온가족이 대성전에서 함께 드리는 선교주일입니다.</div></div>
+      <div class="news-item"><div class="t">2. 6·21 전도주일</div><div class="kv">6월 21일(주일) 1부~4부 / 장소 : 대성전</div></div>
+      <div class="news-item"><div class="t">3. 교회학교 교사 특별저녁기도회</div><div class="kv">6월 22일(월)~26일(금) 오후 8시 / 장소 : 예루살렘성전 (수·금 대성전)</div></div>
+      <div class="news-item"><div class="t">4. 교회학교 후원의 밤</div><div class="kv">6월 26일(금) 오후 8시 / 장소 : 대성전</div></div>
+      <div class="news-item"><div class="t">5. 장기주차 자제 안내</div><div class="kv">다음 예배자를 위하여 장기주차를 삼가해 주시고, 운전자분들은 창문을 열고 안내자의 지시를 따라주시면 감사하겠습니다.</div></div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">인도네시아 복음의동산신학교 졸업식 참가단 모집</div>
+      일정 : 8월 17일(월)~22일(토) / 문의 : 정영수 장로 (010-5341-7708)
+    </div>
+
+    <div class="block">
+      <h4>▶ 교회학교 · 청년</h4>
+      <div class="news-item"><div class="t">1. 벧엘선교단 모집</div><div class="kv">대상 : 유소년부 / 문의 : 양정옥 권사 (010-9004-3410)</div></div>
+    </div>
+
+    <div class="block">
+      <h4>▶ 기관모임 · 모집</h4>
+      <div class="news-item"><div class="t">1. 월간 교회 소식 「GGnews」 6월호 발행</div><div class="kv">QR코드를 통해 스마트폰으로 더욱 간편하게 소식을 확인하실 수 있습니다.</div></div>
+      <div class="news-item"><div class="t">2. 에스더 중보기도 모임</div><div class="kv">주일 중보기도 : 매주 주일 오전 9시·11시 / 장소 : 강대실 및 중보기도실<br>평일 중보기도 : 매일 오후 2시(자율적으로) / 장소 : 예루살렘성전<br>※ 중보기도요청은 교역자에게 가능합니다. 성도님들의 참여를 바랍니다.</div></div>
+      <div class="news-item"><div class="t">3. G·X 운동 선교회 4기 모집</div><div class="kv">기간 : 7월 1일~12월 30일 (매주 수요일 오후 12시 45분, 6개월·총 27회)<br>장소 : 갈릴리성전(지하 1층) / 강사 : 홍현철 집사(크리스짐 대표)<br>대상 : 전 성도 및 전도 대상자 / 등록비 : 20,000원 (새가족 무료, 생수 제공)<br>접수 및 문의 : 행정실 (구내 171번, 010-8754-9653)<br>※ 요가운동(70%) + 근력운동(30%) = 건강한 몸으로 만들어 드립니다.</div></div>
+      <div class="news-item"><div class="t">4. 헌금봉투함 안내</div><div class="kv">십일조 : 교구실 / 선교헌금·감사헌금 : 1층 안내실 앞 / 기타헌금 : 교구장에게 문의</div></div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">2026 성경학교 개강</div>
+      기간 : 2026년 7월 5일~2027년 1월 19일<br>
+      시간 : 주일 오후 1시, 화요일 오전 10시 30분 / 장소 : 새가족실<br>
+      대상 : 모든 성도 / 교재 : 가스펠프로젝트(구약1~2) 서점에서 구매<br>
+      수강료 : 무료 / 접수 : 교구장 및 행정실 (구내 170~171)
+    </div>
+  </section>
+
+  <!-- 행복한 가정예배 -->
+  <section id="family">
+    <div class="sec-title">행복한 가정예배 · 행·가·례</div>
+    <div class="sec-note">날짜를 선택하면 그 날의 가정예배 내용이 펼쳐집니다. 읽은 날은 ✓ 로 표시됩니다.</div>
+    <ul class="day-list" id="dayList"></ul>
+    <div class="sec-note" style="margin-top:10px;">※ 개인기도 → 찬송 → 말씀 읽기(2회)와 나눔 → 합심기도 → 주기도문 순으로 진행합니다.</div>
+  </section>
+
+  <!-- 다음주 기도 담당 -->
+  <section id="pray">
+    <div class="sec-title">다음주 기도 담당</div>
+    <div class="table-wrap">
+      <div class="swipe-hint"><span class="ar">↔</span> 좌우로 밀어 전체 보기</div>
+      <div class="scrollx">
+        <table class="grid wide">
+          <thead><tr><th>구분</th><th>1부</th><th>2부</th><th>3부</th><th>4부</th><th>수요예배 (7/1)</th><th>수요오전 (7/1)</th><th>금요저녁 (7/3)</th></tr></thead>
+          <tbody>
+            <tr><td>대표기도</td><td>장현오</td><td>황동철</td><td>김진용</td><td>정태근</td><td>성은환</td><td>이경옥</td><td>오정태</td></tr>
+            <tr><td>헌금기도</td><td>송명근</td><td>김창서</td><td>한상권</td><td>신완일</td><td>이정필</td><td>전윤경</td><td>유성호</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 결혼 축하 -->
+  <section id="wedding">
+    <div class="sec-title">결혼을 축하합니다</div>
+    <div class="wed">
+      <div class="c">
+        <div class="names">임영경 · 김민준</div>
+        <div class="meta">은혜교구<br>6월 27일(토) 오후 12시 10분<br>인천 삼산월드컨벤션센터 1층<br><span class="kv">임채중 집사, 지은주 성도 삼녀</span></div>
+      </div>
+      <div class="c">
+        <div class="names">임영우 · 전유리</div>
+        <div class="meta">시온교구<br>6월 27일(토) 오후 3시 30분<br>서울 규수당 문래(SK 리더스뷰 2층)<br><span class="kv">임혜연 집사, 김연주 권사 장남</span></div>
+      </div>
+      <div class="c">
+        <div class="names">송재현 · 김희지</div>
+        <div class="meta">희망교구<br>6월 28일(일) 오후 2시<br>서울 아펠가모(광화문) LL층<br><span class="kv">김성기 성도, 전명숙 권사 장녀</span></div>
+      </div>
+    </div>
+    <div class="sec-note" style="margin-top:12px;">※ 문의 : 각 교구당 · 예식 10일 전 (교구명, 날짜, 결혼식장, 가족관계)</div>
+    <div class="callout" style="margin-top:14px;">
+      <div class="ct">교회 헌금 계좌번호</div>
+      458-810071-08405 (하나은행) · 예금주 : 순복음부천교회<br>
+      받는 분 통장 내용에 아래와 같이 기재하여 주시기 바랍니다.<br>
+      <span class="kv">예시) 교구성명십일조 → 교구성명십일 / 교구성명감사 → 교구성명감 / 교구성명선교 → 교구성명선</span><br>
+      ※ 7자 이내로 작성해주세요. 송금하신 후 경리실(657-9871)로 연락 바랍니다.
+    </div>
+  </section>
+
+  <!-- 교회학교 여름 사역 -->
+  <section id="summer">
+    <div class="sec-title">2026년 교회학교 여름 사역</div>
+    <div class="table-wrap">
+      <div class="swipe-hint"><span class="ar">↔</span> 좌우로 밀어 전체 보기</div>
+      <div class="scrollx">
+        <table class="grid wide">
+          <thead><tr><th>부서</th><th>날짜</th><th>장소</th></tr></thead>
+          <tbody>
+            <tr><td>사랑부</td><td>7월 11일(토)~12일(주일)</td><td>베들레헴성전</td></tr>
+            <tr><td>영유아부</td><td>7월 4일(토)~5일(주일)</td><td>사무엘성전, 갈릴리성전</td></tr>
+            <tr><td>유치부</td><td>7월 11일(토)~12일(주일)</td><td>갈릴리성전</td></tr>
+            <tr><td>유소년부</td><td>7월 24일(금)~26일(주일)</td><td>실로암성전</td></tr>
+            <tr><td>청소년부</td><td>7월 17일(금)~19일(주일)</td><td>서해안청소년수련원</td></tr>
+            <tr><td>청년 1·2부</td><td>8월 7일(금)~9일(주일)</td><td>서해안청소년수련원</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 교회를 섬기는 분들 (원본 임베드) -->
+  <section id="serve">
+    <div class="sec-title">교회를 섬기는 분들</div>
+    <div class="zoom-hint">이미지를 탭하면 확대됩니다 🔍</div>
+    <div class="embed"><img src="assets/serve.jpg" alt="교회를 섬기는 분들" onclick="zoom(this.src)"></div>
+  </section>
+
+  <!-- 국내외 개척교회 및 신학교 (원본 임베드) -->
+  <section id="plant">
+    <div class="sec-title">국내외 개척교회 및 신학교</div>
+    <div class="zoom-hint">이미지를 탭하면 확대됩니다 🔍</div>
+    <div class="embed"><img src="assets/church_plant.jpg" alt="국내외 개척교회 및 신학교" onclick="zoom(this.src)"></div>
+  </section>
+
+  <!-- 지난 주간 새가족 명단 (원본 임베드) -->
+  <section id="newfam">
+    <div class="sec-title">지난 주간 새가족 명단 <span class="kv" style="font-size:14px;">(11명 · 누계 482명)</span></div>
+    <div class="zoom-hint">이미지를 탭하면 확대됩니다 🔍</div>
+    <div class="embed"><img src="assets/newfamily.jpg" alt="지난 주간 새가족 명단" onclick="zoom(this.src)"></div>
+  </section>
+
+  <!-- 교구 버스노선 안내 (원본 임베드) -->
+  <section id="bus">
+    <div class="sec-title">교구 버스노선 안내</div>
+    <div class="zoom-hint">이미지를 탭하면 확대됩니다 🔍</div>
+    <div class="embed">
+      <img src="assets/bus.jpg" alt="교구 버스노선 안내" onclick="zoom(this.src)">
+      <div class="embed-cap">버스 번호 / 경유 노선 및 배차 시간 — 확대하여 확인하세요.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fch">순복음부천교회</div>
+    14562 경기도 부천시 원미구 원미로 164번길 19-28 (원미동)<br>
+    Tel. 032)657-9871~6 · Fax. 657-9877<br>
+    <a href="https://www.ggtv.org" target="_blank" rel="noopener" style="color:var(--link);">www.ggtv.org</a> · YouTube 「순복음부천교회」
+    <div class="demo-badge">모바일주보 도입 제안 시연용 · 원본 2026.6.21 (No.2234) 기준</div>
+  </footer>
+
+  </div><!-- /#content -->
+</div>
+
+<!-- 가정예배 팝업 -->
+<div class="modal-overlay" id="famOv" onclick="if(event.target===this)closeFam()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mt">행복한 가정예배 <span id="famDate" style="font-weight:600;opacity:.92;"></span></div>
+      <div class="mnav">
+        <button onclick="famNav(-1)" aria-label="이전 날">‹</button>
+        <button onclick="famNav(1)" aria-label="다음 날">›</button>
+        <button onclick="closeFam()" aria-label="닫기">×</button>
+      </div>
+    </div>
+    <div class="modal-body" id="famBody"></div>
+    <div class="modal-foot">
+      <button class="btn-close" onclick="closeFam()">닫기</button>
+      <button class="btn-read" id="famReadBtn" onclick="toggleRead()">읽었어요 ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- 라이트박스 -->
+<div class="overlay" id="ov" onclick="this.classList.remove('on')"><img id="ovimg" src="" alt=""></div>
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── 햄버거 드로어 ── */
+  function toggleDrawer(open){
+    document.getElementById('drawer').classList.toggle('on', open);
+    document.getElementById('scrim').classList.toggle('on', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function go(e){ toggleDrawer(false); /* 앵커 기본 이동 사용 */ }
+
+  /* ── 글자 크기(확대/축소) : #content 전체 배율 ── */
+  var scales=[0.85, 0.95, 1, 1.12, 1.28, 1.45], zi=2;
+  function applyZoom(){ document.getElementById('content').style.zoom = scales[zi]; }
+  function setFont(d){
+    if(d===0){ zi=2; } else { zi=Math.max(0, Math.min(scales.length-1, zi+d)); }
+    applyZoom();
+    toast('글자 크기 ' + Math.round(scales[zi]*100) + '%');
+  }
+
+  /* ── 토스트 ── */
+  var tt;
+  function toast(msg){
+    var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+    clearTimeout(tt); tt=setTimeout(function(){t.classList.remove('on');},1800);
+  }
+  function bible(ref){ toast('📖 '+ref+' — 정식 버전에서는 본문 전문이 펼쳐집니다'); }
+  function hymn(no){ toast('🎵 찬송가 '+no+' — 정식 버전에서는 악보·가사가 연결됩니다'); }
+
+  /* ── 라이트박스 ── */
+  function zoom(src){ document.getElementById('ovimg').src=src; document.getElementById('ov').classList.add('on'); }
+
+  /* ── 설교노트 ── */
+  var NK='fgbc_note_20260621';
+  function loadNote(){ var v=localStorage.getItem(NK); if(v) document.getElementById('noteArea').value=v; }
+  function saveNote(){
+    localStorage.setItem(NK, document.getElementById('noteArea').value);
+    var s=document.getElementById('savedTag'); s.textContent='✓ 저장되었습니다';
+    setTimeout(function(){s.textContent='';},2000);
+  }
+  function clearNote(){
+    if(confirm('작성한 설교 노트를 지울까요?')){ document.getElementById('noteArea').value=''; localStorage.removeItem(NK); }
+  }
+  loadNote();
+
+  /* ── 검색(본문 하이라이트 + 이전/다음 이동) ── */
+  var matches=[], cur=-1;
+  function clearHighlights(){
+    var c=document.getElementById('content');
+    var ms=c.querySelectorAll('mark.hl');
+    ms.forEach(function(m){ m.replaceWith(document.createTextNode(m.textContent)); });
+    if(ms.length) c.normalize();
+  }
+  function clearSearch(){
+    document.getElementById('searchInput').value='';
+    doSearch('');
+  }
+  function doSearch(q){
+    clearHighlights(); matches=[]; cur=-1;
+    var info=document.getElementById('searchInfo');
+    q=(q||'').trim();
+    if(q.length<1){ info.textContent=''; return; }
+    var content=document.getElementById('content');
+    var walker=document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+      acceptNode:function(n){
+        if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        var p=n.parentNode, nm=p && p.nodeName;
+        if(nm==='SCRIPT'||nm==='STYLE'||nm==='MARK') return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes=[], nd; while(nd=walker.nextNode()) nodes.push(nd);
+    var ql=q.toLowerCase();
+    nodes.forEach(function(node){
+      var text=node.nodeValue, low=text.toLowerCase(), idx=low.indexOf(ql);
+      if(idx<0) return;
+      var frag=document.createDocumentFragment(), last=0;
+      while(idx>=0){
+        if(idx>last) frag.appendChild(document.createTextNode(text.slice(last,idx)));
+        var mk=document.createElement('mark'); mk.className='hl';
+        mk.textContent=text.slice(idx, idx+q.length);
+        frag.appendChild(mk); matches.push(mk);
+        last=idx+q.length; idx=low.indexOf(ql, last);
+      }
+      if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    if(matches.length){ cur=0; focusMatch(); }
+    else info.textContent='0 건';
+  }
+  function focusMatch(){
+    matches.forEach(function(m,i){ m.classList.toggle('on', i===cur); });
+    var m=matches[cur];
+    if(m){
+      m.scrollIntoView({block:'center', behavior:'smooth'});
+      document.getElementById('searchInfo').textContent=(cur+1)+' / '+matches.length;
+    }
+  }
+  function nextMatch(d){
+    if(!matches.length){ return; }
+    cur=(cur + d + matches.length) % matches.length;
+    focusMatch();
+  }
+
+  /* ── 행복한 가정예배(행·가·례) : 일자 목록 + 팝업 + 읽음 체크 ── */
+  var FAMILY=[
+    {d:"6/22 (월)", h:"370", w:"야고보서 1:2~8",   q:"최근 우리 가족의 믿음을 성장시키기 위해 하나님이 허락하신 '시험(어려운 상황)'은 무엇이었나요?", r:"시편 34~36"},
+    {d:"6/23 (화)", h:"204", w:"야고보서 1:19~27", q:"오늘 들은 말씀을 우리 집 안에서 '행함'으로 옮기기 위해 당장 고쳐야 할 말버릇이나 화내는 습관은 무엇일까요?", r:"시편 37~40"},
+    {d:"6/24 (수)", h:"218", w:"야고보서 2:14~17", q:"가족을 사랑한다고 하면서도, 피곤하다는 이유로 실제적인 도움이나 희생(집안일, 육아 등)을 미룬 적은 없었나요?", r:"시편 41~44"},
+    {d:"6/25 (목)", h:"212", w:"야고보서 3:1~6",   q:"최근 나의 말은 가족들의 마음에 상처를 내는 '불'과 같았나요, 아니면 마음을 녹여주는 '따뜻한 온기'와 같았나요?", r:"시편 45~51"},
+    {d:"6/26 (금)", h:"384", w:"야고보서 4:13~17", q:"계획대로 일이 풀리지 않을 때 불안해하기보다, “주의 뜻이면 이루어질 것”이라는 평안함을 누리도록 함께 기도합시다.", r:"시편 52~60"},
+    {d:"6/27 (토)", h:"393", w:"야고보서 5:7~11",  q:"서로에게 원망의 화살을 돌리기보다, 주님의 선하신 뜻을 기대하며 오늘의 수고를 끝까지 견뎌내자고 서로 다독여 봅시다.", r:"시편 61~68"},
+    {d:"6/28 (주일)", h:"361", w:"야고보서 5:13~18", q:"지금 우리 가족의 육체적인 질병이나 영적인 회복, 혹은 위로가 필요한 기도의 제목은 무엇인가요?", r:"시편 69~73"}
+  ];
+  var RKEY='fgbc_famread_20260621', curDay=0;
+  function getRead(){ try{ return JSON.parse(localStorage.getItem(RKEY)||'{}'); }catch(e){ return {}; } }
+  function setRead(o){ localStorage.setItem(RKEY, JSON.stringify(o)); }
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function renderDayList(){
+    var read=getRead(), ul=document.getElementById('dayList'); ul.innerHTML='';
+    FAMILY.forEach(function(it,i){
+      var li=document.createElement('li');
+      li.className='day-item'+(read[i]?' read':'');
+      li.onclick=function(){ openDay(i); };
+      li.innerHTML='<span class="day-date">'+it.d+'</span>'
+        +'<span class="day-verse">'+esc(it.w)+'</span>'
+        +'<span class="day-badge">✓</span>'
+        +'<span class="day-arrow">›</span>';
+      ul.appendChild(li);
+    });
+  }
+  function frow(l,v,cls){ return '<div class="field-row"><div class="field-label">'+l+'</div><div class="field-value'+(cls?' '+cls:'')+'">'+esc(v)+'</div></div>'; }
+  function openDay(i){
+    curDay=i; var it=FAMILY[i], read=getRead();
+    document.getElementById('famDate').textContent='· '+it.d;
+    document.getElementById('famBody').innerHTML=
+        frow('요일', it.d) + frow('찬송가', it.h+'장') + frow('말씀', it.w)
+      + frow('나눔 질문', it.q, 'q') + frow('일독', it.r);
+    var btn=document.getElementById('famReadBtn');
+    if(read[i]){ btn.className='btn-read done'; btn.textContent='✓ 읽음 완료 — 해제하기'; }
+    else { btn.className='btn-read'; btn.textContent='읽었어요 ✓'; }
+    document.getElementById('famOv').classList.add('on');
+    document.body.style.overflow='hidden';
+  }
+  function famNav(d){ openDay((curDay+d+FAMILY.length)%FAMILY.length); }
+  function toggleRead(){
+    var read=getRead(); read[curDay]=!read[curDay]; setRead(read);
+    renderDayList(); openDay(curDay);
+  }
+  function closeFam(){ document.getElementById('famOv').classList.remove('on'); document.body.style.overflow=''; }
+  renderDayList();
+
+  applyZoom();
+</script>
+</body>
+</html>
