@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>기둥교회 모바일 주보 · 2026.6.28 (제55권 26호)</title>
+<style>
+  :root{
+    --primary:#6a4b9b;
+    --primary-dark:#4d3475;
+    --primary-light:#efeaf7;
+    --accent:#8b6fc4;
+    --ink:#222;
+    --sub:#555;
+    --line:#e6e2ee;
+    --bg:#f5f4f8;
+    --link:#6a4b9b;
+    --gold:#c79a3a;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+    background:var(--bg); color:var(--ink);
+    font-size:16px; line-height:1.72; -webkit-text-size-adjust:100%;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:520px; margin:0 auto; background:#fff; min-height:100vh;
+        box-shadow:0 0 24px rgba(0,0,0,.06); position:relative;}
+
+  /* ── 헤더 ── */
+  header.top{
+    position:sticky; top:0; z-index:60;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.18);
+  }
+  .top-row{display:flex; align-items:center; gap:10px; padding:11px 14px 9px;}
+  .hamb{
+    flex:0 0 auto; width:38px; height:38px; border:1px solid rgba(255,255,255,.45);
+    background:rgba(255,255,255,.15); border-radius:9px; cursor:pointer;
+    display:flex; flex-direction:column; justify-content:center; align-items:center; gap:4px; padding:0;
+  }
+  .hamb span{display:block; width:18px; height:2px; background:#fff; border-radius:2px;}
+  .ttl{flex:1 1 auto; min-width:0;}
+  .ch-name{font-size:18px; font-weight:800; letter-spacing:-.5px;}
+  .ch-sub{font-size:10.5px; opacity:.85; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .issue{flex:0 0 auto; text-align:right; font-size:11px; opacity:.92; line-height:1.4;}
+  .issue b{font-size:13px;}
+
+  .toolbar{display:flex; flex-direction:column; gap:8px; padding:0 14px 10px;}
+  .tb-row2{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .search-box{
+    width:100%; display:flex; align-items:center; gap:6px;
+    background:#fff; border-radius:9px; padding:6px 10px;
+  }
+  .search-box svg{flex:0 0 auto;}
+  .search-box input{
+    flex:1 1 auto; border:none; outline:none; font-size:14px; min-width:0;
+    font-family:inherit; color:#222; background:transparent;
+  }
+  .search-nav{display:flex; align-items:center; gap:2px; flex:0 0 auto;}
+  .search-nav .cnt{font-size:11.5px; color:var(--sub); min-width:34px; text-align:center;}
+  .search-nav button, .search-box .clr{
+    border:none; background:#eef2f6; color:var(--sub); border-radius:6px;
+    width:24px; height:24px; cursor:pointer; font-size:14px; line-height:1; padding:0;
+  }
+  .fontctl{display:flex; gap:4px; flex:0 0 auto;}
+  .fontctl button{
+    background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.45);
+    color:#fff; border-radius:7px; padding:5px 8px; font-size:12.5px; cursor:pointer; font-weight:700;
+  }
+  .fontctl button:active{background:rgba(255,255,255,.4);}
+
+  /* ── 드로어 ── */
+  .scrim{position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:90; display:none;}
+  .scrim.on{display:block;}
+  .drawer{
+    position:fixed; top:0; left:0; height:100%; width:78%; max-width:320px;
+    background:#fff; z-index:100; transform:translateX(-100%);
+    transition:transform .26s ease; box-shadow:2px 0 18px rgba(0,0,0,.25);
+    display:flex; flex-direction:column;
+  }
+  .drawer.on{transform:translateX(0);}
+  .drawer-head{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff;
+    padding:16px 16px 14px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .drawer-head .dt{font-size:17px; font-weight:800;}
+  .drawer-head .ds{font-size:11px; opacity:.85; margin-top:2px;}
+  .drawer-head .x{background:none; border:none; color:#fff; font-size:26px; cursor:pointer; line-height:1;}
+  .drawer nav{overflow-y:auto; padding:6px 0;}
+  .drawer nav a{
+    display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink);
+    padding:12px 18px; font-size:15px; border-bottom:1px solid #f1f4f7;
+  }
+  .drawer nav a .n{
+    flex:0 0 auto; width:24px; height:24px; border-radius:6px; background:var(--primary-light);
+    color:var(--primary-dark); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .drawer nav a:active{background:var(--primary-light);}
+
+  #content{zoom:1;}
+
+  section{padding:18px 16px; border-bottom:8px solid var(--bg); scroll-margin-top:112px;}
+  .sec-title{
+    display:flex; align-items:center; gap:9px;
+    font-size:18px; font-weight:800; color:var(--primary-dark); margin-bottom:14px;
+  }
+  .sec-title::before{
+    content:""; width:6px; height:20px; border-radius:3px;
+    background:linear-gradient(var(--accent),var(--primary)); display:inline-block; flex:0 0 auto;
+  }
+  .sec-note{font-size:12.5px; color:var(--sub); margin-top:-8px; margin-bottom:12px;}
+
+  /* 표지 */
+  .cover{padding:0; border-bottom:8px solid var(--bg);}
+  .cover-hero{
+    background:linear-gradient(150deg,#4f86c6 0%,#5b4b9e 55%,#3d2a66 100%);
+    color:#fff; padding:40px 22px 34px; text-align:center;
+  }
+  .cover-hero .ch{font-size:13px; letter-spacing:3px; opacity:.9; font-weight:700;}
+  .cover-hero .eng{font-size:11px; letter-spacing:4px; opacity:.7; font-weight:600; margin-top:3px;}
+  .cover-hero .theme{font-size:32px; font-weight:900; margin:16px 0 4px; letter-spacing:-1px;}
+  .cover-hero .obey{font-size:14px; opacity:.9; font-weight:600; letter-spacing:2px;}
+  .cover-hero .meta{font-size:13px; opacity:.88; margin-top:14px;}
+  .cover-hero .seal{display:inline-block; margin-top:16px; padding:5px 14px;
+    border:1px solid rgba(255,255,255,.5); border-radius:20px; font-size:12px; font-weight:700;}
+  .cover-meta{padding:16px;}
+  .verse-card{
+    background:var(--primary-light); border:1px solid #ddd0ef; border-radius:12px;
+    padding:14px 16px; margin-top:4px;
+  }
+  .verse-card .win{font-size:16px; font-weight:800; color:var(--primary-dark);}
+  .verse-card p{font-size:14.5px; margin-top:8px; color:#3a3147; line-height:1.7;}
+  .verse-card .hl-w{color:var(--accent); font-weight:800;}
+  .info-line{display:flex; gap:8px; font-size:13.5px; padding:5px 0; border-bottom:1px dashed var(--line);}
+  .info-line:last-child{border-bottom:none;}
+  .info-line .k{flex:0 0 64px; color:var(--primary-dark); font-weight:700;}
+  .info-line .v{flex:1 1 auto; color:var(--sub);}
+
+  .order{width:100%; border-collapse:collapse;}
+  .order tr{border-bottom:1px solid var(--line);}
+  .order th{
+    text-align:left; vertical-align:top; white-space:nowrap;
+    color:var(--primary-dark); font-weight:700; font-size:14.5px;
+    padding:9px 10px 9px 0; width:92px;
+  }
+  .order td{padding:9px 0; font-size:14.5px; vertical-align:top;}
+  .role{display:block; color:var(--sub); font-size:12.5px; margin-top:2px;}
+  .stand{color:#c0392b; font-weight:700;}
+  .legend{font-size:12.5px; color:var(--sub); margin-top:10px;}
+
+  .ref{color:var(--link); font-weight:700; cursor:pointer; border-bottom:1px dashed var(--link); padding-bottom:1px;}
+  .hymn{display:inline-block; background:var(--primary-light); color:var(--primary-dark);
+    border:1px solid #ddd0ef; border-radius:6px; padding:0 7px; font-weight:700; cursor:pointer; font-size:13.5px;}
+
+  .table-wrap{margin:0 -16px;}
+  .swipe-hint{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    font-size:12px; color:var(--accent); font-weight:700; margin:0 16px 7px;
+  }
+  .swipe-hint .ar{animation:swipe 1.4s ease-in-out infinite;}
+  @keyframes swipe{0%,100%{transform:translateX(0);opacity:.5;}50%{transform:translateX(4px);opacity:1;}}
+  .scrollx{
+    overflow-x:auto; -webkit-overflow-scrolling:touch; padding:0 16px 4px;
+    scrollbar-width:thin;
+  }
+  .scrollx::-webkit-scrollbar{height:7px;}
+  .scrollx::-webkit-scrollbar-thumb{background:#cbbfe0; border-radius:4px;}
+  table.grid{border-collapse:collapse; font-size:13.5px;}
+  table.grid th, table.grid td{border:1px solid var(--line); padding:8px 11px; text-align:center;}
+  table.grid thead th{background:var(--primary-light); color:var(--primary-dark); font-weight:700;}
+  table.wide{width:max-content; min-width:100%;}
+  table.wide th, table.wide td{white-space:nowrap;}
+  table.wide td.l{text-align:left;}
+
+  .block{margin-bottom:16px;}
+  .block h4{font-size:15px; color:var(--primary-dark); margin-bottom:6px; font-weight:700;}
+  .news-item{padding:10px 0; border-bottom:1px dashed var(--line);}
+  .news-item:last-child{border-bottom:none;}
+  .news-item .t{font-weight:700;}
+  .kv{color:var(--sub); font-size:13.5px;}
+  .callout{
+    background:#faf8fd; border:1px solid #e3d9f2; border-left:4px solid var(--primary);
+    border-radius:8px; padding:12px 14px; margin:10px 0;
+  }
+  .callout .ct{font-weight:800; color:var(--primary-dark); margin-bottom:4px;}
+
+  /* 교육부서 카드 */
+  .dept{display:grid; gap:10px;}
+  .dept .c{border:1px solid var(--line); border-radius:10px; padding:13px 14px; background:#fff;}
+  .dept .c h4{color:var(--primary-dark); font-size:15.5px; margin-bottom:6px;}
+  .dept .c .tag{display:inline-block; font-size:11.5px; font-weight:700; color:#fff;
+    background:var(--accent); border-radius:5px; padding:1px 8px; margin-left:6px; vertical-align:middle;}
+  .dept .c .row{font-size:13.5px; padding:2px 0;}
+  .dept .c .row b{color:var(--sub); font-weight:700; display:inline-block; min-width:54px;}
+
+  .sermon h3{font-size:22px; text-align:center; font-weight:800; margin:6px 0 2px; color:var(--primary-dark);}
+  .sermon .bref{text-align:center; color:var(--sub); margin-bottom:14px; font-size:14px;}
+  .sermon .quote{background:var(--primary-light); border-radius:8px; padding:9px 12px; font-size:14px; margin:6px 0; color:#3a3147;}
+  .sermon p{margin:8px 0; text-align:justify;}
+  .yt{display:inline-flex; align-items:center; gap:6px; background:#ff0000; color:#fff;
+      text-decoration:none; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer;}
+
+  /* 55주년 타임라인 */
+  .tl{list-style:none; margin-top:6px;}
+  .tl li{position:relative; padding:0 0 16px 22px; border-left:2px solid #ddd0ef;}
+  .tl li:last-child{border-left-color:transparent;}
+  .tl li::before{content:""; position:absolute; left:-7px; top:2px; width:12px; height:12px;
+    border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 0 0 2px #ddd0ef;}
+  .tl .yr{font-weight:800; color:var(--primary-dark); font-size:14.5px;}
+  .tl .ds{font-size:13.5px; color:var(--sub);}
+  .ev{display:flex; gap:10px; padding:11px 0; border-bottom:1px dashed var(--line);}
+  .ev:last-child{border-bottom:none;}
+  .ev .ico{flex:0 0 auto; font-size:22px;}
+  .ev .b .t{font-weight:800; color:var(--primary-dark);}
+  .ev .b .p{font-size:13.5px; color:var(--sub); margin-top:2px;}
+
+  .note-area{width:100%; min-height:180px; border:1px solid var(--line); border-radius:10px;
+    padding:12px; font-size:15px; line-height:1.8; resize:vertical; font-family:inherit;
+    background:repeating-linear-gradient(#fff,#fff 31px,#eef2f6 32px);}
+  .note-bar{display:flex; gap:8px; margin-top:8px;}
+  .note-bar button{flex:1; padding:9px; border:none; border-radius:8px; font-weight:700; cursor:pointer;}
+  .note-save{background:var(--primary); color:#fff;}
+  .note-clear{background:#eef2f6; color:var(--sub);}
+  .saved-tag{font-size:12px; color:#2e9e5b; margin-top:6px; height:16px;}
+
+  .acct{background:#fffaf0; border:1px solid #f0e2c0; border-radius:10px; padding:13px 15px;}
+  .acct .no{font-size:18px; font-weight:900; color:#b8860b; letter-spacing:.3px;}
+  .acct .ex{font-size:13px; color:var(--sub); margin-top:6px;}
+
+  .privacy-ph{border:1.5px dashed #cdc5da; border-radius:12px; padding:24px 18px;
+    text-align:center; background:#faf9fc; color:var(--sub);}
+  .privacy-ph .ico{font-size:30px;}
+  .privacy-ph .pt{font-weight:800; color:var(--primary-dark); margin:8px 0 4px; font-size:15px;}
+  .privacy-ph .ps{font-size:13px; line-height:1.6;}
+
+  footer{padding:22px 16px 30px; text-align:center; color:var(--sub); font-size:12.5px; line-height:1.7;}
+  footer .fch{font-size:15px; font-weight:800; color:var(--primary-dark);}
+
+  .toast{position:fixed; left:50%; bottom:40px; transform:translateX(-50%);
+    background:rgba(40,28,66,.96); color:#fff; padding:11px 18px; border-radius:24px;
+    font-size:14px; z-index:210; opacity:0; transition:opacity .25s; pointer-events:none;
+    max-width:90%; text-align:center;}
+  .toast.on{opacity:1;}
+
+  mark.hl{background:#ffe680; color:inherit; border-radius:2px; padding:0 1px;}
+  mark.hl.on{background:#ff9f1a; color:#fff;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 헤더 -->
+  <header class="top">
+    <div class="top-row">
+      <button class="hamb" aria-label="메뉴 열기" onclick="toggleDrawer(true)"><span></span><span></span><span></span></button>
+      <div class="ttl">
+        <div class="ch-name">기둥교회</div>
+        <div class="ch-sub">기독교대한감리회 · PILLAR CHURCH</div>
+      </div>
+      <div class="issue"><b>제55권 26호</b><br>2026. 6. 28.</div>
+    </div>
+    <div class="toolbar">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="주보 내용 검색…" autocomplete="off"
+               oninput="doSearch(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();nextMatch(event.shiftKey?-1:1);}">
+        <button class="clr" onclick="clearSearch()" aria-label="검색 지우기">×</button>
+      </div>
+      <div class="tb-row2">
+        <div class="search-nav">
+          <button onclick="nextMatch(-1)" aria-label="이전">‹</button>
+          <span class="cnt" id="searchInfo">검색 결과 이동</span>
+          <button onclick="nextMatch(1)" aria-label="다음">›</button>
+        </div>
+        <div class="fontctl">
+          <button onclick="setFont(-1)">가−</button>
+          <button onclick="setFont(0)">가</button>
+          <button onclick="setFont(1)">가＋</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 드로어 메뉴 -->
+  <div class="scrim" id="scrim" onclick="toggleDrawer(false)"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div>
+        <div class="dt">주보 목차</div>
+        <div class="ds">2026. 6. 28. · 제55권 26호</div>
+      </div>
+      <button class="x" onclick="toggleDrawer(false)" aria-label="닫기">×</button>
+    </div>
+    <nav id="drawerNav">
+      <a href="#cover" onclick="go(event)"><span class="n">1</span>표지</a>
+      <a href="#worship-info" onclick="go(event)"><span class="n">2</span>예배 안내</a>
+      <a href="#sunday" onclick="go(event)"><span class="n">3</span>주일낮예배 순서</a>
+      <a href="#evening" onclick="go(event)"><span class="n">4</span>저녁·새벽·금요 기도회</a>
+      <a href="#education" onclick="go(event)"><span class="n">5</span>교육부서 예배</a>
+      <a href="#miracle" onclick="go(event)"><span class="n">6</span>미라클 기둥교회(청년부)</a>
+      <a href="#word" onclick="go(event)"><span class="n">7</span>생명의 말씀</a>
+      <a href="#note" onclick="go(event)"><span class="n">8</span>설교 노트</a>
+      <a href="#news" onclick="go(event)"><span class="n">9</span>교회 소식</a>
+      <a href="#schedule" onclick="go(event)"><span class="n">10</span>교회 일정</a>
+      <a href="#anniv" onclick="go(event)"><span class="n">11</span>창립 55주년 기념</a>
+      <a href="#missions" onclick="go(event)"><span class="n">12</span>세우고 돕는 지교회</a>
+      <a href="#serve" onclick="go(event)"><span class="n">13</span>섬기는 이들</a>
+      <a href="#offering" onclick="go(event)"><span class="n">14</span>온라인 헌금 안내</a>
+    </nav>
+  </aside>
+
+  <div id="content">
+
+  <!-- 1. 표지 -->
+  <section id="cover" class="cover">
+    <div class="cover-hero">
+      <div class="ch">기 둥 교 회</div>
+      <div class="eng">PILLAR CHURCH</div>
+      <div class="theme">주의 크신 은혜라</div>
+      <div class="obey">믿고 순종 · Trust &amp; Obey</div>
+      <div class="meta">2026. 6. 28. 주일 · 제55권 26호</div>
+      <div class="seal">창립 55주년 기념주일을 앞두고</div>
+    </div>
+    <div class="cover-meta">
+      <div class="verse-card">
+        <div class="win">표어 · 하나님 마음에 합한 교회 <span style="font-size:12.5px;font-weight:600;">(행 13:22)</span></div>
+        <p>하나님 마음에 합한 교회가 되기 위해 힘쓰는
+        <span class="hl-w">순결한, 단결한, 즐거운</span> 그리고
+        <span class="hl-w">영향력 있는, 생명력 있는, 부흥하는</span> 교회</p>
+      </div>
+      <div style="margin-top:14px;">
+        <div class="info-line"><div class="k">담임목사</div><div class="v">고신일 (Bishop SHIN IL KO, Senior Pastor)</div></div>
+        <div class="info-line"><div class="k">교회창립</div><div class="v">1971. 7. 1.</div></div>
+        <div class="info-line"><div class="k">주소</div><div class="v">14578 부천시 원미구 부흥로 353</div></div>
+        <div class="info-line"><div class="k">전화</div><div class="v">032-612-9211</div></div>
+        <div class="info-line"><div class="k">홈페이지</div><div class="v">www.pillar.or.kr</div></div>
+      </div>
+      <div class="callout" style="margin-top:14px;">
+        <div class="ct">예배 생방송 안내</div>
+        <b>www.pillar.or.kr</b> 과 유튜브 채널에서 <b>&lt;주일 1~3부, 저녁예배&gt;</b>
+        생방송 중계 및 영상을 보실 수 있습니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 예배 안내 -->
+  <section id="worship-info">
+    <div class="sec-title">예배 안내</div>
+    <div class="table-wrap">
+      <div class="swipe-hint"><span class="ar">↔</span> 좌우로 밀어 전체 보기</div>
+      <div class="scrollx">
+        <table class="grid wide">
+          <thead><tr><th>구분</th><th>시간</th><th>장소</th></tr></thead>
+          <tbody>
+            <tr><td class="l">새벽기도회</td><td>오전 5:30 <span class="kv">(월~토 / 주일 개인기도)</span></td><td>본관 3층 대예배실</td></tr>
+            <tr><td class="l">주일낮 1부</td><td>오전 6:45</td><td>본관 3층 대예배실</td></tr>
+            <tr><td class="l">주일낮 2부</td><td>오전 8:45</td><td>본관 3층 대예배실</td></tr>
+            <tr><td class="l">주일낮 3부</td><td>오전 10:45</td><td>본관 3층 대예배실</td></tr>
+            <tr><td class="l">주일저녁</td><td>오후 6:45</td><td>본관 3층 대예배실</td></tr>
+            <tr><td class="l">금요심야기도회</td><td>오후 8:45</td><td>교육관 3층 가나실</td></tr>
+            <tr><td class="l">PG 유아부</td><td>주일 오전 10:45</td><td>교육관 2층 유아부실</td></tr>
+            <tr><td class="l">HG 아동부</td><td>주일 오전 10:45</td><td>교육관 2층 아동부실</td></tr>
+            <tr><td class="l">RG 중고등부</td><td>주일 오전 10:45</td><td>부흥관 2층 예배실</td></tr>
+            <tr><td class="l">미라클기둥교회<br>(청년부)</td><td>주일 오후 1:30</td><td>교육관 3층 가나실</td></tr>
+            <tr><td class="l">SG 주일저녁<br>어린이 예배</td><td>주일 오후 6:45</td><td>교육관 2층 유·아동부실</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="sec-note" style="margin-top:10px;">※ 주일 1~3부 예배는 본관 3층 대예배실과 가나실에서 함께 드립니다. 생방송 중계됩니다.</div>
+  </section>
+
+  <!-- 3. 주일낮예배 순서 -->
+  <section id="sunday">
+    <div class="sec-title">주일낮예배 순서</div>
+    <div class="sec-note">①부 06:45 · ②부 08:45 · ③부 10:45 / 대예배실, 가나실 · LIVE 인터넷 생중계(홈페이지 &amp; 유튜브)</div>
+    <table class="order">
+      <tr><th>신앙고백</th><td>사도신경 <span class="role">다 같이</span></td></tr>
+      <tr><th>경배와 찬양</th><td>보케르 찬양팀</td></tr>
+      <tr><th>기도·주기도문</th><td>인도자 <span class="role">다 같이</span></td></tr>
+      <tr><th>교회소식</th><td>광고 · 환영 · 축하</td></tr>
+      <tr><th>찬송·헌금</th><td><span class="hymn" onclick="hymn('302장')">302장</span> 헌금하며</td></tr>
+      <tr><th>성경봉독</th><td><span class="ref" onclick="bible('에베소서 2:19~22')">에베소서 2:19~22</span><span class="role">이동원 장로</span></td></tr>
+      <tr><th>찬양</th><td>① 가나안 ② 호산나 ③ 할렐루야</td></tr>
+      <tr><th>봉헌·목회기도</th><td>담임목사</td></tr>
+      <tr><th>설교</th><td>「주의 크신 은혜라」<span class="role">담임목사</span></td></tr>
+      <tr><th>축도</th><td>담임목사</td></tr>
+    </table>
+    <div class="callout" style="margin-top:14px;">
+      <div class="ct">예배 섬김</div>
+      · 나레이터 : ① 이소진 권사 ② 박은숙 권사 ③ 최미정 집사<br>
+      · 다음주 성경봉독 : 성학제 장로<br>
+      · 헌금시간 이후에 오신 분들 : 예배실 입구에 &lt;헌금함&gt;이 있습니다.
+    </div>
+  </section>
+
+  <!-- 4. 저녁·새벽·금요 기도회 -->
+  <section id="evening">
+    <div class="sec-title">저녁 · 새벽 · 금요 기도회</div>
+    <div class="block">
+      <h4>주일저녁예배 <span class="kv">오후 6:45 / 대예배실</span></h4>
+      <table class="order">
+        <tr><th>찬양단</th><td>T&amp;O 찬양단</td></tr>
+        <tr><th>찬양</th><td>시온찬양대</td></tr>
+        <tr><th>성경</th><td><span class="ref" onclick="bible('에베소서 4:11~16')">에베소서 4:11~16</span></td></tr>
+        <tr><th>제목</th><td>사랑 안에서</td></tr>
+        <tr><th>설교</th><td>권요한 목사</td></tr>
+      </table>
+      <div class="sec-note" style="margin-top:6px;">SG 주일 저녁 어린이 예배 : 6:45 / 2층 PG·HG실</div>
+    </div>
+    <div class="callout">
+      <div class="ct">새벽기도회 <span class="kv">05:30 / 대예배실</span></div>
+      월~토 : 예배 및 기도 &nbsp;·&nbsp; 주일 : 개인기도
+    </div>
+    <div class="callout">
+      <div class="ct">금요심야기도회 <span class="kv">밤 8:45 / 가나실</span></div>
+      샤우트 찬양팀 &nbsp;·&nbsp; 찬양 : 샬롬찬양대
+    </div>
+  </section>
+
+  <!-- 5. 교육부서 예배 -->
+  <section id="education">
+    <div class="sec-title">교육부서 예배</div>
+    <div class="sec-note">주일 오전 10:45 · 각 부서별 예배실</div>
+    <div class="dept">
+      <div class="c">
+        <h4>PG 유아부 <span class="tag">2층 유아부실</span></h4>
+        <div class="row"><b>성경</b> <span class="ref" onclick="bible('고린도전서 8:6')">고린도전서 8:6</span></div>
+        <div class="row"><b>제목</b> 알록달록 피어났어요</div>
+        <div class="row"><b>설교</b> 이호영 목사</div>
+        <div class="row"><b>활동</b> 도자기 공예 활동</div>
+      </div>
+      <div class="c">
+        <h4>HG 아동부 <span class="tag">2층 아동부실</span></h4>
+        <div class="row"><b>성경</b> <span class="ref" onclick="bible('사무엘상 12:1~5')">사무엘상 12:1~5</span></div>
+        <div class="row"><b>제목</b> 마지막 말</div>
+        <div class="row"><b>설교</b> 권요한 목사</div>
+        <div class="row"><b>활동</b> 생일 파티</div>
+      </div>
+      <div class="c">
+        <h4>RG 중고등부 <span class="tag">부흥관 2층</span></h4>
+        <div class="row"><b>성경</b> <span class="ref" onclick="bible('마태복음 9:35~38')">마태복음 9:35~38</span></div>
+        <div class="row"><b>제목</b> 그냥 지나치지 않는 마음</div>
+        <div class="row"><b>설교</b> 유승리 목사</div>
+        <div class="row"><b>활동</b> 소그룹 모임</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 미라클 기둥교회 -->
+  <section id="miracle">
+    <div class="sec-title">미라클 기둥교회 · 청년부</div>
+    <div class="sec-note">주일 오후 1:30 / 3층 가나실 · LIVE 유튜브 생중계 · 담임 안원섭 목사</div>
+    <table class="order">
+      <tr><th>신앙고백</th><td>사도신경 <span class="role">다함께</span></td></tr>
+      <tr><th>찬양</th><td>다이브 찬양팀 <span class="role">인도 : 조병찬 집사</span>
+        왕 되신 주께 감사하세 / Thank you Lord / 나를 세상의 빛으로</td></tr>
+      <tr><th>기도</th><td>진현서 필라장</td></tr>
+      <tr><th>찬양</th><td>영원을 살아가네 <span class="role">01 worship</span></td></tr>
+      <tr><th>미라클소식</th><td>김용기 회장</td></tr>
+      <tr><th>Blessing Time</th><td>다함께</td></tr>
+      <tr><th>성경봉독</th><td><span class="ref" onclick="bible('창세기 20:14~18')">창세기 20:14~18</span></td></tr>
+      <tr><th>설교</th><td>「돌려보내고 (Checklist 3)」<span class="role">안원섭 목사</span></td></tr>
+      <tr><th>축도</th><td>안원섭 목사</td></tr>
+    </table>
+
+    <div class="block" style="margin-top:14px;">
+      <h4>미라클 소식</h4>
+      <div class="news-item"><div class="t">1. MG-1 종강파티</div><div class="kv">6/30(화)~7/1(수) · 안산 대부도 펜션단지 / 집합 : 6/30 오후 3시, 1층 다소</div></div>
+      <div class="news-item"><div class="t">2. 2026 Go for God 단기선교팀 모임</div><div class="kv">7/4(토) 오후 6시 · 2층 가족기도실</div></div>
+      <div class="news-item"><div class="t">3. 기둥교회 창립 55주년 예배</div><div class="kv">7/5 오전 10:45 · 특송곡 Thank you Lord ※ 1:30 miracle worship은 모이지 않습니다.</div></div>
+      <div class="news-item"><div class="t">4. 미라클 기둥교회 여름수련회</div><div class="kv">7/17(금)~19(주일) · 신청 : QR코드 온라인 신청</div></div>
+    </div>
+    <div class="callout">
+      ★ 7월 이음예배 : 7/29(수) 저녁 9시<br>
+      ★ 온라인 헌금 계좌 : KB국민 210701-04-539328 <span class="kv">(예금주 : 미라클 기둥교회)</span>
+    </div>
+    <div class="sec-note">미라클 기둥교회는 청년중심으로 모이는 공유교회로, &lt;새벽기도&gt; &lt;주일낮예배&gt; &lt;주일밤예배&gt; &lt;금요심야기도회&gt;는 기둥교회와 함께 합니다. (소속목사 : 신현식 원로)</div>
+  </section>
+
+  <!-- 7. 생명의 말씀 -->
+  <section id="word" class="sermon">
+    <div class="sec-title">생명의 말씀</div>
+    <div class="sec-note">기둥교회 고신일 담임목사 · 주일 설교</div>
+    <a class="yt" onclick="toast('▶ www.pillar.or.kr · 유튜브 「기둥교회」 채널에서 설교 영상을 보실 수 있습니다')">▶ 설교 유튜브 영상 보기</a>
+    <h3>주의 크신 은혜라</h3>
+    <div class="bref">에베소서 2:19~22</div>
+    <div class="quote">엡 2:19, "그러므로 이제부터 너희는 외인도 아니요 나그네도 아니요 오직 성도들과 동일한 시민이요 하나님의 권속이라"</div>
+    <p>본문은 그리스도 안에서 외인과 나그네 되었던 우리가 하나님의 권속, 곧 한 가족이 되었음을 선포합니다. 사도들과 선지자들의 터 위에, 그리스도 예수께서 친히 모퉁잇돌이 되시어 우리를 하나님이 거하실 처소로 세워 가십니다.</p>
+    <p>1971년 7월 1일, 작은 소사중앙교회로 시작하여 지금까지 인도하신 하나님의 손길을 돌아봅니다. 낮에는 구름기둥으로, 밤에는 불기둥으로 기둥교회를 여기까지 인도하신 그 크신 은혜를 기억하며, 창립 55주년을 맞아 다시 한번 믿고 순종하는 교회로 세워지기를 소망합니다.</p>
+    <div class="quote" style="margin-top:12px;">※ 설교 전문과 묵상 자료는 「월간기둥 7월호」와 유튜브 「기둥교회」 채널을 참고하시기 바랍니다.</div>
+  </section>
+
+  <!-- 8. 설교 노트 -->
+  <section id="note">
+    <div class="sec-title">설교 노트</div>
+    <div class="sec-note">은혜받은 말씀을 자유롭게 기록하세요. (이 기기에 자동 저장됩니다)</div>
+    <textarea id="noteArea" class="note-area" placeholder="오늘 받은 은혜와 결단을 적어보세요…"></textarea>
+    <div class="note-bar">
+      <button class="note-save" onclick="saveNote()">저장</button>
+      <button class="note-clear" onclick="clearNote()">지우기</button>
+    </div>
+    <div id="savedTag" class="saved-tag"></div>
+  </section>
+
+  <!-- 9. 교회 소식 -->
+  <section id="news">
+    <div class="sec-title">교회 소식</div>
+    <div class="sec-note">※ 목요일 오후 3시에 정리된 내용입니다.</div>
+
+    <div class="callout">
+      <div class="ct">새가족 — 새로 등록신청하신 분을 소개합니다</div>
+      2026-46 김은지 성도 <span class="kv">(45세 여)</span>
+    </div>
+
+    <div class="block">
+      <h4>▶ 모임 · 교육</h4>
+      <div class="news-item"><div class="t">1. 기획위원회</div><div class="kv">&lt;주일낮 ①~③부, 주일밤, 금요심야&gt; 예배 전후 (안건 있을 때)</div></div>
+      <div class="news-item"><div class="t">2. 속회지도자 교육</div><div class="kv">3부 예배 후 · 2층 회의실 (공과 지참)</div></div>
+      <div class="news-item"><div class="t">3. PBMT 조찬기도회</div><div class="kv">7/1(수) 오전 6:10 · 2층 찬양대연습실 / 사업장을 운영하시는 분들을 위한 기도의 자리</div></div>
+      <div class="news-item"><div class="t">4. 월간기둥 7월호</div><div class="kv">예배 및 묵상 자료로 활용하세요.</div></div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">감사헌금봉투 안내</div>
+      7월 5일은 <b>맥추감사주일</b>이며 <b>창립 55주년 기념주일</b>입니다. 지난 6개월을 인도하신 하나님께,
+      또한 55년간 함께 하신 하나님께 감사의 마음을 담아 정성껏 예물을 준비하시기 바랍니다.
+    </div>
+
+    <div class="block">
+      <h4>▶ 알림</h4>
+      <div class="news-item"><div class="t">모잠비크에 건축될 지교회</div><div class="kv">곤돌라기둥교회 · 자니베기둥교회 · 시우리기둥교회의 건축과 부흥을 위해서 기도해 주시길 바랍니다.</div></div>
+      <div class="news-item"><div class="t">개업</div><div class="kv">장호영 권사, 김남금 권사 「기둥 스토어」 개업 (온라인)</div></div>
+      <div class="news-item"><div class="t">성경통독</div><div class="kv">서영순 권사(42독) · 이인자 집사(1독) · 이정희 권사(13독) · 홍경춘 권사(5독)</div></div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">「창립 55주년 기념」 주일 안내</div>
+      · &lt;감사 예배&gt; 7/5(주일) 오전 10:45 (3부 예배)<br>
+      · &lt;찬양의 밤&gt; 7/5(주일) 오후 6:45 (저녁예배)<br>
+      <span class="kv">※ 창립기념 관련 이벤트는 아래 「창립 55주년 기념」에서 확인하세요.</span>
+    </div>
+
+    <div class="callout">
+      <div class="ct">기도하는 행복한 삶</div>
+      · <b>개인기도</b> : [본관 3층 대예배실] 새벽 5시 ~ 밤 9시 (기도하러 오시는 분들을 위해 열려 있습니다)<br>
+      · <b>가족기도</b> : [본관 2층 가족기도실] 밤 9시 이전 편한 시간
+    </div>
+  </section>
+
+  <!-- 10. 교회 일정 -->
+  <section id="schedule">
+    <div class="sec-title">교회 일정</div>
+    <div class="table-wrap">
+      <div class="scrollx">
+        <table class="grid wide">
+          <thead><tr><th>일정</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td>7. 5 (주일)</td><td class="l">맥추감사 &amp; 창립 55주년 기념주일 <span class="kv">(저녁 : 창립 55주년 기념 찬양잔치)</span></td></tr>
+            <tr><td>7. 7(화)~7.16(목)</td><td class="l">모잠비크 지교회 봉헌식</td></tr>
+            <tr><td>7.17(금)~7.19(주일)</td><td class="l">미라클기둥 수련회</td></tr>
+            <tr><td>7.19(주일) · 25(토) · 26(주일)</td><td class="l">PG 유아부 성경학교</td></tr>
+            <tr><td>7.27(월)~7.29(수)</td><td class="l">RG 중고등부 수련회</td></tr>
+            <tr><td>8. 3(월)~8.13(목)</td><td class="l">모잠비크 단기선교 (미라클 기둥)</td></tr>
+            <tr><td>8. 7(금)~9(주일)</td><td class="l">HG 아동부 성경학교</td></tr>
+            <tr><td>8.17(월)~18(화)</td><td class="l">어르신 성경학교</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. 창립 55주년 -->
+  <section id="anniv">
+    <div class="sec-title">창립 55주년 기념</div>
+    <div class="cover-hero" style="background:linear-gradient(150deg,#c79a3a,#a87b26); border-radius:12px; padding:24px 20px;">
+      <div class="theme" style="font-size:26px; margin:0;">주의 크신 은혜라</div>
+      <div class="meta" style="opacity:.95;">함께 걸어온 55년, 은혜로 세워온 우리 교회 · 2026. 7. 5.(주일)</div>
+    </div>
+    <ul class="tl" style="margin-top:18px;">
+      <li><div class="yr">1971. 7. 1.</div><div class="ds">소사중앙교회 창립</div></li>
+      <li><div class="yr">1980 ~ 1996</div><div class="ds">제2성전 · 부천중앙교회</div></li>
+      <li><div class="yr">1997 ~ 2019</div><div class="ds">제3성전 · 기둥교회</div></li>
+      <li><div class="yr">2019 ~ 현재</div><div class="ds">제4성전 · 기둥교회</div></li>
+    </ul>
+
+    <div class="block" style="margin-top:8px;">
+      <h4>기둥교회 창립 55주년 기념 이벤트</h4>
+      <div class="ev">
+        <div class="ico">🎈</div>
+        <div class="b"><div class="t">교회 역사 사진 전시회 <span class="kv">· 1층 로비 (7/5 전시)</span></div>
+          <div class="p">낮에는 구름기둥으로, 밤에는 불기둥으로 기둥교회를 여기까지 인도하신 하나님의 은혜와 손길을 사진을 통해 함께 돌아보시기 바랍니다.</div></div>
+      </div>
+      <div class="ev">
+        <div class="ico">🎟️</div>
+        <div class="b"><div class="t">기둥교회 4행시 대회 <span class="kv">· 우수작 선물 증정</span></div>
+          <div class="p">'기둥교회'로 재미있고 감동적인 4행시를 지어보세요. QR코드를 촬영하여 온라인으로 작성 후, 교구 목사에게 문자메시지로 전송.</div></div>
+      </div>
+      <div class="ev">
+        <div class="ico">🎏</div>
+        <div class="b"><div class="t">감사 &amp; 기도 나무 <span class="kv">· 3층 로비</span></div>
+          <div class="p">교회를 향한 감사의 마음과 기도의 제목을 적어주세요. 성도들의 감사와 기도가 아름다운 열매가 되어 은혜의 나무를 풍성하게 채워가길 바랍니다.</div></div>
+      </div>
+      <div class="ev">
+        <div class="ico">🎥</div>
+        <div class="b"><div class="t">기둥 사진 콘테스트 <span class="kv">· 우수작 선물 증정</span></div>
+          <div class="p">기둥교회에서의 추억이 담긴 사진, 성도들과 함께한 즐겁고 뜻깊은 순간들을 보내 주세요. 교구 목사에게 문자메시지 또는 직접 전달.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. 세우고 돕는 지교회 -->
+  <section id="missions">
+    <div class="sec-title">우리가 세우고 돕는 지교회</div>
+    <div class="sec-note">세계 모든 족속을 향하여 — "너희는 가서 모든 민족을 제자로 삼아" (마 28:19) · 총 40개 지교회</div>
+    <div class="table-wrap">
+      <div class="swipe-hint"><span class="ar">↔</span> 좌우로 밀어 전체 보기</div>
+      <div class="scrollx">
+        <table class="grid wide">
+          <thead><tr><th>No</th><th>교회</th><th>지역</th><th>설립</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td class="l">송내중앙교회</td><td>부천</td><td>1979. 8.</td></tr>
+            <tr><td>2</td><td class="l">일신중앙교회</td><td>인천</td><td>1981. 12.</td></tr>
+            <tr><td>3</td><td class="l">시온성교회</td><td>부천</td><td>1982. 11. 14.</td></tr>
+            <tr><td>4</td><td class="l">덕평교회</td><td>충북</td><td>1988. 6. 13.</td></tr>
+            <tr><td>5</td><td class="l">청주기둥교회</td><td>충북</td><td>1988. 6. 21.</td></tr>
+            <tr><td>6</td><td class="l">부천농아교회</td><td>부천</td><td>1990. 2. 4.</td></tr>
+            <tr><td>7</td><td class="l">델에스떼교회</td><td>파라구아이</td><td>1990. 4.</td></tr>
+            <tr><td>8</td><td class="l">풍운교회</td><td>강원</td><td>1990. 6.</td></tr>
+            <tr><td>9</td><td class="l">생기교회</td><td>수원</td><td>1991. 3. 21.</td></tr>
+            <tr><td>10</td><td class="l">복사골 제1교회</td><td>말레이시아</td><td>1991. 8. 9.</td></tr>
+            <tr><td>11</td><td class="l">복사골 제2교회</td><td>말레이시아</td><td>1992. 5. 17.</td></tr>
+            <tr><td>12</td><td class="l">강화기둥교회</td><td>강화</td><td>1993. 6.</td></tr>
+            <tr><td>13</td><td class="l">필리핀기둥교회</td><td>필리핀</td><td>1996. 10. 13.</td></tr>
+            <tr><td>14</td><td class="l">밴쿠버기둥교회</td><td>미국</td><td>2006. 1. 22.</td></tr>
+            <tr><td>14-①</td><td class="l">마난디알 기둥교회</td><td>멕시코</td><td>2024. 12.</td></tr>
+            <tr><td>15</td><td class="l">돈도기둥교회</td><td>모잠비크</td><td>2009. 7.</td></tr>
+            <tr><td>16</td><td class="l">메모기둥교회</td><td>모잠비크</td><td>2010. 7.</td></tr>
+            <tr><td>17</td><td class="l">망가기둥교회</td><td>모잠비크</td><td>2010. 7.</td></tr>
+            <tr><td>18</td><td class="l">아이티기둥교회</td><td>아이티</td><td>2011. 5.</td></tr>
+            <tr><td>19</td><td class="l">세라미까기둥교회</td><td>모잠비크</td><td>2011. 7.</td></tr>
+            <tr><td>20</td><td class="l">모꾸바기둥교회</td><td>모잠비크</td><td>2011. 7.</td></tr>
+            <tr><td>21</td><td class="l">신징기르기둥교회</td><td>모잠비크</td><td>2013. 7.</td></tr>
+            <tr><td>22</td><td class="l">보뀌소기둥교회</td><td>모잠비크</td><td>2014. 8.</td></tr>
+            <tr><td>23</td><td class="l">볼라제기둥교회</td><td>모잠비크</td><td>2015. 7.</td></tr>
+            <tr><td>24</td><td class="l">키에부라 야차 새생명기둥교회</td><td>쿠바</td><td>2016. 5.</td></tr>
+            <tr><td>25</td><td class="l">마리엘 새생명기둥교회</td><td>쿠바</td><td>2016. 5.</td></tr>
+            <tr><td>26</td><td class="l">나라송가기둥교회</td><td>모잠비크</td><td>2016. 8.</td></tr>
+            <tr><td>27</td><td class="l">보볼레기둥교회</td><td>모잠비크</td><td>2017. 8.</td></tr>
+            <tr><td>28</td><td class="l">고롱고자기둥교회</td><td>모잠비크</td><td>2018. 8.</td></tr>
+            <tr><td>29</td><td class="l">주님께 성결 기둥교회</td><td>쿠바</td><td>2019. 2.</td></tr>
+            <tr><td>30</td><td class="l">하나님의 사랑 기둥교회</td><td>쿠바</td><td>2019. 2.</td></tr>
+            <tr><td>31</td><td class="l">마구디기둥교회</td><td>모잠비크</td><td>2019. 7.</td></tr>
+            <tr><td>32</td><td class="l">NY PILLAR CHURCH (EM)</td><td>미국</td><td>2019. 12.</td></tr>
+            <tr><td>32-①</td><td class="l">나미에삐 뉴욕기둥교회</td><td>모잠비크</td><td>2024. 7.</td></tr>
+            <tr><td>33</td><td class="l">마간다기둥교회</td><td>모잠비크</td><td>2023. 7.</td></tr>
+            <tr><td>34</td><td class="l">시보에니기둥교회</td><td>모잠비크</td><td>2023. 7.</td></tr>
+            <tr><td>35</td><td class="l">나마탄다기둥교회</td><td>모잠비크</td><td>2023. 7.</td></tr>
+            <tr><td>36</td><td class="l">나마레보기둥교회</td><td>모잠비크</td><td>2023. 7.</td></tr>
+            <tr><td>37</td><td class="l">미라클기둥교회</td><td>부천</td><td>2024. 7.</td></tr>
+            <tr><td>38</td><td class="l">곤돌라기둥교회</td><td>모잠비크</td><td>2026. 7. <span class="kv">봉헌예정</span></td></tr>
+            <tr><td>39</td><td class="l">자니베기둥교회</td><td>모잠비크</td><td>2026. 7. <span class="kv">봉헌예정</span></td></tr>
+            <tr><td>40</td><td class="l">시우리기둥교회</td><td>모잠비크</td><td>2026. 11. <span class="kv">봉헌예정</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. 섬기는 이들 -->
+  <section id="serve">
+    <div class="sec-title">섬기는 이들 · 교역자</div>
+    <table class="order">
+      <tr><th>담임목사</th><td>고신일</td></tr>
+      <tr><th>기획목사</th><td>김희중 <span class="kv">(기획·PBMT·세가족)</span> / 신요성 <span class="kv">(미디어선교·미라클기둥)</span> / 유승리 <span class="kv">(IGG·RG중고등·대비다)</span></td></tr>
+      <tr><th>교구목사</th><td>최한성 <span class="kv">(4교구)</span> / 백남훈 <span class="kv">(3교구)</span> / 권요한 <span class="kv">(1교구)</span> / 이호영 <span class="kv">(2교구)</span></td></tr>
+      <tr><th>소속목사</th><td>이덕수 <span class="kv">(소사노인복지관 관장)</span> / 조영철 <span class="kv">(일본선교사)</span> / 김광희 <span class="kv">(모잠비크선교사)</span></td></tr>
+      <tr><th>소속전도사</th><td>이애윤 <span class="kv">(원로)</span></td></tr>
+    </table>
+
+    <div class="block" style="margin-top:16px;">
+      <h4>장로회 · 찬양대</h4>
+      <div class="news-item"><div class="t">장로 (54명)</div><div class="kv">아론 장로회(21명) · 모세 장로회(21명) · 갈렙 장로회(12명)</div></div>
+      <div class="news-item"><div class="t">찬양대·찬양단</div><div class="kv">가나안 · 호산나 · 할렐루야 · 필라오케스트라 · 시온 · 샬롬 · 보케르 · T&amp;O · 샤우트</div></div>
+    </div>
+
+    <div class="privacy-ph" style="margin-top:8px;">
+      <div class="ico">🔒</div>
+      <div class="pt">장로 54명 명단은 원본 주보를 참고해 주세요</div>
+      <div class="ps">개인 명단(아론·모세·갈렙 장로회 전체 명단)과 별지 헌금자 명단은<br>모바일 주보에서는 원본 페이지 이미지로 열람하실 수 있습니다.</div>
+    </div>
+  </section>
+
+  <!-- 14. 온라인 헌금 안내 -->
+  <section id="offering">
+    <div class="sec-title">온라인 헌금 안내</div>
+    <div class="acct">
+      <div class="kv">기둥교회</div>
+      <div class="no">국민은행 210-01-0918-201</div>
+      <div class="ex">
+        온라인으로 입금할 때 &lt;이름&gt;과 &lt;헌금종류&gt;를 기재해 주세요.<br>
+        예) 홍길동십일 · 홍길동감사 · 홍길동선교 · 홍길동건축 · 홍길동일천
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <div class="ct">미라클 기둥교회 (청년부) 헌금</div>
+      국민은행 210701-04-539328 <span class="kv">(예금주 : 미라클 기둥교회)</span>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fch">기둥교회 · PILLAR CHURCH</div>
+    기독교대한감리회 · 담임목사 고신일<br>
+    14578 부천시 원미구 부흥로 353 · Tel. 032-612-9211<br>
+    <a onclick="toast('www.pillar.or.kr · 유튜브 「기둥교회」')" style="color:var(--link);cursor:pointer;">www.pillar.or.kr</a> · YouTube 「기둥교회」<br>
+    <span class="kv">제55권 26호 · 2026. 6. 28.</span>
+  </footer>
+
+  </div><!-- /#content -->
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── 햄버거 드로어 ── */
+  function toggleDrawer(open){
+    document.getElementById('drawer').classList.toggle('on', open);
+    document.getElementById('scrim').classList.toggle('on', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function go(e){ toggleDrawer(false); }
+
+  /* ── 글자 크기 ── */
+  var scales=[0.85, 0.95, 1, 1.12, 1.28, 1.45], zi=2;
+  function applyZoom(){ document.getElementById('content').style.zoom = scales[zi]; }
+  function setFont(d){
+    if(d===0){ zi=2; } else { zi=Math.max(0, Math.min(scales.length-1, zi+d)); }
+    applyZoom();
+    toast('글자 크기 ' + Math.round(scales[zi]*100) + '%');
+  }
+
+  /* ── 토스트 ── */
+  var tt;
+  function toast(msg){
+    var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+    clearTimeout(tt); tt=setTimeout(function(){t.classList.remove('on');},2200);
+  }
+  function bible(ref){ toast('📖 '+ref); }
+  function hymn(no){ toast('🎵 찬송가 '+no); }
+
+  /* ── 설교노트 ── */
+  var NK='pillar_note_20260628';
+  function loadNote(){ var v=localStorage.getItem(NK); if(v) document.getElementById('noteArea').value=v; }
+  function saveNote(){
+    localStorage.setItem(NK, document.getElementById('noteArea').value);
+    var s=document.getElementById('savedTag'); s.textContent='✓ 저장되었습니다';
+    setTimeout(function(){s.textContent='';},2000);
+  }
+  function clearNote(){
+    if(confirm('작성한 설교 노트를 지울까요?')){ document.getElementById('noteArea').value=''; localStorage.removeItem(NK); }
+  }
+  loadNote();
+
+  /* ── 검색 ── */
+  var matches=[], cur=-1;
+  function clearHighlights(){
+    var c=document.getElementById('content');
+    var ms=c.querySelectorAll('mark.hl');
+    ms.forEach(function(m){ m.replaceWith(document.createTextNode(m.textContent)); });
+    if(ms.length) c.normalize();
+  }
+  function clearSearch(){
+    document.getElementById('searchInput').value='';
+    doSearch('');
+  }
+  function doSearch(q){
+    clearHighlights(); matches=[]; cur=-1;
+    var info=document.getElementById('searchInfo');
+    q=(q||'').trim();
+    if(q.length<1){ info.textContent=''; return; }
+    var content=document.getElementById('content');
+    var walker=document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+      acceptNode:function(n){
+        if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        var p=n.parentNode, nm=p && p.nodeName;
+        if(nm==='SCRIPT'||nm==='STYLE'||nm==='MARK') return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes=[], nd; while(nd=walker.nextNode()) nodes.push(nd);
+    var ql=q.toLowerCase();
+    nodes.forEach(function(node){
+      var text=node.nodeValue, low=text.toLowerCase(), idx=low.indexOf(ql);
+      if(idx<0) return;
+      var frag=document.createDocumentFragment(), last=0;
+      while(idx>=0){
+        if(idx>last) frag.appendChild(document.createTextNode(text.slice(last,idx)));
+        var mk=document.createElement('mark'); mk.className='hl';
+        mk.textContent=text.slice(idx, idx+q.length);
+        frag.appendChild(mk); matches.push(mk);
+        last=idx+q.length; idx=low.indexOf(ql, last);
+      }
+      if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    if(matches.length){ cur=0; focusMatch(); }
+    else info.textContent='0 건';
+  }
+  function focusMatch(){
+    matches.forEach(function(m,i){ m.classList.toggle('on', i===cur); });
+    var m=matches[cur];
+    if(m){
+      m.scrollIntoView({block:'center', behavior:'smooth'});
+      document.getElementById('searchInfo').textContent=(cur+1)+' / '+matches.length;
+    }
+  }
+  function nextMatch(d){
+    if(!matches.length){ return; }
+    cur=(cur + d + matches.length) % matches.length;
+    focusMatch();
+  }
+
+  applyZoom();
+</script>
+</body>
+</html>
