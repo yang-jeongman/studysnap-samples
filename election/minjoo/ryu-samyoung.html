@@ -562,7 +562,7 @@
 
     <!-- 대표 이미지 (폴더 첫 번째 이미지) -->
     <div style="background:white;padding:15px;margin:0 0 15px 0;text-align:center;">
-        <img src="./images/ryu-01-main.png" alt="대표 이미지" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+        <picture style="display:contents"><source srcset="./images/ryu-01-main.webp" type="image/webp"><img fetchpriority="high" decoding="async" src="./images/ryu-01-main.png" alt="대표 이미지" style="max-width:100%;height:auto;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);"></picture>
     </div>
 
     <!-- Vision Section -->
@@ -570,7 +570,7 @@
 국민을 살리는 일꾼이 되자</div></section>
 
 <div style="background:white;padding:15px;margin:0 0 15px 0;text-align:center;">
-<img src="./images/ryu-02-police.png" alt="국민의 경찰" style="max-width: 100%; height: auto; border-radius: 10px;">
+<picture style="display:contents"><source srcset="./images/ryu-02-police.webp" type="image/webp"><img loading="lazy" decoding="async" src="./images/ryu-02-police.png" alt="국민의 경찰" style="max-width: 100%; height: auto; border-radius: 10px;"></picture>
     </div>
     <!-- Quick Highlights -->
 
@@ -653,9 +653,9 @@
         padding: 70px 20px 80px 20px;
         cursor: grab;
     " onclick="if(event.target === this) hideVoteModal();">
-        <img id="voteImage" src="./images/ryu-03-early-voting.png" alt="사전투표 안내"
+        <picture style="display:contents"><source srcset="./images/ryu-03-early-voting.webp" type="image/webp"><img decoding="async" id="voteImage" src="./images/ryu-03-early-voting.png" alt="사전투표 안내"
              style="max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: transform 0.2s ease; transform-origin: center center;"
-             ondblclick="zoomImage(0.5); event.stopPropagation();">
+             ondblclick="zoomImage(0.5); event.stopPropagation();"></picture>
     </div>
 
     <!-- 하단 안내 -->
@@ -725,9 +725,9 @@
                 padding: 70px 20px 80px 20px;
                 cursor: grab;
             " onclick="if(event.target === this) hidePromiseModal();">
-                <img id="promiseImage" src="./images/ryu-04-promise.png" alt="류삼영이 약속드립니다"
+                <picture style="display:contents"><source srcset="./images/ryu-04-promise.webp" type="image/webp"><img decoding="async" id="promiseImage" src="./images/ryu-04-promise.png" alt="류삼영이 약속드립니다"
                      style="max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: transform 0.2s ease; transform-origin: center center;"
-                     ondblclick="zoomPromiseImage(0.5); event.stopPropagation();">
+                     ondblclick="zoomPromiseImage(0.5); event.stopPropagation();"></picture>
             </div>
             <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 15px; text-align: center; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
                 <p style="color: rgba(255,255,255,0.8); font-size: 0.85em; margin: 0;">두 손가락으로 확대 | 더블탭으로 확대 | 빈 공간 터치시 닫힘</p>
@@ -998,16 +998,16 @@
         <h2 class="section-title"><span class="icon">🖼️</span> 공보물 이미지</h2>
         <div style="display:flex;flex-direction:column;gap:15px;">
             <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                <img src="./images/ryu-05-flyer2.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+                <picture style="display:contents"><source srcset="./images/ryu-05-flyer2.webp" type="image/webp"><img loading="lazy" decoding="async" src="./images/ryu-05-flyer2.png" alt="공보물 이미지" style="width:100%;border-radius:8px;"></picture>
             </div>
             <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                <img src="./images/ryu-06-flyer3.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+                <picture style="display:contents"><source srcset="./images/ryu-06-flyer3.webp" type="image/webp"><img loading="lazy" decoding="async" src="./images/ryu-06-flyer3.png" alt="공보물 이미지" style="width:100%;border-radius:8px;"></picture>
             </div>
             <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                <img src="./images/ryu-07-flyer4.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+                <picture style="display:contents"><source srcset="./images/ryu-07-flyer4.webp" type="image/webp"><img loading="lazy" decoding="async" src="./images/ryu-07-flyer4.png" alt="공보물 이미지" style="width:100%;border-radius:8px;"></picture>
             </div>
             <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                <img src="./images/ryu-08-flyer5.png" alt="공보물 이미지" style="width:100%;border-radius:8px;">
+                <picture style="display:contents"><source srcset="./images/ryu-08-flyer5.webp" type="image/webp"><img loading="lazy" decoding="async" src="./images/ryu-08-flyer5.png" alt="공보물 이미지" style="width:100%;border-radius:8px;"></picture>
             </div>
         </div>
     </section>
