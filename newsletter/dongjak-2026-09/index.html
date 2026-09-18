@@ -264,24 +264,11 @@
   @media(hover:none){ .pager .plabel{display:none} }
   body.overlay-open .pager{opacity:0;pointer-events:none}
 
-  /* JS 미실행(메일/파일 미리보기) 안내 배너 */
-  .nojs-banner{display:block;background:#6f1420;color:#fff;font-size:.82rem;line-height:1.55;
-    padding:11px 14px;text-align:center}
-  .nojs-banner b{font-size:.9rem}
-  body.js-on .nojs-banner{display:none}
-
   @media(min-width:620px){ .cal-cell{min-height:74px}
     .pager{width:50px;height:50px;line-height:50px} .pager.prev{left:16px} .pager.next{right:16px} }
 </style>
 </head>
 <body>
-
-<div class="nojs-banner" id="nojsBanner">
-  <b>웹 브라우저에서 열어주세요 · Open in a web browser</b><br>
-  메일·파일·메신저의 미리보기 화면에서는 버튼이 동작하지 않습니다. 파일을 Safari 또는 Chrome으로 열면
-  언어 전환·검색·읽어주기·페이지 이동이 정상 작동합니다.
-  Buttons do not work in Mail / Files / messenger preview — open the file in Safari or Chrome.
-</div>
 
 <header class="appbar">
   <button class="home" onclick="goHome()"><b>동작</b>
