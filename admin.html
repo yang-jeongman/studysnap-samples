@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudySnap 저장소 관리</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗂️</text></svg>">
+<style>
+  :root{
+    --primary:#6366f1; --primary-dk:#4f46e5; --accent:#ec4899;
+    --ink:#0f172a; --sub:#64748b; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --danger:#dc2626; --danger-dk:#b91c1c; --ok:#16a34a; --warn:#d97706;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:26px 20px}
+  header h1{margin:0 0 6px;font-size:1.5rem}
+  header p{margin:0;opacity:.92;font-size:.92rem}
+  .wrap{max-width:920px;margin:0 auto;padding:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;
+    box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .card h2{margin:0 0 12px;font-size:1.08rem;display:flex;align-items:center;gap:8px}
+  .muted{color:var(--sub);font-size:.86rem;line-height:1.7}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  label{font-size:.86rem;font-weight:700;color:var(--ink);display:block;margin:10px 0 5px}
+  input[type=text],input[type=password],select,textarea{
+    width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:.94rem;
+    font-family:inherit;background:#fff;color:var(--ink)}
+  textarea{resize:vertical;min-height:60px}
+  input[type=file]{font-size:.86rem}
+  button{cursor:pointer;font-family:inherit;font-weight:800;border:none;border-radius:9px;padding:10px 16px;
+    font-size:.9rem;transition:transform .08s}
+  button:active{transform:scale(.97)}
+  button.primary{background:var(--primary);color:#fff}
+  button.primary:hover{background:var(--primary-dk)}
+  button.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  button.danger{background:var(--danger);color:#fff}
+  button.danger:hover{background:var(--danger-dk)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);
+    border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:700}
+  .pill.ok{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+  .pill.bad{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+  .tabs{display:flex;gap:8px;margin-bottom:18px}
+  .tab-btn{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 18px;font-weight:800;
+    color:var(--sub);cursor:pointer}
+  .tab-btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .tabpanel{display:none}
+  .tabpanel.on{display:block}
+  .crumbs{display:flex;flex-wrap:wrap;gap:4px;font-size:.86rem;margin-bottom:10px}
+  .crumbs button{background:none;border:none;color:var(--primary);font-weight:700;padding:2px 4px;font-size:.86rem}
+  .crumbs span{color:var(--sub)}
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--sub);font-size:.78rem;text-transform:uppercase;letter-spacing:.02em}
+  tr.entry:hover{background:var(--bg)}
+  .entry .name{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .entry .name.folder{font-weight:800;color:var(--primary-dk)}
+  .size{color:var(--sub);font-size:.82rem;white-space:nowrap}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+  .log{background:#0f172a;color:#d1fae5;font-family:ui-monospace,Consolas,monospace;font-size:.8rem;
+    border-radius:10px;padding:12px 14px;max-height:220px;overflow:auto;white-space:pre-wrap;margin-top:12px;display:none}
+  .log.show{display:block}
+  .steps{counter-reset:step}
+  .step{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;position:relative;padding-left:46px}
+  .step::before{counter-increment:step;content:counter(step);position:absolute;left:14px;top:14px;
+    width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:.8rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center}
+  .step h3{margin:0 0 8px;font-size:.96rem}
+  .preview-card{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;background:var(--bg)}
+  .preview-card img{width:100px;border-radius:8px;vertical-align:top;margin-right:12px}
+  .helptext{font-size:.78rem;color:var(--sub);margin-top:4px}
+  a.linkline{word-break:break-all}
+  .checkbox-cell{width:30px}
+  code{background:#eef2ff;color:#4338ca;padding:1px 5px;border-radius:5px;font-size:.85em}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap" style="padding:0">
+    <h1>🗂️ StudySnap 저장소 관리</h1>
+    <p>studysnap-samples 갤러리의 파일을 직접 올리고 지우는 화면입니다. 코드나 git 명령 없이 이 페이지에서 처리합니다.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 연결 -->
+  <div class="card">
+    <h2>① GitHub 연결</h2>
+    <p class="muted">
+      이 저장소(<code>yang-jeongman/studysnap-samples</code>)에 쓰기 권한이 있는 개인 액세스 토큰이 필요합니다.
+      토큰은 <b>이 브라우저에만</b> 저장되고, GitHub 서버로만 직접 전송됩니다(다른 곳으로 전송되지 않음).
+    </p>
+    <details style="margin:8px 0 12px">
+      <summary style="cursor:pointer;font-weight:700;color:var(--primary-dk);font-size:.88rem">토큰 처음 만드는 방법 보기</summary>
+      <div class="muted" style="margin-top:8px">
+        1. <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> 접속(로그인 필요)<br>
+        2. Repository access → <b>Only select repositories</b> → <code>studysnap-samples</code> 선택<br>
+        3. Permissions → <b>Contents</b> → <b>Read and write</b> 로 설정<br>
+        4. 하단 Generate token → 생성된 토큰(<code>github_pat_...</code>)을 복사해서 아래에 붙여넣기<br>
+        5. 토큰은 한 번만 보여주므로 꼭 복사해두세요. 필요 없어지면 위 설정 페이지에서 언제든 삭제(폐기) 가능합니다.
+      </div>
+    </details>
+    <label>GitHub 개인 액세스 토큰 (Fine-grained PAT)</label>
+    <div class="row">
+      <input type="password" id="tokenInput" placeholder="github_pat_… 또는 ghp_…" style="flex:1;min-width:220px">
+      <button class="primary" onclick="connect()">연결</button>
+    </div>
+    <label style="display:flex;align-items:center;gap:6px;font-weight:400;margin-top:8px">
+      <input type="checkbox" id="rememberToken" checked style="width:auto"> 이 브라우저에 저장해두기 (다음에 다시 입력 안 해도 됨)
+    </label>
+    <div id="connStatus" style="margin-top:10px"></div>
+  </div>
+
+  <!-- 탭 -->
+  <div class="tabs">
+    <button class="tab-btn on" id="tabBtnFiles" onclick="switchTab('files')">📁 파일 관리 · 삭제</button>
+    <button class="tab-btn" id="tabBtnAdd" onclick="switchTab('add')">➕ 새 샘플 등록</button>
+  </div>
+
+  <!-- 파일 관리 탭 -->
+  <div class="tabpanel on" id="tabFiles">
+    <div class="card">
+      <h2>📁 파일 · 폴더 관리</h2>
+      <p class="muted">폴더를 눌러 들어가고, 체크박스로 선택한 뒤 삭제하세요. 폴더를 선택하면 그 안의 모든 파일이 함께 삭제됩니다(되돌릴 수 없음).</p>
+      <div class="toolbar">
+        <div class="crumbs" id="crumbs"></div>
+        <div class="row">
+          <button class="ghost" onclick="refreshTree(true)">🔄 새로고침</button>
+          <button class="danger" id="deleteBtn" onclick="deleteSelected()" disabled>선택 삭제</button>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th class="checkbox-cell"></th><th>이름</th><th>종류</th><th>크기</th></tr></thead>
+        <tbody id="fileRows"><tr><td colspan="4" class="muted">GitHub에 연결하면 목록이 표시됩니다.</td></tr></tbody>
+      </table>
+      <label style="display:flex;align-items:center;gap:6px;font-weight:400;margin-top:12px">
+        <input type="checkbox" id="alsoRemoveCard" checked style="width:auto">
+        삭제하는 폴더가 갤러리 카드로 등록돼 있으면 <code>index.html</code>의 카드도 함께 제거
+      </label>
+      <div class="log" id="filesLog"></div>
+    </div>
+  </div>
+
+  <!-- 새 샘플 등록 탭 -->
+  <div class="tabpanel" id="tabAdd">
+    <div class="card">
+      <h2>➕ 새 샘플을 갤러리에 등록</h2>
+      <p class="muted">변환 결과 HTML 파일 하나와 표지 썸네일 이미지 하나를 올리면, 지정한 카테고리 맨 위에 카드가 자동으로 추가됩니다.</p>
+
+      <div class="steps">
+        <div class="step">
+          <h3>어느 카테고리에 넣을까요?</h3>
+          <select id="categorySelect"><option>연결 후 목록이 표시됩니다</option></select>
+        </div>
+        <div class="step">
+          <h3>저장 폴더 경로</h3>
+          <input type="text" id="pathInput" placeholder="예: newsletter/bogeonso-2026-11">
+          <div class="helptext">영문/숫자/하이픈 권장. 이미 있는 경로면 그 안의 파일을 덮어씁니다.</div>
+        </div>
+        <div class="step">
+          <h3>카드에 표시할 정보</h3>
+          <label>배지 (발행 기관)</label>
+          <input type="text" id="badgeInput" placeholder="예: 동작구보건소">
+          <label>제목</label>
+          <input type="text" id="titleInput" placeholder="예: 동작구보건소 e·건강소식 · 11월호 (NEW)">
+          <label>설명</label>
+          <textarea id="descInput" placeholder="예: 인터랙티브 모바일북 · 달력형 목차 · 검색 · TTS …"></textarea>
+          <label>메타 정보 (연월/Vol 등)</label>
+          <input type="text" id="metaInput" placeholder="예: 2026년 11월 (Vol.39)">
+        </div>
+        <div class="step">
+          <h3>파일 업로드</h3>
+          <label>본문 HTML 파일 (필수 — index.html로 저장됩니다)</label>
+          <input type="file" id="htmlFile" accept=".html,.htm">
+          <label>표지 썸네일 이미지 (필수 — thumb.jpg로 저장됩니다)</label>
+          <input type="file" id="thumbFile" accept="image/*">
+          <label>추가 파일 (선택 — 원본 이미지 등 함께 참조하는 파일이 있으면)</label>
+          <input type="file" id="extraFiles" multiple>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:6px">
+        <button class="ghost" onclick="previewCard()">미리보기</button>
+        <button class="primary" id="submitBtn" onclick="submitRegister()">등록하기</button>
+      </div>
+      <div id="cardPreview"></div>
+      <div class="log" id="addLog"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const OWNER = 'yang-jeongman';
+const REPO  = 'studysnap-samples';
+const BRANCH = 'main';
+const API = 'https://api.github.com';
+const STORE_KEY = 'ss_admin_token_v1';
+
+let TOKEN = '';
+let REPO_TREE = [];      // [{path, type:'blob'|'tree', sha, size}]
+let BASE_COMMIT_SHA = '';
+let BASE_TREE_SHA = '';
+let CATEGORIES = [];      // [{ko, en, insertAt}]
+let CUR_PATH = '';        // 파일관리 현재 폴더
+
+/* ───────────────────────── 공통 유틸 ───────────────────────── */
+function log(id, msg, cls){
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  const line = document.createElement('div');
+  if(cls) line.style.color = cls;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+function clearLog(id){ const el=document.getElementById(id); el.innerHTML=''; el.classList.remove('show'); }
+
+async function gh(path, opts){
+  opts = opts || {};
+  const headers = Object.assign({
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  }, opts.headers || {});
+  if(TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  const res = await fetch(API + path, Object.assign({}, opts, { headers }));
+  const isJson = (res.headers.get('content-type')||'').includes('json');
+  const data = isJson ? await res.json().catch(()=>null) : await res.text();
+  if(!res.ok){
+    const msg = (data && data.message) ? data.message : (res.status + ' ' + res.statusText);
+    throw new Error(msg);
+  }
+  return data;
+}
+
+function fileToBase64(file){
+  return new Promise((resolve, reject)=>{
+    const r = new FileReader();
+    r.onload = ()=> resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+function utf8ToBase64(str){
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+function base64ToUtf8(b64){
+  const bin = atob(b64.replace(/\n/g,''));
+  const bytes = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+function humanSize(n){
+  if(n == null) return '';
+  if(n < 1024) return n + ' B';
+  if(n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
+  return (n/1024/1024).toFixed(2) + ' MB';
+}
+
+/* ───────────────────────── 연결 ───────────────────────── */
+window.addEventListener('DOMContentLoaded', ()=>{
+  try{
+    const saved = localStorage.getItem(STORE_KEY);
+    if(saved){ document.getElementById('tokenInput').value = saved; connect(); }
+  }catch(e){}
+});
+
+async function connect(){
+  const t = document.getElementById('tokenInput').value.trim();
+  const statusEl = document.getElementById('connStatus');
+  if(!t){ statusEl.innerHTML = '<span class="pill bad">토큰을 입력하세요</span>'; return; }
+  TOKEN = t;
+  statusEl.innerHTML = '연결 확인 중…';
+  try{
+    const repo = await gh(`/repos/${OWNER}/${REPO}`);
+    const perm = repo.permissions || {};
+    if(!perm.push){
+      statusEl.innerHTML = '<span class="pill bad">이 토큰은 쓰기 권한이 없습니다 — Contents: Read and write로 다시 만들어 주세요</span>';
+      return;
+    }
+    statusEl.innerHTML = `<span class="pill ok">✓ 연결됨 — ${repo.full_name} (쓰기 가능)</span>`;
+    if(document.getElementById('rememberToken').checked){
+      try{ localStorage.setItem(STORE_KEY, t); }catch(e){}
+    }
+    await refreshTree(false);
+  }catch(err){
+    statusEl.innerHTML = `<span class="pill bad">연결 실패 — ${err.message}</span>`;
+  }
+}
+
+/* ───────────────────────── 저장소 트리 로드 ───────────────────────── */
+async function refreshTree(manual){
+  try{
+    const ref = await gh(`/repos/${OWNER}/${REPO}/git/ref/heads/${BRANCH}`);
+    BASE_COMMIT_SHA = ref.object.sha;
+    const commit = await gh(`/repos/${OWNER}/${REPO}/git/commits/${BASE_COMMIT_SHA}`);
+    BASE_TREE_SHA = commit.tree.sha;
+    const tree = await gh(`/repos/${OWNER}/${REPO}/git/trees/${BASE_TREE_SHA}?recursive=1`);
+    REPO_TREE = (tree.tree || []).filter(e => e.type === 'blob' || e.type === 'tree');
+    renderDir(CUR_PATH);
+    parseCategories();
+    if(manual) log('filesLog', '새로고침 완료 · 파일 ' + REPO_TREE.filter(e=>e.type==='blob').length + '개');
+  }catch(err){
+    log('filesLog', '불러오기 실패: ' + err.message, '#fca5a5');
+  }
+}
+
+/* ───────────────────────── 파일 관리 화면 ───────────────────────── */
+function switchTab(name){
+  document.getElementById('tabFiles').classList.toggle('on', name==='files');
+  document.getElementById('tabAdd').classList.toggle('on', name==='add');
+  document.getElementById('tabBtnFiles').classList.toggle('on', name==='files');
+  document.getElementById('tabBtnAdd').classList.toggle('on', name==='add');
+}
+
+function childrenOf(path){
+  const prefix = path ? path + '/' : '';
+  const seen = new Map();
+  REPO_TREE.forEach(e=>{
+    if(!e.path.startsWith(prefix)) return;
+    const rest = e.path.slice(prefix.length);
+    if(!rest) return;
+    const seg = rest.split('/')[0];
+    const isDir = rest.includes('/');
+    const key = seg;
+    if(!seen.has(key)){
+      seen.set(key, { name: seg, path: prefix + seg, type: isDir ? 'tree' : 'blob', size: isDir ? null : e.size });
+    } else if(!isDir){
+      seen.get(key).size = e.size;
+    }
+  });
+  return [...seen.values()].sort((a,b)=> (a.type===b.type ? a.name.localeCompare(b.name) : (a.type==='tree'?-1:1)));
+}
+
+function renderDir(path){
+  CUR_PATH = path;
+  const crumbEl = document.getElementById('crumbs');
+  const parts = path ? path.split('/') : [];
+  let acc = '';
+  let html = `<button onclick="renderDir('')">🏠 루트</button>`;
+  parts.forEach(p=>{ acc = acc ? acc+'/'+p : p; html += ` <span>/</span> <button onclick="renderDir('${acc.replace(/'/g,"\\'")}')">${p}</button>`; });
+  crumbEl.innerHTML = html;
+
+  const rows = childrenOf(path);
+  const tbody = document.getElementById('fileRows');
+  if(!rows.length){ tbody.innerHTML = '<tr><td colspan="4" class="muted">폴더가 비어 있습니다.</td></tr>'; }
+  else {
+    tbody.innerHTML = rows.map(r => `
+      <tr class="entry">
+        <td class="checkbox-cell"><input type="checkbox" class="rowchk" data-path="${r.path}" data-type="${r.type}" onchange="onCheckChange()"></td>
+        <td><span class="name ${r.type==='tree'?'folder':''}" onclick="${r.type==='tree' ? `renderDir('${r.path.replace(/'/g,"\\'")}')` : `previewFile('${r.path.replace(/'/g,"\\'")}')`}">
+          ${r.type==='tree' ? '📁' : '📄'} ${r.name}</span></td>
+        <td class="size">${r.type==='tree' ? '폴더' : '파일'}</td>
+        <td class="size">${r.type==='tree' ? '—' : humanSize(r.size)}</td>
+      </tr>`).join('');
+  }
+  onCheckChange();
+}
+function onCheckChange(){
+  const any = document.querySelectorAll('.rowchk:checked').length > 0;
+  document.getElementById('deleteBtn').disabled = !any;
+}
+function previewFile(path){
+  window.open(`https://${OWNER}.github.io/${REPO}/${path}`, '_blank');
+}
+
+async function deleteSelected(){
+  const checked = [...document.querySelectorAll('.rowchk:checked')];
+  if(!checked.length) return;
+  const targets = checked.map(c => ({ path: c.dataset.path, type: c.dataset.type }));
+  const allBlobPaths = [];
+  targets.forEach(t=>{
+    if(t.type === 'blob'){ allBlobPaths.push(t.path); }
+    else {
+      REPO_TREE.filter(e => e.type==='blob' && e.path.startsWith(t.path + '/')).forEach(e => allBlobPaths.push(e.path));
+    }
+  });
+  if(!allBlobPaths.length){ alert('삭제할 파일이 없습니다(빈 폴더).'); return; }
+  const names = targets.map(t=>t.path).join('\n');
+  if(!confirm(`다음 항목을 삭제합니다. 되돌릴 수 없습니다.\n\n${names}\n\n(파일 총 ${allBlobPaths.length}개)\n\n계속할까요?`)) return;
+
+  clearLog('filesLog');
+  document.getElementById('deleteBtn').disabled = true;
+  try{
+    const additions = [];
+    if(document.getElementById('alsoRemoveCard').checked){
+      for(const t of targets){
+        const patched = await removeCardForPath(t.path);
+        if(patched){ additions.push(patched); log('filesLog', `index.html에서 "${t.path}" 카드 제거 준비 완료`); }
+      }
+    }
+    log('filesLog', `삭제 커밋 생성 중… (${allBlobPaths.length}개 파일)`);
+    await commitChanges(additions, allBlobPaths, `chore: 저장소 관리 화면에서 파일 삭제 (${targets.map(t=>t.path).join(', ')})`);
+    log('filesLog', '✅ 삭제 완료. 목록을 새로고침합니다.', '#86efac');
+    await refreshTree(false);
+  }catch(err){
+    log('filesLog', '❌ 삭제 실패: ' + err.message, '#fca5a5');
+    document.getElementById('deleteBtn').disabled = false;
+  }
+}
+
+/* index.html에서 특정 경로를 가리키는 카드 <a>...</a> 블록을 제거한 새 내용을 준비 */
+async function removeCardForPath(folderPath){
+  const idx = REPO_TREE.find(e => e.path === 'index.html');
+  if(!idx) return null;
+  const text = await getBlobText(idx.sha);
+  const hrefVariants = [folderPath + '/', folderPath];
+  for(const href of hrefVariants){
+    const marker = `href="${href}"`;
+    const startTagIdx = text.indexOf(marker);
+    if(startTagIdx === -1) continue;
+    const aOpenStart = text.lastIndexOf('<a', startTagIdx);
+    const aCloseIdx = text.indexOf('</a>', startTagIdx);
+    if(aOpenStart === -1 || aCloseIdx === -1) continue;
+    let blockStart = aOpenStart;
+    let blockEnd = aCloseIdx + '</a>'.length;
+    // 앞의 들여쓰기/개행도 함께 제거
+    let ws = blockStart;
+    while(ws > 0 && (text[ws-1] === ' ' || text[ws-1] === '\t')) ws--;
+    if(ws > 0 && text[ws-1] === '\n') ws--;
+    const newText = text.slice(0, ws) + text.slice(blockEnd);
+    return { path: 'index.html', sha: await createBlobFromText(newText) };
+  }
+  return null;
+}
+
+/* ───────────────────────── Git Data API 헬퍼 ───────────────────────── */
+async function getBlobText(sha){
+  const blob = await gh(`/repos/${OWNER}/${REPO}/git/blobs/${sha}`);
+  return base64ToUtf8(blob.content);
+}
+async function createBlobFromText(text){
+  const b = await gh(`/repos/${OWNER}/${REPO}/git/blobs`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ content: utf8ToBase64(text), encoding: 'base64' })
+  });
+  return b.sha;
+}
+async function createBlobFromFile(file){
+  const b64 = await fileToBase64(file);
+  const b = await gh(`/repos/${OWNER}/${REPO}/git/blobs`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ content: b64, encoding: 'base64' })
+  });
+  return b.sha;
+}
+
+/* additions: [{path, sha}]  removals: [path,...] — 한 커밋으로 반영 */
+async function commitChanges(additions, removals, message){
+  const ref = await gh(`/repos/${OWNER}/${REPO}/git/ref/heads/${BRANCH}`);
+  const commitSha = ref.object.sha;
+  const commit = await gh(`/repos/${OWNER}/${REPO}/git/commits/${commitSha}`);
+  const treeSha = commit.tree.sha;
+
+  const treeEntries = [
+    ...additions.map(a => ({ path: a.path, mode: '100644', type: 'blob', sha: a.sha })),
+    ...removals.map(p => ({ path: p, mode: '100644', type: 'blob', sha: null })),
+  ];
+  const newTree = await gh(`/repos/${OWNER}/${REPO}/git/trees`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ base_tree: treeSha, tree: treeEntries })
+  });
+  const newCommit = await gh(`/repos/${OWNER}/${REPO}/git/commits`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ message, tree: newTree.sha, parents: [commitSha] })
+  });
+  await gh(`/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH}`, {
+    method:'PATCH', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ sha: newCommit.sha })
+  });
+  BASE_COMMIT_SHA = newCommit.sha;
+  return newCommit.sha;
+}
+
+/* ───────────────────────── 카테고리 파싱 (index.html) ───────────────────────── */
+async function parseCategories(){
+  const idx = REPO_TREE.find(e => e.path === 'index.html');
+  if(!idx) return;
+  const text = await getBlobText(idx.sha);
+  const re = /<div class="category-header">[\s\S]*?<h2>([^<]*)<span>([^<]*)<\/span><\/h2>[\s\S]*?<\/div>\s*<div class="cards-grid">/g;
+  const cats = [];
+  let m;
+  while((m = re.exec(text)) !== null){
+    cats.push({ ko: m[1].trim(), en: m[2].trim(), insertAt: m.index + m[0].length });
+  }
+  CATEGORIES = cats;
+  const deco = s => s.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  const sel = document.getElementById('categorySelect');
+  sel.innerHTML = cats.map((c,i) => `<option value="${i}">${deco(c.ko)} (${deco(c.en)})</option>`).join('')
+    || '<option>카테고리를 찾을 수 없습니다</option>';
+}
+
+/* ───────────────────────── 새 샘플 등록 ───────────────────────── */
+function buildCardHtml({badge, title, desc, meta, path, thumbName}){
+  return `                <a href="${path}/" class="card" target="_blank">
+                    <div class="card-preview has-thumb">
+                        <img src="${path}/${thumbName}" alt="${title} 표지">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-badge badge-newsletter">${badge}</span>
+                        <h3>${title}</h3>
+                        <p>${desc}</p>
+                        <div class="card-meta">
+                            <span>${meta}</span>
+                            <span class="card-link">바로가기</span>
+                        </div>
+                    </div>
+                </a>\n`;
+}
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function readForm(){
+  return {
+    catIdx: document.getElementById('categorySelect').value,
+    path: document.getElementById('pathInput').value.trim().replace(/^\/+|\/+$/g,'')
+      .replace(/[^a-zA-Z0-9\-_./]/g, ''),
+    badge: escapeHtml(document.getElementById('badgeInput').value.trim() || '기타'),
+    title: escapeHtml(document.getElementById('titleInput').value.trim()),
+    desc: escapeHtml(document.getElementById('descInput').value.trim()),
+    meta: escapeHtml(document.getElementById('metaInput').value.trim()),
+    htmlFile: document.getElementById('htmlFile').files[0],
+    thumbFile: document.getElementById('thumbFile').files[0],
+    extraFiles: [...document.getElementById('extraFiles').files],
+  };
+}
+function validateForm(f){
+  if(!CATEGORIES.length) return '카테고리 목록을 아직 불러오지 못했습니다. 먼저 GitHub에 연결하세요.';
+  if(!f.path) return '저장 폴더 경로를 입력하세요.';
+  if(!f.title) return '제목을 입력하세요.';
+  if(!f.htmlFile) return '본문 HTML 파일을 선택하세요.';
+  if(!f.thumbFile) return '표지 썸네일 이미지를 선택하세요.';
+  return '';
+}
+function previewCard(){
+  const f = readForm();
+  const err = validateForm(f);
+  const box = document.getElementById('cardPreview');
+  if(err){ box.innerHTML = `<p style="color:var(--danger)">${err}</p>`; return; }
+  const thumbUrl = URL.createObjectURL(f.thumbFile);
+  box.innerHTML = `<div class="preview-card">
+    <img src="${thumbUrl}" alt="">
+    <b>${f.badge}</b> · ${f.title}<br>
+    <span class="muted">${f.desc}</span><br>
+    <span class="muted">${f.meta}</span><br>
+    <span class="helptext">저장 위치: <code>${f.path}/index.html</code>, <code>${f.path}/thumb.jpg</code> ·
+      카테고리: ${CATEGORIES[f.catIdx] ? CATEGORIES[f.catIdx].ko : '?'}</span>
+  </div>`;
+}
+
+async function submitRegister(){
+  const f = readForm();
+  const err = validateForm(f);
+  if(err){ alert(err); return; }
+  const cat = CATEGORIES[f.catIdx];
+  if(!cat){ alert('카테고리를 다시 선택해 주세요.'); return; }
+
+  clearLog('addLog');
+  document.getElementById('submitBtn').disabled = true;
+  try{
+    log('addLog', 'HTML 파일 업로드 준비 중…');
+    const htmlSha = await createBlobFromFile(f.htmlFile);
+    log('addLog', '썸네일 이미지 업로드 준비 중…');
+    const thumbSha = await createBlobFromFile(f.thumbFile);
+
+    const additions = [
+      { path: `${f.path}/index.html`, sha: htmlSha },
+      { path: `${f.path}/thumb.jpg`, sha: thumbSha },
+    ];
+    for(const ex of f.extraFiles){
+      log('addLog', `추가 파일 업로드 준비 중… (${ex.name})`);
+      const sha = await createBlobFromFile(ex);
+      additions.push({ path: `${f.path}/${ex.name}`, sha });
+    }
+
+    log('addLog', 'index.html에 카드 추가 준비 중…');
+    const idxEntry = REPO_TREE.find(e => e.path === 'index.html');
+    const curText = await getBlobText(idxEntry.sha);
+    const cardHtml = buildCardHtml({ badge: f.badge, title: f.title, desc: f.desc, meta: f.meta, path: f.path, thumbName: 'thumb.jpg' });
+    // 카테고리 재파싱한 위치 기준으로 다시 계산(다른 변경과 충돌 방지 위해 방금 받은 텍스트에서 같은 카테고리 재탐색)
+    const re = /<div class="category-header">[\s\S]*?<h2>([^<]*)<span>([^<]*)<\/span><\/h2>[\s\S]*?<\/div>\s*<div class="cards-grid">/g;
+    let m, insertAt = -1;
+    while((m = re.exec(curText)) !== null){
+      if(m[1].trim() === cat.ko && m[2].trim() === cat.en){ insertAt = m.index + m[0].length; break; }
+    }
+    if(insertAt === -1) throw new Error('카테고리 위치를 다시 찾지 못했습니다. 새로고침 후 다시 시도해 주세요.');
+    const newText = curText.slice(0, insertAt) + '\n' + cardHtml + curText.slice(insertAt);
+    const newIdxSha = await createBlobFromText(newText);
+    additions.push({ path: 'index.html', sha: newIdxSha });
+
+    log('addLog', '커밋 생성 중…');
+    await commitChanges(additions, [], `feat(newsletter): ${f.title} 갤러리 등록 (관리 화면)`);
+    log('addLog', '✅ 등록 완료!', '#86efac');
+    log('addLog', `🔗 https://${OWNER}.github.io/${REPO}/${f.path}/`);
+    await refreshTree(false);
+  }catch(err){
+    log('addLog', '❌ 등록 실패: ' + err.message, '#fca5a5');
+  }finally{
+    document.getElementById('submitBtn').disabled = false;
+  }
+}
+</script>
+</body>
+</html>
