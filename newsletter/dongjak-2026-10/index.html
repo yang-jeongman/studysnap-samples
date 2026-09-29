@@ -1068,8 +1068,7 @@ function toggleTTS(screenId,btn){
   u.rate = 1.0; u.pitch = 1.0;
   const vs=speechSynthesis.getVoices().filter(v=>v.lang && v.lang.toLowerCase().startsWith(lang==='en'?'en':'ko'));
   if(vs[0]) u.voice=vs[0];
-  u.onstart=()=>{ voicePaused=true; try{ if(voiceRecog) voiceRecog.stop(); }catch(e){} };
-  u.onend=()=>{ if(btn) btn.classList.remove('playing'); ttsOn=null; voicePaused=false; startVoiceListen(); };
+  u.onend=()=>{ if(btn) btn.classList.remove('playing'); ttsOn=null; };
   u.onerror=u.onend;
   speechSynthesis.speak(u);
   btn.classList.add('playing'); ttsOn=btn;
@@ -1087,8 +1086,10 @@ if('speechSynthesis' in window) speechSynthesis.onvoiceschanged=()=>{};
    이후로는 별도 조작 없이 "읽어줘"라는 말만으로 현재 화면을 읽어준다. 시각장애인의 실제 화면낭독기
    사용 관행에 맞춰 일반 안내(1.0배)보다 훨씬 빠른 배속(2.6배)으로 읽는다.
    Chrome/Android 등 SpeechRecognition 지원 브라우저에서만 동작하며, iOS Safari 등 미지원 브라우저에서는
-   조용히 기능이 생략되고 기존 수동 🔊 읽기 버튼만 동작한다. */
-var voiceListenOn=false, voiceRecog=null, voicePaused=false;
+   조용히 기능이 생략되고 기존 수동 🔊 읽기 버튼만 동작한다.
+   ※ 기존 수동 🔊 읽기 버튼(toggleTTS/stopTTS)은 절대 건드리지 않는다 — 이 블록은 완전히 독립적으로
+     동작하며, 자기 자신의 음성 재생(fastReadCurrentScreen)에 대해서만 스스로 듣기를 멈췄다 켠다. */
+var voiceListenOn=false, voiceRecog=null, voiceSelfSpeaking=false;
 var WAKE_RE=/읽어\s*주|읽어\s*줘|읽어\s*줄래|read\s*to\s*me|read\s*this/i;
 
 function collectHomeText(lang){
@@ -1106,16 +1107,13 @@ function fastReadCurrentScreen(){
   var raw = (scr==='home') ? collectHomeText(lang) : collectText(scr);
   var text = normalizeForTTS(raw, lang);
   if(!text) return;
-  speechSynthesis.cancel();
-  document.querySelectorAll('.btn-tts.playing').forEach(b=>b.classList.remove('playing'));
-  ttsOn=null;
   var u=new SpeechSynthesisUtterance(text);
   u.lang = lang==='en' ? 'en-US' : 'ko-KR';
   u.rate = 2.6; u.pitch = 1.0;
   var vs=speechSynthesis.getVoices().filter(v=>v.lang && v.lang.toLowerCase().startsWith(lang==='en'?'en':'ko'));
   if(vs[0]) u.voice=vs[0];
-  u.onstart=()=>{ voicePaused=true; try{ if(voiceRecog) voiceRecog.stop(); }catch(e){} showVoiceBadge('reading'); };
-  u.onend=()=>{ voicePaused=false; startVoiceListen(); };
+  u.onstart=()=>{ voiceSelfSpeaking=true; try{ if(voiceRecog) voiceRecog.stop(); }catch(e){} showVoiceBadge('reading'); };
+  u.onend=()=>{ voiceSelfSpeaking=false; startVoiceListen(); };
   u.onerror=u.onend;
   speechSynthesis.speak(u);
 }
@@ -1128,13 +1126,14 @@ function showVoiceBadge(state){
 
 function startVoiceListen(){
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR || voicePaused) return;
+  if(!SR || voiceSelfSpeaking) return;
   try{
     voiceRecog = new SR();
     voiceRecog.lang = document.documentElement.getAttribute('data-lang')==='en' ? 'en-US' : 'ko-KR';
     voiceRecog.continuous = true;
     voiceRecog.interimResults = true;
     voiceRecog.onresult = function(ev){
+      if(speechSynthesis.speaking) return;  // 아무 TTS(수동 포함)가 재생 중이면 오인식 무시
       for(var i=ev.resultIndex; i<ev.results.length; i++){
         var t=ev.results[i][0].transcript;
         if(WAKE_RE.test(t)){ fastReadCurrentScreen(); return; }
@@ -1142,8 +1141,8 @@ function startVoiceListen(){
     };
     voiceRecog.onerror = function(){ /* 마이크 권한 거부 등 — 조용히 무시, onend에서 재시도 */ };
     voiceRecog.onend = function(){
-      if(voiceListenOn && !voicePaused){ try{ voiceRecog.start(); }catch(e){} }
-      else if(!voicePaused){ showVoiceBadge(''); document.getElementById('voiceBadge').classList.remove('on'); }
+      if(voiceListenOn && !voiceSelfSpeaking){ try{ voiceRecog.start(); }catch(e){} }
+      else if(!voiceSelfSpeaking){ var b=document.getElementById('voiceBadge'); if(b) b.classList.remove('on'); }
     };
     voiceRecog.start();
     voiceListenOn=true;
@@ -1151,7 +1150,8 @@ function startVoiceListen(){
   }catch(e){ voiceListenOn=false; }
 }
 
-/* 첫 터치/클릭(1회) 시에만 상시 듣기 시작 — 이후로는 정말로 "읽어줘" 음성만으로 동작 */
+/* 첫 터치/클릭(1회) 시에만 상시 듣기 시작 — 이후로는 정말로 "읽어줘" 음성만으로 동작.
+   기존 버튼(🔊 읽기 등)의 클릭 동작에는 전혀 관여하지 않는다(이벤트를 막거나 가로채지 않음). */
 (function(){
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR) return;  // iOS Safari 등 미지원 브라우저는 배지도 띄우지 않고 조용히 생략
