@@ -485,15 +485,7 @@
         <span class="ql-t"><span class="lang-ko">SNS 채널</span><span class="lang-en">SNS channels</span></span>
       </a>
     </div>
-
-    <div class="a11y-note">
-      <span class="a11y-ico">🎙️</span>
-      <span class="a11y-t">
-        <b><span class="lang-ko">시각장애인용 음성명령</span><span class="lang-en">Voice command for visually impaired readers</span></b>
-        <span class="lang-ko">화면을 한 번 터치하면 상시 듣기가 시작됩니다. 이후 "읽어줘"라고 말하면 현재 화면을 빠른 배속으로 읽어드립니다(일반 안내보다 훨씬 빠릅니다). Chrome 등 일부 브라우저에서만 지원되며, iOS Safari에서는 지원되지 않습니다.</span>
-        <span class="lang-en">One tap anywhere starts always-on listening. After that, say "read to me" and this screen is read aloud at a fast pace (much faster than the normal read-aloud button). Supported on Chrome and similar browsers only — not available on iOS Safari.</span>
-      </span>
-    </div>
+    
   </div>
 
   
@@ -1157,8 +1149,11 @@ function restartVoiceListenForLang(){
 }
 
 /* 첫 터치/클릭(1회) 시에만 상시 듣기 시작 — 이후로는 정말로 "읽어줘" 음성만으로 동작.
-   기존 버튼(🔊 읽기 등)의 클릭 동작에는 전혀 관여하지 않는다(이벤트를 막거나 가로채지 않음). */
+   기존 버튼(🔊 읽기 등)의 클릭 동작에는 전혀 관여하지 않는다(이벤트를 막거나 가로채지 않음).
+   VOICE_CMD_ENABLED=false 이면(임시 비활성화 요청) 아예 리스너를 달지 않는다 — 수동 🔊 읽기 버튼은 그대로 동작. */
+var VOICE_CMD_ENABLED = false;
 (function(){
+  if(!VOICE_CMD_ENABLED) return;
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR) return;  // iOS Safari 등 미지원 브라우저는 배지도 띄우지 않고 조용히 생략
   function onFirstGesture(){
