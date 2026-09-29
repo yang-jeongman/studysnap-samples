@@ -929,6 +929,7 @@ function setLang(l){
   renderLegend();
   updatePager();
   if(document.getElementById('searchWrap').classList.contains('open')) runSearch();
+  try{ restartVoiceListenForLang(); }catch(e){}
 }
 
 /* ── 글자 크기 ── */
@@ -1124,19 +1125,25 @@ function showVoiceBadge(state){
   b.className='voice-badge on '+state;
 }
 
+var voiceRecogLang=null;   // 현재 인식기가 물려 있는 언어(ko-KR/en-US) — UI 언어 전환 감지용
 function startVoiceListen(){
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR || voiceSelfSpeaking) return;
+  var lang = document.documentElement.getAttribute('data-lang')==='en' ? 'en-US' : 'ko-KR';
   try{
     voiceRecog = new SR();
-    voiceRecog.lang = document.documentElement.getAttribute('data-lang')==='en' ? 'en-US' : 'ko-KR';
+    voiceRecog.lang = lang;
+    voiceRecogLang = lang;
     voiceRecog.continuous = true;
     voiceRecog.interimResults = true;
+    voiceRecog.maxAlternatives = 3;
     voiceRecog.onresult = function(ev){
       if(speechSynthesis.speaking) return;  // 아무 TTS(수동 포함)가 재생 중이면 오인식 무시
       for(var i=ev.resultIndex; i<ev.results.length; i++){
-        var t=ev.results[i][0].transcript;
-        if(WAKE_RE.test(t)){ fastReadCurrentScreen(); return; }
+        var res=ev.results[i];
+        for(var k=0;k<res.length;k++){
+          if(WAKE_RE.test(res[k].transcript)){ fastReadCurrentScreen(); return; }
+        }
       }
     };
     voiceRecog.onerror = function(){ /* 마이크 권한 거부 등 — 조용히 무시, onend에서 재시도 */ };
@@ -1148,6 +1155,18 @@ function startVoiceListen(){
     voiceListenOn=true;
     showVoiceBadge('listening');
   }catch(e){ voiceListenOn=false; }
+}
+
+/* 한/영 전환 시 인식기를 현재 화면 언어로 다시 맞춰 재시작한다.
+   (기존 버그: 최초 제스처 시점의 언어로 인식기가 고정되어, 이후 언어를 바꿔도 인식 언어가
+   따라가지 않아 — 특히 반대쪽 언어의 "read to me"/"읽어줘"가 — 거의 인식되지 않았다.) */
+function restartVoiceListenForLang(){
+  if(!voiceListenOn || voiceSelfSpeaking) return;
+  var lang = document.documentElement.getAttribute('data-lang')==='en' ? 'en-US' : 'ko-KR';
+  if(lang===voiceRecogLang) return;  // 이미 맞는 언어로 듣고 있으면 재시작할 필요 없음
+  voiceListenOn=false;               // 지금 인식기의 onend가 스스로 재시작하지 못하게 막고
+  try{ if(voiceRecog) voiceRecog.abort(); }catch(e){}
+  startVoiceListen();                // 새 언어로 새 인식기 인스턴스 생성
 }
 
 /* 첫 터치/클릭(1회) 시에만 상시 듣기 시작 — 이후로는 정말로 "읽어줘" 음성만으로 동작.
