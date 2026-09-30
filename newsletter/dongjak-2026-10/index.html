@@ -279,6 +279,13 @@
   .day-ev .t{font-weight:400}
   .day-ev .t:first-line{font-weight:700}
   .day-ev .go{font-size:.75rem;color:var(--sub);margin-top:3px}
+  /* 날짜 목록 → 행사 하나 상세 화면 전환 */
+  .detail-back{display:inline-flex;align-items:center;gap:4px;background:none;border:none;
+    color:var(--primary);font-weight:800;font-size:.88rem;padding:6px 2px 12px;cursor:pointer;font-family:inherit}
+  .day-ev-detail{cursor:default;padding:16px 14px;font-size:1.02rem}
+  .day-ev-detail .t{font-size:1.05rem}
+  .detail-open-btn{display:block;width:100%;margin-top:10px;padding:12px;border:none;border-radius:10px;
+    background:var(--primary-lt);color:var(--primary-dk);font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
   .sheet .close{display:block;width:100%;margin-top:8px;padding:12px;border:none;border-radius:10px;
     background:var(--primary);color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit}
   .imgmodal{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;padding:16px}
@@ -1049,26 +1056,43 @@ function runSearch(){
 /* ── 달력 ── */
 const CAT_COLOR={ "축제":"#CA3E4C","문화":"#6B3FA0","복지":"#B8430A","교육":"#1561A6","건강":"#1E7E34","경제":"#C76D00","상시":"#607080","안전":"#37474F" };
 const CAT_EN={ "축제":"Festival","문화":"Culture","복지":"Welfare","교육":"Education","건강":"Health","경제":"Economy","상시":"Ongoing","안전":"Safety" };
+var DAY_EVS=[];  // 현재 열린 날짜의 행사 목록(목록↔상세 전환에 재사용)
+function _dayListHtml(){
+  const lang=document.documentElement.getAttribute('data-lang');
+  return DAY_EVS.map((e,i)=>
+    `<div class="day-ev" style="--sc:${CAT_COLOR[e.cat]||'#888'}" onclick="showEventDetail(${i})">`+
+    `<div class="cat">${lang==='en'?(CAT_EN[e.cat]||e.cat):e.cat}</div>`+
+    `<div class="t">${lang==='en'?e.en:e.ko}</div>`+
+    `<div class="go">${lang==='en'?'View details →':'자세히 보기 →'}</div></div>`
+  ).join('');
+}
 function openDay(d){
   const evs=DATA.cal[String(d)]; if(!evs||!evs.length) return;
+  DAY_EVS=evs;
   const lang=document.documentElement.getAttribute('data-lang');
   document.getElementById('dayTitle').textContent = lang==='en' ? ('October '+d+', 2026') : ('2026년 10월 '+d+'일');
-  document.getElementById('dayList').innerHTML = evs.map(e=>{
-    // 해당 행사에 실제로 연결할 상세 섹션이 있으면 그 섹션으로 이동, 없으면(별도 상세 지면이
-    // 없는 상시·반복 프로그램) 카드 자체에 일시·장소·문의를 전부 담아 보여줌(줄바꿈 데이터 —
-    // white-space:pre-line로 렌더). 후자도 탭 피드백은 주도록 빈 onclick을 붙여둠(iOS :active 대응).
-    const hasDetail = e.sec && e.sec !== 'calendar';
-    const cls = 'day-ev' + (hasDetail ? '' : ' no-link');
-    const click = hasDetail ? ` onclick="goSec('${e.sec}');closeDay();"` : ` onclick="closeDay();"`;
-    const go = hasDetail ? `<div class="go">${lang==='en'?'Open section →':'해당 섹션 열기 →'}</div>` : '';
-    return `<div class="${cls}" style="--sc:${CAT_COLOR[e.cat]||'#888'}"${click}>`+
-      `<div class="cat">${lang==='en'?(CAT_EN[e.cat]||e.cat):e.cat}</div>`+
-      `<div class="t">${lang==='en'?e.en:e.ko}</div>${go}</div>`;
-  }).join('');
+  document.getElementById('dayList').innerHTML = _dayListHtml();
   document.getElementById('dayModal').classList.add('open');
   setOverlay(true);
 }
-function closeDay(){ document.getElementById('dayModal').classList.remove('open'); setOverlay(false); }
+function showEventDetail(i){
+  // 목록에서 행사 하나를 탭하면, 화면이 "그 행사 하나만" 크게 보여주는 상세 카드로 반드시
+  // 전환된다(예전처럼 그냥 닫히거나 조용히 있지 않음) — 실제 연결 섹션이 있으면 거기로 갈
+  // 버튼도 함께 제공. 항상 눈에 보이는 화면 전환이 있도록 하는 게 핵심.
+  const e=DAY_EVS[i]; if(!e) return;
+  const lang=document.documentElement.getAttribute('data-lang');
+  const hasDetail = e.sec && e.sec !== 'calendar';
+  const openBtn = hasDetail
+    ? `<button class="detail-open-btn" onclick="goSec('${e.sec}');closeDay();">${lang==='en'?'Open full section →':'해당 섹션 전체 보기 →'}</button>`
+    : '';
+  document.getElementById('dayList').innerHTML =
+    `<button class="detail-back" onclick="backToDayList()">${lang==='en'?'← Back to list':'← 목록으로'}</button>`+
+    `<div class="day-ev day-ev-detail" style="--sc:${CAT_COLOR[e.cat]||'#888'}">`+
+    `<div class="cat">${lang==='en'?(CAT_EN[e.cat]||e.cat):e.cat}</div>`+
+    `<div class="t">${lang==='en'?e.en:e.ko}</div></div>${openBtn}`;
+}
+function backToDayList(){ document.getElementById('dayList').innerHTML=_dayListHtml(); }
+function closeDay(){ document.getElementById('dayModal').classList.remove('open'); setOverlay(false); DAY_EVS=[]; }
 document.getElementById('dayModal').addEventListener('click',e=>{ if(e.target.id==='dayModal') closeDay(); });
 
 /* ── 이미지 확대 ── */
