@@ -1059,7 +1059,7 @@ function openDay(d){
     // white-space:pre-line로 렌더). 후자도 탭 피드백은 주도록 빈 onclick을 붙여둠(iOS :active 대응).
     const hasDetail = e.sec && e.sec !== 'calendar';
     const cls = 'day-ev' + (hasDetail ? '' : ' no-link');
-    const click = hasDetail ? ` onclick="goSec('${e.sec}');closeDay();"` : ` onclick="this.classList.toggle('tapped')"`;
+    const click = hasDetail ? ` onclick="goSec('${e.sec}');closeDay();"` : ` onclick="closeDay();"`;
     const go = hasDetail ? `<div class="go">${lang==='en'?'Open section →':'해당 섹션 열기 →'}</div>` : '';
     return `<div class="${cls}" style="--sc:${CAT_COLOR[e.cat]||'#888'}"${click}>`+
       `<div class="cat">${lang==='en'?(CAT_EN[e.cat]||e.cat):e.cat}</div>`+
