@@ -302,6 +302,9 @@
     cursor:pointer}
   .day-ev.no-link{cursor:default}
   .day-ev.no-link:active{background:#f0eeea}
+  /* 2026-10-01 구청 요청: "자세히 보기"로 다른 화면 이동이 가능한 행사만 부드러운 배경색으로 구분 */
+  .day-ev.has-detail{background:var(--primary-lt)}
+  .day-ev.has-detail:active{filter:brightness(.97)}
   .day-ev .cat{font-size:.72rem;font-weight:800;color:var(--sc)}
   .cal-ev-title{font-size:1rem;font-weight:800;margin:3px 0 6px;line-height:1.4}
   .cal-field{display:flex;gap:6px;margin:2px 0;font-size:.9rem;line-height:1.55}
@@ -1091,7 +1094,7 @@ function _dayListHtml(){
     // 원문에 실제 상세페이지(다른 섹션)가 있는 행사만 이동 가능. 없는 행사(상시 프로그램 등)는
     // 이미 목록 카드에 일시/장소/문의가 전부 나와 있으므로 클릭 이동을 만들지 않는다.
     const hasDetail = e.sec && e.sec !== 'calendar';
-    const cls = hasDetail ? 'day-ev' : 'day-ev no-link';
+    const cls = hasDetail ? 'day-ev has-detail' : 'day-ev no-link';
     const onclick = hasDetail ? ` onclick="goSec('${e.sec}');closeDay();"` : '';
     const go = hasDetail ? `<div class="go">${lang==='en'?'View details →':'자세히 보기 →'}</div>` : '';
     const title = lang==='en'?e.title_en:e.title_ko;
