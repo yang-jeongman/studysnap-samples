@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" data-lang="en">
+<html lang="ko" data-lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hoengseong Newsletter — October Issue Vol.44</title>
-<meta name="description" content="Hoengseong-gun Newsletter, October issue (Vol.44) — bilingual (KO/EN) mobile newsletter with search and read-aloud">
+<title>횡성군 소식지 — 2026년 10월호 (Vol.44)</title>
+<meta name="description" content="횡성군 소식지 10월호(Vol.44) — 한/영 전환, 검색, 읽어주기 기능을 갖춘 모바일 소식지">
 <!-- 카카오톡·페이스북 등 링크 미리보기용. data: URI 이미지는 크롤러가 못 읽어 og:image가 없으면
      페이지 내 첫 실제 URL 이미지(예: 지난호 썸네일)를 잘못 대표 이미지로 채간다 -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Hoengseong Newsletter — October Issue Vol.44">
-<meta property="og:description" content="Hoengseong-gun's mobile newsletter — KO/EN language switch, search, read-aloud, and tap-to-call links">
+<meta property="og:title" content="횡성군 소식지 — 2026년 10월호 (Vol.44)">
+<meta property="og:description" content="횡성군 모바일 소식지 — 한/영 전환, 검색, 읽어주기, 전화걸기 링크">
 <meta property="og:image" content="https://yang-jeongman.github.io/studysnap-samples/newsletter/hoengseong-2026-10/thumb.jpg">
 <meta property="og:url" content="https://yang-jeongman.github.io/studysnap-samples/newsletter/hoengseong-2026-10/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Hoengseong Newsletter — October Issue Vol.44">
+<meta name="twitter:title" content="횡성군 소식지 — 2026년 10월호 (Vol.44)">
 <meta name="twitter:image" content="https://yang-jeongman.github.io/studysnap-samples/newsletter/hoengseong-2026-10/thumb.jpg">
 <style>
   :root{
@@ -188,6 +188,7 @@
   .rep-sub{font-size:.92rem;font-weight:700;color:var(--sc);margin:0 0 4px}
   .rep-byline{font-size:.82rem;font-weight:600;color:var(--sub);margin:0 0 10px}
   .b-p{margin:0 0 12px;font-size:1rem;font-weight:400;color:var(--ink)}
+  .lang-ko .b-p{text-indent:1em}
   .b-note{background:var(--primary-lt);border-radius:10px;padding:10px 12px;font-size:.9rem;
     font-weight:400;color:var(--primary-dk);margin:0 0 14px}
   .b-hr{border:none;border-top:1px dashed var(--line);margin:18px 0}
@@ -352,8 +353,8 @@
   </button>
   <span class="spacer"></span>
   <span class="lang-seg" role="group" aria-label="language">
-    <button id="lg-ko" onclick="setLang('ko')">한국어</button>
-    <button id="lg-en" class="on" onclick="setLang('en')">ENG</button>
+    <button id="lg-ko" class="on" onclick="setLang('ko')">한국어</button>
+    <button id="lg-en" onclick="setLang('en')">ENG</button>
   </span>
   <span class="lang-seg fs-seg" role="group" aria-label="text size">
     <button onclick="bumpFS(-1)" aria-label="smaller">A−</button>
