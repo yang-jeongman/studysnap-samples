@@ -72,8 +72,9 @@ section{margin:18px 0}
 .note{font-size:.8rem;color:var(--sub);text-align:center;padding-top:8px}
 .next{font-size:.88rem;color:var(--sub);text-align:center;padding-top:10px;margin-top:6px;border-top:1px solid var(--line)}
 .next b{color:var(--ink)}
-.memo{background:var(--lav);border-left:4px solid var(--purple);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:.97rem;text-align:center;line-height:1.85;word-break:keep-all}
-.memo h4{color:var(--purple);font-size:.88rem;margin-bottom:4px}
+.memo{background:var(--lav);border-left:4px solid var(--purple);border-radius:8px;padding:12px 16px 12px 16px;margin-top:12px;font-size:.97rem;text-align:left;line-height:1.85;word-break:keep-all;overflow-wrap:break-word}
+.memo .ref{display:block;text-align:right;font-weight:800;margin-top:4px}
+.memo h4{color:var(--purple);font-size:.88rem;margin-bottom:6px;text-align:center}
 .grid2{display:grid;grid-template-columns:1fr;gap:16px}
 @media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
 .pill{background:var(--lav);border-radius:10px;padding:12px;text-align:center;font-size:.95rem;margin-top:12px}
@@ -100,13 +101,17 @@ section{margin:18px 0}
 .greet{font-size:.95rem;color:var(--navy);font-weight:600;text-align:center;line-height:1.8;padding:4px 6px 8px;word-break:keep-all}
 /* 가정예배 */
 .fam h3{text-align:center;font-size:1.2rem;color:var(--navy);margin:2px 0 10px}
-.fam .p{font-size:.95rem;line-height:1.95;text-align:justify;word-break:keep-all;margin-bottom:10px}
+.fam .p{font-size:.95rem;line-height:1.9;text-align:left;text-indent:1em;word-break:keep-all;overflow-wrap:break-word;margin-bottom:10px;padding:0 2px}
+.fam .lit{grid-template-columns:4.6em 1fr;gap:0 .8em}
+.fam .lit dt{text-align-last:justify;white-space:nowrap}
+.fam .lit dd{word-break:keep-all}
 .fam .sub{font-weight:800;font-size:1.02rem;margin:14px 0 4px;color:var(--navy)}
-.fam ol{padding-left:20px;font-size:.93rem;line-height:1.8}
+.fam ol{padding-left:1.5em;font-size:.93rem;line-height:1.8;word-break:keep-all}
+.fam ol li{margin-bottom:3px}
 .fam .two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 .dl{width:100%;border-collapse:collapse;margin:6px 0}
 .dl td{border:1px solid #8c86a3;padding:9px 8px;font-size:.92rem}
-.dl td:first-child{width:46px;text-align:center;background:#fff;font-weight:700}
+.dl td:first-child{width:3.4em;white-space:nowrap;text-align:center;background:#fff;font-weight:700}
 .dl td:last-child{height:38px;background:#fff}
 .tag{display:inline-block;background:#3b3a46;color:#fff;font-weight:800;font-size:.85rem;padding:2px 10px;border-radius:2px;margin:12px 0 4px}
 /* 예물 */
@@ -230,7 +235,7 @@ footer{text-align:center;font-size:.76rem;color:var(--sub);padding:18px 12px}
     </dl>
     <p class="note">▲ 표는 일어서서 / 예물은 들어오시면서 헌금함에 넣습니다.</p>
     <p class="next">다음주 기도 : 1부 <b>최영식 안수집사</b> · 2부 <b>박오봉 장로</b></p>
-    <div class="memo"><h4>이번주 암송말씀</h4>그러나 내게는 우리 주 예수 그리스도의 십자가 외에 결코 자랑할 것이 없으니 그리스도로 말미암아 세상이 나를 대하여 십자가에 못 박히고 내가 또한 세상을 대하여 그러하니라 <b>(고린도전서 1:18)</b></div>
+    <div class="memo"><h4>이번주 암송말씀</h4>그러나 내게는 우리 주 예수 그리스도의 십자가 외에 결코 자랑할 것이 없으니 그리스도로 말미암아 세상이 나를 대하여 십자가에 못 박히고 내가 또한 세상을 대하여 그러하니라<span class="ref">(고린도전서 1:18)</span></div>
   </div>
 </section>
 
@@ -363,9 +368,9 @@ footer{text-align:center;font-size:.76rem;color:var(--sub);padding:18px 12px}
     <h3>“주 예수의 이름을 위하여”</h3>
     <dl>
       <div class="lit"><dt style="color:var(--ink);font-weight:800">신앙고백</dt><dd>다같이 ‘사도신경’으로 신앙을 고백합시다.</dd></div>
-      <div class="lit"><dt style="color:var(--ink);font-weight:800">찬 송</dt><dd>324장 (예수 나를 오라 하네)</dd></div>
-      <div class="lit"><dt style="color:var(--ink);font-weight:800">기 도</dt><dd>가족 중에서</dd></div>
-      <div class="lit"><dt style="color:var(--ink);font-weight:800">말 씀</dt><dd>사도행전 21:1~16</dd></div>
+      <div class="lit"><dt style="color:var(--ink);font-weight:800">찬송</dt><dd>324장 (예수 나를 오라 하네)</dd></div>
+      <div class="lit"><dt style="color:var(--ink);font-weight:800">기도</dt><dd>가족 중에서</dd></div>
+      <div class="lit"><dt style="color:var(--ink);font-weight:800">말씀</dt><dd>사도행전 21:1~16</dd></div>
     </dl>
     <p class="p" style="margin-top:12px">바울 인생의 구호가 있다면 “주 예수의 이름을 위하여”일 것입니다. 바울의 인생은 너무나 투명합니다. 다메섹 도상에서 예수님을 만난 그의 인생은 어느 단면을 잘라도 온통 예수 그리스도만이 보입니다. 바울은 오늘 본문에서 유언과 같은 말을 합니다. “바울이 대답하되 여러분이 어찌하여 울어 내 마음을 상하게 하느냐 나는 주 예수의 이름을 위하여 결박 당할 뿐 아니라 예루살렘에서 죽을 것도 각오하였노라 하니”(13절). 바울은 자신이 어떻게 죽을 것인지를 이미 결정한 사람이었습니다. 어떻게 죽을지를 결정한 사람은 이 세상의 어떤 것에도 위협을 받지 않습니다. 바울은 주 예수의 이름을 위하여 어떤 삶을 살았나요?</p>
     <div class="sub">- 인생의 행로가 명확하다</div>
@@ -373,9 +378,9 @@ footer{text-align:center;font-size:.76rem;color:var(--sub);padding:18px 12px}
     <div class="sub">- 본능이 아닌 사명에 이끌리다</div>
     <p class="p">모든 사람에게는 본능이 있고, 이 본능은 중력과 같아서 인생에 큰 영향을 미칩니다. 그중 가장 강한 것은 생존 본능입니다. 사람은 본능적으로 자신이 살기 위한 선택을 합니다. 그러나 주 예수의 이름을 위하여 살았던 바울은 생존 본능보다 사명이 더 강했습니다. 바울이 두로에 있을 때 제자들이 성령의 감동으로 바울에게 예루살렘으로 들어가지 말라고 합니다(4절). 예루살렘에 들어가면 고통을 당할 것을 알기에 말렸던 것입니다. 하지만 바울은 이동하여 가이사랴로 갑니다. 그곳에서 아가보라는 선지자를 만났는데, 그 역시 바울에 대해서 예루살렘에 가면 결박되어 끌려간다는 예언을 했습니다(11절). 그 말을 들은 모든 사람이 바울의 예루살렘 일정을 막았습니다. 바울은 두 번이나 기도의 사람들을 통해서 앞으로 일어날 일을 들었습니다. 누구에게나 죽음은 두려운 것입니다. 이 땅에서 죽음보다 강한 힘은 없습니다. 그런데 바울은 그 순간에 다음과 같이 말합니다. “바울이 대답하되 여러분이 어찌하여 울어 내 마음을 상하게 하느냐 나는 주 예수의 이름을 위하여 결박 당할 뿐 아니라 예루살렘에서 죽을 것도 각오하였노라 하니”(13절). 바울의 사명은 죽음보다 강했습니다. 본능보다 강한 사명에 이끌려 살아가는 가정이 되길 축복합니다.</p>
     <p class="p" style="margin-top:14px">바울은 주 예수의 이름을 위하는 인생을 살았습니다. 그 이름을 위하여 받는 고통을 영광으로 여겼습니다. 자기를 부인하고 자기 십자가를 지고 예수님을 따랐습니다(마 16:24). 우리 가정 역시 그러한 가정이 되길 소망합니다.</p>
-    <div class="sub">- 나 눔</div>
+    <div class="sub">- 나눔</div>
     <ol><li>지금까지 살아온 길을 되돌아보고 앞으로 어떤 길로 가길 원하는지 가족과 나눠 보세요.</li><li>‘주 예수의 이름을 위하여’ 무엇을 하길 원하는지 가족과 나눠 보세요.</li></ol>
-    <div class="sub">- 기 도 <span style="font-weight:400;font-size:.88rem">(자녀를 위해 축복하며 기도합니다)</span></div>
+    <div class="sub">- 기도 <span style="font-weight:400;font-size:.88rem">(자녀를 위해 축복하며 기도합니다)</span></div>
     <ol class="two" style="padding-left:0;list-style:none"><li>1. 부모가 자녀에게</li><li>2. 자녀가 부모에게</li><li>3. 가족 공동의 기도</li><li>4. 교회를 위한 기도</li></ol>
     <div class="tag">매일 감사</div>
     <table class="dl"><tr><td>주일</td><td></td></tr><tr><td>월</td><td></td></tr><tr><td>화</td><td></td></tr><tr><td>수</td><td></td></tr><tr><td>목</td><td></td></tr><tr><td>금</td><td></td></tr><tr><td>토</td><td></td></tr></table>
