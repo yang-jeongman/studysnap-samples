@@ -123,10 +123,18 @@
   .quick-links{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:0 12px 4px}
   .ql-item{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;text-decoration:none;
     color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 4px;
-    text-align:center}
+    text-align:center;font:inherit;cursor:pointer;width:100%}
   .ql-item:active{transform:scale(.96);background:var(--primary-lt)}
   .ql-ico{font-size:1.3rem}
   .ql-t{font-size:.82rem;font-weight:700;line-height:1.3}
+
+  /* SNS 채널 목록 팝업 */
+  .sns-row{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);
+    border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:9px}
+  .sns-row:active{background:var(--primary-lt)}
+  .sns-ico{font-size:1.3rem;flex:none}
+  .sns-t{flex:1;font-size:.95rem;font-weight:700}
+  .sns-go{flex:none;color:var(--sub);font-size:1.1rem}
 
   /* 태그 클라우드 — 중구청 #태그뉴스 벤치마크 */
   .tag-cloud{display:flex;flex-wrap:wrap;gap:8px;margin:0 12px 4px}
@@ -557,22 +565,22 @@
     </div>
     <div class="quick-links">
       
-      <a class="ql-item" href="https://www.dongjak.go.kr" target="_blank" rel="noopener">
+      <a class="ql-item" href="https://www.dongjak.go.kr/portal/singl/dongJakNews/forInsert.do?menuNo=200109&amp;dongjakNewsCd=01" target="_blank" rel="noopener">
         <span class="ql-ico">📮</span>
         <span class="ql-t"><span class="lang-ko">소식지 구독</span><span class="lang-en">Subscribe</span></span>
       </a>
-      <a class="ql-item" href="https://www.dongjak.go.kr" target="_blank" rel="noopener">
+      <a class="ql-item" href="https://www.dongjak.go.kr/portal/main/contents.do?menuNo=201335" target="_blank" rel="noopener">
         <span class="ql-ico">💬</span>
         <span class="ql-t"><span class="lang-ko">카카오 알림톡</span><span class="lang-en">KakaoTalk alerts</span></span>
       </a>
-      <a class="ql-item" href="tel:0282091039" target="_blank" rel="noopener">
+      <a class="ql-item" href="tel:028201114" target="_blank" rel="noopener">
         <span class="ql-ico">📞</span>
         <span class="ql-t"><span class="lang-ko">구정 문의</span><span class="lang-en">Contact the office</span></span>
       </a>
-      <a class="ql-item" href="https://www.facebook.com/dongjakgu" target="_blank" rel="noopener">
+      <button class="ql-item" type="button" onclick="openSns()">
         <span class="ql-ico">📢</span>
         <span class="ql-t"><span class="lang-ko">SNS 채널</span><span class="lang-en">SNS channels</span></span>
-      </a>
+      </button>
     </div>
     
   </div>
@@ -949,6 +957,46 @@ Fall-prevention program: Tue &amp; Thu 13:30–15:00
     </button>
   </div>
 </div>
+<!-- SNS 채널 목록 -->
+<div class="modal" id="snsModal">
+  <div class="sheet">
+    <h4><span class="lang-ko">SNS 채널</span><span class="lang-en">SNS Channels</span></h4>
+    
+      <a class="sns-row" href="https://www.facebook.com/dongjakgu/" target="_blank" rel="noopener">
+        <span class="sns-ico">📘</span>
+        <span class="sns-t"><span class="lang-ko">페이스북</span><span class="lang-en">Facebook</span></span>
+        <span class="sns-go">›</span>
+      </a>
+      <a class="sns-row" href="https://www.instagram.com/dongjakgu_office/" target="_blank" rel="noopener">
+        <span class="sns-ico">📷</span>
+        <span class="sns-t"><span class="lang-ko">인스타그램</span><span class="lang-en">Instagram</span></span>
+        <span class="sns-go">›</span>
+      </a>
+      <a class="sns-row" href="https://blog.naver.com/dongjaksaran" target="_blank" rel="noopener">
+        <span class="sns-ico">📝</span>
+        <span class="sns-t"><span class="lang-ko">블로그</span><span class="lang-en">Blog</span></span>
+        <span class="sns-go">›</span>
+      </a>
+      <a class="sns-row" href="https://www.youtube.com/channel/UCuy1F8rg5OrszNETHBGbPUA" target="_blank" rel="noopener">
+        <span class="sns-ico">▶️</span>
+        <span class="sns-t"><span class="lang-ko">유튜브</span><span class="lang-en">YouTube</span></span>
+        <span class="sns-go">›</span>
+      </a>
+      <a class="sns-row" href="https://pf.kakao.com/_xaIxgcj" target="_blank" rel="noopener">
+        <span class="sns-ico">💬</span>
+        <span class="sns-t"><span class="lang-ko">카카오채널</span><span class="lang-en">Kakao Channel</span></span>
+        <span class="sns-go">›</span>
+      </a>
+      <a class="sns-row" href="https://x.com/dongjaksarang" target="_blank" rel="noopener">
+        <span class="sns-ico">✖️</span>
+        <span class="sns-t"><span class="lang-ko">X</span><span class="lang-en">X (Twitter)</span></span>
+        <span class="sns-go">›</span>
+      </a>
+    <button class="close" onclick="closeSns()">
+      <span class="lang-ko">닫기</span><span class="lang-en">Close</span>
+    </button>
+  </div>
+</div>
 <div class="imgmodal" id="imgModal" onclick="this.classList.remove('open');setOverlay(false)"><img id="imgModalImg" alt=""></div>
 
 <script>
@@ -1117,6 +1165,11 @@ function openDay(d){
 }
 function closeDay(){ document.getElementById('dayModal').classList.remove('open'); setOverlay(false); DAY_EVS=[]; }
 document.getElementById('dayModal').addEventListener('click',e=>{ if(e.target.id==='dayModal') closeDay(); });
+
+/* ── SNS 채널 목록 ── */
+function openSns(){ document.getElementById('snsModal').classList.add('open'); setOverlay(true); }
+function closeSns(){ document.getElementById('snsModal').classList.remove('open'); setOverlay(false); }
+document.getElementById('snsModal').addEventListener('click',e=>{ if(e.target.id==='snsModal') closeSns(); });
 
 /* ── 이미지 확대 ── */
 function zoomImg(el){ document.getElementById('imgModalImg').src=el.src; document.getElementById('imgModal').classList.add('open'); setOverlay(true); }
