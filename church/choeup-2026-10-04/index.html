@@ -14,19 +14,23 @@
 <style>
 :root{--navy:#1f1f6e;--navy-dk:#15154f;--purple:#7a5aa6;--purple-lt:#a98fcc;--lav:#f0eaf7;--lav2:#e6dcf3;--ink:#1d1d2b;--sub:#5d5a70;--line:#ddd6e9;--bg:#f4f1f8;--fs:16.5px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{font-size:var(--fs);scroll-padding-top:112px}
-html,body{max-width:100%;overflow-x:hidden}
+html{font-size:var(--fs);scroll-padding-top:100px}
+html,body{max-width:100%}
+html{overflow-x:clip}
+body{overflow-x:clip}
 body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;-webkit-text-size-adjust:100%;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 a{color:inherit}
 .wrap{max-width:720px;margin:0 auto;padding:0 12px}
 /* 상단 바 */
-.appbar{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;padding:8px 10px;padding-top:calc(8px + env(safe-area-inset-top));display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.topfix{position:fixed;top:0;left:0;right:0;z-index:60}
+.appbar{background:var(--navy);color:#fff;padding:8px 10px;padding-top:calc(8px + env(safe-area-inset-top));display:flex;align-items:center;gap:5px 6px;flex-wrap:wrap}
 .appbar .brand{font-weight:800;font-size:.98rem;display:flex;align-items:center;gap:6px;flex:1 1 auto;min-width:0}
 .appbar .brand b{background:#fff;color:var(--navy);border-radius:6px;padding:1px 6px;font-size:.78rem;flex:none}
 .appbar .brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tb{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.34);color:#fff;border-radius:9px;padding:6px 9px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.tb.wide{flex:1 1 44%;text-align:center;padding:7px 6px}
 .tb.hi{background:#fff;color:var(--navy);border-color:#fff}
-.nav{position:sticky;top:var(--navh,50px);z-index:40;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav{background:#fff;border-bottom:1px solid var(--line);overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav a{display:inline-block;padding:10px 13px;font-size:.88rem;font-weight:700;color:var(--sub);text-decoration:none;border-bottom:3px solid transparent}
 .nav a.on{color:var(--navy);border-bottom-color:var(--purple)}
@@ -153,16 +157,18 @@ footer{text-align:center;font-size:.76rem;color:var(--sub);padding:18px 12px}
 </head>
 <body>
 
+<div class="topfix" id="topfix">
 <header class="appbar" id="appbar">
   <div class="brand"><b>✝</b><span>초읍교회 주보 · 2026.10.4</span></div>
-  <button class="tb hi" onclick="openPdf()">📄 PDF로 보기</button>
-  <button class="tb hi" onclick="openImg()">🖼️ 이미지로 보기</button>
   <button class="tb" onclick="fz(-1)" aria-label="글자 작게">가-</button>
   <button class="tb" onclick="fz(1)" aria-label="글자 크게">가+</button>
+  <button class="tb hi wide" onclick="openPdf()">📄 PDF로 보기</button>
+  <button class="tb hi wide" onclick="openImg()">🖼️ 이미지로 보기</button>
 </header>
 <nav class="nav" id="nav">
   <a href="#cover" class="on">표지</a><a href="#sunday">주일예배</a><a href="#pm">오후·기도회</a><a href="#mission">선교</a><a href="#news">소식</a><a href="#family">가정예배</a><a href="#offer">예물</a><a href="#people">섬기는 사람들</a><a href="#guide">예배안내</a>
 </nav>
+</div>
 
 <!-- ═══════ 표지 ═══════ -->
 <div class="wrap" id="cover" style="padding-top:12px">
@@ -499,11 +505,11 @@ footer{text-align:center;font-size:.76rem;color:var(--sub);padding:18px 12px}
   window.cp=function(s){function ok(){toast('계좌번호가 복사되었습니다')}if(navigator.clipboard){navigator.clipboard.writeText(s).then(ok,function(){fb(s,ok)})}else fb(s,ok)};
   function fb(s,ok){var t=document.createElement('textarea');t.value=s;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(e){toast(s)}document.body.removeChild(t)}
   // 상단 고정 높이 + 섹션 하이라이트
-  function sizes(){var b=document.getElementById('appbar').offsetHeight;document.documentElement.style.setProperty('--navh',b+'px');document.documentElement.style.scrollPaddingTop=(b+46)+'px'}
+  function sizes(){var h=document.getElementById('topfix').offsetHeight;document.body.style.paddingTop=h+'px';document.documentElement.style.scrollPaddingTop=(h+8)+'px'}
   sizes();window.addEventListener('resize',sizes);window.addEventListener('load',sizes);
   var links=[].slice.call(document.querySelectorAll('#nav a'));
   var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
-  function spy(){var y=window.scrollY+document.getElementById('appbar').offsetHeight+70,cur=0;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});links.forEach(function(a,i){a.classList.toggle('on',i===cur)});var on=links[cur];if(on)on.parentNode.scrollLeft=on.offsetLeft-20}
+  function spy(){var y=window.scrollY+document.getElementById('topfix').offsetHeight+30,cur=0;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});links.forEach(function(a,i){a.classList.toggle('on',i===cur)});var on=links[cur];if(on)on.parentNode.scrollLeft=on.offsetLeft-20}
   window.addEventListener('scroll',spy,{passive:true});spy();
 })();
 </script>
