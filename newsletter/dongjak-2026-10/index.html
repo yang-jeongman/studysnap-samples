@@ -308,6 +308,9 @@
   .modal.open{display:flex}
   .sheet{background:#fff;width:100%;max-width:760px;border-radius:18px 18px 0 0;max-height:80vh;
     overflow:auto;padding:18px 16px calc(24px + env(safe-area-inset-bottom))}
+  /* 모바일 주소창 유무로 vh가 실제 보이는 높이보다 커져, 바텀시트 상단(날짜 제목)이 화면 밖으로
+     밀려나고 하단(닫기 버튼)만 보이는 문제 방지 — dvh 지원 브라우저에서 실제 보이는 높이로 재계산 */
+  @supports (height: 1dvh) { .sheet{max-height:80dvh} }
   .sheet h4{font-size:1.15rem;font-weight:900;margin-bottom:12px}
   .day-ev{border-left:4px solid var(--sc);background:#faf9f8;border-radius:10px;padding:11px 12px;margin-bottom:9px;
     cursor:pointer}
