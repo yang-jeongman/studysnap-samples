@@ -950,7 +950,7 @@ Fall-prevention program: Tue &amp; Thu 13:30–15:00
 
 <!-- 날짜 상세 -->
 <div class="modal" id="dayModal">
-  <div class="sheet">
+  <div class="sheet" id="daySheet">
     <h4 id="dayTitle"></h4>
     <div id="dayList"></div>
     <button class="close" onclick="closeDay()">
@@ -1176,6 +1176,7 @@ function openDay(d){
   document.getElementById('dayTitle').textContent = lang==='en' ? ('October '+d+', 2026') : ('2026년 10월 '+d+'일');
   document.getElementById('dayList').innerHTML = _dayListHtml();
   document.getElementById('dayModal').classList.add('open');
+  document.getElementById('daySheet').scrollTop = 0;
   setOverlay(true);
 }
 function closeDay(){ document.getElementById('dayModal').classList.remove('open'); setOverlay(false); DAY_EVS=[]; }
