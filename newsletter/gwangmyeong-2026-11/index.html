@@ -760,11 +760,12 @@ function updatePager(){
   nl.textContent = (i >= 0 && i < SCREEN_ORDER.length-1 && SCREEN_LABELS[SCREEN_ORDER[i+1]]) ? SCREEN_LABELS[SCREEN_ORDER[i+1]][lang] : '';
 }
 (function(){
-  let x0=null, y0=null, t0=0, multi=false;
+  let x0=null, y0=null, t0=0, multi=false, hscroll=null;
   const AREA = document.querySelector('main');
   AREA.addEventListener('touchstart', e=>{
     if(e.touches.length>1){ multi=true; return; }
     multi=false; x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=Date.now();
+    hscroll = e.target.closest('.b-tbl-wrap');
   }, {passive:true});
   AREA.addEventListener('touchend', e=>{
     if(multi || x0===null) { x0=null; return; }
@@ -775,6 +776,11 @@ function updatePager(){
     x0=null; y0=null;
     if(dt > 700) return;
     if(Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy)*1.6) return;
+    if(hscroll){
+      const atLeft = hscroll.scrollLeft <= 1;
+      const atRight = hscroll.scrollLeft + hscroll.clientWidth >= hscroll.scrollWidth - 1;
+      if((dx < 0 && !atRight) || (dx > 0 && !atLeft)) return;
+    }
     navRel(dx < 0 ? 1 : -1);
   }, {passive:true});
   document.addEventListener('keydown', e=>{
