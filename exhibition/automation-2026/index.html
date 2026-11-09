@@ -198,6 +198,7 @@
 
   span.action-btn{cursor:default;}
   .products-block, .intro-block{margin-top:10px;}
+  .products-block + .intro-block{margin-top:24px;}
   .block-title{font-size:12px; font-weight:800; color:var(--primary); margin-bottom:4px;}
   .block-text{font-size:13px; line-height:1.65; color:#374151; white-space:pre-line;}
 
@@ -423,7 +424,10 @@ function toggleCard(booth){
   if (openBooth){
     requestAnimationFrame(() => {
       const el = document.querySelector('.card[data-id="' + CSS.escape(booth) + '"]');
-      if (el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+      if (el){
+        const st = document.querySelector('.sticky-top').offsetHeight;
+        window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - st - 8);
+      }
     });
   }
 }
