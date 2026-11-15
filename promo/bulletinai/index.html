@@ -28,16 +28,23 @@ header p{color:var(--mute);margin-top:6px;font-size:15px}
 .btn{flex:1;white-space:nowrap;text-align:center;font-size:14px;font-weight:700;padding:10px 8px;border-radius:10px;border:1px solid var(--line);color:var(--ink);text-decoration:none;background:transparent;cursor:pointer;font-family:inherit}
 .btn.pri{color:#fff;border:none}
 .single{max-width:460px;margin:0 auto}
-.single video{width:100%;width:min(100%,calc((100vh - 110px)*9/16));width:min(100%,calc((100svh - 110px)*9/16));aspect-ratio:9/16;border-radius:18px;background:#000;display:block;margin:18px auto 0}
+.single{padding-top:14px}
+.single video{width:100%;width:min(100%,calc((100vh - var(--rsv,190px))*9/16));width:min(100%,calc((100svh - var(--rsv,190px))*9/16));aspect-ratio:9/16;border-radius:18px;background:#000;display:block;margin:12px auto 0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.top h1{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.25}
+.top .sub{color:var(--mute);font-size:13px;margin-top:2px}
+.ask{display:flex;flex-direction:column;gap:6px;flex:none}
+.ask a{display:block;font-size:12px;font-weight:700;color:#fff;text-decoration:none;padding:5px 14px;border-radius:20px;text-align:center;white-space:nowrap}
+.feat{margin-top:14px;font-size:15px;word-break:keep-all}
+.feat b{display:block}
 footer{margin-top:40px;color:var(--mute);font-size:13px;text-align:center}
 footer a{color:inherit}
-</style></head><body><div class="wrap single"><span class="who" style="background:#5B4AC4;display:inline-block;color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px">교회</span>
-<h1 style="font-size:26px;font-weight:900;margin-top:10px">BulletinAI 모바일 주보</h1><p style="color:var(--mute)">AI 성경 스토리 드라마</p>
+</style></head><body><div class="wrap single" style="--rsv:150px"><div class="top"><div><h1>BulletinAI 모바일 주보</h1><div class="sub">AI 성경 스토리 드라마</div></div><div class="ask"><a href="tel:010-5309-1075" style="background:#5B4AC4">전화문의</a><a href="mailto:mut10e@empas.com?subject=BulletinAI 모바일 주보%20문의" style="background:#5B4AC4">이메일 문의</a></div></div>
 <video controls playsinline preload="metadata" poster="../posters/bulletinai.jpg" src="../videos/bulletinai.mp4"></video>
-<p style="margin-top:16px">PDF 주보를 AI가 모바일 주보로 자동 변환. 찬송, 성경 구절을 누르면 바로 보이고, 말씀이 영상이 됩니다.</p>
-<div class="btns" style="margin-top:16px"><button class="btn pri" style="background:#5B4AC4" onclick="share('https://news.mpublisher.com/promo/bulletinai/','BulletinAI 모바일 주보')">링크 공유</button>
+<p class="feat"><b>[주요기능]</b>PDF 주보 자동 변환, 찬송 바로 보기, 성경 구절 바로 보기, 말씀 영상 등</p>
+<div class="btns" style="margin-top:14px"><button class="btn pri" style="background:#5B4AC4" onclick="share('https://news.mpublisher.com/promo/bulletinai/','BulletinAI 모바일 주보')">링크 공유</button>
 <a class="btn" href="../">다른 영상 보기</a></div>
-<footer>mPublisher &amp; (주)더소통</footer></div><script>
+<footer style="margin-top:22px">mPublisher &amp; (주)더소통</footer></div><script>
 function share(url,title){
   if(navigator.share){navigator.share({title:title,url:url}).catch(function(){});return;}
   try{navigator.clipboard.writeText(url).then(function(){alert('링크를 복사했습니다.\n'+url);});}

@@ -1,10 +1,10 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>모바일 소식지 | mPublisher, 제작 &amp; 영업 파트너 (주)더소통</title>
-<meta name="description" content="종이 소식지를 손안의 웹 매거진으로. 한/영 전환, 글자 크게, 소리 내어 읽기, 검색까지. 전시회 참가업체 디렉토리도 만듭니다.">
+<meta name="description" content="종이 소식지와 PDF 소식지를 손안의 웹 매거진으로. 한/영 전환, 글자 크기 조절, 기사 읽기, 기사 검색, 페이지 이동, 웹 링크, 전화걸기, 동영상, 지도 등.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="모바일 소식지 | mPublisher, 제작 &amp; 영업 파트너 (주)더소통">
-<meta property="og:description" content="종이 소식지를 손안의 웹 매거진으로. 한/영 전환, 글자 크게, 소리 내어 읽기, 검색까지. 전시회 참가업체 디렉토리도 만듭니다.">
+<meta property="og:description" content="종이 소식지와 PDF 소식지를 손안의 웹 매거진으로. 한/영 전환, 글자 크기 조절, 기사 읽기, 기사 검색, 페이지 이동, 웹 링크, 전화걸기, 동영상, 지도 등.">
 <meta property="og:image" content="https://news.mpublisher.com/promo/posters/newsletter_og.jpg">
 <meta property="og:url" content="https://news.mpublisher.com/promo/newsletter/">
 <meta name="twitter:card" content="summary_large_image">
@@ -28,16 +28,23 @@ header p{color:var(--mute);margin-top:6px;font-size:15px}
 .btn{flex:1;white-space:nowrap;text-align:center;font-size:14px;font-weight:700;padding:10px 8px;border-radius:10px;border:1px solid var(--line);color:var(--ink);text-decoration:none;background:transparent;cursor:pointer;font-family:inherit}
 .btn.pri{color:#fff;border:none}
 .single{max-width:460px;margin:0 auto}
-.single video{width:100%;width:min(100%,calc((100vh - 110px)*9/16));width:min(100%,calc((100svh - 110px)*9/16));aspect-ratio:9/16;border-radius:18px;background:#000;display:block;margin:18px auto 0}
+.single{padding-top:14px}
+.single video{width:100%;width:min(100%,calc((100vh - var(--rsv,190px))*9/16));width:min(100%,calc((100svh - var(--rsv,190px))*9/16));aspect-ratio:9/16;border-radius:18px;background:#000;display:block;margin:12px auto 0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.top h1{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.25}
+.top .sub{color:var(--mute);font-size:13px;margin-top:2px}
+.ask{display:flex;flex-direction:column;gap:6px;flex:none}
+.ask a{display:block;font-size:12px;font-weight:700;color:#fff;text-decoration:none;padding:5px 14px;border-radius:20px;text-align:center;white-space:nowrap}
+.feat{margin-top:14px;font-size:15px;word-break:keep-all}
+.feat b{display:block}
 footer{margin-top:40px;color:var(--mute);font-size:13px;text-align:center}
 footer a{color:inherit}
-</style></head><body><div class="wrap single"><span class="who" style="background:#ff5a4e;display:inline-block;color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px">지자체, 공공기관</span>
-<h1 style="font-size:26px;font-weight:900;margin-top:10px">모바일 소식지</h1><p style="color:var(--mute)">mPublisher, 제작 &amp; 영업 파트너 (주)더소통</p>
+</style></head><body><div class="wrap single" style="--rsv:150px"><div class="top"><div><h1>모바일 소식지</h1><div class="sub">mPublisher, 제작 &amp; 영업 파트너 (주)더소통</div></div><div class="ask"><a href="tel:010-5309-1075" style="background:#ff5a4e">전화문의</a><a href="mailto:mut10e@empas.com?subject=모바일 소식지%20문의" style="background:#ff5a4e">이메일 문의</a></div></div>
 <video controls playsinline preload="metadata" poster="../posters/newsletter.jpg" src="../videos/newsletter.mp4"></video>
-<p style="margin-top:16px">종이 소식지를 손안의 웹 매거진으로. 한/영 전환, 글자 크게, 소리 내어 읽기, 검색까지. 전시회 참가업체 디렉토리도 만듭니다.</p>
-<div class="btns" style="margin-top:16px"><button class="btn pri" style="background:#ff5a4e" onclick="share('https://news.mpublisher.com/promo/newsletter/','모바일 소식지')">링크 공유</button>
+<p class="feat"><b>[주요기능]</b>한/영 전환, 글자 크기 조절, 기사 읽기, 기사 검색, 페이지 이동, 웹 링크, 전화걸기, 동영상, 지도 등</p>
+<div class="btns" style="margin-top:14px"><button class="btn pri" style="background:#ff5a4e" onclick="share('https://news.mpublisher.com/promo/newsletter/','모바일 소식지')">링크 공유</button>
 <a class="btn" href="../">다른 영상 보기</a></div>
-<footer>mPublisher &amp; (주)더소통</footer></div><script>
+<footer style="margin-top:22px">mPublisher &amp; (주)더소통</footer></div><script>
 function share(url,title){
   if(navigator.share){navigator.share({title:title,url:url}).catch(function(){});return;}
   try{navigator.clipboard.writeText(url).then(function(){alert('링크를 복사했습니다.\n'+url);});}

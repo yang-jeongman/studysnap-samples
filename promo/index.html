@@ -28,14 +28,22 @@ header p{color:var(--mute);margin-top:6px;font-size:15px}
 .btn{flex:1;white-space:nowrap;text-align:center;font-size:14px;font-weight:700;padding:10px 8px;border-radius:10px;border:1px solid var(--line);color:var(--ink);text-decoration:none;background:transparent;cursor:pointer;font-family:inherit}
 .btn.pri{color:#fff;border:none}
 .single{max-width:460px;margin:0 auto}
-.single video{width:100%;width:min(100%,calc((100vh - 110px)*9/16));width:min(100%,calc((100svh - 110px)*9/16));aspect-ratio:9/16;border-radius:18px;background:#000;display:block;margin:18px auto 0}
+.single{padding-top:14px}
+.single video{width:100%;width:min(100%,calc((100vh - var(--rsv,190px))*9/16));width:min(100%,calc((100svh - var(--rsv,190px))*9/16));aspect-ratio:9/16;border-radius:18px;background:#000;display:block;margin:12px auto 0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.top h1{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.25}
+.top .sub{color:var(--mute);font-size:13px;margin-top:2px}
+.ask{display:flex;flex-direction:column;gap:6px;flex:none}
+.ask a{display:block;font-size:12px;font-weight:700;color:#fff;text-decoration:none;padding:5px 14px;border-radius:20px;text-align:center;white-space:nowrap}
+.feat{margin-top:14px;font-size:15px;word-break:keep-all}
+.feat b{display:block}
 footer{margin-top:40px;color:var(--mute);font-size:13px;text-align:center}
 footer a{color:inherit}
 </style></head><body><div class="wrap"><header><h1>홍보영상 모음</h1><p>모바일 소식지, BulletinAI 모바일 주보, FAM 자산관리, CCTV 데이터허브 소개 영상. 영상마다 링크를 따로 공유할 수 있습니다.</p></header>
 <div class="grid"><div class="card">
 <video controls playsinline preload="none" poster="posters/newsletter.jpg" src="videos/newsletter.mp4"></video>
 <div class="body"><span class="who" style="background:#ff5a4e">지자체, 공공기관</span>
-<h2>모바일 소식지</h2><div class="sub">mPublisher, 제작 &amp; 영업 파트너 (주)더소통</div><p>종이 소식지를 손안의 웹 매거진으로. 한/영 전환, 글자 크게, 소리 내어 읽기, 검색까지. 전시회 참가업체 디렉토리도 만듭니다.</p>
+<h2>모바일 소식지</h2><div class="sub">mPublisher, 제작 &amp; 영업 파트너 (주)더소통</div><p>종이 소식지와 PDF 소식지를 손안의 웹 매거진으로. 한/영 전환, 글자 크기 조절, 기사 읽기, 기사 검색, 페이지 이동, 웹 링크, 전화걸기, 동영상, 지도 등.</p>
 <div class="btns"><a class="btn" href="newsletter/">이 영상만 보기</a>
 <button class="btn pri" style="background:#ff5a4e" onclick="share('https://news.mpublisher.com/promo/newsletter/','모바일 소식지')">링크 공유</button></div></div></div><div class="card">
 <video controls playsinline preload="none" poster="posters/bulletinai.jpg" src="videos/bulletinai.mp4"></video>
