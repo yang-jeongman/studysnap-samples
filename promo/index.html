@@ -33,8 +33,11 @@ header p{color:var(--mute);margin-top:6px;font-size:15px}
 .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .top h1{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.25}
 .top .sub{color:var(--mute);font-size:13px;margin-top:2px}
-.ask{display:flex;flex-direction:column;gap:6px;flex:none}
-.ask a{display:block;font-size:12px;font-weight:700;color:#fff;text-decoration:none;padding:5px 14px;border-radius:20px;text-align:center;white-space:nowrap}
+.ask{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ask a{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#fff;text-decoration:none;padding:7px 12px;border-radius:20px;white-space:nowrap;cursor:pointer}
+.ask a span{font-weight:500;opacity:.95}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:rgba(20,22,28,.92);color:#fff;font-size:14px;font-weight:700;padding:11px 18px;border-radius:24px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9;max-width:90vw;text-align:center;word-break:keep-all;white-space:nowrap}
+#toast.on{opacity:1}
 .feat{margin-top:14px;font-size:15px;word-break:keep-all}
 .feat b{display:block}
 footer{margin-top:40px;color:var(--mute);font-size:13px;text-align:center}
@@ -62,6 +65,12 @@ footer a{color:inherit}
 <div class="btns"><a class="btn" href="cctv/">이 영상만 보기</a>
 <button class="btn pri" style="background:#f59e0b" onclick="share('https://news.mpublisher.com/promo/cctv/','CCTV 데이터허브')">링크 공유</button></div></div></div></div>
 <footer>mPublisher &amp; (주)더소통</footer></div><script>
+function toast(m){var t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);}
+  t.textContent=m;t.className='on';clearTimeout(t._h);t._h=setTimeout(function(){t.className='';},2600);}
+function ask(a){var v=a.getAttribute('data-v'),label=a.getAttribute('data-l');
+  function done(){toast(label+'를 복사했습니다: '+v);}
+  try{navigator.clipboard.writeText(v).then(done,function(){toast(label+': '+v);});}catch(e){toast(label+': '+v);}
+  return true;}
 function share(url,title){
   if(navigator.share){navigator.share({title:title,url:url}).catch(function(){});return;}
   try{navigator.clipboard.writeText(url).then(function(){alert('링크를 복사했습니다.\n'+url);});}

@@ -33,18 +33,27 @@ header p{color:var(--mute);margin-top:6px;font-size:15px}
 .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .top h1{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.25}
 .top .sub{color:var(--mute);font-size:13px;margin-top:2px}
-.ask{display:flex;flex-direction:column;gap:6px;flex:none}
-.ask a{display:block;font-size:12px;font-weight:700;color:#fff;text-decoration:none;padding:5px 14px;border-radius:20px;text-align:center;white-space:nowrap}
+.ask{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ask a{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#fff;text-decoration:none;padding:7px 12px;border-radius:20px;white-space:nowrap;cursor:pointer}
+.ask a span{font-weight:500;opacity:.95}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:rgba(20,22,28,.92);color:#fff;font-size:14px;font-weight:700;padding:11px 18px;border-radius:24px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9;max-width:90vw;text-align:center;word-break:keep-all;white-space:nowrap}
+#toast.on{opacity:1}
 .feat{margin-top:14px;font-size:15px;word-break:keep-all}
 .feat b{display:block}
 footer{margin-top:40px;color:var(--mute);font-size:13px;text-align:center}
 footer a{color:inherit}
-</style></head><body><div class="wrap single" style="--rsv:150px"><div class="top"><div><h1>모바일 소식지</h1><div class="sub">mPublisher, 제작 &amp; 영업 파트너 (주)더소통</div></div><div class="ask"><a href="tel:010-5309-1075" style="background:#ff5a4e">전화문의</a><a href="mailto:mut10e@empas.com?subject=모바일 소식지%20문의" style="background:#ff5a4e">이메일 문의</a></div></div>
+</style></head><body><div class="wrap single" style="--rsv:185px"><div class="top"><div><h1>모바일 소식지</h1><div class="sub">mPublisher, 제작 &amp; 영업 파트너 (주)더소통</div></div></div><div class="ask"><a href="tel:010-5309-1075" style="background:#ff5a4e" onclick="ask(this)" data-l="전화번호" data-v="010-5309-1075">전화문의 <span>010-5309-1075</span></a><a href="mailto:mut10e@empas.com?subject=모바일 소식지%20문의" style="background:#ff5a4e" onclick="ask(this)" data-l="이메일 주소" data-v="mut10e@empas.com">이메일 문의 <span>mut10e@empas.com</span></a></div>
 <video controls playsinline preload="metadata" poster="../posters/newsletter.jpg" src="../videos/newsletter.mp4"></video>
 <p class="feat"><b>[주요기능]</b>한/영 전환, 글자 크기 조절, 기사 읽기, 기사 검색, 페이지 이동, 웹 링크, 전화걸기, 동영상, 지도 등</p>
 <div class="btns" style="margin-top:14px"><button class="btn pri" style="background:#ff5a4e" onclick="share('https://news.mpublisher.com/promo/newsletter/','모바일 소식지')">링크 공유</button>
 <a class="btn" href="../">다른 영상 보기</a></div>
 <footer style="margin-top:22px">mPublisher &amp; (주)더소통</footer></div><script>
+function toast(m){var t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);}
+  t.textContent=m;t.className='on';clearTimeout(t._h);t._h=setTimeout(function(){t.className='';},2600);}
+function ask(a){var v=a.getAttribute('data-v'),label=a.getAttribute('data-l');
+  function done(){toast(label+'를 복사했습니다: '+v);}
+  try{navigator.clipboard.writeText(v).then(done,function(){toast(label+': '+v);});}catch(e){toast(label+': '+v);}
+  return true;}
 function share(url,title){
   if(navigator.share){navigator.share({title:title,url:url}).catch(function(){});return;}
   try{navigator.clipboard.writeText(url).then(function(){alert('링크를 복사했습니다.\n'+url);});}
