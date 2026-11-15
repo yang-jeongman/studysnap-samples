@@ -143,7 +143,7 @@
   .cv-btn:active{background:var(--primary-lt)}
   .cv-btn-ico{flex:none;width:20px;height:20px;display:block}
   .cv-btn-ico svg{width:20px;height:20px;display:block}
-  .cv-btn-t{flex:1;min-width:0;font-size:.68rem;font-weight:500;line-height:1.25}
+  .cv-btn-t{flex:1;min-width:0;font-size:.68rem;font-weight:500;line-height:1.25;word-break:keep-all}
   .cv-btn-go{flex:none;align-self:flex-end;width:12px;height:12px;display:block}
   .cv-btn-go svg{width:12px;height:12px;display:block}
   .bottom-links{margin:16px 12px 0;display:flex;flex-direction:column;gap:8px}
@@ -542,24 +542,63 @@
       </button>
     </div>
     
-<div class="bottom-links">
-        <a class="bl-btn" href="https://pf.kakao.com/_pJxdBxl" target="_blank" rel="noopener">
-          <span class="bl-ico"><svg viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#FEE500"/>
+<div class="cv-links">
+        <div class="cv-sns-col">
+          <div class="cv-sns-title"><span class="lang-ko">광명시 SNS</span><span class="lang-en">Gwangmyeong SNS</span></div>
+          <div class="cv-sns-row">
+        <a class="cv-sns" href="https://www.facebook.com/gmcity.kr" target="_blank" rel="noopener" aria-label="페이스북">
+          <span class="cv-sns-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#3B5998"/>
+      <path d="M27 16h3v-5h-3c-3.3 0-6 2.7-6 6v3h-4v5h4v11h5V25h4l1-5h-5v-3c0-.6.4-1 1-1z" fill="#fff"/></svg></span>
+        </a>
+        <a class="cv-sns" href="https://story.kakao.com/ch/gmcity" target="_blank" rel="noopener" aria-label="카카오스토리">
+          <span class="cv-sns-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#FFCD00"/>
+      <path d="M24 13c-7 0-12.5 4.6-12.5 10.3 0 3.6 2.3 6.8 5.8 8.6-.3 1-1 3.6-1.1 4.2-.1.6.2.6.5.4.2-.1 3.6-2.4 5-3.4 .7.1 1.5.1 2.3.1 7 0 12.5-4.6 12.5-10.3S31 13 24 13z"
+        fill="#fff"/></svg></span>
+        </a>
+        <a class="cv-sns" href="https://blog.naver.com/gmcityhall" target="_blank" rel="noopener" aria-label="블로그">
+          <span class="cv-sns-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#03C75A"/>
+      <text x="24" y="29" text-anchor="middle" font-family="Arial,Helvetica,sans-serif"
+        font-size="13" font-weight="700" fill="#fff">blog</text></svg></span>
+        </a>
+        <a class="cv-sns" href="https://www.instagram.com/gwangmyeong_official" target="_blank" rel="noopener" aria-label="인스타그램">
+          <span class="cv-sns-ico"><svg viewBox="0 0 48 48"><defs><linearGradient id="gmigg" x1="0" y1="48" x2="48" y2="0">
+      <stop offset="0" stop-color="#FFC107"/><stop offset=".5" stop-color="#E91E63"/>
+      <stop offset="1" stop-color="#9C27B0"/></linearGradient></defs>
+      <circle cx="24" cy="24" r="24" fill="url(#gmigg)"/>
+      <rect x="14" y="14" width="20" height="20" rx="6" fill="none" stroke="#fff" stroke-width="2.2"/>
+      <circle cx="24" cy="24" r="5.5" fill="none" stroke="#fff" stroke-width="2.2"/>
+      <circle cx="30.5" cy="17.5" r="1.6" fill="#fff"/></svg></span>
+        </a>
+        <a class="cv-sns" href="https://www.youtube.com/@gwangmyeong_gm" target="_blank" rel="noopener" aria-label="유튜브">
+          <span class="cv-sns-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#FF0000"/>
+      <polygon points="19,16 33,24 19,32" fill="#fff"/></svg></span>
+        </a>
+        <a class="cv-sns" href="https://news.gm.go.kr/" target="_blank" rel="noopener" aria-label="인터넷신문 생동감">
+          <span class="cv-sns-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#FF6FAE"/>
+      <circle cx="17" cy="31" r="2.6" fill="#fff"/>
+      <path d="M15 22a11 11 0 0 1 11 11" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M15 15a18 18 0 0 1 18 18" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+        </a>
+          </div>
+        </div>
+        <div class="cv-btns">
+        <a class="cv-btn" href="https://pf.kakao.com/_pJxdBxl" target="_blank" rel="noopener">
+          <span class="cv-btn-ico"><svg viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#FEE500"/>
       <path d="M24 10c-8 0-14 5-14 11.5 0 4.2 2.6 7.8 6.5 9.8-.4 1.3-1.2 4.2-1.3 4.7 0 .5.3.5.6.3.3-.1 4.8-3.2 5.8-3.9.8.1 1.6.2 2.4.2 8 0 14-5 14-11.5S32 10 24 10z" fill="#391B1B"/>
       <text x="24" y="26" text-anchor="middle" font-family="Arial,Helvetica,sans-serif"
         font-size="12" font-weight="700" fill="#FEE500">Ch</text></svg></span>
-          <span class="lang-ko">모바일소식지 구독신청</span><span class="lang-en">Subscribe via KakaoTalk</span>
+          <span class="cv-btn-t"><span class="lang-ko">모바일 소식지 구독 신청</span><span class="lang-en">Subscribe via KakaoTalk</span></span>
+          <span class='cv-btn-go' aria-hidden='true'><svg viewBox='0 0 24 24' fill='none' stroke='#111' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><path d='M18 18L6 6M6 15V6h9'/></svg></span>
         </a>
-        <a class="bl-btn" href="tel:0226802062" target="_blank" rel="noopener">
-          <span class="bl-ico"><svg viewBox="0 0 48 48" fill="none" stroke="#111" stroke-width="2.6"
+        <a class="cv-btn" href="tel:0226802062" target="_blank" rel="noopener">
+          <span class="cv-btn-ico"><svg viewBox="0 0 48 48" fill="none" stroke="#111" stroke-width="2.6"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 8l6-2 4 9-4 3c2 5 5 8 10 10l3-4 9 4-2 6c-1 2-3 3-5 3C19 37 9 25 8 14c0-2 1-5 4-6z"/>
       <path d="M30 8a10 10 0 0 1 10 10M30 14a4 4 0 0 1 4 4"/></svg></span>
-          <span class="lang-ko">모바일소식지 구독문의</span><span class="lang-en">Newsletter Inquiries</span>
+          <span class="cv-btn-t"><span class="lang-ko">광명소식 구독 문의</span><span class="lang-en">Newsletter Inquiries</span></span>
+          <span class='cv-btn-go' aria-hidden='true'><svg viewBox='0 0 24 24' fill='none' stroke='#111' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><path d='M18 18L6 6M6 15V6h9'/></svg></span>
         </a>
-        <button type="button" class="bl-btn" onclick="openSns()" aria-haspopup="dialog">
-          <span class="lang-ko">광명시 SNS</span><span class="lang-en">Gwangmyeong SNS</span>
-        </button>
+        </div>
       </div>
   </div>
 
