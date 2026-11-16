@@ -56,6 +56,17 @@
     font-weight:700;
     white-space:nowrap;
   }
+  .lang-toggle{
+    display:flex; flex:0 0 auto; background:rgba(255,255,255,.14); border-radius:999px; padding:2px;
+    border:1px solid rgba(255,255,255,.3);
+  }
+  .lang-toggle button{
+    border:none; background:transparent; color:#fff; opacity:.7;
+    font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; cursor:pointer;
+    white-space:nowrap;
+  }
+  .lang-toggle button.active{background:#fff; color:var(--primary); opacity:1;}
+
   .controls{
     background:var(--bg);
     padding:10px 16px 8px;
@@ -235,6 +246,10 @@
   <p>2026 국제첨단소재부품산업전 온라인 홍보관</p>
   <div class="top-meta">
     <span class="count-badge" id="countBadge">참가업체 100개사 | 이미지 79개사</span>
+    <div class="lang-toggle">
+      <button type="button" id="btnKo" class="active" onclick="setLang('ko')">KOR</button>
+      <button type="button" id="btnEn" onclick="setLang('en')">ENG</button>
+    </div>
   </div>
 </header>
 
@@ -470,6 +485,13 @@ function navLightbox(dir){
 
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('open');
+}
+
+function setLang(l){
+  lang = l;
+  document.getElementById('btnKo').classList.toggle('active', l === 'ko');
+  document.getElementById('btnEn').classList.toggle('active', l === 'en');
+  render();
 }
 
 function setSort(mode){
