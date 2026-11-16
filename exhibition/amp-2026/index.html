@@ -499,6 +499,11 @@ function setSort(mode){
   document.getElementById('sortBooth').classList.toggle('active', mode === 'booth');
   document.getElementById('sortName').classList.toggle('active', mode === 'name');
   render();
+  const list = document.getElementById('list');
+  if (list){
+    const st = document.querySelector('.sticky-top').offsetHeight;
+    window.scrollTo(0, window.scrollY + list.getBoundingClientRect().top - st);
+  }
 }
 
 function onSearch(){ render(); }
