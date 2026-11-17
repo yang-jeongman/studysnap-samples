@@ -24,7 +24,8 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html{font-size:var(--fs)}
-  html,body{max-width:100%;overflow-x:hidden}
+  html{max-width:100%;overflow-x:hidden}
+  body{max-width:100%}
   body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
     background:var(--bg);color:var(--ink);line-height:1.72;
     -webkit-text-size-adjust:100%;padding-bottom:env(safe-area-inset-bottom)}
@@ -176,7 +177,7 @@
 
   /* ── 섹션 화면 ── */
   .screen[hidden]{display:none}
-  .sec-top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:6px;
+  .sec-top{position:sticky;top:var(--appbar-h,54px);z-index:20;display:flex;align-items:center;gap:6px;
     background:var(--sc);color:#fff;padding:9px 12px}
   .btn-home,.btn-tts{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);color:#fff;
     border-radius:9px;padding:7px 11px;font-size:.85rem;font-weight:800;cursor:pointer;font-family:inherit;
@@ -1426,6 +1427,16 @@ function linkPicMirrors(){
   try{ var f=parseInt(localStorage.getItem('dj_fs')); if(f) setFS(f); }catch(e){}
   try{ linkPicMirrors(); }catch(e){}
   try{ applyHash(); }catch(e){ try{ showScreen('home'); }catch(_e){} }
+  function syncAppbarHeight(){
+    var ab=document.querySelector('.appbar');
+    if(ab) document.documentElement.style.setProperty('--appbar-h', ab.getBoundingClientRect().height+'px');
+  }
+  syncAppbarHeight();
+  try{
+    var ab2=document.querySelector('.appbar');
+    if(ab2 && window.ResizeObserver) new ResizeObserver(syncAppbarHeight).observe(ab2);
+    else window.addEventListener('resize', syncAppbarHeight);
+  }catch(e){ window.addEventListener('resize', syncAppbarHeight); }
   document.body.classList.add('js-on');
 })();
 </script>
