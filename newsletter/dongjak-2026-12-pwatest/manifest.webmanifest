@@ -1,0 +1,15 @@
+{
+  "name": "동작구 모바일 소식지",
+  "short_name": "동작소식",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#F2F5F8",
+  "theme_color": "#0F5EA8",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
